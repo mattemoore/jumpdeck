@@ -22,7 +22,6 @@ import { withMiddleware } from '~/core/middleware/with-middleware';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
 import { withAdmin } from '~/core/middleware/with-admin';
 import { withExceptionFilter } from '~/core/middleware/with-exception-filter';
-import { withAuthedUser } from '~/core/middleware/with-authed-user';
 
 const SUPPORTED_HTTP_METHODS: HttpMethod[] = ['POST'];
 const STRIPE_SIGNATURE_HEADER = 'stripe-signature';

@@ -68,9 +68,11 @@ node_modules/
 .next/
 .idea/
 public/~partytown/
+public/sitemap*.xml
 rss.xml
 vcs.xml
 .firebaserc
 tsconfig.tsbuildinfo
 
 .DS_Store
+cypress/screenshots
