@@ -1,0 +1,11 @@
+{
+  "goToCheckout": "Go to Checkout",
+  "manageBilling": "Manage Billing",
+  "notSubscribedToAnyPlan": "You are not currently subscribed to any plan",
+  "choosePlan": "Choose Plan",
+  "currentPlan": "Current Plan",
+  "subscriptionWillEndOn": "The subscription will end on {{ endDate }}",
+  "unknownErrorAlert": "An unknown error happened. Please try again or contact support.",
+  "checkOutCanceledAlert": "The checkout was canceled",
+  "checkOutCompletedAlert": "Well done! The checkout was successfully completed"
+}

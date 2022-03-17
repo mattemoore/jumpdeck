@@ -1,0 +1,32 @@
+/* Add here you favorite fonts */
+@import url('//fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap');
+
+@import "components.css";
+@import "app.css";
+
+/* Remove the next import if you do not use coding snippets */
+@import "github-dark.css";
+
+@tailwind base;
+
+/* Start purging... */
+@tailwind utilities;
+/* Stop purging. */
+
+html {
+    text-rendering: geometricPrecision;
+    -webkit-font-smoothing: subpixel-antialiased;
+    font-feature-settings: "rlig" 1,"calt" 1,"ss01" 1;
+}
+
+body {
+    @apply bg-white text-gray-800 dark:bg-black-500 dark:text-gray-300;
+}
+
+/*
+We hide the emulator warning at the bottom of the page.
+Please remove the following class if you want to display it
+ */
+.firebase-emulator-warning {
+    display: none;
+}

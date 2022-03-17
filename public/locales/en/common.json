@@ -1,0 +1,25 @@
+{
+  "dashboardTabLabel": "Dashboard",
+  "organizationSettingsTabLabel": "Organization",
+  "profileSettingsTabLabel": "Profile",
+  "subscriptionSettingsTabLabel": "Subscription",
+  "emailAddress": "Email Address",
+  "password": "Password",
+  "modalConfirmationQuestion": "Are you sure you want to continue?",
+  "imageInputLabel": "Click here to upload a picture",
+  "cancel": "Cancel",
+  "roles": {
+    "owner": {
+      "label": "Owner",
+      "description": "Can change any setting, invite new members and manage billing"
+    },
+    "admin": {
+      "label": "Admin",
+      "description": "Can change some settings, invite members, perform disruptive actions"
+    },
+    "member": {
+      "label": "Member",
+      "description": "Cannot invite members or change settings"
+    }
+  }
+}

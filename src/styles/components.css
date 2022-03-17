@@ -1,0 +1,425 @@
+/* Start purging... */
+@tailwind components;
+
+@layer components {
+    /* Global Link Style */
+    a {
+        @apply outline-primary-200 outline-2 active:outline-none;
+    }
+
+    /* Container.tsx */
+    .Container {
+        @apply container mx-auto px-5 xl:px-0;
+    }
+
+    /* NavigationMenu.tsx */
+    .NavigationMenu {
+        @apply flex-1 space-x-1 dark:text-gray-300 items-center flex flex-row;
+    }
+
+    /* NavigationItem.tsx */
+    .NavigationItem {
+        @apply leading-loose rounded-md text-sm
+        transition-all duration-200 dark:text-gray-300
+        text-gray-600 font-semibold px-4 py-1;
+    }
+
+    .NavigationItemNotActive {
+        @apply hover:text-black-600 dark:hover:text-primary-500;
+    }
+
+    .NavigationItemActive {
+        @apply font-semibold text-black-600
+        dark:text-primary-500 bg-gray-50 dark:bg-black-400;
+    }
+
+    .NavigationItem a[aria-disabled='true'] {
+        @apply cursor-not-allowed text-gray-300 dark:text-gray-500;
+    }
+
+    /* SectionSeparator.tsx */
+    .SectionSeparator {
+        @apply mt-16 mb-14 dark:border-black-300;
+    }
+
+    /* SubHeading.tsx */
+    .SubHeading {
+        @apply text-lg font-medium text-gray-500 dark:text-gray-300;
+    }
+
+    /* Badge.tsx */
+    .Badge {
+        @apply flex space-x-2 items-center font-medium;
+    }
+
+    .Badge.ColorNormal {
+        @apply text-gray-500 bg-gray-100 dark:text-gray-300 dark:bg-black-300;
+    }
+
+    .Badge.SizeNormal {
+        @apply rounded-xl px-3 py-2 text-sm;
+    }
+
+    .Badge.SizeSmall {
+        @apply rounded px-2 py-1 text-xs;
+    }
+
+    /* Hero.tsx */
+    .Hero {
+        @apply text-4xl lg:text-5xl dark:text-white
+            font-extrabold tracking-tight
+            md:leading-none my-2 sm:my-6;
+    }
+
+    /** Alert.tsx */
+    .Alert {
+        @apply py-3 border-l-8 px-4 rounded-lg
+        font-semibold text-sm flex items-center justify-between;
+    }
+
+    .Alert.AlertSuccess {
+        @apply border-green-500 bg-green-50 dark:bg-black-300;
+    }
+
+    .Alert.AlertSuccess .AlertIcon {
+        @apply dark:text-green-500 text-green-700;
+    }
+
+    .Alert.AlertError {
+        @apply border-red-500 bg-red-50 dark:bg-black-300;
+    }
+
+    .Alert.AlertError .AlertIcon {
+        @apply dark:text-red-500 text-red-700;
+    }
+
+    .Alert.AlertWarn {
+        @apply border-orange-500 bg-orange-50 dark:bg-black-300;
+    }
+
+    .Alert.AlertWarn .AlertIcon {
+        @apply dark:text-orange-500 text-orange-700;
+    }
+
+    .Alert.AlertInfo {
+        @apply border-blue-500 bg-blue-50 dark:bg-black-300;
+    }
+
+    .Alert.AlertInfo .AlertIcon {
+        @apply dark:text-blue-500 text-blue-700;
+    }
+
+    /* TextField.tsx */
+    .TextField {
+        @apply flex;
+    }
+
+    .TextFieldInput {
+        transition: all 0.25s;
+
+        @apply dark:border-black-300 w-full border-gray-200 border
+        text-gray-800 dark:text-gray-200 transition-colors duration-300
+        text-sm py-2.5 px-4 rounded-lg font-medium
+        bg-white hover:bg-gray-50 focus:outline-2 focus:outline focus:outline-primary-500
+        dark:bg-black-300 dark:hover:bg-black-400 focus:border-transparent
+        dark:focus:bg-black-600 hover:border-gray-300
+        dark:hover:border-black-200;
+    }
+
+    .TextFieldInput[type='file'] {
+        @apply block w-full text-sm text-gray-500
+        file:mr-4 file:py-2 file:px-4 py-0
+        file:rounded-full file:border-0 px-0 file:cursor-pointer
+        file:hover:bg-primary-600 file:active:bg-primary-700
+        file:text-sm file:font-semibold cursor-pointer
+        file:bg-primary-500 bg-transparent
+        shadow-none border-transparent;
+    }
+
+    .TextFieldHint {
+        @apply text-xs text-gray-500 dark:text-gray-400 leading-tight block;
+    }
+
+    /* Label.tsx */
+    .Label {
+        @apply text-gray-600 w-full font-semibold dark:text-gray-400 text-xs;
+    }
+
+    .Label > * {
+        margin-top: 0.35rem;
+    }
+
+    /* Button.tsx */
+    .Button {
+        @apply rounded-lg
+        font-bold transition-colors duration-300
+        flex items-center justify-center
+        focus:outline-2 focus:outline;
+    }
+
+    .Button.ButtonPrimary {
+        @apply bg-primary-500
+        hover:bg-primary-600 active:bg-primary-700
+        dark:text-gray-800 outline-primary-800;
+    }
+
+    .Button.ButtonDanger {
+        @apply bg-red-500 active:bg-red-700 hover:bg-red-600 text-white outline-red-800;
+    }
+
+    .Button.ButtonSecondary {
+        @apply bg-gray-50 dark:bg-black-200 active:bg-gray-200 dark:outline-black-100
+        outline-gray-50 hover:bg-gray-100 dark:hover:bg-black-300 dark:active:bg-black-400;
+    }
+
+    .Button.ButtonTransparent {
+        @apply hover:bg-gray-50 dark:hover:bg-black-300 dark:active:bg-black-400
+        text-gray-800 dark:text-gray-300 dark:outline-black-300 outline-gray-50;
+    }
+
+    .ButtonNormal {
+        @apply text-sm py-2.5 px-5;
+    }
+
+    .ButtonLarge {
+        @apply text-lg py-3 px-5;
+    }
+
+    .ButtonSmall {
+        @apply text-xs py-2 px-3;
+    }
+
+    .Button.ButtonPrimaryOutline {
+        @apply bg-transparent text-primary-700 border-primary-500;
+    }
+
+    .Button.ButtonDangerOutline {
+        @apply bg-transparent text-red-500 border-red-500;
+    }
+
+    .Button.ButtonPrimaryFlat {
+        @apply bg-transparent text-primary-500 hover:bg-primary-50;
+    }
+
+    .Button.ButtonDangerFlat {
+        @apply bg-transparent text-red-500 hover:bg-primary-50;
+    }
+
+    .Button[disabled] {
+        @apply opacity-50;
+    }
+
+    /* IconButton.tsx */
+    .IconButton {
+        @apply rounded-full bg-transparent hover:bg-gray-100
+            dark:hover:bg-black-300 transition-colors duration-300
+            dark:active:bg-gray-100 dark:active:bg-black-200 p-1
+            outline-primary-300 focus:outline;
+    }
+
+    /* ImageUploadInput.tsx */
+    .ImageUploadInput {
+        @apply TextFieldInput cursor-pointer relative
+        border-dashed bg-white dark:bg-black-300
+        hover:bg-gray-50 dark:hover:bg-black-400
+        transition-colors duration-300
+        border-gray-200 dark:border-black-200;
+    }
+
+    /* Footer.tsx */
+    .Footer {
+        @apply py-8 lg:py-16;
+    }
+
+    /* Popover.tsx */
+    button.PopoverButton {
+        @apply flex flex-row shadow hover:shadow-md py-2 px-4
+        dark:hover:bg-black-400 dark:active:bg-black-500 flex-1
+        items-center w-full dark:bg-black-300 rounded-md
+        bg-gray-50 duration-300 hover:bg-gray-100
+        outline-primary-300 focus:outline-2;
+    }
+
+    button.PopoverButtonActive {
+        @apply rounded-bl-none rounded-br-none border-b-transparent;
+    }
+
+    .PopoverChevronDownIcon {
+        @apply ml-2 h-5 w-5 group-hover:text-opacity-80
+        transition ease-in-out duration-150;
+    }
+
+    .PopoverPanel {
+        @apply absolute rounded-bl-md rounded-br-md shadow-lg
+        z-10 px-2 transform sm:px-0
+        w-full dark:bg-black-300;
+    }
+
+    .PopoverPanelItem {
+        @apply flex py-3 px-4 bg-transparent hover:bg-gray-50 dark:hover:bg-black-400
+        items-center cursor-pointer transition
+        duration-150 ease-in-out focus:outline-none;
+    }
+
+    .PopoverItemLabel {
+        @apply text-sm font-semibold text-gray-700 dark:text-gray-300;
+    }
+
+    .PopoverItemIcon {
+        @apply flex items-center justify-center flex-shrink-0
+        w-10 h-10 text-current sm:h-12 sm:w-12;
+    }
+
+    .TabsList {
+        @apply flex space-x-4;
+    }
+
+    /* Tab.tsx */
+    .Tab {
+        @apply NavigationItem;
+    }
+
+    .Tab:not(.TabSelected) {
+        @apply hover:bg-gray-50 dark:hover:bg-black-400 cursor-pointer;
+    }
+
+    .TabSelected {
+        @apply NavigationItemActive;
+    }
+
+    /* ListBox.tsx */
+    .ListBoxButton {
+        @apply TextFieldInput text-left font-semibold
+            hover:text-current dark:text-current;
+    }
+
+    .ListBoxButtonOpen {
+        @apply border-primary-500;
+    }
+
+    .ListBoxButtonIcon {
+        @apply absolute inset-y-0 right-0 flex
+        items-center pr-2 pointer-events-none;
+    }
+
+    .ListBoxOptionsContainer {
+        @apply absolute w-full mt-0.5 overflow-auto
+        text-base bg-white dark:bg-black-300
+        rounded-lg shadow-md max-h-96 z-50;
+    }
+
+    /* ListBoxOption.tsx */
+    .ListBoxOption {
+        @apply cursor-default select-none relative
+        py-3 pl-4 pr-4 font-semibold
+        text-sm transition-colors duration-300
+        border-b dark:border-b-black-400;
+    }
+
+    .ListBoxOptionNotActive {
+        @apply dark:text-gray-200 dark:bg-black-400 text-gray-900;
+    }
+
+    .ListBoxOptionActive {
+        @apply cursor-pointer text-gray-900
+        bg-gray-50 dark:bg-black-300 dark:text-current;
+    }
+
+    .ListBoxOptionSelected {
+        @apply bg-gray-100 dark:bg-black-300 dark:text-current;
+    }
+
+    .ListBoxOptionIcon {
+        @apply absolute inset-y-0 right-0 top-3 items-center pr-3;
+    }
+
+    .ListBoxOptionDescription {
+        font-size: 0.7rem;
+
+        @apply text-gray-600 dark:text-gray-400 leading-tight font-medium;
+    }
+
+    /* FallbackUserAvatar.tsx */
+    .FallbackUserAvatar {
+        @apply h-9 w-9 text-lg flex items-center
+        transition-all justify-center
+        bg-primary-500 hover:bg-primary-600
+        rounded-full uppercase font-extrabold
+        text-black-500;
+    }
+
+    /* Dropdown.tsx */
+    .DropdownMenu {
+        @apply lg:relative block text-left w-full;
+    }
+
+    .DropdownMenuItemsContainer {
+        @apply z-10 absolute right-0 w-full lg:w-60 mt-2
+        lg:mt-2 origin-top-right bg-white dark:bg-black-400
+        lg:rounded-sm shadow-xl focus:outline-none
+        border-t border-gray-50 dark:border-black-300 py-1;
+    }
+
+    .DropdownItem {
+        @apply flex flex-1 items-center w-full border-none font-medium
+        sm:text-sm dark:text-gray-300 transition-colors duration-100;
+    }
+
+    .DropdownMenuButtonContainer {
+        @apply flex items-center;
+    }
+
+    .DropdownItem button[disabled],
+    .DropdownMenuButtonContainer button[disabled] {
+        @apply opacity-40 cursor-not-allowed;
+    }
+
+    .DropdownButtonContainer {
+        @apply cursor-pointer items-center flex;
+    }
+
+    .DropdownButtonContainer button {
+        @apply dark:active:bg-black-300 active:bg-gray-50 dark:outline-black-400;
+    }
+
+    .DropdownActiveItem {
+        @apply bg-gray-50 dark:bg-black-300 text-black-500 dark:text-current;
+    }
+
+    .DropdownDivider {
+        height: 1px;
+
+        @apply bg-gray-200 dark:bg-black-300 border-none;
+    }
+
+    /* Documentation */
+    .DocumentationSidebarContainer {
+        @apply mt-6 sticky inset-0 hidden md:flex overflow-y-auto h-screen;
+    }
+
+    .DocumentationSidebarItem {
+        @apply pl-4 border-l-2 dark:active:bg-black-400 active:bg-gray-100
+            dark:hover:border-l-primary-400 py-2 px-3 transition-colors duration-300;
+    }
+
+    .DocumentationSidebarItemContainer:last-child {
+        @apply pb-24;
+    }
+
+    .DocumentationSidebarItemSelected {
+        @apply font-semibold dark:text-primary-500 border-l-primary-400;
+    }
+
+    .DocumentationSidebarItemNotSelected {
+        @apply hover:border-l-primary-400 dark:hover:text-white dark:border-l-black-400 font-medium;
+    }
+
+    .AuthProviderButton {
+        @apply border-gray-200 bg-gray-100 dark:border-black-300
+        hover:bg-gray-200 active:bg-gray-300 hover:border-gray-300
+        dark:hover:border-black-300 dark:bg-black-300
+        dark:hover:bg-black-400 dark:active:bg-black-500 dark:outline-black-300
+        transition-all duration-300 relative;
+    }
+}
+/* Stop purging. */

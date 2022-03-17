@@ -1,0 +1,106 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function userId() {
+      return request.auth.uid;
+    }
+
+    // [READ] Data that exists on the Firestore document
+    function existingData() {
+      return resource.data;
+    }
+
+    function existingDataId() {
+      return 'id' in resource ? resource.id : null;
+    }
+
+    function isSignedIn() {
+      return userId() != null;
+    }
+
+    // [WRITE] Data that is sent to a Firestore document
+    function incomingData() {
+      return request.resource.data;
+    }
+
+    // use this function to prevent from writing certain fields
+    // to the document, such as sensitive data (permissions, etc.)
+    // create: if fieldsNotInCreateAction(["permissions"]);
+    function fieldsNotInCreateAction(fields) {
+      return !(request.resource.data.keys().hasAll(fields));
+    }
+
+    function fieldsNotInUpdateAction(fields) {
+      return (fieldsNotInCreateAction(fields) && !(resource.data.keys().hasAll(fields)));
+    }
+
+    function getUserRole(organization, userId) {
+      let members = organization.data.members;
+      let member = members[userId];
+
+      return member != null ? member.role : -1;
+    }
+
+    function getUser(userId) {
+      return get(/databases/$(database)/documents/users/$(userId));
+    }
+
+    function getCurrentUser() {
+      return getUser(userId());
+    }
+
+    function isAdmin(organizationId) {
+      let organization = getOrganization(organizationId);
+      let role = getUserRole(organization, userId());
+
+      // if user is Admin = 1, or Owner = 2
+      // please update this according your app's domain
+
+      return role >= 1;
+    }
+
+    function getOrganization(organization) {
+      return get(/databases/$(database)/documents/organizations/$(organization));
+    }
+
+    function userIsMemberByOrganizationId(organizationId) {
+      let organization = getOrganization(organizationId);
+
+      return userIsMember(organization);
+    }
+
+    function userIsMember(organization) {
+      let role = getUserRole(organization, userId());
+
+      return role >= 0;
+    }
+
+    function canUpdateOrganization(organizationId) {
+      let isMember = userIsMemberByOrganizationId(organizationId);
+
+      // we should not let users update these fields from a non-admin env
+      let noDisallowedFields = fieldsNotInUpdateAction(['members', 'subscription']);
+
+      return isMember && noDisallowedFields;
+    }
+
+    function canCreateOrganization() {
+      return isSignedIn() && fieldsNotInCreateAction(['members', 'subscription']);
+    }
+
+    match /organizations/{organizationId} {
+      allow create: if canCreateOrganization();
+      allow read: if userId() in existingData().members;
+      allow update: if canUpdateOrganization(organizationId);
+
+      match /invites/{inviteId} {
+        allow delete: if isAdmin(organizationId);
+        allow list: if userIsMemberByOrganizationId(organizationId);
+      }
+    }
+
+    match /users/{user} {
+      allow read: if userId() == user;
+    }
+  }
+}

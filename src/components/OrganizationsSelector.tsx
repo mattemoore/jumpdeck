@@ -1,0 +1,137 @@
+import { useCallback, useContext, useState } from 'react';
+import Image from 'next/image';
+
+import PlusSmIcon from '@heroicons/react/outline/PlusSmIcon';
+
+import { setCookie } from 'nookies';
+import { Trans } from 'next-i18next';
+
+import { Organization } from '~/lib/organizations/types/organization';
+import { useFetchUserOrganizations } from '~/lib/organizations/hooks/use-fetch-user-organizations';
+import { OrganizationContext } from '~/lib/contexts/organization';
+
+import If from '~/core/ui/If';
+import { PopoverDropdown, PopoverDropdownItem } from '~/core/ui/Popover';
+
+import CreateOrganizationModal from './CreateOrganizationModal';
+
+const PopoverButton: React.FC<{
+  organization: Maybe<WithId<Organization>>;
+}> = ({ organization }) => {
+  return (
+    <If condition={organization}>
+      {(organization) => <OrganizationItem organization={organization} />}
+    </If>
+  );
+};
+
+const OrganizationsSelector: React.FC<{ userId: string }> = ({ userId }) => {
+  const [isOrganizationModalOpen, setIsOrganizationModalOpen] = useState(false);
+  const { organization, setOrganization } = useContext(OrganizationContext);
+  const { data: organizations } = useFetchUserOrganizations(userId);
+
+  const organizationSelected = useCallback(
+    (item: WithId<Organization>) => {
+      // update the global Organization context
+      // with the selected organization
+      setOrganization(item);
+
+      // we save the selected organization in
+      // a cookie so that we can return to it when
+      // the user refreshes or navigates elsewhere
+      saveOrganizationIdInCookie(item.id);
+    },
+    [setOrganization]
+  );
+
+  return (
+    <>
+      <div data-cy={'organization-selector'}>
+        <PopoverDropdown button={<PopoverButton organization={organization} />}>
+          {(organizations ?? []).map((item) => {
+            const isSelected = item.id === organization?.id;
+
+            return (
+              <If key={item.id} condition={!isSelected}>
+                <PopoverDropdownItem
+                  key={item.name}
+                  onClick={() => organizationSelected(item)}
+                >
+                  <PopoverDropdownItem.Label>
+                    <OrganizationItem organization={item} />
+                  </PopoverDropdownItem.Label>
+                </PopoverDropdownItem>
+              </If>
+            );
+          })}
+
+          <PopoverDropdownItem
+            className={'border-t border-gray-100 dark:border-black-400'}
+            onClick={() => setIsOrganizationModalOpen(true)}
+          >
+            <PopoverDropdownItem.Label>
+              <span
+                data-cy={'create-organization-button'}
+                className={'flex flex-row space-x-2 items-center ellipsify'}
+              >
+                <PlusSmIcon className={'h-4 font-bold'} />
+
+                <span>
+                  <Trans
+                    i18nKey={'organization:createOrganizationDropdownLabel'}
+                  />
+                </span>
+              </span>
+            </PopoverDropdownItem.Label>
+          </PopoverDropdownItem>
+        </PopoverDropdown>
+      </div>
+
+      <CreateOrganizationModal
+        setIsOpen={setIsOrganizationModalOpen}
+        isOpen={isOrganizationModalOpen}
+        onCreate={organizationSelected}
+      />
+    </>
+  );
+};
+
+function OrganizationItem({ organization }: { organization: Organization }) {
+  const { logoURL, name } = organization;
+  const maxLabelWidth = `12rem`;
+  const minLabelWidth = `6.5rem`;
+
+  return (
+    <span
+      data-cy={'organization-selector-item'}
+      className={`flex space-x-3 items-center`}
+    >
+      <If condition={logoURL}>
+        <Image
+          layout={'fixed'}
+          width={'20px'}
+          height={'20px'}
+          alt={`${name} Logo`}
+          className={'object-contain'}
+          src={logoURL as string}
+        />
+      </If>
+
+      <span
+        className={'font-semibold ellipsify text-left'}
+        style={{ maxWidth: maxLabelWidth, minWidth: minLabelWidth }}
+      >
+        {name}
+      </span>
+    </span>
+  );
+}
+
+function saveOrganizationIdInCookie(organizationId: string) {
+  const cookieName = `organizationId`;
+  const path = '/';
+
+  setCookie(undefined, cookieName, organizationId, { path });
+}
+
+export default OrganizationsSelector;
