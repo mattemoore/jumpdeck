@@ -30,6 +30,6 @@ export async function initializeBrowserSentry() {
 
 function warnSentryNotConfigured() {
   console.warn(
-    `Sentry DSN not provided. Please add a SENTRY_DSN environment variable to enable error tracking.`
+    `Sentry DSN was not provided. Please add a SENTRY_DSN environment variable to enable error tracking.`
   );
 }

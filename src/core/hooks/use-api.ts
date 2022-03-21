@@ -62,7 +62,7 @@ async function executeFetchRequest<Resp = unknown>(
     const response = await fetch(url, options);
 
     if (response.ok) {
-      return response.json() as Promise<Resp>;
+      return (await response.json()) as Promise<Resp>;
     }
 
     return Promise.reject(response.statusText);

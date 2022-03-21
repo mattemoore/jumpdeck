@@ -49,8 +49,22 @@ const Post: React.FC<{
         <meta property="og:title" content={title} key="og:title" />
         <meta property="article:published_time" content={post.date} />
 
+        <meta key="twitter:title" property="twitter:title" content={title} />
+
+        <meta
+          key="twitter:image"
+          property="twitter:image"
+          content={fullImagePath}
+        />
+
         <If condition={post.excerpt}>
           <>
+            <meta
+              key="twitter:description"
+              property="twitter:description"
+              content={post.excerpt}
+            />
+
             <meta
               property="og:description"
               content={post.excerpt}

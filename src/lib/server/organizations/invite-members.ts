@@ -62,7 +62,7 @@ export async function inviteMembers(params: Params) {
 
     const inviteExists = !existingInvite.empty;
 
-    // if an invite to the email {invite.email} already exists,
+    // if an invitation to the email {invite.email} already exists,
     // then we update the existing document
     if (inviteExists) {
       const doc = existingInvite.docs[0];
@@ -99,18 +99,23 @@ export async function inviteMembers(params: Params) {
 }
 
 function sendInviteEmail(email: string, inviteCode: string) {
+  const sender = configuration.email.senderAddress;
+  const link = getInviteLink(inviteCode);
+
+  return sendEmail({
+    to: email,
+    from: sender,
+    subject: 'You have been invited to join an organization!',
+    text: `Hi! You have been invited to join an organization. Join by signing up using the <a href='${link}'>following link</a>`,
+  });
+}
+
+function getInviteLink(inviteCode: string) {
   const siteUrl = configuration.site.siteUrl;
 
   assertSiteUrl(siteUrl);
 
-  const link = `${siteUrl}/auth/invite/${inviteCode}`;
-
-  return sendEmail({
-    to: email,
-    from: 'me@me.com',
-    subject: 'You have been invited to join an organization!',
-    text: `Hi! You have been invited to join an organization. Join by signing up using the <a href='${link}'>following link</a>`,
-  });
+  return [siteUrl, 'auth', 'invite', inviteCode].join('/');
 }
 
 function assertSiteUrl(siteUrl: Maybe<string>): asserts siteUrl is string {

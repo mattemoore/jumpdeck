@@ -46,6 +46,7 @@ const configuration = {
     port: 0,
     user: '',
     password: '',
+    senderAddress: '',
   },
   sentry: {
     dsn: process.env.SENTRY_DSN,

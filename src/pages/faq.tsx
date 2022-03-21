@@ -1,7 +1,5 @@
 import Head from 'next/head';
 
-import Link from 'next/link';
-
 import { withTranslationProps } from '~/lib/props/with-translation-props';
 import configuration from '~/configuration';
 
