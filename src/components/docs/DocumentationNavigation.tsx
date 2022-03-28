@@ -37,9 +37,9 @@ export default function DocumentationNavigation({
                           ? `DocumentationSidebarItemSelected`
                           : `DocumentationSidebarItemNotSelected`
                       }`}
-                      key={page.title}
+                      key={page.label}
                     >
-                      <span className={'text-sm'}>{page.title}</span>
+                      <span className={'text-sm'}>{page.label}</span>
                     </a>
                   </Link>
                 );

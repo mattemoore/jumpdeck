@@ -9,7 +9,7 @@ import {
 } from '../generic';
 
 import Directory from './types/directory';
-import Page from './types/page';
+import DocumentationPage from './types/documentation-page';
 import { DocsTree } from '~/core/docs/types/docs-tree';
 import { compileMdx } from '~/core/generic/compile-mdx';
 
@@ -36,7 +36,7 @@ export function getDocs() {
             slug: realSlug,
             content: matter?.content,
             ...(matter?.data ?? {}),
-          } as Page;
+          } as DocumentationPage;
         })
         .sort((prev, next) => {
           return sortByPosition(prev?.position, next?.position);

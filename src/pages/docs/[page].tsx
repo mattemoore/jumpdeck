@@ -21,20 +21,22 @@ import Footer from '~/components/Footer';
 import If from '~/core/ui/If';
 
 import Directory from '~/core/docs/types/directory';
-import Page from '~/core/docs/types/page';
+import DocumentationPage from '../../core/docs/types/documentation-page';
 
 type Props = {
   page: {
     title: string;
     content: string;
+    description: string;
+    label: string;
   };
 
-  nextPage: Maybe<Page>;
-  previousPage: Maybe<Page>;
+  nextPage: Maybe<DocumentationPage>;
+  previousPage: Maybe<DocumentationPage>;
 
   docs: Array<{
     directory: Directory;
-    pages: Page[];
+    pages: DocumentationPage[];
   }>;
 };
 
@@ -44,6 +46,32 @@ const DocsPage = ({ page, docs, previousPage, nextPage }: Props) => {
       <Layout>
         <Head>
           <title key="title">{page.title}</title>
+
+          <meta property="og:title" content={page.title} key="og:title" />
+
+          <meta
+            key="twitter:description"
+            property="twitter:description"
+            content={page.description}
+          />
+
+          <meta
+            property="og:description"
+            content={page.description}
+            key="og:description"
+          />
+
+          <meta
+            name="description"
+            content={page.description}
+            key="meta:description"
+          />
+
+          <meta
+            key="twitter:title"
+            property="twitter:title"
+            content={page.title}
+          />
         </Head>
 
         <SiteHeader />
@@ -109,7 +137,7 @@ const DocsPage = ({ page, docs, previousPage, nextPage }: Props) => {
   );
 };
 
-function PageLink({ page }: PropsWithChildren<{ page: Page }>) {
+function PageLink({ page }: PropsWithChildren<{ page: DocumentationPage }>) {
   const hrefAs = `/docs/${page.slug}`;
   const href = '/docs/[page]';
 

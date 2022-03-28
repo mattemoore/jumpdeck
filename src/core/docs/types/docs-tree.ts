@@ -1,7 +1,7 @@
 import Directory from '~/core/docs/types/directory';
-import Page from '~/core/docs/types/page';
+import DocumentationPage from './documentation-page';
 
 export type DocsTree = {
   directory: Directory;
-  pages: Page[];
+  pages: DocumentationPage[];
 };
