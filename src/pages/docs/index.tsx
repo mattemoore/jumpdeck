@@ -37,7 +37,7 @@ export default function Docs({
 
         <Container>
           <div>
-            <Hero>Docs</Hero>
+            <Hero>Documentation</Hero>
 
             <SubHeading>
               Explore our guides and examples to start building your app.

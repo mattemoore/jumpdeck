@@ -16,15 +16,67 @@ import PostHeader from './PostHeader';
 import PostsList from './PostsList';
 import CollectionName from './CollectionName';
 import SiteHeader from '../SiteHeader';
+import Collection from '~/core/blog/types/collection';
 
 const Post: React.FC<{
   post: Post;
   morePosts: Post[];
   content: string;
 }> = ({ post, morePosts, content }) => {
-  const title = post.title;
+  return (
+    <>
+      <Layout>
+        <PostHead post={post} />
+
+        <SiteHeader />
+
+        <Container>
+          <div className={'max-w-2xl mx-auto'}>
+            <article className='mb-16'>
+              <PostHeader post={post} />
+
+              <div className={'mx-auto md:mt-2 flex justify-center'}>
+                <PostBody content={content} />
+              </div>
+            </article>
+
+            <If condition={morePosts.length}>
+              <MorePostsList posts={morePosts} collection={post.collection} />
+            </If>
+          </div>
+        </Container>
+
+        <Footer />
+      </Layout>
+    </>
+  );
+};
+
+function MorePostsList({ posts, collection }: React.PropsWithChildren<{
+  posts: Post[],
+  collection: Collection
+}>) {
+  return (
+    <div>
+      <SectionSeparator />
+
+      <h3
+        className='text-center font-semibold my-4 md:my-12 flex flex-row space-x-4 items-center justify-center dark:text-white'>
+        <span>Read more about</span>{' '}
+
+        <Badge>
+          <CollectionName logoSize='28px' collection={collection} />
+        </Badge>
+      </h3>
+
+      <PostsList posts={posts} />
+    </div>
+  );
+}
+
+function PostHead({ post }: React.PropsWithChildren<{ post: Post }>) {
   const ogImage = post.ogImage?.url ?? post.coverImage;
-  const collection = post.collection;
+  const title = post.title;
   const fullImagePath = `${configuration.site.siteUrl}${ogImage}`;
 
   const structuredDataJson = getStructuredData({
@@ -36,98 +88,68 @@ const Post: React.FC<{
     imagePath: fullImagePath,
     author: {
       name: configuration.site.siteName,
-      url: configuration.site.siteUrl,
-    },
+      url: configuration.site.siteUrl
+    }
   });
 
   return (
-    <Layout>
-      <Head>
-        <title>{title}</title>
+    <Head>
+      <title>{title}</title>
 
-        <meta property="og:type" content="article" />
-        <meta property="og:title" content={title} key="og:title" />
-        <meta property="article:published_time" content={post.date} />
+      <meta property='og:type' content='article' />
+      <meta key='og:title' property='og:title' content={title} />
+      <meta property='article:published_time' content={post.date} />
 
-        <meta key="twitter:title" property="twitter:title" content={title} />
+      <meta
+        key='twitter:title'
+        property='twitter:title'
+        content={title}
+      />
 
-        <meta
-          key="twitter:image"
-          property="twitter:image"
-          content={fullImagePath}
-        />
+      <meta
+        key='twitter:image'
+        property='twitter:image'
+        content={fullImagePath}
+      />
 
-        <If condition={post.excerpt}>
-          <>
-            <meta
-              key="twitter:description"
-              property="twitter:description"
-              content={post.excerpt}
-            />
+      {post.excerpt &&
+        <>
+          <meta
+            key='twitter:description'
+            property='twitter:description'
+            content={post.excerpt}
+          />
 
-            <meta
-              property="og:description"
-              content={post.excerpt}
-              key="og:description"
-            />
+          <meta
+            key='og:description'
+            property='og:description'
+            content={post.excerpt}
+          />
 
-            <meta
-              name="description"
-              content={post.excerpt}
-              key="meta:description"
-            />
-          </>
-        </If>
+          <meta
+            key='meta:description'
+            name='description'
+            content={post.excerpt}
+          />
+        </>
+      }
 
-        <If condition={post.canonical}>
-          <link rel="canonical" href={post.canonical} key="canonical" />
-        </If>
+      {post.canonical &&
+        <link rel='canonical' href={post.canonical} key='canonical' />}
 
-        <If condition={ogImage}>
-          <meta property="og:image" content={ogImage} />
-        </If>
+      {ogImage &&
+        <meta key={'og:image'} property='og:image' content={ogImage} />
+      }
 
-        <script
-          key="ld:json"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredDataJson),
-          }}
-        />
-      </Head>
-
-      <SiteHeader />
-
-      <Container>
-        <div className={'max-w-2xl mx-auto'}>
-          <article className="mb-16">
-            <PostHeader post={post} />
-
-            <div className={'mx-auto mt-8 flex justify-center'}>
-              <PostBody content={content} />
-            </div>
-          </article>
-
-          <If condition={morePosts.length}>
-            <div>
-              <SectionSeparator />
-
-              <h3 className="text-center font-semibold my-4 md:my-12 flex flex-row space-x-4 items-center justify-center dark:text-white">
-                <span>Read more about</span>{' '}
-                <Badge>
-                  <CollectionName logoSize="28px" collection={collection} />
-                </Badge>
-              </h3>
-
-              <PostsList posts={morePosts} />
-            </div>
-          </If>
-        </div>
-      </Container>
-
-      <Footer />
-    </Layout>
-  );
-};
+      <script
+        key='ld:json'
+        type='application/ld+json'
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredDataJson)
+        }}
+      />
+    </Head>
+  )
+}
 
 export default Post;

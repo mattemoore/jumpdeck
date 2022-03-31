@@ -30,6 +30,7 @@ const CollectionPosts = ({ posts, collection }: Props) => {
     <Layout>
       <Head>
         <title key="title">{collection.name}</title>
+        <meta name="robots" content="noindex" />
       </Head>
 
       <SiteHeader />

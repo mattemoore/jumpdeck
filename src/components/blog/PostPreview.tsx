@@ -23,7 +23,7 @@ const PostPreview = ({ post, preloadImage }: Props) => {
 
   return (
     <div className="shadow rounded-md hover:shadow-xl transition-shadow duration-500 dark:text-gray-800">
-      <div className="mb-3">
+      <div className="mb-1">
         <If condition={coverImage}>
           <Link as={hrefAs} href={href} passHref>
             <a>
@@ -52,19 +52,19 @@ const PostPreview = ({ post, preloadImage }: Props) => {
         </If>
       </div>
 
-      <div className="px-4 py-2 flex flex-col space-y-1">
+      <div className="px-1 py-2 flex flex-col space-y-1.5">
         <div className="text-xs dark:text-gray-400">
           <CollectionName collection={collection} />
         </div>
 
-        <h3 className="text-2xl font-bold mb-2 leading-snug dark:text-white">
+        <h3 className="text-2xl font-bold mb-2 leading-snug dark:text-white px-1">
           <Link as={hrefAs} href={href}>
             <a className="hover:underline">{title}</a>
           </Link>
         </h3>
       </div>
 
-      <div className="text-sm mb-4 flex flex-row space-x-2 items-center px-4">
+      <div className="text-sm mb-4 flex flex-row space-x-2 items-center px-1">
         <div className="text-gray-600 dark:text-gray-300">
           <DateFormatter dateString={date} />
         </div>
@@ -73,7 +73,7 @@ const PostPreview = ({ post, preloadImage }: Props) => {
         <span className="text-gray-600 dark:text-gray-300">{readingTime}</span>
       </div>
 
-      <p className="leading-relaxed mb-4 px-4 text-sm dark:text-gray-300">
+      <p className="leading-relaxed mb-4 px-1 text-sm dark:text-gray-300">
         {excerpt}
       </p>
     </div>
