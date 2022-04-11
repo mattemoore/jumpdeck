@@ -1,9 +1,0 @@
-# *
-User-agent: *
-Allow: /
-
-# Host
-Host: https://makerkit.dev
-
-# Sitemaps
-Sitemap: https://makerkit.dev/sitemap.xml
