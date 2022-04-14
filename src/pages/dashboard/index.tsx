@@ -8,7 +8,7 @@ const Dashboard = () => {
   return (
     <RouteShell title={'Dashboard'}>
       <Head>
-        <title key={'dashboard'}>Dashboard</title>
+        <title key={'title'}>Dashboard</title>
       </Head>
     </RouteShell>
   );

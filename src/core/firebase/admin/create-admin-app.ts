@@ -1,3 +1,5 @@
+import admin from 'firebase-admin';
+
 import { FirebaseAdminAppParams } from '../types/firebase-admin-app-params';
 import formatFirebasePrivateKey from './format-private-key';
 
@@ -5,9 +7,12 @@ import formatFirebasePrivateKey from './format-private-key';
  * @name createFirebaseAdminApp
  * @param params
  */
-export async function createFirebaseAdminApp(params: FirebaseAdminAppParams) {
-  const admin = await import('firebase-admin');
+export function createFirebaseAdminApp(params: FirebaseAdminAppParams) {
   const privateKey = formatFirebasePrivateKey(params.privateKey);
+
+  if (admin.apps.length > 0) {
+    return admin.app();
+  }
 
   const cert = admin.credential.cert({
     projectId: params.projectId,

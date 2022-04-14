@@ -13,7 +13,6 @@ import { isBrowser } from '~/core/generic/is-browser';
 import { UserSession } from '~/lib/organizations/types/user-session';
 import { UserData } from '~/lib/organizations/types/user-data';
 import { useDestroySession } from '~/core/hooks/use-destroy-session';
-import { clearFirestoreCache } from '~/core/generic/clear-firestore-cache';
 
 export const FirebaseAuthStateListener: React.FC<{
   onAuthStateChange: (user: User | null) => void;
@@ -104,11 +103,3 @@ function getAuthEmulatorHost() {
 
   return ['http://', host, ':', port].join('');
 }
-
-type MyType<T = unknown> = T extends { c: number }
-  ? { a: number }
-  : { b: number };
-
-const t: MyType<{ c: number }> = {
-  a: 3,
-};
