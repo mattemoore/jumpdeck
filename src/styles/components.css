@@ -20,17 +20,18 @@
     /* NavigationItem.tsx */
     .NavigationItem {
         @apply leading-loose rounded-md text-sm
-        transition-all duration-200 dark:text-gray-300
-        text-gray-600 font-semibold px-4 py-1;
+        transition-colors duration-300 dark:text-gray-300
+        text-gray-800 font-semibold px-4 py-1;
     }
 
     .NavigationItemNotActive {
-        @apply hover:text-black-600 dark:hover:text-primary-500;
+        @apply hover:text-black-600 dark:hover:text-primary-500 hover:bg-gray-50
+        dark:hover:bg-black-500 hover:text-primary-500;
     }
 
     .NavigationItemActive {
-        @apply font-semibold text-black-600
-        dark:text-primary-500 bg-gray-50 dark:bg-black-400;
+        @apply font-semibold text-black-600 bg-gray-100
+        dark:bg-black-300 outline-2 outline-primary-500;
     }
 
     .NavigationItem a[aria-disabled='true'] {
@@ -44,7 +45,7 @@
 
     /* SubHeading.tsx */
     .SubHeading {
-        @apply text-lg font-medium text-gray-500 dark:text-gray-300;
+        @apply text-2xl leading-[2.2rem] text-gray-500 dark:text-gray-400 font-normal;
     }
 
     /* Badge.tsx */
@@ -56,8 +57,12 @@
         @apply text-gray-500 bg-gray-100 dark:text-gray-300 dark:bg-black-300;
     }
 
+    .Badge.ColorSuccess {
+        @apply bg-green-100 dark:bg-black-300 text-green-700 font-semibold;
+    }
+
     .Badge.SizeNormal {
-        @apply rounded-xl px-3 py-2 text-sm;
+        @apply rounded-lg px-3 py-2 text-sm;
     }
 
     .Badge.SizeSmall {
@@ -67,8 +72,8 @@
     /* Hero.tsx */
     .Hero {
         @apply text-4xl lg:text-5xl dark:text-white
-            font-extrabold tracking-tight
-            md:leading-none my-2 sm:my-6;
+        font-extrabold tracking-tight
+        md:leading-none my-2 sm:my-6;
     }
 
     /** Alert.tsx */
@@ -111,42 +116,64 @@
 
     /* TextField.tsx */
     .TextField {
-        @apply flex;
+        @apply flex flex-col space-y-1;
     }
 
-    .TextFieldInput {
-        transition: all 0.25s;
+    .TextFieldInputContainer {
+        @apply dark:border-black-200 w-full border-gray-200 border
+        text-gray-800 dark:text-gray-200 transition-all duration-300
+        text-sm items-center flex rounded-lg font-medium
+        bg-white hover:bg-gray-50 dark:bg-black-400 ring-primary-500
+        focus:border-transparent
+        dark:focus:bg-black-400 hover:border-gray-300
+        dark:hover:border-black-200 relative flex;
+    }
 
-        @apply dark:border-black-300 w-full border-gray-200 border
-        text-gray-800 dark:text-gray-200 transition-colors duration-300
-        text-sm py-2.5 px-4 rounded-lg font-medium
-        bg-white hover:bg-gray-50 focus:outline-2 focus:outline focus:outline-primary-500
-        dark:bg-black-300 dark:hover:bg-black-400 focus:border-transparent
-        dark:focus:bg-black-600 hover:border-gray-300
-        dark:hover:border-black-200;
+    .TextFieldInputContainer input.TextFieldInput,
+    .TextFieldInputContainer input.TextFieldInput:-webkit-autofill,
+    .TextFieldInputContainer input.TextFieldInput:-webkit-autofill:hover,
+    .TextFieldInputContainer input.TextFieldInput:-webkit-autofill:focus {
+        @apply bg-transparent outline-none py-0.5 flex-auto h-10;
+    }
+
+    .TextFieldInputContainer textarea {
+        @apply bg-transparent outline-none py-2 px-2
+        min-h-[60px] flex-auto resize-none;
+    }
+
+    .TextFieldInputContainer.small {
+        @apply h-8;
+    }
+
+    .TextFieldInput:invalid {
+        @apply text-red-500;
     }
 
     .TextFieldInput[type='file'] {
-        @apply block w-full text-sm text-gray-500
-        file:mr-4 file:py-2 file:px-4 py-0
-        file:rounded-full file:border-0 px-0 file:cursor-pointer
+        @apply w-full text-sm dark:text-white
+        file:mr-4 file:py-2 file:px-4 items-center flex
+        file:rounded-full file:border-0 file:cursor-pointer
         file:hover:bg-primary-600 file:active:bg-primary-700
-        file:text-sm file:font-semibold cursor-pointer
-        file:bg-primary-500 bg-transparent
-        shadow-none border-transparent;
+        file:text-sm file:text-white file:font-semibold cursor-pointer
+        file:bg-primary-500 bg-transparent shadow-none
+        border-transparent justify-center h-10 py-2;
     }
 
     .TextFieldHint {
-        @apply text-xs text-gray-500 dark:text-gray-400 leading-tight block;
+        @apply text-xs font-normal text-gray-500 dark:text-gray-400 leading-tight block pl-1;
     }
 
     /* Label.tsx */
     .Label {
-        @apply text-gray-600 w-full font-semibold dark:text-gray-400 text-xs;
+        @apply text-gray-700 text-xs font-bold w-full dark:text-gray-300;
     }
 
     .Label > * {
-        margin-top: 0.35rem;
+        margin-top: 0.4rem;
+    }
+
+    .Label.no-margin > * {
+        margin-top: 0;
     }
 
     /* Button.tsx */
@@ -154,22 +181,22 @@
         @apply rounded-lg
         font-bold transition-colors duration-300
         flex items-center justify-center
-        focus:outline-2 focus:outline;
+        focus:ring;
     }
 
     .Button.ButtonPrimary {
-        @apply bg-primary-500
+        @apply bg-primary-500 text-primary-contrast
         hover:bg-primary-600 active:bg-primary-700
-        dark:text-gray-800 outline-primary-800;
+        dark:text-primary-contrast outline-primary-800 ring-primary-300;
     }
 
     .Button.ButtonDanger {
-        @apply bg-red-500 active:bg-red-700 hover:bg-red-600 text-white outline-red-800;
+        @apply bg-red-400 active:bg-red-600 hover:bg-red-400 text-white ring-red-300;
     }
 
     .Button.ButtonSecondary {
-        @apply bg-gray-50 dark:bg-black-200 active:bg-gray-200 dark:outline-black-100
-        outline-gray-50 hover:bg-gray-100 dark:hover:bg-black-300 dark:active:bg-black-400;
+        @apply bg-gray-100 dark:bg-black-300 active:bg-gray-200 dark:outline-black-100
+        outline-gray-50 hover:bg-gray-200 dark:hover:bg-black-200 dark:active:bg-black-400;
     }
 
     .Button.ButtonTransparent {
@@ -190,11 +217,13 @@
     }
 
     .Button.ButtonPrimaryOutline {
-        @apply bg-transparent text-primary-700 border-primary-500;
+        @apply bg-transparent text-primary-700
+        border-2 border-primary-500 hover:text-white;
     }
 
     .Button.ButtonDangerOutline {
-        @apply bg-transparent text-red-500 border-red-500;
+        @apply bg-transparent text-red-400
+        border-2 border-red-400 hover:text-white;
     }
 
     .Button.ButtonPrimaryFlat {
@@ -205,25 +234,27 @@
         @apply bg-transparent text-red-500 hover:bg-primary-50;
     }
 
-    .Button[disabled] {
-        @apply opacity-50;
+    .Button[disabled],
+    .IconButton[disabled] {
+        @apply opacity-50 cursor-not-allowed;
     }
 
     /* IconButton.tsx */
     .IconButton {
         @apply rounded-full bg-transparent hover:bg-gray-100
-            dark:hover:bg-black-300 transition-colors duration-300
-            dark:active:bg-gray-100 dark:active:bg-black-200 p-1
-            outline-primary-300 focus:outline;
+        dark:hover:bg-black-300 transition-colors duration-300
+        dark:active:bg-gray-100 dark:active:bg-black-200 p-1
+        outline-primary-300 focus:ring ring-primary-400;
     }
 
     /* ImageUploadInput.tsx */
     .ImageUploadInput {
         @apply TextFieldInput cursor-pointer relative
-        border-dashed bg-white dark:bg-black-300
-        hover:bg-gray-50 dark:hover:bg-black-400
-        transition-colors duration-300
-        border-gray-200 dark:border-black-200;
+        border-dashed bg-white dark:bg-black-400
+        hover:bg-gray-50 dark:hover:bg-black-300
+        transition-colors duration-300 border
+        border-gray-200 dark:border-black-200
+        py-2.5 px-2 rounded-lg;
     }
 
     /* Footer.tsx */
@@ -252,7 +283,7 @@
     .PopoverPanel {
         @apply absolute rounded-bl-md rounded-br-md shadow-lg
         z-10 px-2 transform sm:px-0
-        w-full dark:bg-black-300;
+        w-full bg-white dark:bg-black-300;
     }
 
     .PopoverPanelItem {
@@ -271,26 +302,34 @@
     }
 
     .TabsList {
-        @apply flex space-x-4;
+        @apply flex px-1 py-1 dark:bg-black-500 grid grid-cols-3 gap-1;
     }
 
     /* Tab.tsx */
     .Tab {
-        @apply NavigationItem;
+        @apply NavigationItem flex flex-1 justify-center;
     }
 
     .Tab:not(.TabSelected) {
-        @apply hover:bg-gray-50 dark:hover:bg-black-400 cursor-pointer;
+        @apply hover:bg-gray-50 dark:active:bg-black-300
+        cursor-pointer dark:bg-black-500 dark:hover:bg-black-400;
     }
 
-    .TabSelected {
-        @apply NavigationItemActive;
+    .TabSelected,
+    button.TabSelected {
+        @apply NavigationItemActive bg-gray-100 dark:text-gray-100;
     }
 
     /* ListBox.tsx */
     .ListBoxButton {
-        @apply TextFieldInput text-left font-semibold
-            hover:text-current dark:text-current;
+        @apply TextFieldInputContainer px-3 py-2.5 text-left
+        font-semibold hover:text-current dark:text-current;
+    }
+
+    .ListBoxButton.ListBoxButtonAlt {
+        @apply small pl-3 py-1 font-bold bg-gray-100 hover:bg-gray-200
+        dark:bg-black-300 dark:hover:bg-black-200 dark:text-gray-200
+        border-transparent;
     }
 
     .ListBoxButtonOpen {
@@ -312,8 +351,12 @@
     .ListBoxOption {
         @apply cursor-default select-none relative
         py-3 pl-4 pr-4 font-semibold
-        text-sm transition-colors duration-300
-        border-b dark:border-b-black-400;
+        text-sm transition-colors duration-75
+        border-b dark:border-b-black-400 border-gray-50
+    }
+
+    .ListBoxOption.ListBoxOption[aria-disabled='true'] {
+        @apply text-gray-500;
     }
 
     .ListBoxOptionNotActive {
@@ -321,12 +364,11 @@
     }
 
     .ListBoxOptionActive {
-        @apply cursor-pointer text-gray-900
-        bg-gray-50 dark:bg-black-300 dark:text-current;
+        @apply cursor-pointer text-gray-900 bg-gray-50 dark:bg-black-300 dark:text-white;
     }
 
     .ListBoxOptionSelected {
-        @apply bg-gray-100 dark:bg-black-300 dark:text-current;
+        @apply bg-gray-100 dark:bg-black-300 dark:text-white
     }
 
     .ListBoxOptionIcon {
@@ -345,24 +387,27 @@
         transition-all justify-center
         bg-primary-500 hover:bg-primary-600
         rounded-full uppercase font-extrabold
-        text-black-500;
+        text-black-500 text-primary-contrast;
     }
 
     /* Dropdown.tsx */
     .DropdownMenu {
-        @apply lg:relative block text-left w-full;
+        @apply lg:relative block text-left;
     }
 
     .DropdownMenuItemsContainer {
         @apply z-10 absolute right-0 w-full lg:w-60 mt-2
         lg:mt-2 origin-top-right bg-white dark:bg-black-400
-        lg:rounded-sm shadow-xl focus:outline-none
+        lg:rounded-md shadow-xl focus:outline-none
         border-t border-gray-50 dark:border-black-300 py-1;
+
+        top: var(--dropdown-menu-items-top, auto);
+        bottom: var(--dropdown-menu-items-bottom, auto);
     }
 
     .DropdownItem {
-        @apply flex flex-1 items-center w-full border-none font-medium
-        sm:text-sm dark:text-gray-300 transition-colors duration-100;
+        @apply flex flex-1 items-center w-full border-none
+        sm:text-sm dark:text-white duration-200;
     }
 
     .DropdownMenuButtonContainer {
@@ -399,7 +444,7 @@
 
     .DocumentationSidebarItem {
         @apply pl-4 border-l-2 dark:active:bg-black-400 active:bg-gray-100
-            dark:hover:border-l-primary-400 py-2 px-3 transition-colors duration-300;
+        dark:hover:border-l-primary-400 py-2 px-3 transition-colors duration-300;
     }
 
     .DocumentationSidebarItemContainer:last-child {
@@ -411,15 +456,118 @@
     }
 
     .DocumentationSidebarItemNotSelected {
-        @apply hover:border-l-primary-400 dark:hover:text-white dark:border-l-black-400 font-medium;
+        @apply hover:border-l-primary-400 dark:hover:text-white
+        dark:border-l-black-400 font-medium;
     }
 
     .AuthProviderButton {
         @apply border-gray-200 bg-gray-100 dark:border-black-300
         hover:bg-gray-200 active:bg-gray-300 hover:border-gray-300
         dark:hover:border-black-300 dark:bg-black-300
-        dark:hover:bg-black-400 dark:active:bg-black-500 dark:outline-black-300
+        dark:hover:bg-black-400 dark:active:bg-black-500
+        dark:outline-black-300
         transition-all duration-300 relative;
+    }
+
+    .Toggle {
+        @apply h-6 w-12 cursor-pointer appearance-none
+        border-opacity-20 bg-black-200 duration-300
+        ease-in-out rounded-xl;
+
+        transition: all 0.25s ease-in-out;
+        box-shadow: calc(1.5rem * -1) 0 0 2px #fff inset, 0 0 0 2px #fff inset;
+    }
+
+    .dark .Toggle {
+        box-shadow: calc(1.5rem * -1) 0 0 2px #525252 inset, 0 0 0 2px #525252 inset;
+    }
+
+    .Toggle:hover {
+        box-shadow: calc(1.5rem * -1) 0 0 2px #efefef inset, 0 0 0 2px #efefef inset;
+    }
+
+    .dark .Toggle:hover {
+        box-shadow: calc(1.5rem * -1) 0 0 2px #666 inset, 0 0 0 2px #666 inset;
+    }
+
+    .Toggle:focus-visible {
+        @apply outline outline-primary-500;
+        outline-offset: 2px;
+    }
+
+    .Toggle:checked {
+        @apply border-opacity-100 bg-opacity-100 bg-primary-500 border-primary-400;
+
+        box-shadow: 1.5rem 0 0 2px #fff inset, 0 0 0 2px #fff inset;
+    }
+
+    .dark .Toggle:checked {
+        box-shadow: 1.5rem 0 0 2px #444 inset, 0 0 0 2px #444 inset;
+    }
+
+    .StoryCard {
+        @apply flex flex-col h-full min-h-[400px] w-full flex-grow rounded-[12px]
+        cursor-pointer border border-gray-200 dark:border-black-200 dark:bg-black-500
+        ring-primary-500 transition-all dark:hover:bg-black-400
+        dark:active:bg-black-300 active:ring-2 hover:bg-gray-100 dark:hover:bg-black-400;
+    }
+
+    .Stepper {
+        @apply flex space-x-2 justify-between shadow
+        dark:border-black-400 dark:shadow dark:bg-black-400 px-2 py-1 rounded-md;
+    }
+
+    .StepperDivider {
+        @apply flex bg-gray-300 dark:bg-black-200 h-[2px] flex-1 transition-colors;
+
+        align-items: center;
+        justify-items: center;
+        justify-self: center;
+        align-self: center;
+    }
+
+    .StepperDivider:last-child {
+        display: none;
+    }
+
+    .StepperStepSelected + .StepperDivider,
+    .StepperStep.CompletedStep + .StepperDivider {
+        @apply bg-primary-500;
+    }
+
+    .StepperStep:not(.StepperStepSelected):not(.CompletedStep):hover + .StepperDivider {
+        @apply bg-primary-500/40;
+    }
+
+    .StepperStepCircle {
+        @apply rounded-full w-[35px] h-[35px] shadow duration-75
+        font-bold flex justify-center items-center
+        bg-gray-200 dark:bg-black-200 transition-colors;
+    }
+
+    .StepperStep.StepperStepSelected {
+        @apply dark:text-white;
+    }
+
+    .StepperStepSelected .StepperStepCircle {
+        @apply bg-primary-500 text-white;
+    }
+
+    .StepperStep {
+        @apply flex items-center space-x-4 dark:text-gray-400
+        text-current transition-colors p-2;
+    }
+
+    .StepperStep:not(.StepperStepSelected):not([disabled]).hover .StepperStepCircle {
+        @apply bg-primary-500 text-white;
+    }
+
+    .StepperStep:not(.StepperStepSelected):hover {
+        @apply dark:text-gray-50;
+    }
+
+    .StepperStep:disabled {
+        opacity: 90%;
     }
 }
 /* Stop purging. */

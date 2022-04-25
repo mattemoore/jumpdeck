@@ -2,7 +2,7 @@ import { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
 import Head from 'next/head';
 
-import { FormEvent } from 'react';
+import { FormEvent, useCallback } from 'react';
 import { Trans } from 'react-i18next';
 
 import { useAuth } from 'reactfire';
@@ -28,26 +28,29 @@ export const PasswordReset: React.FC = () => {
   const auth = useAuth();
   const { state, setError, setData, setLoading } = useRequestState();
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const onSubmit = useCallback(
+    async (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
 
-    const data = new FormData(event.currentTarget);
-    const email = data.get('email') as string;
+      const data = new FormData(event.currentTarget);
+      const email = data.get('email') as string;
 
-    setLoading(true);
+      setLoading(true);
 
-    try {
-      const returnUrl = getReturnUrl();
+      try {
+        const returnUrl = getReturnUrl();
 
-      await sendPasswordResetEmail(auth, email, {
-        url: returnUrl,
-      });
+        await sendPasswordResetEmail(auth, email, {
+          url: returnUrl,
+        });
 
-      setData(true);
-    } catch (e) {
-      setError(getFirebaseErrorCode(e));
-    }
-  };
+        setData(true);
+      } catch (e) {
+        setError(getFirebaseErrorCode(e));
+      }
+    },
+    [auth, setData, setError, setLoading]
+  );
 
   return (
     <Layout>

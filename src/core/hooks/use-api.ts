@@ -25,7 +25,8 @@ export function useApiRequest<Resp = unknown, Body = void>(
 
         setData(data);
       } catch (error) {
-        const message = error instanceof Error ? error.message : ``;
+        const message =
+          error instanceof Error ? error.message : `Unknown error`;
 
         setError(message);
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -28,17 +28,20 @@ const Onboarding = () => {
   const [data, setData] = useState<Data>();
   const router = useRouter();
 
-  const firstStepSubmitted = (organizationInfo: OrganizationInfoStepData) => {
-    setData({
-      organization: organizationInfo.organization,
-    });
+  const firstStepSubmitted = useCallback(
+    (organizationInfo: OrganizationInfoStepData) => {
+      setData({
+        organization: organizationInfo.organization,
+      });
 
-    setCurrentStep(1);
-  };
+      setCurrentStep(1);
+    },
+    []
+  );
 
-  const onComplete = () => {
+  const onComplete = useCallback(() => {
     return router.push(configuration.paths.appHome);
-  };
+  }, [router]);
 
   return (
     <>

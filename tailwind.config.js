@@ -1,4 +1,5 @@
 const plugin = require('tailwindcss/plugin');
+const colors = require("tailwindcss/colors");
 
 module.exports = {
   content: ['./src/**/*.tsx'],
@@ -22,16 +23,8 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          50: '#fffff9',
-          100: '#ffffad',
-          200: '#fffe75',
-          300: '#fffe2d',
-          400: '#fffe0f',
-          500: '#efee00',
-          600: '#d0d000',
-          700: '#b2b100',
-          800: '#939300',
-          900: '#757400',
+          ...colors.indigo,
+          contrast: '#fff',
         },
         black: {
           50: '#707070',

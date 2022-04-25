@@ -16,6 +16,7 @@ import { OrganizationContext } from '~/lib/contexts/organization';
 import { UserData } from '~/lib/organizations/types/user-data';
 import { UserSessionContext } from '~/lib/contexts/session';
 import { UserSession } from '~/lib/organizations/types/user-session';
+import { loadSelectedTheme } from "~/core/theming";
 
 interface DefaultPageProps {
   session?: Maybe<AuthUser>;
@@ -49,6 +50,10 @@ function App(
   }, [pageProps.organization]);
 
   useEffect(updateCurrentOrganization, [updateCurrentOrganization]);
+
+  useEffect(() => {
+    loadSelectedTheme();
+  }, []);
 
   return (
     <FirebaseAppShell config={firebase}>

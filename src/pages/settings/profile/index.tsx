@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 
@@ -22,23 +22,26 @@ type ProfileData = {
 const Profile = () => {
   const { userSession, setUserSession } = useContext(UserSessionContext);
 
+  const onUpdate = useCallback(
+    (data: ProfileData) => {
+      const authData = userSession?.auth;
+
+      if (authData) {
+        setUserSession({
+          auth: {
+            ...authData,
+            ...data,
+          },
+          data: userSession.data,
+        });
+      }
+    },
+    [setUserSession, userSession]
+  );
+
   if (!userSession?.auth) {
     return null;
   }
-
-  const onUpdate = (data: ProfileData) => {
-    const authData = userSession.auth;
-
-    if (authData) {
-      setUserSession({
-        auth: {
-          ...authData,
-          ...data,
-        },
-        data: userSession.data,
-      });
-    }
-  };
 
   return (
     <FirebaseStorageProvider>

@@ -9,20 +9,7 @@ import Footer from '~/components/Footer';
 
 import ConvertkitSignupForm from '~/components/ConvertkitSignupForm';
 import SiteHeader from '~/components/SiteHeader';
-import GridList from '~/components/blog/GridList';
-
-const TextGradient: React.FC = ({ children }) => {
-  return (
-    <span
-      className={
-        'text-transparent block bg-clip-text bg-gradient-to-br' +
-        ' from-primary-400 via-red-400 to-blue-600'
-      }
-    >
-      {children}
-    </span>
-  );
-};
+import SubHeading from '~/core/ui/SubHeading';
 
 const Index = () => {
   return (
@@ -52,28 +39,28 @@ const Index = () => {
                 }
               >
                 <span className={'block'}>
-                  <span className={'dark:text-white text-current block'}>
-                    Your SaaS
+                  <span className={'dark:text-white text-current'}>
+                    Say why your SaaS
                   </span>
 
-                  <TextGradient>Headline</TextGradient>
+                  <TextGradient>is awesome</TextGradient>
                 </span>
               </h1>
 
               <div className={'text-center text-gray-700 dark:text-gray-400'}>
-                <h2 className={'text-lg md:text-xl flex flex-col space-y-2'}>
-                  Here goes the heading
-                </h2>
+                <SubHeading>A short description of your SaaS</SubHeading>
               </div>
 
               <div className={'flex flex-col space-y-2'}>
-                <ConvertkitSignupForm formId={'2787122'}>
+                <ConvertkitSignupForm
+                  formId={configuration.site.convertKitFormId}
+                >
                   Subscribe
                 </ConvertkitSignupForm>
 
                 <span
                   className={
-                    'text-xs text-center text-gray-600' + ' dark:text-gray-400'
+                    'text-xs text-center text-gray-600 dark:text-gray-400'
                   }
                 >
                   Subscribe to our newsletter to receive updates
@@ -97,4 +84,17 @@ export async function getStaticProps() {
   return {
     props,
   };
+}
+
+function TextGradient({ children }: React.PropsWithChildren<unknown>) {
+  return (
+    <span
+      className={
+        'text-transparent block bg-clip-text bg-gradient-to-br' +
+        ' from-yellow-400 via-red-400 to-blue-400'
+      }
+    >
+      {children}
+    </span>
+  );
 }

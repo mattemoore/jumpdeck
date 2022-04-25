@@ -16,7 +16,7 @@ const ConvertkitSignupForm: React.FC<{
       <TextField>
         <TextField.Input
           type="email"
-          className="formkit-input w-50 sm:w-60 md:w-80 text-sm md:text-base border-r-transparent hover:border-r-transparent py-3 !rounded-tr-none !rounded-br-none"
+          className="formkit-input w-50 sm:w-60 md:w-80 text-sm md:text-base border-r-transparent hover:border-r-transparent py-1 !rounded-tr-none !rounded-br-none"
           name="email_address"
           aria-label="Your email address"
           placeholder="your@email.com"

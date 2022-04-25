@@ -8,6 +8,7 @@ import SubHeading from '~/core/ui/SubHeading';
 import Button from '~/core/ui/Button';
 
 import SiteHeader from '~/components/SiteHeader';
+import { withTranslationProps } from '~/lib/props/with-translation-props';
 
 const NotFoundPage = () => {
   return (
@@ -36,5 +37,13 @@ const NotFoundPage = () => {
     </>
   );
 };
+
+export async function getStaticProps() {
+  const { props } = await withTranslationProps();
+
+  return {
+    props,
+  };
+}
 
 export default NotFoundPage;

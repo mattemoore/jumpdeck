@@ -46,7 +46,6 @@ const Pricing = () => {
 
         <Container>
           <Hero>Pricing</Hero>
-
           <SubHeading>Fair pricing for your customers</SubHeading>
 
           <div

@@ -5,6 +5,7 @@ import MenuIcon from '@heroicons/react/outline/MenuIcon';
 import NavigationMenuItem from '~/core/ui/Navigation/NavigationItem';
 import NavigationMenu from '~/core/ui/Navigation/NavigationMenu';
 import Dropdown from '~/core/ui/Dropdown';
+import DarkModeToggle from '~/components/DarkModeToggle';
 
 interface Link {
   label: string;
@@ -44,6 +45,10 @@ const SiteNavigation = () => {
           <NavigationMenuItem link={links.Pricing} />
           <NavigationMenuItem link={links.FAQ} />
           <NavigationMenuItem link={links.Contact} />
+
+          <div>
+            <DarkModeToggle />
+          </div>
         </NavigationMenu>
       </div>
 

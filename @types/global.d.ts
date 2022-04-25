@@ -29,6 +29,8 @@ declare global {
   type Falsy = false | 0 | '' | null | undefined;
   type Maybe<T> = T | undefined;
 
+  type EmptyCallback = () => void;
+
   type HttpMethod = `GET` | `POST` | `PUT` | 'PATCH' | 'DELETE' | 'HEAD';
 
   namespace Cypress {

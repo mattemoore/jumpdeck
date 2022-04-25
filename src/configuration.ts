@@ -14,6 +14,7 @@ const configuration = {
     twitterHandle: '',
     githubHandle: '',
     language: 'en',
+    convertKitFormId: '',
   },
   firebase: {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
