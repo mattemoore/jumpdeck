@@ -1,5 +1,5 @@
 const plugin = require('tailwindcss/plugin');
-const colors = require("tailwindcss/colors");
+const colors = require('tailwindcss/colors');
 
 module.exports = {
   content: ['./src/**/*.tsx'],
@@ -17,13 +17,21 @@ module.exports = {
     },
     fontFamily: {
       serif: ['Bitter', 'serif'],
-      sans: ['SF Pro Text', 'Inter', 'system-ui', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Ubuntu'],
-      monospace: [`SF Mono`, `ui-monospace`, `Monaco`, 'Monospace']
+      sans: [
+        'SF Pro Text',
+        'Inter',
+        'system-ui',
+        'BlinkMacSystemFont',
+        'Segoe UI',
+        'Roboto',
+        'Ubuntu',
+      ],
+      monospace: [`SF Mono`, `ui-monospace`, `Monaco`, 'Monospace'],
     },
     extend: {
       colors: {
         primary: {
-          ...colors.indigo,
+          ...colors.blue,
           contrast: '#fff',
         },
         black: {

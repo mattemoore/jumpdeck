@@ -42,7 +42,7 @@ const PopoverDropdown: PopoverDropdownComponent<{
           >
             <Popover.Panel className="PopoverPanel">
               <div className="overflow-hidden rounded-bl-md rounded-br-md">
-                <div className="relative bg-white dark:bg-black-300 flex flex-col">
+                <div className="relative flex flex-col bg-white dark:bg-black-300">
                   <PopoverItem.Provider value={{ close }}>
                     {children}
                   </PopoverItem.Provider>
@@ -56,11 +56,11 @@ const PopoverDropdown: PopoverDropdownComponent<{
   );
 };
 
-const ItemIcon: React.FC = ({ children }) => {
+const ItemIcon: React.FCC = ({ children }) => {
   return <div className="PopoverItemIcon">{children}</div>;
 };
 
-const ItemLabel: React.FC = ({ children }) => {
+const ItemLabel: React.FCC = ({ children }) => {
   return <p className="PopoverItemLabel">{children}</p>;
 };
 
@@ -89,11 +89,11 @@ const Item: PopoverDropdownItemComponent = ({
   );
 };
 
-type PopoverDropdownComponent<Props> = React.FC<Props> & {
+type PopoverDropdownComponent<Props> = React.FCC<Props> & {
   Item: typeof Item;
 };
 
-type PopoverDropdownItemComponent = React.FC<{
+type PopoverDropdownItemComponent = React.FCC<{
   onClick?: () => void;
   className?: string;
 }> & {

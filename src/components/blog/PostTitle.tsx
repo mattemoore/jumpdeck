@@ -1,6 +1,6 @@
 import Hero from '~/core/ui/Hero';
 
-const PostTitle: React.FC = ({ children }) => {
+const PostTitle: React.FCC = ({ children }) => {
   return <Hero>{children}</Hero>;
 };
 

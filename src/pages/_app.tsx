@@ -16,7 +16,11 @@ import { OrganizationContext } from '~/lib/contexts/organization';
 import { UserData } from '~/lib/organizations/types/user-data';
 import { UserSessionContext } from '~/lib/contexts/session';
 import { UserSession } from '~/lib/organizations/types/user-session';
-import { loadSelectedTheme } from "~/core/theming";
+import { useLoadSelectedTheme } from '~/core/theming';
+
+import { useAnalyticsTracking } from '~/core/firebase/hooks/use-analytics-tracking';
+import FirebaseAnalyticsProvider from '~/core/firebase/components/FirebaseAnalyticsProvider';
+import AppRouteLoadingIndicator from '~/core/ui/AppRouteLoadingIndicator';
 
 interface DefaultPageProps {
   session?: Maybe<AuthUser>;
@@ -51,9 +55,7 @@ function App(
 
   useEffect(updateCurrentOrganization, [updateCurrentOrganization]);
 
-  useEffect(() => {
-    loadSelectedTheme();
-  }, []);
+  useLoadSelectedTheme();
 
   return (
     <FirebaseAppShell config={firebase}>
@@ -62,13 +64,21 @@ function App(
         setUserSession={setUserSession}
         useEmulator={emulator}
       >
-        <UserSessionContext.Provider value={{ userSession, setUserSession }}>
-          <OrganizationContext.Provider
-            value={{ organization, setOrganization }}
-          >
-            <Component {...pageProps} />
-          </OrganizationContext.Provider>
-        </UserSessionContext.Provider>
+        <FirebaseAnalyticsProvider>
+          <UserSessionContext.Provider value={{ userSession, setUserSession }}>
+            <OrganizationContext.Provider
+              value={{ organization, setOrganization }}
+            >
+              <AnalyticsTrackingEventsProvider>
+                <AppRouteLoadingIndicator>
+                  Loading. Please Wait...
+                </AppRouteLoadingIndicator>
+
+                <Component {...pageProps} />
+              </AnalyticsTrackingEventsProvider>
+            </OrganizationContext.Provider>
+          </UserSessionContext.Provider>
+        </FirebaseAnalyticsProvider>
       </FirebaseAuthProvider>
     </FirebaseAppShell>
   );
@@ -77,3 +87,11 @@ function App(
 export default appWithTranslation<AppProps & { pageProps: DefaultPageProps }>(
   App
 );
+
+function AnalyticsTrackingEventsProvider({
+  children,
+}: React.PropsWithChildren<unknown>) {
+  useAnalyticsTracking();
+
+  return <>{children}</>;
+}

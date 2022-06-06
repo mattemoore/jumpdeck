@@ -14,7 +14,7 @@ import ProfileDropdown from './ProfileDropdown';
 
 const fixedClassName = `FixedHeader`;
 
-const SiteHeader: React.FC<{
+const SiteHeader: React.FCC<{
   fixed?: boolean;
 }> = ({ fixed }) => {
   const auth = useAuth();
@@ -24,17 +24,17 @@ const SiteHeader: React.FC<{
 
   return (
     <div
-      className={`py-2.5 border-b border-gray-50 dark:border-black-400 w-full ${
+      className={`w-full border-b border-gray-50 py-2.5 dark:border-black-400 ${
         fixed ? fixedClassName : ''
       }`}
     >
       <Container>
-        <div className="flex-row flex items-center justify-between">
+        <div className="flex flex-row items-center justify-between">
           <div>
             <Logo />
           </div>
 
-          <div className={'flex justify-end space-x-4 items-center'}>
+          <div className={'flex items-center justify-end space-x-4'}>
             {
               // ON MOBILE WE DISPLAY THE HAMBURGER MENU AT THE END 0
             }

@@ -52,7 +52,7 @@ const Profile = () => {
       <RouteShell title={'Profile'}>
         <div
           className={
-            'flex flex-col space-y-4 sm:space-y-0 sm:flex-row' +
+            'flex flex-col space-y-4 sm:flex-row sm:space-y-0' +
             ' sm:space-x-12'
           }
         >

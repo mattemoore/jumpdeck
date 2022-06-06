@@ -11,14 +11,14 @@ interface Member {
   role: MembershipRole;
 }
 
-const MemberRow: React.FC<{
+const MemberRow: React.FCC<{
   member: Member;
   memberRemoved: (member: Member) => void;
 }> = ({ member, memberRemoved }) => {
   return (
     <div
       key={member.email}
-      className={'flex space-between items-center space-x-1'}
+      className={'space-between flex items-center space-x-1'}
     >
       <div className={'w-7/12'}>
         <TextField.Input placeholder="member@email.com" type="email" />

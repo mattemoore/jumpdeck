@@ -68,8 +68,8 @@ node_modules/
 
 .next/
 .idea/
-public/~partytown/
 public/sitemap*.xml
+public/robots.txt
 rss.xml
 vcs.xml
 .firebaserc

@@ -15,7 +15,7 @@ const OrganizationSettingsTabs = () => {
   return (
     <div
       className={
-        'flex flex-row space-x-2 sm:space-x-0 sm:flex-col sm:space-y-2'
+        'flex flex-row space-x-2 sm:flex-col sm:space-x-0 sm:space-y-2'
       }
     >
       <NavigationItem

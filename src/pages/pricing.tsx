@@ -14,17 +14,17 @@ import SubHeading from '~/core/ui/SubHeading';
 import Button from '~/core/ui/Button';
 import Footer from '~/components/Footer';
 
-const Price: React.FC = ({ children }) => {
+const Price: React.FCC = ({ children }) => {
   return (
-    <p className={'text-6xl font-bold my-8 text-center dark:text-white'}>
+    <p className={'my-8 text-center text-6xl font-bold dark:text-white'}>
       {children}
     </p>
   );
 };
 
-const ListItem: React.FC = ({ children }) => {
+const ListItem: React.FCC = ({ children }) => {
   return (
-    <li className={'flex space-x-3 items-center font-medium'}>
+    <li className={'flex items-center space-x-3 font-medium'}>
       <div>
         <CheckCircleIcon className={'h-7'} />
       </div>
@@ -50,15 +50,15 @@ const Pricing = () => {
 
           <div
             className={
-              'flex mt-12 space-y-6 lg:space-y-0' +
+              'mt-12 flex space-y-6 lg:space-y-0' +
               ' flex-col lg:flex-row' +
-              ' lg:space-x-4 items-start justify-center items-stretch'
+              ' items-start items-stretch justify-center lg:space-x-4'
             }
           >
             <div
               className={
-                'shadow-sm border-2 border-white rounded-2xl xl:w-4/12 ' +
-                'p-5 md:p-6 xl:p-8 relative bg-gray-50 text-black-400'
+                'rounded-2xl border-2 border-white shadow-sm xl:w-4/12 ' +
+                'relative bg-gray-50 p-5 text-black-400 md:p-6 xl:p-8'
               }
             >
               <div className={'flex flex-col space-y-2'}>
@@ -78,7 +78,7 @@ const Pricing = () => {
                 <span className={'text-black-400'}>$249</span>
               </Price>
 
-              <div className={'flex flex-col space-y-6 my-12 pb-6'}>
+              <div className={'my-12 flex flex-col space-y-6 pb-6'}>
                 <div>
                   <ul className={'flex flex-col space-y-2'}>
                     <ListItem>Access to up to 2 users</ListItem>
@@ -105,7 +105,7 @@ const Pricing = () => {
               className={
                 'rounded-2xl border-2 border-[#1d4ed8] text-white' +
                 ' bg-[#1d4ed8]' +
-                ' xl:w-4/12 p-5 md:p-6 xl:p-8' +
+                ' p-5 md:p-6 xl:w-4/12 xl:p-8' +
                 ' relative'
               }
             >
@@ -121,7 +121,7 @@ const Pricing = () => {
 
               <Price>$999</Price>
 
-              <div className={'flex flex-col space-y-6 my-12 pb-6'}>
+              <div className={'my-12 flex flex-col space-y-6 pb-6'}>
                 <ul className={'flex flex-col space-y-2'}>
                   <ListItem>Access to unlimited users</ListItem>
                   <ListItem>Access to all the kits</ListItem>

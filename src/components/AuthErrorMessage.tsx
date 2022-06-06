@@ -18,7 +18,7 @@ export default function AuthErrorMessage({ error }: { error: Maybe<string> }) {
   return (
     <div
       className={
-        'text-red-500 dark:text-red-400 text-sm my-2 flex space-x-1 items-center font-medium'
+        'my-2 flex items-center space-x-1 text-sm font-medium text-red-500 dark:text-red-400'
       }
     >
       <ExclamationIcon className={'h-5'} />

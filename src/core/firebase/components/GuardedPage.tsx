@@ -4,7 +4,7 @@ import { useAuth, useSigninCheck } from 'reactfire';
 import { isBrowser } from '~/core/generic';
 import { clearFirestoreCache } from '~/core/generic/clear-firestore-cache';
 
-const AuthRedirectListener: React.FC<{
+const AuthRedirectListener: React.FCC<{
   whenSignedOut?: string;
 }> = ({ children, whenSignedOut }) => {
   const auth = useAuth();

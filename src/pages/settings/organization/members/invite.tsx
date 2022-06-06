@@ -13,7 +13,7 @@ import InviteMembersForm from '~/components/organizations/InviteMembersForm';
 import Heading from '~/core/ui/Heading';
 import Button from '~/core/ui/Button';
 
-const OrganizationMembersInvitePage: React.FC = () => {
+const OrganizationMembersInvitePage: React.FCC = () => {
   return (
     <RouteShell title={'Organization'}>
       <Head>
@@ -24,7 +24,7 @@ const OrganizationMembersInvitePage: React.FC = () => {
         <OrganizationSettingsTabs />
 
         <div className="flex flex-1 flex-col space-y-4">
-          <div className={'flex space-x-4 items-center'}>
+          <div className={'flex items-center space-x-4'}>
             <Heading type={3}>
               <Trans i18nKey={'organization:inviteMembersPageHeading'} />
             </Heading>
@@ -35,7 +35,7 @@ const OrganizationMembersInvitePage: React.FC = () => {
                 color={'transparent'}
                 href={'/settings/organization/members'}
               >
-                <span className={'flex space-x-1 items-center'}>
+                <span className={'flex items-center space-x-1'}>
                   <ArrowNarrowLeftIcon className={'h-4'} />
                   <span>
                     <Trans i18nKey={'organization:goBackToMembersPage'} />

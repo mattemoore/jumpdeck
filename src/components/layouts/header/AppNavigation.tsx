@@ -19,7 +19,7 @@ const links = {
   },
 };
 
-const AppNavigation: React.FC = () => {
+const AppNavigation: React.FCC = () => {
   return (
     <>
       <ul className={'flex space-x-6'}>

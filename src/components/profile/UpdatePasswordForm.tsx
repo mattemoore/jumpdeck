@@ -1,5 +1,5 @@
 import { User } from 'firebase/auth';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useCallback, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Trans, useTranslation } from 'next-i18next';
 
@@ -10,34 +10,37 @@ import TextField from '~/core/ui/TextField';
 import Alert from '~/core/ui/Alert';
 import If from '~/core/ui/If';
 
-const UpdatePasswordForm: React.FC<{ user: User }> = ({ user }) => {
+const UpdatePasswordForm: React.FCC<{ user: User }> = ({ user }) => {
   const [errorMessage, setErrorMessage] = useState<Maybe<string>>();
   const [updatePassword, { loading }] = useUpdatePassword();
   const { t } = useTranslation();
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const onSubmit = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
 
-    const data = new FormData(event.currentTarget);
+      const data = new FormData(event.currentTarget);
 
-    const newPassword = (data.get('newPassword') as string) ?? null;
-    const repeatPassword = (data.get('repeatPassword') as string) ?? null;
+      const newPassword = (data.get('newPassword') as string) ?? null;
+      const repeatPassword = (data.get('repeatPassword') as string) ?? null;
 
-    if (newPassword !== repeatPassword) {
-      const message = t(`profile.passwordNotMatching`);
-      setErrorMessage(message);
+      if (newPassword !== repeatPassword) {
+        const message = t(`profile.passwordNotMatching`);
+        setErrorMessage(message);
 
-      return;
-    }
+        return;
+      }
 
-    const promise = updatePassword(user, newPassword);
+      const promise = updatePassword(user, newPassword);
 
-    await toast.promise(promise, {
-      success: t(`profile:updatePasswordSuccess`),
-      error: t(`profile:updatePasswordError`),
-      loading: t(`profile:updatePasswordLoading`),
-    });
-  };
+      void toast.promise(promise, {
+        success: t(`profile:updatePasswordSuccess`),
+        error: t(`profile:updatePasswordError`),
+        loading: t(`profile:updatePasswordLoading`),
+      });
+    },
+    [t, updatePassword, user]
+  );
 
   return (
     <form onSubmit={onSubmit}>

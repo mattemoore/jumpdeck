@@ -1,6 +1,6 @@
 type HeadingType = 1 | 2 | 3 | 4 | 5 | 6;
 
-const Heading: React.FC<{ type?: HeadingType }> = ({ type, children }) => {
+const Heading: React.FCC<{ type?: HeadingType }> = ({ type, children }) => {
   switch (type) {
     case 1:
       return <h1 className={'text-4xl font-extrabold'}>{children}</h1>;

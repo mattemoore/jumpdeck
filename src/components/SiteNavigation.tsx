@@ -38,21 +38,19 @@ const links: Record<string, Link> = {
 const SiteNavigation = () => {
   return (
     <>
-      <div className={'hidden md:flex'}>
+      <div className={'hidden items-center space-x-2 md:flex'}>
         <NavigationMenu>
           <NavigationMenuItem link={links.Blog} />
           <NavigationMenuItem link={links.Docs} />
           <NavigationMenuItem link={links.Pricing} />
           <NavigationMenuItem link={links.FAQ} />
           <NavigationMenuItem link={links.Contact} />
-
-          <div>
-            <DarkModeToggle />
-          </div>
         </NavigationMenu>
+
+        <DarkModeToggle />
       </div>
 
-      <div className={'flex md:hidden items-center ml-4'}>
+      <div className={'ml-4 flex items-center md:hidden'}>
         <MobileDropdown />
       </div>
     </>

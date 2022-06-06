@@ -9,8 +9,8 @@ import If from '~/core/ui/If';
 
 import Button from './Button';
 
-const Modal: React.FC<{
-  heading: React.FC;
+const Modal: React.FCC<{
+  heading: React.FCC | string;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => unknown;
   closeButton?: boolean;
@@ -21,7 +21,7 @@ const Modal: React.FC<{
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog
         as="div"
-        className="fixed inset-0 z-10 overflow-y-auto bg-opacity-30 bg-gray-500 transition-all"
+        className="fixed inset-0 z-10 overflow-y-auto bg-gray-500 bg-opacity-30 transition-all"
         onClose={() => setIsOpen(false)}
       >
         <div className="min-h-screen px-4 text-center">
@@ -54,13 +54,13 @@ const Modal: React.FC<{
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <div className="inline-block w-full max-w-lg p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-black-400 shadow-xl rounded-2xl">
+            <div className="my-8 inline-block w-full max-w-lg transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all dark:bg-black-400">
               <div className="flex items-center">
                 <Dialog.Title
                   as="h2"
-                  className="text-2xl font-semibold leading-4 text-current flex w-full"
+                  className="flex w-full text-2xl font-semibold leading-4 text-current"
                 >
-                  {heading}
+                  <>{heading}</>
                 </Dialog.Title>
 
                 <div className={'justify-end'}>

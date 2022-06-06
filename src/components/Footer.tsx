@@ -25,8 +25,8 @@ function Footer() {
     <footer className={'Footer'}>
       <Container>
         <div className={'flex items-center'}>
-          <div className={'flex items-center space-x-4 md:space-x-12 flex-1'}>
-            <span className={'flex space-x-2 items-center text-sm'}>
+          <div className={'flex flex-1 items-center space-x-4 md:space-x-12'}>
+            <span className={'flex items-center space-x-2 text-sm'}>
               <LogoImage className={'w-[55px] sm:w-[55px]'} />
               <span>-</span>
               <span>{year}</span>
@@ -53,8 +53,8 @@ function Footer() {
             </div>
           </div>
 
-          <div className={'flex justify-end hidden md:flex'}>
-            <ul className={'flex flex-row space-x-4 items-center'}>
+          <div className={'flex hidden justify-end md:flex'}>
+            <ul className={'flex flex-row items-center space-x-4'}>
               <NavigationItem link={links.Docs} />
               <NavigationItem link={links.Contact} />
             </ul>

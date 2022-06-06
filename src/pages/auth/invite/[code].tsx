@@ -28,7 +28,7 @@ import OAuthProviders from '~/components/OAuthProviders';
 import EmailPasswordSignUpForm from '~/components/EmailPasswordSignUpForm';
 import GuardedPage from '~/core/firebase/components/GuardedPage';
 import EmailPasswordSignInForm from '~/components/EmailPasswordSignInForm';
-import PageLoadingIndicator from '~/components/PageLoadingIndicator';
+import PageLoadingIndicator from '~/core/ui/PageLoadingIndicator';
 
 import { getInviteByCode } from '~/lib/server/organizations/get-invite-by-code';
 
@@ -64,12 +64,18 @@ const InvitePage = ({
     organization.id
   );
 
-  const onInviteAccepted = useCallback(async () => {
-    await addMemberToOrganization({ code: invite.code });
+  const onInviteAccepted = useCallback(() => {
+    (async () => {
+      await addMemberToOrganization({ code: invite.code });
 
-    // redirect user to app home
-    await router.push(configuration.paths.appHome);
+      // redirect user to app home
+      await router.push(configuration.paths.appHome);
+    })();
   }, [addMemberToOrganization, invite.code, router]);
+
+  const onSignOut = useCallback(() => {
+    (async () => auth.signOut())();
+  }, [auth]);
 
   const loading = requestState.loading || requestState.success;
 
@@ -91,10 +97,10 @@ const InvitePage = ({
         <title>You have been invited to join {organization.name}</title>
       </Head>
 
-      <div className={'flex flex-col items-center justify-center h-screen'}>
+      <div className={'flex h-screen flex-col items-center justify-center'}>
         <div
           className={
-            'items-center flex flex-col space-y-8 w-11/12 md:w-8/12 lg:w-4/12 xl:w-3/12'
+            'flex w-11/12 flex-col items-center space-y-8 md:w-8/12 lg:w-4/12 xl:w-3/12'
           }
         >
           <div>
@@ -135,7 +141,7 @@ const InvitePage = ({
                 onSubmit={onInviteAccepted}
                 className={'flex flex-col space-y-8'}
               >
-                <p className={'text-sm text-center'}>
+                <p className={'text-center text-sm'}>
                   <Trans
                     i18nKey={'auth:clickToAcceptAs'}
                     values={{ email: session?.email }}
@@ -166,7 +172,7 @@ const InvitePage = ({
                       size={'small'}
                       role={'button'}
                       disabled={loading}
-                      onClick={() => auth.signOut()}
+                      onClick={onSignOut}
                     >
                       <Trans i18nKey={'auth:signOut'} />
                     </Button>
@@ -201,7 +207,7 @@ const InvitePage = ({
               </If>
 
               <If condition={mode === Mode.SignIn}>
-                <div className={'flex w-full flex-col space-y-8 items-center'}>
+                <div className={'flex w-full flex-col items-center space-y-8'}>
                   <EmailPasswordSignInForm onSignIn={onInviteAccepted} />
 
                   <Button

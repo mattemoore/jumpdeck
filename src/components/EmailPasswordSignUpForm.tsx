@@ -13,7 +13,7 @@ import { useCsrfToken } from '~/core/firebase/hooks/use-csrf-token';
 
 import AuthErrorMessage from './AuthErrorMessage';
 
-const EmailPasswordSignUpForm: React.FC<{
+const EmailPasswordSignUpForm: React.FCC<{
   onSignUp: () => void;
   onError?: (error: FirebaseError) => void;
 }> = ({ onSignUp, onError }) => {
@@ -59,7 +59,7 @@ const EmailPasswordSignUpForm: React.FC<{
   }, [callOnErrorCallback]);
 
   const onSubmit = useCallback(
-    async (event: FormEvent<HTMLFormElement>) => {
+    (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
       if (loading) {
@@ -71,7 +71,9 @@ const EmailPasswordSignUpForm: React.FC<{
       const password = data.get(`password`) as string;
 
       // sign up with Firebase Auth
-      await signUp(email, password);
+      void (async () => {
+        await signUp(email, password);
+      })();
     },
     [loading, signUp]
   );

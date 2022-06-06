@@ -1,6 +1,16 @@
 import { createRef, useLayoutEffect, useMemo, useState } from 'react';
 
-const LazyRender: React.FC<{
+/**
+ * @description Render a component lazily based on the IntersectionObserver
+ * configuration provided.
+ * Full documentation at: https://makerkit.dev/docs/components-utilities#lazyrender
+ * @param children
+ * @param threshold
+ * @param rootMargin
+ * @param onVisible
+ * @constructor
+ */
+const LazyRender: React.FCC<{
   threshold?: number;
   rootMargin?: string;
   onVisible?: () => void;

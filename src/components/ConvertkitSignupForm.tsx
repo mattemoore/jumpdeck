@@ -1,7 +1,7 @@
 import Button from '~/core/ui/Button';
 import TextField from '~/core/ui/TextField';
 
-const ConvertkitSignupForm: React.FC<{
+const ConvertkitSignupForm: React.FCC<{
   formId: string;
 }> = ({ formId, children }) => {
   const action = `https://app.convertkit.com/forms/${formId}/subscriptions`;
@@ -11,12 +11,12 @@ const ConvertkitSignupForm: React.FC<{
       action={action}
       method={'POST'}
       target="_blank"
-      className={`w-full flex flex-1 space-around`}
+      className={`space-around flex w-full flex-1`}
     >
       <TextField>
         <TextField.Input
           type="email"
-          className="formkit-input w-50 sm:w-60 md:w-80 text-sm md:text-base border-r-transparent hover:border-r-transparent py-1 !rounded-tr-none !rounded-br-none"
+          className="formkit-input w-50 !rounded-tr-none !rounded-br-none border-r-transparent py-1 text-sm hover:border-r-transparent sm:w-60 md:w-80 md:text-base"
           name="email_address"
           aria-label="Your email address"
           placeholder="your@email.com"

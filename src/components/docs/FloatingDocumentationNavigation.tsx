@@ -53,9 +53,9 @@ export default function FloatingDocumentationNavigation({
       <If condition={isVisible}>
         <div
           className={
-            'py-8 px-3 z-10 fixed left-0 top-0 h-screen w-full' +
+            'fixed left-0 top-0 z-10 h-screen w-full py-8 px-3' +
             ' bg-black-500' +
-            ' overflow-auto flex flex-col space-y-4'
+            ' flex flex-col space-y-4 overflow-auto'
           }
         >
           <Heading type={2}>Table of Contents</Heading>
@@ -65,7 +65,7 @@ export default function FloatingDocumentationNavigation({
       </If>
 
       <Button
-        className={'rounded-full w-16 h-16 fixed bottom-5 right-5 z-10'}
+        className={'fixed bottom-5 right-5 z-10 h-16 w-16 rounded-full'}
         onClick={onClick}
       >
         <MenuAlt4Icon className={'h-8'} />

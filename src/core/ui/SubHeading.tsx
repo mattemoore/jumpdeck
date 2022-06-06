@@ -1,4 +1,4 @@
-const SubHeading: React.FC = ({ children }) => {
+const SubHeading: React.FCC = ({ children }) => {
   return <h2 className="SubHeading">{children}</h2>;
 };
 

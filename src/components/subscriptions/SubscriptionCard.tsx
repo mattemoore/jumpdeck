@@ -5,7 +5,7 @@ import { OrganizationSubscription } from '~/lib/organizations/types/organization
 import Heading from '~/core/ui/Heading';
 import configuration from '~/configuration';
 
-const SubscriptionCard: React.FC<{
+const SubscriptionCard: React.FCC<{
   subscription: OrganizationSubscription;
 }> = ({ subscription }) => {
   const plan = configuration.plans.find((item) => {
@@ -23,7 +23,7 @@ const SubscriptionCard: React.FC<{
   return (
     <div className={'flex flex-col space-y-4'}>
       <div>
-        <span className={'text-gray-700 dark:text-gray-400 text-xs'}>
+        <span className={'text-xs text-gray-700 dark:text-gray-400'}>
           <Trans i18nKey={'subscription:currentPlan'} />
         </span>
 

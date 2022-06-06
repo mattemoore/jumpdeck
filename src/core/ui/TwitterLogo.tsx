@@ -1,4 +1,4 @@
-const TwitterLogo: React.FC<{ className?: string }> = ({ className }) => {
+const TwitterLogo: React.FCC<{ className?: string }> = ({ className }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

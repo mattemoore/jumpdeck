@@ -2,7 +2,7 @@ import React from 'react';
 import AppHeaderWithMenu from './AppHeaderWithMenu';
 import Container from '~/core/ui/Container';
 
-const RouteShellWithTopNavigation: React.FC<{
+const RouteShellWithTopNavigation: React.FCC<{
   title: string;
 }> = ({ title, children }) => {
   return (

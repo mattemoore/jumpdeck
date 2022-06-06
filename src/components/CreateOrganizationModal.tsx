@@ -1,4 +1,4 @@
-import { FormEvent, useEffect } from 'react';
+import { FormEvent, useCallback, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { Trans, useTranslation } from 'next-i18next';
 
@@ -9,7 +9,7 @@ import Button from '~/core/ui/Button';
 import { useCreateOrganization } from '~/lib/organizations/hooks/use-create-organization';
 import { Organization } from '~/lib/organizations/types/organization';
 
-const CreateOrganizationModal: React.FC<{
+const CreateOrganizationModal: React.FCC<{
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => unknown;
   onCreate: (organization: WithId<Organization>) => void;
@@ -22,21 +22,26 @@ const CreateOrganizationModal: React.FC<{
     <Trans i18nKey={'organization:createOrganizationModalHeading'} />
   );
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const onSubmit = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
 
-    const data = new FormData(event.currentTarget);
-    const name = data.get(`name`) as string;
-    const promise = createOrganization(name);
+      void (async () => {
+        const data = new FormData(event.currentTarget);
+        const name = data.get(`name`) as string;
+        const promise = createOrganization(name);
 
-    await toast.promise(promise, {
-      success: t(`organization:createOrganizationSuccess`),
-      error: t(`organization:createOrganizationError`),
-      loading: t(`organization:createOrganizationLoading`),
-    });
+        await toast.promise(promise, {
+          success: t(`organization:createOrganizationSuccess`),
+          error: t(`organization:createOrganizationError`),
+          loading: t(`organization:createOrganizationLoading`),
+        });
 
-    setIsOpen(false);
-  };
+        setIsOpen(false);
+      })();
+    },
+    [createOrganization, setIsOpen, t]
+  );
 
   useEffect(() => {
     if (newOrganization) {

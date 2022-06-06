@@ -15,7 +15,7 @@ import { PopoverDropdown, PopoverDropdownItem } from '~/core/ui/Popover';
 
 import CreateOrganizationModal from './CreateOrganizationModal';
 
-const PopoverButton: React.FC<{
+const PopoverButton: React.FCC<{
   organization: Maybe<WithId<Organization>>;
 }> = ({ organization }) => {
   return (
@@ -25,7 +25,7 @@ const PopoverButton: React.FC<{
   );
 };
 
-const OrganizationsSelector: React.FC<{ userId: string }> = ({ userId }) => {
+const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
   const [isOrganizationModalOpen, setIsOrganizationModalOpen] = useState(false);
   const { organization, setOrganization } = useContext(OrganizationContext);
   const { data: organizations } = useFetchUserOrganizations(userId);
@@ -72,7 +72,7 @@ const OrganizationsSelector: React.FC<{ userId: string }> = ({ userId }) => {
             <PopoverDropdownItem.Label>
               <span
                 data-cy={'create-organization-button'}
-                className={'flex flex-row space-x-2 items-center ellipsify'}
+                className={'flex flex-row items-center space-x-2 ellipsify'}
               >
                 <PlusSmIcon className={'h-4 font-bold'} />
 
@@ -104,7 +104,7 @@ function OrganizationItem({ organization }: { organization: Organization }) {
   return (
     <span
       data-cy={'organization-selector-item'}
-      className={`flex space-x-3 items-center`}
+      className={`flex items-center space-x-3`}
     >
       <If condition={logoURL}>
         <Image
@@ -118,7 +118,7 @@ function OrganizationItem({ organization }: { organization: Organization }) {
       </If>
 
       <span
-        className={'font-semibold ellipsify text-left'}
+        className={'text-left font-semibold ellipsify'}
         style={{ maxWidth: maxLabelWidth, minWidth: minLabelWidth }}
       >
         {name}

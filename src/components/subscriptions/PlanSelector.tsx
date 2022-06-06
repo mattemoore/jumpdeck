@@ -18,12 +18,12 @@ export default function PlanSelector(
   return (
     <RadioGroup value={props.plan} onChange={props.setPlan}>
       <RadioGroup.Label>
-        <span className={'font-semibold text-sm'}>
+        <span className={'text-sm font-semibold'}>
           <Trans i18nKey={'subscription:choosePlan'} />
         </span>
       </RadioGroup.Label>
 
-      <div className="space-y-2.5 mt-2 w-full">
+      <div className="mt-2 w-full space-y-2.5">
         {plans.map((plan) => (
           <RadioGroup.Option
             key={plan.name}
@@ -32,34 +32,34 @@ export default function PlanSelector(
               `${
                 active
                   ? ''
-                  : 'dark:bg-black-300 hover:bg-gray-50' +
+                  : 'hover:bg-gray-50 dark:bg-black-300' +
                     ' dark:hover:bg-black-400' +
                     ' dark:active:bg-black-500' +
                     ' transition-colors'
               }
                   ${
                     checked
-                      ? 'dark:bg-black-400 bg-gray-100 ring-2' +
+                      ? 'bg-gray-100 ring-2 dark:bg-black-400' +
                         ' ring-primary-400 '
                       : ''
                   }
-                    relative rounded-lg shadow-md px-5 py-4 cursor-pointer flex focus:outline-none`
+                    relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
             }
           >
             {({ checked }) => (
               <>
-                <div className="flex items-center justify-between w-full">
-                  <div className="flex items-center space-x-4 w-full">
+                <div className="flex w-full items-center justify-between">
+                  <div className="flex w-full items-center space-x-4">
                     <div className="flex-shrink-0">
                       <If condition={checked} fallback={<UncheckIcon />}>
-                        <CheckIcon className="w-6 h-6 rounded-full fill-transparent" />
+                        <CheckIcon className="h-6 w-6 rounded-full fill-transparent" />
                       </If>
                     </div>
 
-                    <div className="text-sm flex-auto">
+                    <div className="flex-auto text-sm">
                       <RadioGroup.Label
                         as="p"
-                        className={`font-bold text-sm dark:text-white text-current`}
+                        className={`text-sm font-bold text-current dark:text-white`}
                       >
                         {plan.name}
                       </RadioGroup.Label>
@@ -74,7 +74,7 @@ export default function PlanSelector(
                       </RadioGroup.Description>
                     </div>
 
-                    <span className={'font-bold dark:text-white text-sm'}>
+                    <span className={'text-sm font-bold dark:text-white'}>
                       {plan.price}
                     </span>
                   </div>
@@ -105,7 +105,7 @@ function CheckIcon(props: { className: string }) {
 
 function UncheckIcon() {
   return (
-    <svg viewBox="0 0 24 24" className={'w-6 h-6'}>
+    <svg viewBox="0 0 24 24" className={'h-6 w-6'}>
       <circle cx={12} cy={12} r={12} fill="#fff" opacity="0.2" />;
     </svg>
   );

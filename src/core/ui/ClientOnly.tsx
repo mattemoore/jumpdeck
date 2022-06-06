@@ -5,7 +5,7 @@ import If from '~/core/ui/If';
 
 const DEFAULT_ELEMENT_SELECTOR = 'div';
 
-const ClientOnly: React.FC<{
+const ClientOnly: React.FCC<{
   as?: string;
 }> = ({ children, as }) => {
   const selector = as ?? DEFAULT_ELEMENT_SELECTOR;

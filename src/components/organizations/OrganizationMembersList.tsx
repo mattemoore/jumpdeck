@@ -16,7 +16,7 @@ import OrganizationMembersActionsContainer from './OrganizationMembersActionsCon
 import RoleBadge from '../RoleBadge';
 import ProfileAvatar from '../ProfileAvatar';
 
-const OrganizationMembersList: React.FC<{
+const OrganizationMembersList: React.FCC<{
   organizationId: string;
 }> = ({ organizationId }) => {
   const userId = useUserId();
@@ -49,7 +49,7 @@ const OrganizationMembersList: React.FC<{
 
   return (
     <>
-      <div className={'space-y-10 w-full'}>
+      <div className={'w-full space-y-10'}>
         <div className="flex flex-col divide-y divide-gray-100 dark:divide-black-300">
           {members.map(({ role, id: memberId }) => {
             const metadata = membersMetadata?.find((metadata) => {
@@ -75,12 +75,12 @@ const OrganizationMembersList: React.FC<{
               <div
                 key={metadata.uid}
                 data-cy={'organization-member'}
-                className={'flex space-x-2 items-center py-3'}
+                className={'flex items-center space-x-2 py-3'}
               >
-                <div className={'flex-auto flex space-x-4 items-center'}>
+                <div className={'flex flex-auto items-center space-x-4'}>
                   <ProfileAvatar user={metadata} />
 
-                  <div className={'truncate block text-sm'}>{displayName}</div>
+                  <div className={'block truncate text-sm'}>{displayName}</div>
 
                   <If condition={isCurrentUser}>
                     <Badge>
@@ -89,7 +89,7 @@ const OrganizationMembersList: React.FC<{
                   </If>
                 </div>
 
-                <div className={'justify-end flex space-x-4 items-center'}>
+                <div className={'flex items-center justify-end space-x-4'}>
                   <div>
                     <RoleBadge role={role} />
                   </div>

@@ -1,4 +1,5 @@
 import { isBrowser } from '~/core/generic/is-browser';
+import { useEffect } from 'react';
 
 const THEME_LOCAL_STORAGE_KEY = `theme`;
 const DARK_THEME_META_COLOR = `#0a0a0a`;
@@ -28,8 +29,12 @@ export function setTheme(theme: string | null) {
   }
 }
 
-export function loadSelectedTheme() {
+function loadSelectedTheme() {
   setTheme(loadThemeFromLocalStorage());
+}
+
+export function useLoadSelectedTheme() {
+  useEffect(loadSelectedTheme);
 }
 
 function getHtml() {

@@ -79,11 +79,11 @@
     /** Alert.tsx */
     .Alert {
         @apply py-3 border-l-8 px-4 rounded-lg
-        font-semibold text-sm flex items-center justify-between;
+        font-medium text-sm flex items-center justify-between;
     }
 
     .Alert.AlertSuccess {
-        @apply border-green-500 bg-green-50 dark:bg-black-300;
+        @apply border-green-500 text-green-800 bg-green-50 dark:bg-black-200 dark:text-green-500;
     }
 
     .Alert.AlertSuccess .AlertIcon {
@@ -91,7 +91,7 @@
     }
 
     .Alert.AlertError {
-        @apply border-red-500 bg-red-50 dark:bg-black-300;
+        @apply border-red-500 bg-red-50 dark:bg-black-200 dark:text-red-500;
     }
 
     .Alert.AlertError .AlertIcon {
@@ -99,7 +99,7 @@
     }
 
     .Alert.AlertWarn {
-        @apply border-orange-500 bg-orange-50 dark:bg-black-300;
+        @apply border-orange-500 text-orange-700 bg-orange-50 dark:bg-black-200 dark:text-orange-500;
     }
 
     .Alert.AlertWarn .AlertIcon {
@@ -107,7 +107,7 @@
     }
 
     .Alert.AlertInfo {
-        @apply border-blue-500 bg-blue-50 dark:bg-black-300;
+        @apply border-blue-500 text-blue-800 bg-blue-50 dark:bg-black-200 dark:text-blue-500;
     }
 
     .Alert.AlertInfo .AlertIcon {

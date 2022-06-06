@@ -4,7 +4,7 @@ import configuration from '~/configuration';
 
 const BILLING_PORTAL_REDIRECT_ENDPOINT = configuration.paths.api.billingPortal;
 
-const BillingPortalRedirectButton: React.FC<{
+const BillingPortalRedirectButton: React.FCC<{
   customerId: string;
   className?: string;
 }> = ({ children, customerId, className }) => {

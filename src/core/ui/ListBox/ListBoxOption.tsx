@@ -10,7 +10,7 @@ interface Option {
   description?: string;
 }
 
-const ListBoxOption: React.FC<{
+const ListBoxOption: React.FCC<{
   option: Option;
 }> = ({ option }) => {
   return (
@@ -31,7 +31,7 @@ const ListBoxOption: React.FC<{
 
             <If condition={selected}>
               <span className={`ListBoxOptionIcon`}>
-                <CheckCircleIcon className="w-6 h-6" aria-hidden="true" />
+                <CheckCircleIcon className="h-6 w-6" aria-hidden="true" />
               </span>
             </If>
           </div>

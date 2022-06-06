@@ -1,4 +1,4 @@
-const Container: React.FC = ({ children }) => {
+const Container: React.FCC = ({ children }) => {
   return <div className="Container">{children}</div>;
 };
 

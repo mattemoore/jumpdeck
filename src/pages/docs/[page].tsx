@@ -86,7 +86,7 @@ const DocsPage = ({ page, docs, previousPage, nextPage }: Props) => {
               <DocumentationNavigation data={docs} />
             </div>
 
-            <div className="flex-col flex flex-1 mt-8">
+            <div className="mt-8 flex flex-1 flex-col">
               <div>
                 <Heading type={1}>
                   <span className={'dark:text-white'}>{page.title}</span>
@@ -97,10 +97,10 @@ const DocsPage = ({ page, docs, previousPage, nextPage }: Props) => {
 
               <div
                 className={
-                  'flex-col space-y-4 md:space-y-0 md:flex-row flex justify-between py-12'
+                  'flex flex-col justify-between space-y-4 py-12 md:flex-row md:space-y-0'
                 }
               >
-                <div className={'flex space-x-1 items-center'}>
+                <div className={'flex items-center space-x-1'}>
                   <If condition={previousPage}>
                     {(page) => {
                       return (
@@ -114,7 +114,7 @@ const DocsPage = ({ page, docs, previousPage, nextPage }: Props) => {
                   </If>
                 </div>
 
-                <div className={'flex space-x-1 items-center justify-end'}>
+                <div className={'flex items-center justify-end space-x-1'}>
                   <If condition={nextPage}>
                     {(page) => {
                       return (
@@ -145,7 +145,7 @@ function PageLink({ page }: PropsWithChildren<{ page: DocumentationPage }>) {
     <Link as={hrefAs} href={href} passHref>
       <a
         className={
-          'font-medium p-2 text-sm text-current hover:underline dark:text-primary-600'
+          'p-2 text-sm font-medium text-current hover:underline dark:text-primary-600'
         }
       >
         {page.title}

@@ -35,7 +35,7 @@ const Blog = ({ posts }: Props) => {
             Tutorials, Guides and Updates from the MakerKit team
           </SubHeading>
 
-          <div className="flex-col space-y-12 mt-4 md:mt-8">
+          <div className="mt-4 flex-col space-y-12 md:mt-8">
             <PostsList posts={posts} />
           </div>
         </Container>

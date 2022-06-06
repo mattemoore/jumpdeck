@@ -17,7 +17,7 @@ const links = {
   },
 };
 
-const ProfileSettingsTabs: React.FC<{
+const ProfileSettingsTabs: React.FCC<{
   user: User;
 }> = ({ user }) => {
   // user can only edit email and password
@@ -33,7 +33,7 @@ const ProfileSettingsTabs: React.FC<{
   return (
     <div
       className={
-        'flex flex-row space-x-2 sm:space-x-0 sm:flex-col sm:space-y-2'
+        'flex flex-row space-x-2 sm:flex-col sm:space-x-0 sm:space-y-2'
       }
     >
       <NavigationItem

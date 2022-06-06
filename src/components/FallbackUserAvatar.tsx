@@ -1,4 +1,4 @@
-const FallbackUserAvatar: React.FC<{ text: string }> = ({ text }) => {
+const FallbackUserAvatar: React.FCC<{ text: string }> = ({ text }) => {
   return <span className={`FallbackUserAvatar`}>{text[0]}</span>;
 };
 

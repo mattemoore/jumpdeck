@@ -18,7 +18,7 @@ import Button from '~/core/ui/Button';
 import If from '~/core/ui/If';
 import ClientOnly from '~/core/ui/ClientOnly';
 
-const OrganizationMembersPage: React.FC = () => {
+const OrganizationMembersPage: React.FCC = () => {
   const canInviteUsers = useUserCanInviteUsers();
 
   return (
@@ -37,7 +37,7 @@ const OrganizationMembersPage: React.FC = () => {
 
               <div className="flex flex-1 flex-col space-y-8">
                 <div>
-                  <div className="flex space-x-8 items-center justify-between">
+                  <div className="flex items-center justify-between space-x-8">
                     <Heading type={3}>
                       <Trans i18nKey={'organization:membersPageHeading'} />
                     </Heading>
@@ -48,7 +48,7 @@ const OrganizationMembersPage: React.FC = () => {
                         type="button"
                         href={'/settings/organization/members/invite'}
                       >
-                        <span className="flex space-x-2 items-center">
+                        <span className="flex items-center space-x-2">
                           <UserAddIcon className="h-5" />
 
                           <span>
