@@ -20,29 +20,27 @@ type Props = {
 
 const Blog = ({ posts }: Props) => {
   return (
-    <>
-      <Layout>
-        <Head>
-          <title key="title">Blog - {configuration.site.name}</title>
-        </Head>
+    <Layout>
+      <Head>
+        <title key="title">Blog - {configuration.site.name}</title>
+      </Head>
 
-        <SiteHeader />
+      <SiteHeader />
 
-        <Container>
-          <Hero>Blog</Hero>
+      <Container>
+        <Hero>Blog</Hero>
 
-          <SubHeading>
-            Tutorials, Guides and Updates from the MakerKit team
-          </SubHeading>
+        <SubHeading>
+          Tutorials, Guides and Updates from the MakerKit team
+        </SubHeading>
 
-          <div className="mt-4 flex-col space-y-12 md:mt-8">
-            <PostsList posts={posts} />
-          </div>
-        </Container>
+        <div className="mt-4 flex-col space-y-12 md:mt-8">
+          <PostsList posts={posts} />
+        </div>
+      </Container>
 
-        <Footer />
-      </Layout>
-    </>
+      <Footer />
+    </Layout>
   );
 };
 
