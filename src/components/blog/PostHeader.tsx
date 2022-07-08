@@ -12,13 +12,14 @@ import CoverImage from './CoverImage';
 import PostTitle from './PostTitle';
 import CollectionTag from './CollectionTag';
 import Tag from './Tag';
+import SubHeading from '~/core/ui/SubHeading';
 
 type Props = {
   post: Post;
 };
 
 const PostHeader = ({ post }: Props) => {
-  const { title, date, readingTime, collection } = post;
+  const { title, date, readingTime, collection, excerpt } = post;
 
   const coverImage = 'coverImage' in post ? post.coverImage : '';
   const tags = post.tags ?? [];
@@ -35,8 +36,10 @@ const PostHeader = ({ post }: Props) => {
         {title}
       </PostTitle>
 
-      <div className="mx-auto mb-6 flex">
-        <div className="flex flex-row space-x-2 items-center text-gray-600 dark:text-gray-200 text-sm">
+      <SubHeading>{excerpt}</SubHeading>
+
+      <div className="mx-auto mb-4 mt-6 flex">
+        <div className="flex flex-row items-center space-x-2 text-sm text-gray-600 dark:text-gray-200">
           <If condition={post.author}>
             {(author) => <Author author={author} />}
           </If>
@@ -49,10 +52,10 @@ const PostHeader = ({ post }: Props) => {
           <span>{readingTime}</span>
 
           <If condition={tags.length}>
-            <div className={'hidden sm:flex space-x-2 items-center'}>
+            <div className={'hidden items-center space-x-2 sm:flex'}>
               <span>·</span>
 
-              <div className={'flex space-x-2 justify-start'}>
+              <div className={'flex justify-start space-x-2'}>
                 <PostTags tags={tags} collection={collection.name} />
               </div>
             </div>
@@ -65,7 +68,7 @@ const PostHeader = ({ post }: Props) => {
           <div className="mx-auto justify-center">
             <CoverImage
               preloadImage={preloadImage}
-              className="shadow-xl rounded-md"
+              className="rounded-md shadow-xl"
               width="100%"
               height="auto"
               title={title}
@@ -75,7 +78,7 @@ const PostHeader = ({ post }: Props) => {
         ) : (
           <If condition={configuration.autoBanners}>
             <BlogPostSvgBanner
-              className="shadow-xl rounded-md mx-auto"
+              className="mx-auto rounded-md shadow-xl"
               width={'800px'}
               imageUrl={collection.logo ?? ''}
               title={post.title}

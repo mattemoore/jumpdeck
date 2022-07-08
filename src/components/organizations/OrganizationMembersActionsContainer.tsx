@@ -7,7 +7,7 @@ import OrganizationMemberActionsDropdown from './OrganizationMemberActionsDropdo
 import RemoveOrganizationMemberModal from './RemoveOrganizationMemberModal';
 import UpdateMemberRoleModal from './UpdateMemberRoleModal';
 
-const OrganizationMembersActionsContainer: React.FC<{
+const OrganizationMembersActionsContainer: React.FCC<{
   targetMember: User;
   role: MembershipRole;
   disabled: boolean;

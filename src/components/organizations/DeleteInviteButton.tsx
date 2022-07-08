@@ -11,7 +11,7 @@ import If from '~/core/ui/If';
 import Modal from '~/core/ui/Modal';
 import Button from '~/core/ui/Button';
 
-const DeleteInviteButton: React.FC<{
+const DeleteInviteButton: React.FCC<{
   inviteId: string;
   organizationId: string;
   memberEmail: string;
@@ -20,20 +20,22 @@ const DeleteInviteButton: React.FC<{
   const deleteRequest = useDeleteInvite();
   const { t } = useTranslation('organization');
 
-  const onInviteDeleteRequested = useCallback(async () => {
-    try {
-      const promise = deleteRequest(organizationId, inviteId);
+  const onInviteDeleteRequested = useCallback(() => {
+    void (async () => {
+      try {
+        const promise = deleteRequest(organizationId, inviteId);
 
-      await toaster.promise(promise, {
-        success: t(`deleteInviteSuccessMessage`),
-        error: t(`deleteInviteErrorMessage`),
-        loading: t(`deleteInviteLoadingMessage`),
-      });
+        await toaster.promise(promise, {
+          success: t(`deleteInviteSuccessMessage`),
+          error: t(`deleteInviteErrorMessage`),
+          loading: t(`deleteInviteLoadingMessage`),
+        });
 
-      setIsDeleting(false);
-    } catch (e) {
-      setIsDeleting(false);
-    }
+        setIsDeleting(false);
+      } catch (e) {
+        setIsDeleting(false);
+      }
+    })();
   }, [deleteRequest, inviteId, organizationId, t]);
 
   const heading = () => (

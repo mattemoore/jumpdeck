@@ -9,7 +9,7 @@ type ImageProps =
       emoji?: string;
     };
 
-const BlogPostSvgBanner: React.FC<
+const BlogPostSvgBanner: React.FCC<
   {
     title: string;
     width?: string;

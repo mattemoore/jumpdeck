@@ -1,6 +1,6 @@
 import Badge from '~/core/ui/Badge';
 
-const Tag: React.FC = ({ children }) => {
+const Tag: React.FCC = ({ children }) => {
   return <Badge>{children}</Badge>;
 };
 

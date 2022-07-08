@@ -1,6 +1,6 @@
-const DraftBadge: React.FC = ({ children }) => {
+const DraftBadge: React.FCC = ({ children }) => {
   return (
-    <span className="py-2 px-4 bg-yellow-200 dark:text-black-400 rounded-md font-semibold">
+    <span className="rounded-md bg-yellow-200 py-2 px-4 font-semibold dark:text-black-400">
       {children}
     </span>
   );

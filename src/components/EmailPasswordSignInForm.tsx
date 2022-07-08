@@ -14,8 +14,8 @@ import { getFirebaseErrorCode } from '~/core/firebase/utils/get-firebase-error-c
 import { useCreateSession } from '~/core/hooks/use-create-session';
 import { useCsrfToken } from '~/core/firebase/hooks/use-csrf-token';
 
-const EmailPasswordSignInForm: React.FC<{
-  onSignIn: () => void;
+const EmailPasswordSignInForm: React.FCC<{
+  onSignIn: () => unknown;
 }> = ({ onSignIn }) => {
   const createCsrfToken = useCsrfToken();
   const [sessionRequest, sessionState] = useCreateSession();

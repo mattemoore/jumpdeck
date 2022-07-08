@@ -12,7 +12,7 @@ import GuardedPage from '~/core/firebase/components/GuardedPage';
 import If from '~/core/ui/If';
 import SentryProvider from '~/components/SentryProvider';
 
-const RouteShell: React.FC<{
+const RouteShell: React.FCC<{
   title: string;
   style?: string;
 }> = ({ title, style, children }) => {

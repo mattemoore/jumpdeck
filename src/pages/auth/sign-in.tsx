@@ -18,15 +18,17 @@ import Hero from '~/core/ui/Hero';
 import Logo from '~/core/ui/Logo';
 import Button from '~/core/ui/Button';
 
-export const SignIn: React.FC = () => {
+export const SignIn: React.FCC = () => {
   const router = useRouter();
   const signUpPath = configuration.paths.signUp;
 
   const onSignIn = useCallback(() => {
-    const appHome = configuration.paths.appHome;
-    const path = getRedirectPathWithoutSearchParam(appHome);
+    void (async () => {
+      const appHome = configuration.paths.appHome;
+      const path = getRedirectPathWithoutSearchParam(appHome);
 
-    return router.push(path);
+      return router.push(path);
+    })();
   }, [router]);
 
   return (
@@ -35,10 +37,10 @@ export const SignIn: React.FC = () => {
         <title>Sign In</title>
       </Head>
 
-      <div className={'flex flex-col items-center justify-center h-screen'}>
+      <div className={'flex h-screen flex-col items-center justify-center'}>
         <div
           className={
-            'items-center flex flex-col space-y-8 w-11/12 md:w-8/12 lg:w-4/12 xl:w-3/12'
+            'flex w-11/12 flex-col items-center space-y-8 md:w-8/12 lg:w-4/12 xl:w-3/12'
           }
         >
           <div className={'mb-2 sm:mb-4 lg:mb-8'}>

@@ -1,106 +1,149 @@
-import { User } from 'firebase/auth';
-import { FormEvent, useState } from 'react';
-import toast from 'react-hot-toast';
+import { FormEvent, useCallback, useState } from 'react';
+import { useStorage } from 'reactfire';
+import type { User } from 'firebase/auth';
 import { Trans, useTranslation } from 'next-i18next';
+import toast from 'react-hot-toast';
 
-import { useUpdateUserEmail } from '~/lib/profile/hooks/use-update-user-email';
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+  FirebaseStorage,
+} from 'firebase/storage';
+
+import { useUpdateProfile } from '~/lib/profile/hooks/use-update-profile';
 
 import Button from '~/core/ui/Button';
 import TextField from '~/core/ui/TextField';
-import Alert from '~/core/ui/Alert';
-import If from '~/core/ui/If';
+import ImageUploadInput from '~/core/ui/ImageUploadInput';
 
-const UpdateEmailForm: React.FC<{ user: User }> = ({ user }) => {
-  const [errorMessage, setErrorMessage] = useState<Maybe<string>>();
-  const [updateEmail, state] = useUpdateUserEmail();
+interface ProfileData {
+  photoURL: string | null;
+  displayName: string | null;
+}
+
+function UpdateProfileForm({
+  user,
+  onUpdate,
+}: {
+  user: User;
+  onUpdate?: (user: ProfileData) => void;
+}) {
+  const [updateProfile, { loading }] = useUpdateProfile();
+  const storage = useStorage();
   const { t } = useTranslation();
+  const [avatarIsDirty, setAvatarIsDirty] = useState(false);
 
-  const currentEmail = user?.email as string;
+  const currentDisplayName = user?.displayName ?? '';
+  const currentPhotoURL = user?.photoURL;
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const onAvatarCleared = () => setAvatarIsDirty(true);
 
-    const data = new FormData(event.currentTarget);
+  const onSubmit = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
 
-    const email = (data.get('email') as string) ?? null;
-    const repeatEmail = (data.get('repeatEmail') as string) ?? null;
-    const password = (data.get('password') as string) ?? null;
+      void (async () => {
+        const data = new FormData(event.currentTarget);
+        const displayName = (data.get('displayName') as string) ?? '';
+        const photoFile = data.get('photoUrl') as Maybe<File>;
 
-    if (email !== repeatEmail) {
-      const message = t(`profile:emailsNotMatching`);
-      setErrorMessage(message);
+        const photoName = photoFile?.name;
 
-      return;
-    }
+        const photoUrl = photoName
+          ? await uploadUserProfilePhoto(storage, photoFile, user.uid)
+          : currentPhotoURL;
 
-    if (email === currentEmail) {
-      const message = t(`profile:updatingSameEmail`);
-      setErrorMessage(message);
+        const isAvatarRemoved = avatarIsDirty && !photoName;
 
-      return;
-    }
+        const info = {
+          displayName,
+          photoURL: isAvatarRemoved ? '' : photoUrl,
+        };
 
-    const promise = updateEmail({
-      oldEmail: currentEmail,
-      email,
-      password,
-    });
+        // delete existing photo if different
+        if (isAvatarRemoved && currentPhotoURL) {
+          try {
+            await deleteObject(ref(storage, currentPhotoURL));
+          } catch (e) {
+            // old photo not found
+          }
+        }
 
-    await toast.promise(promise, {
-      success: t(`profile:updateEmailSuccess`),
-      loading: t(`profile:updateEmailLoading`),
-      error: t(`profile:updateEmailError`),
-    });
-  };
+        const promise = updateProfile(info);
+
+        await toast.promise(promise, {
+          success: t(`profile:updateProfileSuccess`),
+          error: t(`profile:updateProfileError`),
+          loading: t(`profile:updateProfileLoading`),
+        });
+
+        if (onUpdate) {
+          onUpdate(info);
+        }
+      })();
+    },
+    [
+      avatarIsDirty,
+      currentPhotoURL,
+      onUpdate,
+      storage,
+      t,
+      updateProfile,
+      user.uid,
+    ]
+  );
 
   return (
     <form onSubmit={onSubmit}>
       <div className={'flex flex-col space-y-4'}>
-        <If condition={errorMessage}>
-          <Alert type={'error'}>{errorMessage}</Alert>
-        </If>
-
         <TextField>
           <TextField.Label>
-            <Trans i18nKey={'profile:newEmail'} />
+            <Trans i18nKey={'profile:displayNameLabel'} />
 
             <TextField.Input
-              required
-              type={'email'}
-              name={'email'}
-              placeholder={'your@email.com'}
-              defaultValue={user?.email ?? ''}
+              name={'displayName'}
+              placeholder={'Name'}
+              defaultValue={currentDisplayName}
             />
           </TextField.Label>
         </TextField>
 
         <TextField>
           <TextField.Label>
-            <Trans i18nKey={'profile:repeatEmail'} />
+            <Trans i18nKey={'profile:profilePictureLabel'} />
 
-            <TextField.Input required type={'email'} name={'repeatEmail'} />
+            <ImageUploadInput
+              onClear={onAvatarCleared}
+              name={'photoUrl'}
+              image={user?.photoURL ?? ''}
+            >
+              <Trans i18nKey={'common:imageInputLabel'} />
+            </ImageUploadInput>
           </TextField.Label>
         </TextField>
 
-        <TextField>
-          <TextField.Label>
-            <Trans i18nKey={'profile:yourPassword'} />
-
-            <TextField.Input
-              required
-              type={'password'}
-              name={'password'}
-              placeholder={'Password'}
-            />
-          </TextField.Label>
-        </TextField>
-
-        <Button loading={state.loading} block>
-          <Trans i18nKey={'profile:updateEmailSubmitLabel'} />
+        <Button block loading={loading}>
+          <Trans i18nKey={'profile:updateProfileSubmitLabel'} />
         </Button>
       </div>
     </form>
   );
-};
+}
 
-export default UpdateEmailForm;
+async function uploadUserProfilePhoto(
+  storage: FirebaseStorage,
+  photoFile: File,
+  userId: string
+) {
+  const url = `/profiles/${userId}/${photoFile.name}`;
+  const bytes = await photoFile.arrayBuffer();
+  const fileRef = ref(storage, url);
+
+  await uploadBytes(fileRef, bytes);
+
+  return await getDownloadURL(fileRef);
+}
+
+export default UpdateProfileForm;

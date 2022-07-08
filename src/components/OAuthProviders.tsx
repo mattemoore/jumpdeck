@@ -13,7 +13,7 @@ import If from '~/core/ui/If';
 
 import AuthErrorMessage from './AuthErrorMessage';
 
-const OAuthProviders: React.FC<{
+const OAuthProviders: React.FCC<{
   onSuccess: () => void;
 }> = ({ onSuccess }) => {
   const [signInWithProvider, signInState] = useSignInWithProvider();
@@ -60,7 +60,7 @@ const OAuthProviders: React.FC<{
   ]);
 
   return (
-    <div className={'flex flex-col space-y-3 flex-1 w-full'}>
+    <div className={'flex w-full flex-1 flex-col space-y-3'}>
       <div className={'flex-col space-y-4'}>
         <SignInWithGoogleButton
           onSignIn={() => signInWithProvider(new GoogleAuthProvider())}
@@ -86,7 +86,7 @@ const OAuthProviders: React.FC<{
 
 function SignInWithGoogleButton({
   onSignIn,
-}: PropsWithChildren<{ onSignIn: () => void }>) {
+}: PropsWithChildren<{ onSignIn: () => Promise<unknown> }>) {
   return (
     <AuthProviderButton image={'/assets/images/google.png'} onClick={onSignIn}>
       <Trans
@@ -99,7 +99,7 @@ function SignInWithGoogleButton({
 
 function SignInWithFacebookButton({
   onSignIn,
-}: PropsWithChildren<{ onSignIn: () => void }>) {
+}: PropsWithChildren<{ onSignIn: () => Promise<unknown> }>) {
   return (
     <AuthProviderButton image={'/assets/images/fb.png'} onClick={onSignIn}>
       <Trans

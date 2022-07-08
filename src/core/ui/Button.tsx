@@ -70,7 +70,7 @@ const getStyleClasses = (style: Style, color: Color = `primary`) => {
   return styles[style][color];
 };
 
-const Button: React.FC<Props> = ({
+const Button: React.FCC<Props> = ({
   children,
   color,
   size,

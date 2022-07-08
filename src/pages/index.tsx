@@ -24,26 +24,24 @@ const Index = () => {
         <Container>
           <div
             className={
-              'my-8 md:my-28 flex flex-col items-center md:flex-row' +
-              ' justify-center flex-1 mx-auto'
+              'my-8 flex flex-col items-center md:my-28 md:flex-row' +
+              ' mx-auto flex-1 justify-center'
             }
           >
             <div
-              className={'flex flex-1 items-center w-full flex-col space-y-12'}
+              className={'flex w-full flex-1 flex-col items-center space-y-12'}
             >
               <h1
                 className={
-                  'text-black-500 text-center dark:text-current text-5xl' +
+                  'text-center text-5xl text-black-500 dark:text-current' +
                   ' sm:text-6xl md:text-7xl lg:text-[5.75rem]' +
                   ' font-extrabold'
                 }
               >
                 <span className={'block'}>
-                  <span className={'dark:text-white text-current'}>
-                    Say why your SaaS
+                  <span className={'text-current dark:text-white'}>
+                    Tell us why your SaaS is awesome
                   </span>
-
-                  <TextGradient>is awesome</TextGradient>
                 </span>
               </h1>
 
@@ -60,7 +58,7 @@ const Index = () => {
 
                 <span
                   className={
-                    'text-xs text-center text-gray-600 dark:text-gray-400'
+                    'text-center text-xs text-gray-600 dark:text-gray-400'
                   }
                 >
                   Subscribe to our newsletter to receive updates
@@ -84,17 +82,4 @@ export async function getStaticProps() {
   return {
     props,
   };
-}
-
-function TextGradient({ children }: React.PropsWithChildren<unknown>) {
-  return (
-    <span
-      className={
-        'text-transparent block bg-clip-text bg-gradient-to-br' +
-        ' from-yellow-400 via-red-400 to-blue-400'
-      }
-    >
-      {children}
-    </span>
-  );
 }

@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import Button from '../ui/Button';
 
-const AuthProviderButton: React.FC<{
+const AuthProviderButton: React.FCC<{
   image: string;
-  onClick: () => void;
+  onClick: () => Promise<unknown>;
 }> = ({ children, image, onClick }) => {
   return (
     <Button
@@ -15,7 +15,7 @@ const AuthProviderButton: React.FC<{
     >
       <div className={'absolute left-2 top-1.5 h-full items-center'}>
         <Image
-          className={'rounded-full h-full'}
+          className={'h-full rounded-full'}
           src={image}
           alt={'Auth Provider Logo'}
           width={27}

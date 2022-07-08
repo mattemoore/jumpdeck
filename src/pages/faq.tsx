@@ -13,7 +13,7 @@ import SiteHeader from '../components/SiteHeader';
 import GridList from '~/components/blog/GridList';
 import SubHeading from '~/core/ui/SubHeading';
 
-const Question: React.FC = ({ children }) => {
+const Question: React.FCC = ({ children }) => {
   return (
     <div>
       <Heading type={2}>{children}</Heading>
@@ -24,7 +24,7 @@ const Question: React.FC = ({ children }) => {
 const DATA = [
   {
     question: `Here goes a question`,
-    answer: `<p>And here sis the answer</p>`,
+    answer: `<p>And here is the answer</p>`,
   },
 ];
 
@@ -45,56 +45,54 @@ const Faq = () => {
   };
 
   return (
-    <>
-      <Layout>
-        <Head>
-          <title key="title">FAQ - {configuration.site.name}</title>
+    <Layout>
+      <Head>
+        <title key="title">FAQ - {configuration.site.name}</title>
 
-          <script
-            key={'ld:json'}
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-          />
-        </Head>
+        <script
+          key={'ld:json'}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+      </Head>
 
-        <SiteHeader />
+      <SiteHeader />
 
-        <Container>
-          <Hero>FAQ</Hero>
+      <Container>
+        <Hero>FAQ</Hero>
 
-          <SubHeading>Frequently Asked Questions</SubHeading>
+        <SubHeading>Frequently Asked Questions</SubHeading>
 
-          <div className={'my-8'}>
-            <GridList>
-              {DATA.map((item, index) => {
-                return (
+        <div className={'my-8'}>
+          <GridList>
+            {DATA.map((item, index) => {
+              return (
+                <div
+                  className={'rounded-xl bg-gray-50 p-8 dark:bg-black-400'}
+                  key={index}
+                >
+                  <Question>
+                    <span className={'font-semibold dark:text-white'}>
+                      {item.question}
+                    </span>
+                  </Question>
+
                   <div
-                    className={'bg-gray-50 dark:bg-black-400 p-8 rounded-xl'}
-                    key={index}
-                  >
-                    <Question>
-                      <span className={'font-semibold dark:text-white'}>
-                        {item.question}
-                      </span>
-                    </Question>
+                    className={
+                      'flex flex-col space-y-4 py-4 text-lg lg:text-xl' +
+                      ' dark:text-gray-400'
+                    }
+                    dangerouslySetInnerHTML={{ __html: item.answer }}
+                  />
+                </div>
+              );
+            })}
+          </GridList>
+        </div>
+      </Container>
 
-                    <div
-                      className={
-                        'text-lg lg:text-xl py-4 flex flex-col space-y-4' +
-                        ' dark:text-gray-400'
-                      }
-                      dangerouslySetInnerHTML={{ __html: item.answer }}
-                    />
-                  </div>
-                );
-              })}
-            </GridList>
-          </div>
-        </Container>
-
-        <Footer />
-      </Layout>
-    </>
+      <Footer />
+    </Layout>
   );
 };
 

@@ -16,7 +16,7 @@ import TweetEmbed from './TweetEmbed';
 
 type ImageLayout = 'fixed' | 'fill' | 'intrinsic' | 'responsive' | undefined;
 
-const NextImage: React.FC<StringObject> = (props: StringObject) => {
+const NextImage: React.FCC<StringObject> = (props: StringObject) => {
   const width = props.width ?? '4';
   const height = props.height ?? '3';
 
@@ -33,7 +33,7 @@ const NextImage: React.FC<StringObject> = (props: StringObject) => {
   );
 };
 
-const ExternalLink: React.FC<{ href: string }> = ({ href, children }) => {
+const ExternalLink: React.FCC<{ href: string }> = ({ href, children }) => {
   const siteUrl = configuration.site.siteUrl ?? '';
   const isRoot = href[0] === '/';
   const isInternalLink = href.startsWith(siteUrl) || isRoot;
@@ -49,7 +49,7 @@ const ExternalLink: React.FC<{ href: string }> = ({ href, children }) => {
   );
 };
 
-const Video: React.FC<{
+const Video: React.FCC<{
   src: string;
   width?: string;
   type?: string;

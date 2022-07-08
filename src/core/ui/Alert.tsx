@@ -11,7 +11,7 @@ import {
 import IconButton from '~/core/ui/IconButton';
 import If from '~/core/ui/If';
 
-const Alert: React.FC<{
+const Alert: React.FCC<{
   type: 'success' | 'error' | 'warn' | 'info';
   useCloseButton?: boolean;
   className?: string;
@@ -26,10 +26,10 @@ const Alert: React.FC<{
   };
 
   const icons = {
-    success: <CheckCircleIcon className={'h-6 AlertIcon'} />,
-    error: <ExclamationCircleIcon className={'h-6 AlertIcon'} />,
-    warn: <ExclamationIcon className={'h-6 AlertIcon'} />,
-    info: <InformationCircleIcon className={'h-6 AlertIcon'} />,
+    success: <CheckCircleIcon className={'AlertIcon h-6'} />,
+    error: <ExclamationCircleIcon className={'AlertIcon h-6'} />,
+    warn: <ExclamationIcon className={'AlertIcon h-6'} />,
+    info: <InformationCircleIcon className={'AlertIcon h-6'} />,
   };
 
   const icon = icons[type];

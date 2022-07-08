@@ -11,7 +11,7 @@ import {
 import Dropdown from '~/core/ui/Dropdown';
 import IconButton from '~/core/ui/IconButton';
 
-const OrganizationMemberActionsDropdown: React.FC<{
+const OrganizationMemberActionsDropdown: React.FCC<{
   onRemoveSelected: () => void;
   onChangeRoleSelected: () => void;
   disabled: boolean;
@@ -27,7 +27,7 @@ const OrganizationMemberActionsDropdown: React.FC<{
           data-cy={'update-member-role-action'}
           onClick={onChangeRoleSelected}
         >
-          <span className={'flex space-x-2 items-center'}>
+          <span className={'flex items-center space-x-2'}>
             <AdjustmentsIcon className={'h-5'} />
             <span>
               <Trans i18nKey={'organization:changeRole'} />
@@ -42,7 +42,7 @@ const OrganizationMemberActionsDropdown: React.FC<{
         >
           <span
             className={
-              'flex space-x-2 items-center text-red-700 dark:text-red-500'
+              'flex items-center space-x-2 text-red-700 dark:text-red-500'
             }
           >
             <XIcon className={'h-5'} />

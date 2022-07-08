@@ -4,7 +4,7 @@ import If from '~/core/ui/If';
 
 import FallbackUserAvatar from './FallbackUserAvatar';
 
-const ProfileAvatar: React.FC<{ user: Maybe<UserInfo> }> = ({ user }) => {
+const ProfileAvatar: React.FCC<{ user: Maybe<UserInfo> }> = ({ user }) => {
   const photoURL = user?.photoURL;
 
   if (!user) {

@@ -1,4 +1,4 @@
-const GithubLogo: React.FC<{ className?: string; fill?: string }> = ({
+const GithubLogo: React.FCC<{ className?: string; fill?: string }> = ({
   className,
   fill,
 }) => {

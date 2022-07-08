@@ -1,5 +1,5 @@
 import { useCallback, useRef } from 'react';
-import { MoonIcon } from "@heroicons/react/outline";
+import { MoonIcon } from '@heroicons/react/outline';
 
 import {
   loadThemeFromLocalStorage,
@@ -25,7 +25,7 @@ const DarkModeToggle = () => {
   return (
     <Tooltip content={tooltip}>
       <IconButton
-        className={'flex items-center bg-transparent'}
+        className={'flex items-center bg-transparent p-1'}
         onClick={toggleMode}
       >
         <MoonIcon className={'h-5'} />

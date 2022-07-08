@@ -19,7 +19,7 @@ function getSizeClasses(size?: Size) {
   return sizeClasses[size || `normal`];
 }
 
-const Badge: React.FC<{
+const Badge: React.FCC<{
   color?: Color;
   size?: Size;
   className?: string;

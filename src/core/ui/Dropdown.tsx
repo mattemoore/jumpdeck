@@ -5,7 +5,7 @@ import Button from '~/core/ui/Button';
 type ItemProps = PropsWithChildren<{ className?: string; href?: string }> &
   React.ComponentProps<typeof Button>;
 
-const Dropdown: React.FC<{
+const Dropdown: React.FCC<{
   button: JSX.Element;
   items: Array<JSX.Element>;
 }> & {
@@ -68,7 +68,7 @@ function Item({ children, ...props }: ItemProps) {
       className={'justify-start'}
       {...props}
     >
-      <span className={'px-6 py-4 flex flex-1 w-full font-normal'}>
+      <span className={'flex w-full flex-1 px-6 py-4 font-normal'}>
         {children}
       </span>
     </Button>

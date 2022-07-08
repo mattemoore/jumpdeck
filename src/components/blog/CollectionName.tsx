@@ -20,7 +20,7 @@ function CollectionName({
     <Link href={href} as={hrefAs} passHref>
       <div
         className={cn(
-          'text-center flex flex-row space-x-1 items-center cursor-pointer',
+          'flex cursor-pointer flex-row items-center space-x-1 text-center',
           getCollectionClass(collection.name)
         )}
       >

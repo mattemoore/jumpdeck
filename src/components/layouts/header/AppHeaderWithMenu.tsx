@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useAuth } from 'reactfire';
 
 import configuration from '~/configuration';
@@ -23,7 +23,7 @@ const links = {
   },
 };
 
-const AppHeaderWithMenu: React.FC = ({ children }) => {
+const AppHeaderWithMenu: React.FCC = ({ children }) => {
   const userSession = useUserSession();
   const auth = useAuth();
 
@@ -38,16 +38,18 @@ const AppHeaderWithMenu: React.FC = ({ children }) => {
     return <OrganizationsSelector userId={userId} />;
   }, [userSession?.auth]);
 
-  const signOutRequested = async () => {
-    await auth.signOut();
-  };
+  const signOutRequested = useCallback(() => {
+    void (async () => {
+      return auth.signOut();
+    })();
+  }, [auth]);
 
   return (
     <>
       <Container>
         <div className="AppHeader">
           <div className={'flex flex-1 flex-col space-y-8'}>
-            <div className={'flex justify-between items-center'}>
+            <div className={'flex items-center justify-between'}>
               <div
                 className={'flex flex-1 items-center space-x-4 md:space-x-8'}
               >
@@ -59,7 +61,7 @@ const AppHeaderWithMenu: React.FC = ({ children }) => {
               </div>
 
               <div className={'flex flex-1 justify-end'}>
-                <div className={'flex space-x-4 items-center'}>
+                <div className={'flex items-center space-x-4'}>
                   <div className={'hidden md:flex'}>
                     <NavigationMenu>
                       <NavigationItem link={links.Docs} />
@@ -80,7 +82,7 @@ const AppHeaderWithMenu: React.FC = ({ children }) => {
       <div>
         <div
           className={
-            'border-gray-100 dark:border-black-400 border py-2' +
+            'border border-gray-100 py-2 dark:border-black-400' +
             ' hidden md:block'
           }
         >
@@ -89,7 +91,7 @@ const AppHeaderWithMenu: React.FC = ({ children }) => {
           </Container>
         </div>
 
-        <div className={'border-gray-100 dark:border-black-400 border-b py-2'}>
+        <div className={'border-b border-gray-100 py-2 dark:border-black-400'}>
           <Container>
             <Heading type={2}>{children}</Heading>
           </Container>

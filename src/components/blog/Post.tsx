@@ -18,7 +18,7 @@ import CollectionName from './CollectionName';
 import SiteHeader from '../SiteHeader';
 import Collection from '~/core/blog/types/collection';
 
-const Post: React.FC<{
+const Post: React.FCC<{
   post: Post;
   morePosts: Post[];
   content: string;
@@ -31,11 +31,11 @@ const Post: React.FC<{
         <SiteHeader />
 
         <Container>
-          <div className={'max-w-2xl mx-auto'}>
-            <article className='mb-16'>
+          <div className={'mx-auto max-w-2xl'}>
+            <article className="mb-16">
               <PostHeader post={post} />
 
-              <div className={'mx-auto md:mt-2 flex justify-center'}>
+              <div className={'mx-auto flex justify-center md:mt-2'}>
                 <PostBody content={content} />
               </div>
             </article>
@@ -52,20 +52,21 @@ const Post: React.FC<{
   );
 };
 
-function MorePostsList({ posts, collection }: React.PropsWithChildren<{
-  posts: Post[],
-  collection: Collection
+function MorePostsList({
+  posts,
+  collection,
+}: React.PropsWithChildren<{
+  posts: Post[];
+  collection: Collection;
 }>) {
   return (
     <div>
       <SectionSeparator />
 
-      <h3
-        className='text-center font-semibold my-4 md:my-12 flex flex-row space-x-4 items-center justify-center dark:text-white'>
+      <h3 className="my-4 flex flex-row items-center justify-center space-x-4 text-center font-semibold dark:text-white md:my-12">
         <span>Read more about</span>{' '}
-
         <Badge>
-          <CollectionName logoSize='28px' collection={collection} />
+          <CollectionName logoSize="28px" collection={collection} />
         </Badge>
       </h3>
 
@@ -88,68 +89,65 @@ function PostHead({ post }: React.PropsWithChildren<{ post: Post }>) {
     imagePath: fullImagePath,
     author: {
       name: configuration.site.siteName,
-      url: configuration.site.siteUrl
-    }
+      url: configuration.site.siteUrl,
+    },
   });
 
   return (
     <Head>
       <title>{title}</title>
 
-      <meta property='og:type' content='article' />
-      <meta key='og:title' property='og:title' content={title} />
-      <meta property='article:published_time' content={post.date} />
+      <meta property="og:type" content="article" />
+      <meta key="og:title" property="og:title" content={title} />
+      <meta property="article:published_time" content={post.date} />
+
+      <meta key="twitter:title" property="twitter:title" content={title} />
 
       <meta
-        key='twitter:title'
-        property='twitter:title'
-        content={title}
-      />
-
-      <meta
-        key='twitter:image'
-        property='twitter:image'
+        key="twitter:image"
+        property="twitter:image"
         content={fullImagePath}
       />
 
-      {post.excerpt &&
+      {post.excerpt && (
         <>
           <meta
-            key='twitter:description'
-            property='twitter:description'
+            key="twitter:description"
+            property="twitter:description"
             content={post.excerpt}
           />
 
           <meta
-            key='og:description'
-            property='og:description'
+            key="og:description"
+            property="og:description"
             content={post.excerpt}
           />
 
           <meta
-            key='meta:description'
-            name='description'
+            key="meta:description"
+            name="description"
             content={post.excerpt}
           />
         </>
-      }
+      )}
 
-      {post.canonical &&
-        <link rel='canonical' href={post.canonical} key='canonical' />}
+      {post.canonical && (
+        <link rel="canonical" href={post.canonical} key="canonical" />
+      )}
 
-      {ogImage &&
-        <meta key={'og:image'} property='og:image' content={ogImage} />
-      }
+      {ogImage && (
+        <meta key={'og:image'} property="og:image" content={ogImage} />
+      )}
 
       <script
-        key='ld:json'
-        type='application/ld+json'
+        key="ld:json"
+        type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredDataJson)
+          __html: JSON.stringify(structuredDataJson),
         }}
       />
     </Head>
-  )
+  );
 }
 
 export default Post;

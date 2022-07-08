@@ -1,4 +1,4 @@
-import { FormEvent, useContext, useState } from 'react';
+import { FormEvent, useCallback, useContext, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useStorage } from 'reactfire';
 import { Trans, useTranslation } from 'next-i18next';
@@ -13,12 +13,12 @@ import {
 
 import { OrganizationContext } from '~/lib/contexts/organization';
 import { useUpdateOrganization } from '~/lib/organizations/hooks/use-update-organization';
+import { Organization } from '~/lib/organizations/types/organization';
 
 import Button from '~/core/ui/Button';
 import TextField from '~/core/ui/TextField';
 import ImageUploadInput from '~/core/ui/ImageUploadInput';
 import Label from '~/core/ui/Label';
-import { Organization } from '~/lib/organizations/types/organization';
 
 const UpdateOrganizationForm = () => {
   const storage = useStorage();
@@ -30,60 +30,73 @@ const UpdateOrganizationForm = () => {
   const oldLogoUrl = organization?.logoURL;
   const onLogoCleared = () => setLogoIsDirty(true);
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const onSubmit = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
 
-    if (!organization) {
-      return;
-    }
-
-    const data = new FormData(event.currentTarget);
-
-    const name = data.get(`name`) as string;
-    const timezone = data.get(`timezone`) as string;
-    const logoFile = data.get(`logo`) as File | null;
-
-    const logoName = logoFile?.name;
-
-    const logoURL = logoName
-      ? await uploadLogo({
-          logo: logoFile,
-          storage,
-          organizationId: organization.id,
-        })
-      : oldLogoUrl;
-
-    const isLogoRemoved = logoIsDirty && !logoName;
-
-    // delete existing logo if different
-    if (isLogoRemoved && oldLogoUrl) {
-      try {
-        await deleteObject(ref(storage, oldLogoUrl));
-      } catch (e) {
-        // old logo not found
+      if (!organization) {
+        return;
       }
-    }
 
-    const organizationData: WithId<Partial<Organization>> = {
-      id: organization.id,
-      name,
-      timezone,
-      logoURL: isLogoRemoved ? null : logoURL,
-    };
+      void (async () => {
+        const data = new FormData(event.currentTarget);
 
-    const promise = updateOrganization(organizationData);
+        const name = data.get(`name`) as string;
+        const timezone = data.get(`timezone`) as string;
+        const logoFile = data.get(`logo`) as File | null;
 
-    await toast.promise(promise, {
-      loading: t(`updateOrganizationLoadingMessage`),
-      success: t(`updateOrganizationSuccessMessage`),
-      error: t(`updateOrganizationErrorMessage`),
-    });
+        const logoName = logoFile?.name;
 
-    setOrganization({
-      ...organization,
-      ...organizationData,
-    });
-  };
+        const logoURL = logoName
+          ? await uploadLogo({
+              logo: logoFile,
+              storage,
+              organizationId: organization.id,
+            })
+          : oldLogoUrl;
+
+        const isLogoRemoved = logoIsDirty && !logoName;
+
+        // delete existing logo if different
+        if (isLogoRemoved && oldLogoUrl) {
+          try {
+            await deleteObject(ref(storage, oldLogoUrl));
+          } catch (e) {
+            // old logo not found
+          }
+        }
+
+        const organizationData: WithId<Partial<Organization>> = {
+          id: organization.id,
+          name,
+          timezone,
+          logoURL: isLogoRemoved ? null : logoURL,
+        };
+
+        const promise = updateOrganization(organizationData);
+
+        await toast.promise(promise, {
+          loading: t(`updateOrganizationLoadingMessage`),
+          success: t(`updateOrganizationSuccessMessage`),
+          error: t(`updateOrganizationErrorMessage`),
+        });
+
+        setOrganization({
+          ...organization,
+          ...organizationData,
+        });
+      })();
+    },
+    [
+      logoIsDirty,
+      oldLogoUrl,
+      organization,
+      setOrganization,
+      storage,
+      t,
+      updateOrganization,
+    ]
+  );
 
   return (
     <form onSubmit={onSubmit} className={'space-y-4'}>

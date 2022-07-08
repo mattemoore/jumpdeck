@@ -28,7 +28,7 @@ const Onboarding = () => {
   const [data, setData] = useState<Data>();
   const router = useRouter();
 
-  const firstStepSubmitted = useCallback(
+  const onFirstStepSubmitted = useCallback(
     (organizationInfo: OrganizationInfoStepData) => {
       setData({
         organization: organizationInfo.organization,
@@ -40,7 +40,9 @@ const Onboarding = () => {
   );
 
   const onComplete = useCallback(() => {
-    return router.push(configuration.paths.appHome);
+    void (async () => {
+      return router.push(configuration.paths.appHome);
+    })();
   }, [router]);
 
   return (
@@ -51,7 +53,7 @@ const Onboarding = () => {
 
       <div
         className={
-          'flex flex-col space-y-10 flex-1 h-screen w-screen overflow-hidden justify-center items-center dark:bg-black-500 bg-gray-100'
+          'flex h-screen w-screen flex-1 flex-col items-center justify-center space-y-10 overflow-hidden bg-gray-100 dark:bg-black-500'
         }
       >
         <div>
@@ -60,11 +62,11 @@ const Onboarding = () => {
 
         <div
           className={
-            'flex w-11/12 sm:w-8/12 md:w-6/12 xl:w-3/12 shadow bg-white dark:bg-black-400 p-10 rounded-xl'
+            'flex w-11/12 rounded-xl bg-white p-10 shadow dark:bg-black-400 sm:w-8/12 md:w-6/12 xl:w-3/12'
           }
         >
           <If condition={currentStep === 0}>
-            <OrganizationInfoStep onSubmit={firstStepSubmitted} />
+            <OrganizationInfoStep onSubmit={onFirstStepSubmitted} />
           </If>
 
           <If condition={currentStep === 1 && data}>

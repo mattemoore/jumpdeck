@@ -16,7 +16,7 @@ import { canChangeBilling } from '~/lib/organizations/permissions';
 import If from '~/core/ui/If';
 import Heading from '~/core/ui/Heading';
 
-const PlanSelectionForm: React.FC<{
+const PlanSelectionForm: React.FCC<{
   organization: WithId<Organization>;
 }> = ({ organization }) => {
   const initialPlan = configuration.plans.find((item) => {

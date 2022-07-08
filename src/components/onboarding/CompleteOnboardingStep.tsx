@@ -8,7 +8,7 @@ interface CompleteOnboardingStepData {
   organization: string;
 }
 
-export const CompleteOnboardingStep: React.FC<{
+export const CompleteOnboardingStep: React.FCC<{
   onComplete: () => void;
   data: CompleteOnboardingStepData;
 }> = ({ onComplete, data }) => {
@@ -42,7 +42,7 @@ export const CompleteOnboardingStep: React.FC<{
   }
 
   return (
-    <div className={'flex flex-1 space-x-8 items-center'}>
+    <div className={'flex flex-1 items-center space-x-8'}>
       <span>
         <ScalingSquaresSpinner color={'currentColor'} />
       </span>

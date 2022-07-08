@@ -51,3 +51,7 @@ declare module 'next' {
     firebaseUser: DecodedIdToken;
   }
 }
+
+declare module 'react' {
+  type FCC<Props = Record<string, unknown>> = React.FC<React.PropsWithChildren<Props>>;
+}

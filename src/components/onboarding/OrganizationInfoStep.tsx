@@ -10,7 +10,7 @@ export interface OrganizationInfoStepData {
   organization: string;
 }
 
-export const OrganizationInfoStep: React.FC<{
+export const OrganizationInfoStep: React.FCC<{
   onSubmit: (data: OrganizationInfoStepData) => void;
 }> = ({ onSubmit }) => {
   const { data } = useUser();
@@ -28,14 +28,14 @@ export const OrganizationInfoStep: React.FC<{
   return (
     <form
       onSubmit={handleFormSubmit}
-      className={'flex flex-col space-y-8 flex-1'}
+      className={'flex flex-1 flex-col space-y-8'}
     >
       <div>
         <Heading type={2}>Hi {displayName}</Heading>
         <SubHeading>Let&apos;s set your organization up</SubHeading>
       </div>
 
-      <div className={'flex flex-col  flex-1 space-y-2'}>
+      <div className={'flex flex-1  flex-col space-y-2'}>
         <TextField>
           <TextField.Label>
             Your organization&apos;s name

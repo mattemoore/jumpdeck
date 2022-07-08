@@ -1,21 +1,21 @@
 @import '../../node_modules/tippy.js/dist/tippy.css';
 
-.tippy-box[data-theme~='storyjoy'] {
+.tippy-box[data-theme~='makerkit'] {
     @apply bg-black-300 text-xs font-semibold;
 }
 
-.tippy-box[data-theme~='storyjoy'][data-placement^='top'] > .tippy-arrow::before {
+.tippy-box[data-theme~='makerkit'][data-placement^='top'] > .tippy-arrow::before {
     @apply border-t-black-300;
 }
 
-.tippy-box[data-theme~='storyjoy'][data-placement^='bottom'] > .tippy-arrow::before {
+.tippy-box[data-theme~='makerkit'][data-placement^='bottom'] > .tippy-arrow::before {
     @apply border-b-black-300;
 }
 
-.tippy-box[data-theme~='storyjoy'][data-placement^='left'] > .tippy-arrow::before {
+.tippy-box[data-theme~='makerkit'][data-placement^='left'] > .tippy-arrow::before {
     @apply border-l-black-300;
 }
 
-.tippy-box[data-theme~='storyjoy'][data-placement^='right'] > .tippy-arrow::before {
+.tippy-box[data-theme~='makerkit'][data-placement^='right'] > .tippy-arrow::before {
     @apply border-r-black-300;
 }

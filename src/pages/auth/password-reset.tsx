@@ -24,30 +24,32 @@ import Alert from '~/core/ui/Alert';
 import Logo from '~/core/ui/Logo';
 import Hero from '~/core/ui/Hero';
 
-export const PasswordReset: React.FC = () => {
+export const PasswordReset: React.FCC = () => {
   const auth = useAuth();
   const { state, setError, setData, setLoading } = useRequestState();
 
   const onSubmit = useCallback(
-    async (event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
+    (event: FormEvent<HTMLFormElement>) => {
+      void (async () => {
+        event.preventDefault();
 
-      const data = new FormData(event.currentTarget);
-      const email = data.get('email') as string;
+        const data = new FormData(event.currentTarget);
+        const email = data.get('email') as string;
 
-      setLoading(true);
+        setLoading(true);
 
-      try {
-        const returnUrl = getReturnUrl();
+        try {
+          const returnUrl = getReturnUrl();
 
-        await sendPasswordResetEmail(auth, email, {
-          url: returnUrl,
-        });
+          await sendPasswordResetEmail(auth, email, {
+            url: returnUrl,
+          });
 
-        setData(true);
-      } catch (e) {
-        setError(getFirebaseErrorCode(e));
-      }
+          setData(true);
+        } catch (e) {
+          setError(getFirebaseErrorCode(e));
+        }
+      })();
     },
     [auth, setData, setError, setLoading]
   );
@@ -58,10 +60,10 @@ export const PasswordReset: React.FC = () => {
         <title>Password Reset</title>
       </Head>
 
-      <div className={'flex items-center justify-center h-screen'}>
+      <div className={'flex h-screen items-center justify-center'}>
         <div
           className={
-            'items-center flex flex-col space-y-8 w-11/12 md:w-8/12 lg:w-4/12 xl:w-3/12'
+            'flex w-11/12 flex-col items-center space-y-8 md:w-8/12 lg:w-4/12 xl:w-3/12'
           }
         >
           <div className={'mb-2 sm:mb-4 lg:mb-8'}>

@@ -42,7 +42,7 @@ function AppSidebarHeader({
   const logoHref = '/dashboard';
 
   return (
-    <div className={'flex w-full flex-col px-4 space-y-6'}>
+    <div className={'flex w-full flex-col space-y-6 px-4'}>
       <div className={'px-3 py-0'}>
         <Logo href={logoHref} />
       </div>
@@ -98,7 +98,7 @@ function AppSidebarMenu() {
 
 function AppSidebarFooterMenu() {
   return (
-    <div className={'absolute w-full bottom-8 px-6'}>
+    <div className={'absolute bottom-8 w-full px-6'}>
       <div className={'flex flex-col space-y-4'}>
         <FooterItem href={'/docs'}>
           <DocumentIcon className={'h-4'} />

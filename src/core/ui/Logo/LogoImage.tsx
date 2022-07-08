@@ -1,4 +1,4 @@
-const LogoImage: React.FC<{
+const LogoImage: React.FCC<{
   className?: string;
 }> = ({ className }) => {
   return (

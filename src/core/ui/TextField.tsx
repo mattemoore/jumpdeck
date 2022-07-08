@@ -19,11 +19,11 @@ type Props = React.InputHTMLAttributes<unknown> & {
   onClear?: EmptyCallback;
 };
 
-const Hint: React.FC = ({ children }) => {
+const Hint: React.FCC = ({ children }) => {
   return <span className={`TextFieldHint`}>{children}</span>;
 };
 
-const Input: React.FC<Props> = ({
+const Input: React.FCC<Props> = ({
   className,
   innerRef,
   children,
@@ -82,7 +82,7 @@ const Input: React.FC<Props> = ({
   );
 };
 
-type TextFieldComponent = React.FC<Props> & {
+type TextFieldComponent = React.FCC<Props> & {
   Label: typeof Label;
   Hint: typeof Hint;
   Input: typeof Input;

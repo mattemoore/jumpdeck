@@ -13,7 +13,7 @@ export default function DocumentationNavigation({
   const path = router.query.page;
 
   return (
-    <div className={'flex flex-col space-y-2 h-full'}>
+    <div className={'flex h-full flex-col space-y-2'}>
       {data.map(({ directory, pages }) => {
         return (
           <div

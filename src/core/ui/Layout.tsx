@@ -1,6 +1,6 @@
 import Meta from '~/core/ui/Meta';
 
-const Layout: React.FC = ({ children }) => {
+const Layout: React.FCC = ({ children }) => {
   return (
     <>
       <Meta />

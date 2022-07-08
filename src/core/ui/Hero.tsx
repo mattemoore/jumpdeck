@@ -1,4 +1,4 @@
-const Hero: React.FC = ({ children }) => {
+const Hero: React.FCC = ({ children }) => {
   return <h1 className="Hero">{children}</h1>;
 };
 

@@ -1,16 +1,18 @@
-import * as runtime from 'react/jsx-runtime.js';
+import * as runtime from 'react/jsx-runtime';
 import { runSync } from '@mdx-js/mdx';
 
 import MDXComponents from '~/components/blog/MDXComponents';
 
 type MdxComponent = React.ExoticComponent<{
-  components: Record<string, React.ReactNode>;
+  components: typeof MDXComponents;
 }>;
 
-export default function MDXRenderer({ code }: { code: string }) {
-  const { default: MdxModuleComponent } = (runSync(code, runtime)) as {
+function MDXRenderer({ code }: { code: string }) {
+  const { default: MdxModuleComponent } = runSync(code, runtime) as {
     default: MdxComponent;
   };
 
-  return <MdxModuleComponent components={MDXComponents} />
+  return <MdxModuleComponent components={MDXComponents} />;
 }
+
+export default MDXRenderer;

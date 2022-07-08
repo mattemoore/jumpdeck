@@ -18,7 +18,7 @@ const CoverImage = ({ title, src, slug, preloadImage, className }: Props) => {
     <Image
       layout={'responsive'}
       className={cn('block rounded-lg', {
-        'transition-all duration-250 hover:opacity-90': slug,
+        'duration-250 transition-all hover:opacity-90': slug,
         [`${className ?? ''}`]: true,
       })}
       src={src}

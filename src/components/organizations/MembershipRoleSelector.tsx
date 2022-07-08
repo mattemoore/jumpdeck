@@ -8,7 +8,7 @@ import roles from '~/lib/organizations/roles';
 import { IfHasPermissions } from '~/components/IfHasPermissions';
 import { canInviteUser } from '~/lib/organizations/permissions';
 
-const MembershipRoleSelector: React.FC<{
+const MembershipRoleSelector: React.FCC<{
   value?: MembershipRole;
   onChange?: (role: MembershipRole) => unknown;
 }> = ({ value: currentRole, onChange }) => {

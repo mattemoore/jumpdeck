@@ -37,11 +37,11 @@ For more info: https://github.com/tailwindlabs/tailwindcss/issues/3258#issuecomm
 }
 
 .PostBody > p {
-  @apply text-lg leading-8 my-6;
+  @apply text-base leading-8 my-6 dark:text-gray-400;
 }
 
 .PostBody li {
-  @apply text-lg leading-8 my-2;
+  @apply text-base leading-8 my-2 dark:text-gray-400;
 }
 
 :global(.dark) .PostBody > p,

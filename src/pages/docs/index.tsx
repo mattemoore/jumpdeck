@@ -21,70 +21,66 @@ export default function Docs({
   docs,
 }: React.PropsWithChildren<{ docs: ReturnType<typeof getDocs> }>) {
   return (
-    <>
-      <Layout>
-        <Head>
-          <title key="title">
-            Documentation - {configuration.site.siteName}
-          </title>
-        </Head>
+    <Layout>
+      <Head>
+        <title key="title">Documentation - {configuration.site.siteName}</title>
+      </Head>
 
-        <SiteHeader />
+      <SiteHeader />
 
-        <div className={'block md:hidden'}>
-          <FloatingDocumentationNavigation data={docs} />
+      <div className={'block md:hidden'}>
+        <FloatingDocumentationNavigation data={docs} />
+      </div>
+
+      <Container>
+        <div>
+          <Hero>Documentation</Hero>
+
+          <SubHeading>
+            Explore our guides and examples to start building your app.
+          </SubHeading>
         </div>
 
-        <Container>
-          <div>
-            <Hero>Documentation</Hero>
-
-            <SubHeading>
-              Explore our guides and examples to start building your app.
-            </SubHeading>
+        <div className={'block md:flex md:space-x-8 lg:space-x-16'}>
+          <div className={'DocumentationSidebarContainer'}>
+            <DocumentationNavigation data={docs} />
           </div>
 
-          <div className={'block md:flex md:space-x-8 lg:space-x-16'}>
-            <div className={'DocumentationSidebarContainer'}>
-              <DocumentationNavigation data={docs} />
-            </div>
+          <div className="mt-8 flex flex-1 flex-col">
+            <GridList>
+              {docs.map((doc) => {
+                const { pages, directory } = doc;
+                const page = pages[0];
+                const href = `/docs/${page?.slug}`;
 
-            <div className="flex-col flex flex-1 mt-8">
-              <GridList>
-                {docs.map((doc) => {
-                  const { pages, directory } = doc;
-                  const page = pages[0];
-                  const href = `/docs/${page?.slug}`;
+                return (
+                  <Heading key={href} type={2}>
+                    <TopicLink href={href}>
+                      <>
+                        <span className={'dark:text-white'}>
+                          {directory.title}
+                        </span>
 
-                  return (
-                    <Heading key={href} type={2}>
-                      <TopicLink href={href}>
-                        <>
-                          <span className={'dark:text-white'}>
-                            {directory.title}
-                          </span>
+                        <span
+                          className={
+                            'block text-base dark:text-gray-300' +
+                            ' mt-4 font-medium'
+                          }
+                        >
+                          {directory.description}
+                        </span>
+                      </>
+                    </TopicLink>
+                  </Heading>
+                );
+              })}
+            </GridList>
 
-                          <span
-                            className={
-                              'block text-base dark:text-gray-300' +
-                              ' font-medium mt-4'
-                            }
-                          >
-                            {directory.description}
-                          </span>
-                        </>
-                      </TopicLink>
-                    </Heading>
-                  );
-                })}
-              </GridList>
-
-              <Footer />
-            </div>
+            <Footer />
           </div>
-        </Container>
-      </Layout>
-    </>
+        </div>
+      </Container>
+    </Layout>
   );
 }
 
@@ -95,7 +91,7 @@ function TopicLink({
   return (
     <Link href={href} passHref>
       <a
-        className={`w-full dark:active:bg-black-600 active:bg-gray-200 transition-colors hover:bg-gray-100 dark:hover:border-black-300 dark:hover:bg-black-500 bg-gray-50 rounded-xl flex flex-col dark:bg-black-400 dark:border-2 px-5 dark:border-black-500 py-6`}
+        className={`flex w-full flex-col rounded-xl bg-gray-50 px-5 py-6 transition-colors hover:bg-gray-100 active:bg-gray-200 dark:border-2 dark:border-black-500 dark:bg-black-400 dark:hover:border-black-300 dark:hover:bg-black-500 dark:active:bg-black-600`}
       >
         {children}
       </a>

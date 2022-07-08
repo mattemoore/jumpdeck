@@ -14,17 +14,17 @@ import {
 import Dropdown from '~/core/ui/Dropdown';
 import ProfileAvatar from './ProfileAvatar';
 
-const ProfileDropdown: React.FC<{
+const ProfileDropdown: React.FCC<{
   user: Maybe<UserInfo>;
   signOutRequested: () => void;
 }> = ({ user, signOutRequested }) => {
   const ProfileDropdownButton = (
     <Menu.Button
       as={'span'}
-      className={'flex flex-row space-x-2' + ' items-center cursor-pointer'}
+      className={'flex flex-row space-x-2' + ' cursor-pointer items-center'}
     >
       <ProfileAvatar user={user} />
-      <ChevronDownIcon className={'h-3 hidden sm:block'} />
+      <ChevronDownIcon className={'hidden h-3 sm:block'} />
     </Menu.Button>
   );
 
@@ -83,7 +83,7 @@ function ProfileDropdownMenuItem(
 
   return (
     <Dropdown.Item href={href} onClick={onClick}>
-      <span className={'flex space-x-4 items-center space-between w-full'}>
+      <span className={'space-between flex w-full items-center space-x-4'}>
         {props.children}
       </span>
     </Dropdown.Item>

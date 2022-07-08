@@ -12,7 +12,7 @@ import SubscriptionCard from './SubscriptionCard';
 import { canChangeBilling } from '~/lib/organizations/permissions';
 import { IfHasPermissions } from '~/components/IfHasPermissions';
 
-const Plans: React.FC = () => {
+const Plans: React.FCC = () => {
   const organization = useCurrentOrganization();
 
   if (!organization) {

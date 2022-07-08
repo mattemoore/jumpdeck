@@ -12,7 +12,7 @@ const classNames = {
   [MembershipRole.Member]: 'bg-blue-500 text-white font-semibold',
 };
 
-const RoleBadge: React.FC<{
+const RoleBadge: React.FCC<{
   role: MembershipRole;
 }> = ({ role }) => {
   const data = roles.find((item) => item.value === role);

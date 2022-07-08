@@ -13,7 +13,7 @@ import { useCurrentOrganization } from '~/lib/organizations/hooks/use-current-or
 import MembershipRoleSelector from './MembershipRoleSelector';
 import { useUpdateMemberRequest } from '~/lib/organizations/hooks/use-update-member-role';
 
-const UpdateMemberRoleModal: React.FC<{
+const UpdateMemberRoleModal: React.FCC<{
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   member: User;
@@ -30,24 +30,26 @@ const UpdateMemberRoleModal: React.FC<{
     targetMemberId: member.uid,
   });
 
-  const onRoleUpdated = useCallback(async () => {
-    if (role === memberRole) {
-      toaster.error(t('chooseDifferentRoleError'), {
-        className: 'chooseDifferentRoleError',
+  const onRoleUpdated = useCallback(() => {
+    void (async () => {
+      if (role === memberRole) {
+        toaster.error(t('chooseDifferentRoleError'), {
+          className: 'chooseDifferentRoleError',
+        });
+
+        return;
+      }
+
+      const promise = request({ role });
+
+      await toaster.promise(promise, {
+        loading: t('updateRoleLoadingMessage'),
+        success: t('updateRoleSuccessMessage'),
+        error: t('updatingRoleErrorMessage'),
       });
 
-      return;
-    }
-
-    const promise = request({ role });
-
-    await toaster.promise(promise, {
-      loading: t('updateRoleLoadingMessage'),
-      success: t('updateRoleSuccessMessage'),
-      error: t('updatingRoleErrorMessage'),
-    });
-
-    setIsOpen(false);
+      setIsOpen(false);
+    })();
   }, [request, role, setIsOpen, t, memberRole]);
 
   const heading = () => (

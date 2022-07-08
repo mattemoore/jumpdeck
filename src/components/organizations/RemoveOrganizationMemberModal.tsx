@@ -7,8 +7,9 @@ import { useApiRequest } from '~/core/hooks/use-api';
 
 import Button from '~/core/ui/Button';
 import Modal from '~/core/ui/Modal';
+import { useCallback } from 'react';
 
-const RemoveOrganizationMemberModal: React.FC<{
+const RemoveOrganizationMemberModal: React.FCC<{
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   member: User;
@@ -22,17 +23,19 @@ const RemoveOrganizationMemberModal: React.FC<{
     member.uid
   );
 
-  const onUserRemoved = async () => {
-    const promise = removeMemberRequest();
+  const onUserRemoved = useCallback(() => {
+    void (async () => {
+      const promise = removeMemberRequest();
 
-    await toaster.promise(promise, {
-      success: t(`removeMemberSuccessMessage`),
-      error: t(`removeMemberErrorMessage`),
-      loading: t(`removeMemberLoadingMessage`),
-    });
+      await toaster.promise(promise, {
+        success: t(`removeMemberSuccessMessage`),
+        error: t(`removeMemberErrorMessage`),
+        loading: t(`removeMemberLoadingMessage`),
+      });
 
-    setIsOpen(false);
-  };
+      setIsOpen(false);
+    })();
+  }, [removeMemberRequest, setIsOpen, t]);
 
   const heading = () => (
     <Trans i18nKey="organization:removeMemberModalHeading" />

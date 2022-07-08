@@ -21,7 +21,7 @@ type Props = Omit<React.InputHTMLAttributes<unknown>, 'value'> & {
   onClear?: () => void;
 };
 
-const ImageUploadInput: React.FC<Props> = ({
+const ImageUploadInput: React.FCC<Props> = ({
   children,
   image,
   onClear,
@@ -75,7 +75,7 @@ const ImageUploadInput: React.FC<Props> = ({
         accept="image/*"
       />
 
-      <div className={'flex space-x-4 items-center'}>
+      <div className={'flex items-center space-x-4'}>
         <div className={'flex'}>
           <If condition={!value}>
             <CloudUploadIcon

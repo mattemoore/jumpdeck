@@ -16,7 +16,7 @@ interface LinkWithTranslation extends WithPath {
 
 type Link = LinkWithTranslation | LinkWithLabel;
 
-const NavigationMenuItem: React.FC<{
+const NavigationMenuItem: React.FCC<{
   link: Link;
   depth?: number;
   disabled?: boolean;

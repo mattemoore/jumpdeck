@@ -15,12 +15,14 @@ import Hero from '~/core/ui/Hero';
 import Logo from '~/core/ui/Logo';
 import Button from '~/core/ui/Button';
 
-const SignUp: React.FC = () => {
+const SignUp: React.FCC = () => {
   const router = useRouter();
   const signInPath = configuration.paths.signIn;
 
   const onSignUp = useCallback(() => {
-    return router.push(configuration.paths.onboarding);
+    void (async () => {
+      return router.push(configuration.paths.onboarding);
+    })();
   }, [router]);
 
   return (
@@ -30,12 +32,10 @@ const SignUp: React.FC = () => {
           <title>Sign Up</title>
         </Head>
 
-        <div
-          className={'flex items-center justify-center h-screen mt-2 md:mt-12'}
-        >
+        <div className={'flex h-screen flex-col items-center justify-center'}>
           <div
             className={
-              'items-center flex flex-col space-y-8 w-11/12 md:w-8/12 xl:w-3/12'
+              'flex w-11/12 flex-col items-center space-y-8 md:w-8/12 lg:w-4/12 xl:w-3/12'
             }
           >
             <div className={'mb-2 sm:mb-4 lg:mb-8'}>

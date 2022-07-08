@@ -1,5 +1,4 @@
 import withBundleAnalyzer from "@next/bundle-analyzer";
-import CopyPlugin from 'copy-webpack-plugin';
 import i18nConfig from "./next-i18next.config.js";
 
 const analyzeBundleEnabled = process.env.ANALYZE === "true";
@@ -31,8 +30,6 @@ const config = {
       config.resolve.fallback.fs = false;
     }
 
-    addPartyTown(config);
-
     return config;
   },
   i18n: i18nConfig.i18n
@@ -56,24 +53,4 @@ function getConfiguredDomains() {
   return [
     isProduction ? firebaseStorageBucket : "localhost"
   ];
-}
-
-/**
- * @description Adds Party Town as a static asset
- * For more info: https://github.com/BuilderIO/partytown/wiki/Getting-Started
- * @param config
- */
-function addPartyTown(config) {
-  const directory = process.cwd();
-
-  config.plugins.push(
-    new CopyPlugin({
-      patterns: [
-        {
-          from: [directory, 'node_modules', '@builder.io', 'partytown', 'lib'].join('/'),
-          to: [directory, 'public', '~partytown'].join('/'),
-        },
-      ],
-    }),
-  );
 }

@@ -5,7 +5,7 @@ import configuration from '~/configuration';
 
 const CHECKOUT_SESSION_API_ENDPOINT = configuration.paths.api.checkout;
 
-const CheckoutRedirectButton: React.FC<{
+const CheckoutRedirectButton: React.FCC<{
   disabled?: boolean;
   priceId: Maybe<string>;
   organizationId: Maybe<string>;

@@ -17,10 +17,11 @@ import Button from '~/core/ui/Button';
 import IconButton from '~/core/ui/IconButton';
 
 import MembershipRoleSelector from './MembershipRoleSelector';
+import { useCallback } from 'react';
 
 type InviteModel = ReturnType<typeof memberFactory>;
 
-const InviteMembersForm: React.FC = () => {
+const InviteMembersForm: React.FCC = () => {
   const { t } = useTranslation('organization');
   const router = useRouter();
 
@@ -42,22 +43,33 @@ const InviteMembersForm: React.FC = () => {
     shouldUnregister: true,
   });
 
-  const onSubmit = async ({ members }: { members: InviteModel[] }) => {
-    await toast.promise(request(members), {
-      success: t(`inviteMembersSuccess`),
-      error: t(`inviteMembersError`),
-      loading: t(`inviteMembersLoading`),
-    });
+  const navigateToMembersPage = useCallback(() => {
+    void (async () => {
+      return router.push(`/settings/organization/members`);
+    })();
+  }, [router]);
 
-    await navigateToMembersPage();
-  };
+  const onSubmit = useCallback(
+    ({ members }: { members: InviteModel[] }) => {
+      void (async () => {
+        await toast.promise(request(members), {
+          success: t(`inviteMembersSuccess`),
+          error: t(`inviteMembersError`),
+          loading: t(`inviteMembersLoading`),
+        });
 
-  const navigateToMembersPage = () => {
-    return router.push(`/settings/organization/members`);
-  };
+        navigateToMembersPage();
+      })();
+    },
+    [navigateToMembersPage, request, t]
+  );
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={(event) => {
+        void handleSubmit(onSubmit)(event);
+      }}
+    >
       <div className="flex flex-col space-y-2">
         {fields.map((field, index) => {
           const emailInputName = `members.${index}.email` as const;
@@ -70,14 +82,18 @@ const InviteMembersForm: React.FC = () => {
           return (
             <div
               key={field.id}
-              className={'flex space-between items-center space-x-3'}
+              className={'space-between flex items-center space-x-3'}
             >
               <div className={'w-8/12'}>
                 <TextField.Input
                   data-cy={'invite-email-input'}
                   name={emailControl.name}
-                  onChange={emailControl.onChange}
-                  onBlur={emailControl.onBlur}
+                  onChange={(event) => {
+                    void emailControl.onChange(event);
+                  }}
+                  onBlur={(event) => {
+                    void emailControl.onBlur(event);
+                  }}
                   innerRef={emailControl.ref}
                   placeholder="member@email.com"
                   type="email"
@@ -118,7 +134,7 @@ const InviteMembersForm: React.FC = () => {
             size={'small'}
             onClick={() => append(memberFactory())}
           >
-            <span className={'flex space-x-2 items-center'}>
+            <span className={'flex items-center space-x-2'}>
               <PlusCircleIcon className={'h-5'} />
               <span>
                 <Trans i18nKey={'organization:addAnotherMemberButtonLabel'} />
