@@ -18,7 +18,7 @@ const CreateOrganizationModal: React.FCC<{
   const { loading, data: newOrganization } = createOrganizationState;
   const { t } = useTranslation();
 
-  const Heading = () => (
+  const Heading = (
     <Trans i18nKey={'organization:createOrganizationModalHeading'} />
   );
 

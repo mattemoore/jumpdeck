@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useAuth } from 'reactfire';
+import dynamic from 'next/dynamic';
 
 import configuration from '~/configuration';
 import { useUserSession } from '~/lib/hooks/use-user-session';
@@ -10,11 +11,16 @@ import Heading from '~/core/ui/Heading';
 import Logo from '~/core/ui/Logo';
 
 import Container from '~/core/ui/Container';
-import ClientOnly from '~/core/ui/ClientOnly';
 
-import OrganizationsSelector from '../../OrganizationsSelector';
 import ProfileDropdown from '../../ProfileDropdown';
 import AppNavigation from './AppNavigation';
+
+const OrganizationsSelector = dynamic(
+  () => import('../../OrganizationsSelector'),
+  {
+    ssr: false,
+  }
+);
 
 const links = {
   Docs: {
@@ -39,9 +45,7 @@ const AppHeaderWithMenu: React.FCC = ({ children }) => {
   }, [userSession?.auth]);
 
   const signOutRequested = useCallback(() => {
-    void (async () => {
-      return auth.signOut();
-    })();
+    void auth.signOut();
   }, [auth]);
 
   return (
@@ -55,9 +59,7 @@ const AppHeaderWithMenu: React.FCC = ({ children }) => {
               >
                 <Logo href={configuration.paths.appHome} />
 
-                <div suppressHydrationWarning>
-                  <ClientOnly>{OrganizationsDropdown}</ClientOnly>
-                </div>
+                <div>{OrganizationsDropdown}</div>
               </div>
 
               <div className={'flex flex-1 justify-end'}>

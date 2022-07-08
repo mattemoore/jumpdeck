@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { ScalingSquaresSpinner } from 'react-epic-spinners';
 
 import { useApiRequest } from '~/core/hooks/use-api';
@@ -14,6 +14,7 @@ export const CompleteOnboardingStep: React.FCC<{
 }> = ({ onComplete, data }) => {
   const [request, state] = useCompleteOnboardingRequest();
   const { error, success } = state;
+  const onboardingCompleteRequested = useRef(false);
 
   const callRequestCallback = useCallback(() => {
     if (data) {
@@ -28,7 +29,12 @@ export const CompleteOnboardingStep: React.FCC<{
   }, [success, onComplete]);
 
   useEffect(() => {
-    void callRequestCallback();
+    // React will run the effect twice
+    // so we use the ref to prevent it
+    if (!onboardingCompleteRequested.current) {
+      onboardingCompleteRequested.current = true;
+      void callRequestCallback();
+    }
   }, [callRequestCallback]);
 
   useEffect(callOnCompleteCallback, [callOnCompleteCallback]);

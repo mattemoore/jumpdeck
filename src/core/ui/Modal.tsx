@@ -9,22 +9,25 @@ import If from '~/core/ui/If';
 
 import Button from './Button';
 
-const Modal: React.FCC<{
-  heading: React.FCC | string;
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => unknown;
-  closeButton?: boolean;
-}> = ({ isOpen, setIsOpen, closeButton, heading, children }) => {
+const Modal: React.FC<
+  React.PropsWithChildren<{
+    heading: string | JSX.Element;
+    isOpen: boolean;
+    setIsOpen: (isOpen: boolean) => unknown;
+    closeButton?: boolean;
+  }>
+> = ({ isOpen, setIsOpen, closeButton, heading, children }) => {
   const useCloseButton = closeButton ?? true;
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog
+        open={isOpen}
         as="div"
-        className="fixed inset-0 z-10 overflow-y-auto bg-gray-500 bg-opacity-30 transition-all"
+        className="fixed inset-0 z-10 h-screen bg-gray-500 bg-opacity-30 transition-all"
         onClose={() => setIsOpen(false)}
       >
-        <div className="min-h-screen px-4 text-center">
+        <div className="h-full min-h-screen px-4 text-center">
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -37,7 +40,6 @@ const Modal: React.FCC<{
             <Dialog.Overlay className="fixed inset-0" />
           </Transition.Child>
 
-          {/* This element is to trick the browser into centering the modal contents. */}
           <span
             className="inline-block h-screen align-middle"
             aria-hidden="true"
@@ -48,19 +50,19 @@ const Modal: React.FCC<{
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
-            enterFrom="opacity-0 scale-95"
+            enterFrom="opacity-0 scale-70"
             enterTo="opacity-100 scale-100"
             leave="ease-in duration-200"
             leaveFrom="opacity-100 scale-100"
-            leaveTo="opacity-0 scale-95"
+            leaveTo="opacity-0 scale-80"
           >
-            <div className="my-8 inline-block w-full max-w-lg transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all dark:bg-black-400">
+            <div className="my-4 inline-block max-h-[90%] w-full max-w-xl transform overflow-auto rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all dark:bg-black-400">
               <div className="flex items-center">
                 <Dialog.Title
                   as="h2"
-                  className="flex w-full text-2xl font-semibold leading-4 text-current"
+                  className="flex w-full text-2xl font-bold leading-4 text-current"
                 >
-                  <>{heading}</>
+                  {heading}
                 </Dialog.Title>
 
                 <div className={'justify-end'}>
@@ -73,7 +75,7 @@ const Modal: React.FCC<{
                 </div>
               </div>
 
-              <div className="mt-4">{children}</div>
+              <div className="relative mt-4">{children}</div>
 
               <If condition={useCloseButton}>
                 <div className="mt-2">

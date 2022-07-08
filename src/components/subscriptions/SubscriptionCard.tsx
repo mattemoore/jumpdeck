@@ -16,9 +16,8 @@ const SubscriptionCard: React.FCC<{
     return null;
   }
 
-  const endDate = new Date(
-    subscription.periodEndsAt * 1000
-  ).toLocaleDateString();
+  const endDateMs = subscription.periodEndsAt * 1000;
+  const endDate = new Date(endDateMs).toUTCString();
 
   return (
     <div className={'flex flex-col space-y-4'}>

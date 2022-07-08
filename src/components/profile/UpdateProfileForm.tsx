@@ -36,7 +36,7 @@ function UpdateProfileForm({
   const [avatarIsDirty, setAvatarIsDirty] = useState(false);
 
   const currentDisplayName = user?.displayName ?? '';
-  const currentPhotoURL = user?.photoURL;
+  const currentPhotoURL = user?.photoURL ?? null;
 
   const onAvatarCleared = () => setAvatarIsDirty(true);
 

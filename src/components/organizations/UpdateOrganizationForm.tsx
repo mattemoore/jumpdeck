@@ -27,7 +27,7 @@ const UpdateOrganizationForm = () => {
   const [logoIsDirty, setLogoIsDirty] = useState(false);
   const { t } = useTranslation('organization');
 
-  const oldLogoUrl = organization?.logoURL;
+  const oldLogoUrl = organization?.logoURL ?? null;
   const onLogoCleared = () => setLogoIsDirty(true);
 
   const onSubmit = useCallback(
