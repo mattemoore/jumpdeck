@@ -24,31 +24,29 @@ const Post: React.FCC<{
   content: string;
 }> = ({ post, morePosts, content }) => {
   return (
-    <>
-      <Layout>
-        <PostHead post={post} />
+    <Layout>
+      <PostHead post={post} />
 
-        <SiteHeader />
+      <SiteHeader />
 
-        <Container>
-          <div className={'mx-auto max-w-2xl'}>
-            <article className="mb-16">
-              <PostHeader post={post} />
+      <Container>
+        <div className={'mx-auto max-w-2xl'}>
+          <article className="mb-16">
+            <PostHeader post={post} />
 
-              <div className={'mx-auto flex justify-center md:mt-2'}>
-                <PostBody content={content} />
-              </div>
-            </article>
+            <div className={'mx-auto flex justify-center md:mt-2'}>
+              <PostBody content={content} />
+            </div>
+          </article>
 
-            <If condition={morePosts.length}>
-              <MorePostsList posts={morePosts} collection={post.collection} />
-            </If>
-          </div>
-        </Container>
+          <If condition={morePosts.length}>
+            <MorePostsList posts={morePosts} collection={post.collection} />
+          </If>
+        </div>
+      </Container>
 
-        <Footer />
-      </Layout>
-    </>
+      <Footer />
+    </Layout>
   );
 };
 
