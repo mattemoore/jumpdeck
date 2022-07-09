@@ -23,11 +23,11 @@
     "format": "prettier --write src/**/*.{ts,tsx}",
     "export": "next export",
     "healthcheck": "npm run lint && npm run typecheck",
-    "firebase:emulators:start": "firebase emulators:start --import ./firebase-seed",
-    "firebase:emulators:export": "firebase emulators:export ./firebase-seed",
+    "firebase:emulators:start": "firebase emulators:start --project demo-makerkit --import ./firebase-seed",
+    "firebase:emulators:export": "firebase emulators:export --project demo-makerkit ./firebase-seed",
     "cypress": "cypress open",
     "cypress:headless": "cypress run",
-    "test": "firebase emulators:exec --import ./firebase-seed \"npm run cypress:headless\"",
+    "test": "firebase emulators:exec --project demo-makerkit --import ./firebase-seed \"npm run cypress:headless\"",
     "stripe:listen": "stripe listen --forward-to localhost:3000/api/stripe/webhook"
   },
   "dependencies": {

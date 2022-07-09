@@ -52,7 +52,7 @@ export default function PlanSelector(
                   <div className="flex w-full items-center space-x-4">
                     <div className="flex-shrink-0">
                       <If condition={checked} fallback={<UncheckIcon />}>
-                        <CheckIcon className="h-6 w-6 rounded-full fill-transparent" />
+                        <CheckIcon className="h-6 w-6 rounded-full bg-primary-400 fill-transparent" />
                       </If>
                     </div>
 
@@ -106,7 +106,7 @@ function CheckIcon(props: { className: string }) {
 function UncheckIcon() {
   return (
     <svg viewBox="0 0 24 24" className={'h-6 w-6'}>
-      <circle cx={12} cy={12} r={12} fill="#fff" opacity="0.2" />;
+      <circle cx={12} cy={12} r={12} fill="currentColor" opacity="0.2" />;
     </svg>
   );
 }
