@@ -1,7 +1,7 @@
 import organizationPageObject from '../../support/organization.po';
 
 describe(`Update Organization`, () => {
-  const organizationName = `Test Org`;
+  const organizationName = `Organization Name`;
 
   before(() => {
     cy.signIn(`/settings/organization`);

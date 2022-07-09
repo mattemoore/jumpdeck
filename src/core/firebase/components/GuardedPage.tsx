@@ -26,10 +26,17 @@ const AuthRedirectListener: React.FCC<{
       if (shouldLogOut) {
         clearFirestoreCache();
 
+        const currentPath = window.location.pathname;
+        const isNotCurrentPage = currentPath !== whenSignedOut;
+
+        const navigateToSignOutPage = () => {
+          window.location.assign(whenSignedOut);
+        };
+
         // we then redirect the user to the page
         // specified in the props of the component
-        if (window.location.pathname !== whenSignedOut) {
-          window.location.assign(whenSignedOut);
+        if (isNotCurrentPage) {
+          navigateToSignOutPage();
         }
       }
     });

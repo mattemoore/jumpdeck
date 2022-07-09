@@ -3,7 +3,6 @@ import { defineConfig } from 'cypress';
 export default defineConfig({
   fileServerFolder: '.',
   fixturesFolder: './cypress/fixtures',
-  modifyObstructiveCode: false,
   video: false,
   chromeWebSecurity: false,
   port: 4600,

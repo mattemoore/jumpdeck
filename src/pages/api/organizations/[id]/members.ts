@@ -47,7 +47,6 @@ export default function members(req: NextApiRequest, res: NextApiResponse) {
   const handler = withMiddleware(
     withMethodsGuard(SUPPORTED_METHODS),
     withAuthedUser,
-    withExceptionFilter,
     membersHandler
   );
 

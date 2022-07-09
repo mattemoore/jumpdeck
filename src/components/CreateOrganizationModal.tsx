@@ -9,7 +9,7 @@ import Button from '~/core/ui/Button';
 import { useCreateOrganization } from '~/lib/organizations/hooks/use-create-organization';
 import { Organization } from '~/lib/organizations/types/organization';
 
-const CreateOrganizationModal: React.FCC<{
+const CreateOrganizationModal: React.FC<{
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => unknown;
   onCreate: (organization: WithId<Organization>) => void;
@@ -18,27 +18,25 @@ const CreateOrganizationModal: React.FCC<{
   const { loading, data: newOrganization } = createOrganizationState;
   const { t } = useTranslation();
 
-  const Heading = (
+  const Heading = () => (
     <Trans i18nKey={'organization:createOrganizationModalHeading'} />
   );
 
   const onSubmit = useCallback(
-    (event: FormEvent<HTMLFormElement>) => {
+    async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
-      void (async () => {
-        const data = new FormData(event.currentTarget);
-        const name = data.get(`name`) as string;
-        const promise = createOrganization(name);
+      const data = new FormData(event.currentTarget);
+      const name = data.get(`name`) as string;
+      const promise = createOrganization(name);
 
-        await toast.promise(promise, {
-          success: t(`organization:createOrganizationSuccess`),
-          error: t(`organization:createOrganizationError`),
-          loading: t(`organization:createOrganizationLoading`),
-        });
+      await toast.promise(promise, {
+        success: t(`organization:createOrganizationSuccess`),
+        error: t(`organization:createOrganizationError`),
+        loading: t(`organization:createOrganizationLoading`),
+      });
 
-        setIsOpen(false);
-      })();
+      setIsOpen(false);
     },
     [createOrganization, setIsOpen, t]
   );
@@ -50,7 +48,7 @@ const CreateOrganizationModal: React.FCC<{
   }, [newOrganization, onCreate]);
 
   return (
-    <Modal isOpen={isOpen} setIsOpen={setIsOpen} heading={Heading}>
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen} heading={<Heading />}>
       <form onSubmit={onSubmit}>
         <div className={'flex flex-col space-y-4'}>
           <TextField>

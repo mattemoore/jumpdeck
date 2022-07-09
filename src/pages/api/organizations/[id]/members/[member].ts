@@ -66,7 +66,6 @@ export default function membersHandler(
   const handler = withMiddleware(
     withMethodsGuard(SUPPORTED_HTTP_METHODS),
     withAuthedUser,
-    withExceptionFilter,
     organizationMemberHandler
   );
 
