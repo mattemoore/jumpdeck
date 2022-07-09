@@ -1,8 +1,9 @@
-import { FieldValue } from 'firebase-admin/firestore';
+import { FieldValue, UpdateData } from 'firebase-admin/firestore';
 
 import { getOrganizationsCollection } from '~/lib/server/collections';
 import { OrganizationPlanStatus } from '~/lib/organizations/types/organization-subscription';
 import { OrganizationSubscription } from '~/lib/organizations/types/organization-subscription';
+import { Organization } from '~/lib/organizations/types/organization';
 
 interface AddSubscriptionProps {
   organizationId: string;
@@ -44,8 +45,8 @@ export async function activatePendingSubscription(organizationId: string) {
   const organization = getOrganizationsCollection().doc(organizationId);
 
   return organization.update({
-    'subscription.status': OrganizationPlanStatus.Paid,
-  });
+    ['subscription.status']: OrganizationPlanStatus.Paid,
+  } as UpdateData<Organization>);
 }
 
 export async function updateSubscriptionById(

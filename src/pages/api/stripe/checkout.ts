@@ -79,16 +79,11 @@ async function checkoutsSessionHandler(
   }
 }
 
-export default function stripeCheckoutHandler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  return withMiddleware(
-    withMethodsGuard(SUPPORTED_METHODS),
-    withAuthedUser,
-    checkoutsSessionHandler
-  )(req, res);
-}
+export default withMiddleware(
+  withMethodsGuard(SUPPORTED_METHODS),
+  withAuthedUser,
+  checkoutsSessionHandler
+);
 
 async function getUserCanAccessCheckout(params: {
   organizationId: string;
@@ -111,8 +106,8 @@ async function getUserCanAccessCheckout(params: {
 
 function getBodySchema() {
   return z.object({
-    organizationId: z.string(),
-    priceId: z.string(),
+    organizationId: z.string().min(1),
+    priceId: z.string().min(1),
     customerId: z.string().optional(),
   });
 }

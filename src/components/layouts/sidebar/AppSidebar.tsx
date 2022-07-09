@@ -1,5 +1,7 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
+
 import type { User } from 'firebase/auth';
 
 import {
@@ -13,11 +15,16 @@ import {
 
 import Logo from '~/core/ui/Logo';
 import If from '~/core/ui/If';
+import { Trans } from 'next-i18next';
 
 import { useUserSession } from '~/lib/hooks/use-user-session';
 
-import OrganizationsSelector from '../../OrganizationsSelector';
-import { Trans } from 'next-i18next';
+const OrganizationsSelector = dynamic(
+  () => import('../../OrganizationsSelector'),
+  {
+    ssr: false,
+  }
+);
 
 const AppSidebar = () => {
   const userSession = useUserSession();
@@ -47,7 +54,7 @@ function AppSidebarHeader({
         <Logo href={logoHref} />
       </div>
 
-      <div className={'w-full'} suppressHydrationWarning>
+      <div className={'w-full'}>
         <If condition={user}>
           {({ uid: userId }) => <OrganizationsSelector userId={userId} />}
         </If>

@@ -41,6 +41,10 @@ const organizationPageObject = {
   openMemberActionsDropdown() {
     this.$getMemberActionsDropdown().click();
 
+    // ugly but needed, elements called right after are detached and Cypress
+    // doesn't handle it well
+    cy.wait(100);
+
     return this;
   },
   openRoleSelectorDropdown() {
@@ -65,7 +69,7 @@ const organizationPageObject = {
   removeMember(email: string) {
     this.$getMemberByEmail(email).within(() => {
       this.openMemberActionsDropdown();
-      this.$removeMemberActionButton().click();
+      this.$removeMemberActionButton().click({ force: true });
     });
 
     cy.cyGet(`confirm-remove-member`).click();
@@ -75,7 +79,7 @@ const organizationPageObject = {
   updateMemberRole(email: string, role: MembershipRole) {
     this.$getMemberByEmail(email).within(() => {
       this.openMemberActionsDropdown();
-      this.$updateMemberRoleActionButton().click();
+      this.$updateMemberRoleActionButton().click({ force: true });
     });
 
     this.selectRole(role);

@@ -1,22 +1,35 @@
 import { GetServerSidePropsContext } from 'next';
-import UserAddIcon from '@heroicons/react/outline/UserAddIcon';
 import { Trans } from 'next-i18next';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
+
+import UserAddIcon from '@heroicons/react/outline/UserAddIcon';
 
 import { useUserCanInviteUsers } from '~/lib/organizations/hooks/use-user-can-invite-users';
 import { OrganizationContext } from '~/lib/contexts/organization';
 import { withAppProps } from '~/lib/props/with-app-props';
 
-import OrganizationMembersList from '~/components/organizations/OrganizationMembersList';
 import OrganizationSettingsTabs from '~/components/organizations/OrganizationSettingsTabs';
-import OrganizationInvitedMembersList from '~/components/organizations/OrganizationInvitedMembersList';
 
 import RouteShell from '~/components/RouteShell';
 
 import Heading from '~/core/ui/Heading';
 import Button from '~/core/ui/Button';
 import If from '~/core/ui/If';
-import ClientOnly from '~/core/ui/ClientOnly';
+
+const OrganizationMembersList = dynamic(
+  () => import('~/components/organizations/OrganizationMembersList'),
+  {
+    ssr: false,
+  }
+);
+
+const OrganizationInvitedMembersList = dynamic(
+  () => import('~/components/organizations/OrganizationInvitedMembersList'),
+  {
+    ssr: false,
+  }
+);
 
 const OrganizationMembersPage: React.FCC = () => {
   const canInviteUsers = useUserCanInviteUsers();
@@ -61,9 +74,7 @@ const OrganizationMembersPage: React.FCC = () => {
                     </If>
                   </div>
 
-                  <ClientOnly>
-                    <OrganizationMembersList organizationId={id} />
-                  </ClientOnly>
+                  <OrganizationMembersList organizationId={id} />
                 </div>
 
                 <div className={'flex flex-col space-y-2'}>
@@ -71,9 +82,7 @@ const OrganizationMembersPage: React.FCC = () => {
                     <Trans i18nKey={'organization:pendingInvitesHeading'} />
                   </Heading>
 
-                  <ClientOnly>
-                    <OrganizationInvitedMembersList organizationId={id} />
-                  </ClientOnly>
+                  <OrganizationInvitedMembersList organizationId={id} />
                 </div>
               </div>
             </div>
@@ -86,6 +95,6 @@ const OrganizationMembersPage: React.FCC = () => {
 
 export default OrganizationMembersPage;
 
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  return await withAppProps(ctx);
+export function getServerSideProps(ctx: GetServerSidePropsContext) {
+  return withAppProps(ctx);
 }

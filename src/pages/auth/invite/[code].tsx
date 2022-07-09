@@ -1,4 +1,4 @@
-import { PropsWithChildren, useCallback, useState } from 'react';
+import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
 
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
@@ -16,7 +16,6 @@ import { withUserProps } from '~/lib/props/with-user-props';
 import Logo from '~/core/ui/Logo';
 import Hero from '~/core/ui/Hero';
 import Layout from '~/core/ui/Layout';
-import SubHeading from '~/core/ui/SubHeading';
 import If from '~/core/ui/If';
 import Button from '~/core/ui/Button';
 
@@ -57,29 +56,30 @@ const InvitePage = ({
   const router = useRouter();
 
   const organization = invite.organization;
-  const redirectOnSignOut = isBrowser() ? window.location.pathname : undefined;
+  const redirectOnSignOut = getRedirectPath();
   const [mode, setMode] = useState<Mode>(Mode.SignUp);
 
   const [addMemberToOrganization, requestState] = useAddMemberToOrganization(
     organization.id
   );
 
+  const redirectToHomePage = useCallback(() => {
+    const homePage = configuration.paths.appHome;
+
+    return router.push(homePage);
+  }, [router]);
+
   const onInviteAccepted = useCallback(() => {
-    (async () => {
-      await addMemberToOrganization({ code: invite.code });
+    return addMemberToOrganization({ code: invite.code });
+  }, [addMemberToOrganization, invite.code]);
 
-      // redirect user to app home
-      await router.push(configuration.paths.appHome);
-    })();
-  }, [addMemberToOrganization, invite.code, router]);
+  useEffect(() => {
+    if (requestState.success) {
+      void redirectToHomePage();
+    }
+  }, [redirectToHomePage, requestState.success]);
 
-  const onSignOut = useCallback(() => {
-    (async () => auth.signOut())();
-  }, [auth]);
-
-  const loading = requestState.loading || requestState.success;
-
-  if (loading) {
+  if (requestState.loading) {
     return (
       <PageLoadingIndicator>
         <Trans
@@ -108,15 +108,17 @@ const InvitePage = ({
           </div>
 
           <Hero>
-            <Trans
-              i18nKey={'auth:joinOrganizationHeading'}
-              values={{
-                organization: invite.organization.name,
-              }}
-            />
+            <span className={'flex text-center'}>
+              <Trans
+                i18nKey={'auth:joinOrganizationHeading'}
+                values={{
+                  organization: invite.organization.name,
+                }}
+              />
+            </span>
           </Hero>
 
-          <SubHeading>
+          <div>
             <p className={'text-center'}>
               <Trans
                 i18nKey={'auth:joinOrganizationSubHeading'}
@@ -132,13 +134,16 @@ const InvitePage = ({
                 <Trans i18nKey={'auth:signUpToAcceptInvite'} />
               </If>
             </p>
-          </SubHeading>
+          </div>
 
           {/* FLOW FOR AUTHENTICATED USERS */}
           <If condition={session}>
             <GuardedPage whenSignedOut={redirectOnSignOut}>
               <form
-                onSubmit={onInviteAccepted}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  return onInviteAccepted();
+                }}
                 className={'flex flex-col space-y-8'}
               >
                 <p className={'text-center text-sm'}>
@@ -159,20 +164,16 @@ const InvitePage = ({
                       'text-center text-sm text-gray-700 dark:text-gray-300'
                     }
                   >
-                    <p>
-                      <Trans
-                        i18nKey={'auth:acceptInviteWithDifferentAccount'}
-                      />
-                    </p>
+                    <Trans i18nKey={'auth:acceptInviteWithDifferentAccount'} />
 
                     <Button
                       block
                       color={'transparent'}
                       className="underline"
                       size={'small'}
-                      role={'button'}
-                      disabled={loading}
-                      onClick={onSignOut}
+                      disabled={requestState.loading}
+                      onClick={() => auth.signOut()}
+                      type={'button'}
                     >
                       <Trans i18nKey={'auth:signOut'} />
                     </Button>
@@ -184,43 +185,41 @@ const InvitePage = ({
 
           {/* FLOW FOR NEW USERS */}
           <If condition={!session}>
-            <>
-              <OAuthProviders onSuccess={onInviteAccepted} />
+            <OAuthProviders onSuccess={onInviteAccepted} />
 
-              <div className={'text-sm text-gray-400'}>
-                <Trans i18nKey={'auth:orContinueWithEmail'} />
+            <div className={'text-sm text-gray-400'}>
+              <Trans i18nKey={'auth:orContinueWithEmail'} />
+            </div>
+
+            <If condition={mode === Mode.SignUp}>
+              <div className={'flex w-full flex-col items-center space-y-8'}>
+                <EmailPasswordSignUpForm onSignUp={onInviteAccepted} />
+
+                <Button
+                  block
+                  color={'transparent'}
+                  size={'small'}
+                  onClick={() => setMode(Mode.SignIn)}
+                >
+                  <Trans i18nKey={'auth:alreadyHaveAccountStatement'} />
+                </Button>
               </div>
+            </If>
 
-              <If condition={mode === Mode.SignUp}>
-                <div className={'flex w-full flex-col items-center space-y-8'}>
-                  <EmailPasswordSignUpForm onSignUp={onInviteAccepted} />
+            <If condition={mode === Mode.SignIn}>
+              <div className={'flex w-full flex-col items-center space-y-8'}>
+                <EmailPasswordSignInForm onSignIn={onInviteAccepted} />
 
-                  <Button
-                    block
-                    color={'transparent'}
-                    size={'small'}
-                    onClick={() => setMode(Mode.SignIn)}
-                  >
-                    <Trans i18nKey={'auth:alreadyHaveAccountStatement'} />
-                  </Button>
-                </div>
-              </If>
-
-              <If condition={mode === Mode.SignIn}>
-                <div className={'flex w-full flex-col items-center space-y-8'}>
-                  <EmailPasswordSignInForm onSignIn={onInviteAccepted} />
-
-                  <Button
-                    block
-                    color={'transparent'}
-                    size={'small'}
-                    onClick={() => setMode(Mode.SignUp)}
-                  >
-                    <Trans i18nKey={'auth:doNotHaveAccountStatement'} />
-                  </Button>
-                </div>
-              </If>
-            </>
+                <Button
+                  block
+                  color={'transparent'}
+                  size={'small'}
+                  onClick={() => setMode(Mode.SignUp)}
+                >
+                  <Trans i18nKey={'auth:doNotHaveAccountStatement'} />
+                </Button>
+              </div>
+            </If>
           </If>
         </div>
       </div>
@@ -231,6 +230,10 @@ const InvitePage = ({
 export default InvitePage;
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  // we need to create the admin app before
+  // we can use Firestore on the server-side
+  await initializeFirebaseAdminApp();
+
   const { props } = await withUserProps(ctx);
   const code = ctx.params?.code as Maybe<string>;
 
@@ -241,10 +244,6 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   }
 
   try {
-    // we need to create the admin app before
-    // we can use Firestore on the server-side
-    await initializeFirebaseAdminApp();
-
     const invite = await getInviteByCode(code);
 
     // if the invite wasn't found, it's 404
@@ -294,6 +293,10 @@ function useAddMemberToOrganization(id: string) {
       code: string;
     }
   >(path);
+}
+
+function getRedirectPath() {
+  return isBrowser() ? window.location.pathname : undefined;
 }
 
 function notFound() {

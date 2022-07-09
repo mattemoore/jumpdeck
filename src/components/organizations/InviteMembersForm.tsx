@@ -44,9 +44,7 @@ const InviteMembersForm: React.FCC = () => {
   });
 
   const navigateToMembersPage = useCallback(() => {
-    void (async () => {
-      return router.push(`/settings/organization/members`);
-    })();
+    void router.push(`/settings/organization/members`);
   }, [router]);
 
   const onSubmit = useCallback(

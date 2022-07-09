@@ -107,9 +107,10 @@ const EmailPasswordSignInForm: React.FCC<{
 
         <div>
           <Button
+            className={'GradientButton w-full'}
+            color={'custom'}
             data-cy="auth-submit-button"
             type="submit"
-            block
             loading={isLoading}
           >
             <Trans i18nKey={'auth:signIn'} />

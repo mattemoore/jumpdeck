@@ -87,7 +87,7 @@ export async function acceptInviteToOrganization({
   const batch = firestore.batch();
   const inviteDoc = await getInviteByCode(code);
 
-  if (!inviteDoc.exists) {
+  if (!inviteDoc?.exists) {
     throw new ApiError(HttpStatusCode.NotFound, `Invite not found`);
   }
 

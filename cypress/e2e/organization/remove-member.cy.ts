@@ -5,11 +5,11 @@ describe(`Remove Member`, () => {
 
   before(() => {
     cy.signIn(`/settings/organization/members`);
-    organizationPageObject.switchToOrganization('Test');
   });
 
   describe(`Given the current user updates a member's role`, () => {
     before(() => {
+      organizationPageObject.switchToOrganization('Test');
       organizationPageObject.removeMember(email);
     });
 

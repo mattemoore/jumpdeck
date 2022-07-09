@@ -1,6 +1,7 @@
 import { FirebaseError } from 'firebase/app';
 import { doc, updateDoc } from 'firebase/firestore';
 import { useFirestore } from 'reactfire';
+import { useCallback } from 'react';
 
 import { useRequestState } from '~/core/hooks/use-request-state';
 import { Organization } from '~/lib/organizations/types/organization';
@@ -15,21 +16,22 @@ export function useUpdateOrganization() {
 
   const firestore = useFirestore();
 
-  async function updateOrganization(
-    organization: WithId<Partial<Organization>>
-  ) {
-    setLoading(true);
+  const updateOrganization = useCallback(
+    async (organization: WithId<Partial<Organization>>) => {
+      setLoading(true);
 
-    try {
-      const ref = doc(firestore, 'organizations', organization.id);
+      try {
+        const ref = doc(firestore, 'organizations', organization.id);
 
-      await updateDoc(ref, organization);
+        await updateDoc(ref, organization);
 
-      setData(organization);
-    } catch (e) {
-      setError((e as FirebaseError).message);
-    }
-  }
+        setData(organization);
+      } catch (e) {
+        setError((e as FirebaseError).message);
+      }
+    },
+    [firestore, setData, setError, setLoading]
+  );
 
   return [updateOrganization, state] as [
     typeof updateOrganization,

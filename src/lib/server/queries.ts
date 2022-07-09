@@ -12,7 +12,13 @@ export async function getInviteByCode(code: string) {
   const codePath: keyof MembershipInvite = 'code';
   const op = '==';
 
-  const { docs } = await getInvitesCollection().where(codePath, op, code).get();
+  const { docs, size } = await getInvitesCollection()
+    .where(codePath, op, code)
+    .get();
+
+  if (!size) {
+    return;
+  }
 
   return docs[0] as QueryDocumentSnapshot<MembershipInvite>;
 }

@@ -38,9 +38,7 @@ const DeleteInviteButton: React.FCC<{
     })();
   }, [deleteRequest, inviteId, organizationId, t]);
 
-  const heading = () => (
-    <Trans i18nKey={'organization:deleteInviteModalHeading'} />
-  );
+  const heading = <Trans i18nKey={'organization:deleteInviteModalHeading'} />;
 
   return (
     <>

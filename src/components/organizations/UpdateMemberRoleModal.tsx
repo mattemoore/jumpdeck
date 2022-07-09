@@ -52,7 +52,7 @@ const UpdateMemberRoleModal: React.FCC<{
     })();
   }, [request, role, setIsOpen, t, memberRole]);
 
-  const heading = () => (
+  const heading = (
     <Trans i18nKey={'organization:updateMemberRoleModalHeading'} />
   );
 

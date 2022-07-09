@@ -37,9 +37,7 @@ const RemoveOrganizationMemberModal: React.FCC<{
     })();
   }, [removeMemberRequest, setIsOpen, t]);
 
-  const heading = () => (
-    <Trans i18nKey="organization:removeMemberModalHeading" />
-  );
+  const heading = <Trans i18nKey="organization:removeMemberModalHeading" />;
 
   return (
     <Modal heading={heading} isOpen={isOpen} setIsOpen={setIsOpen}>

@@ -14,15 +14,16 @@ describe(`Accept Invite - Existing User`, () => {
       email: existingUserEmail,
       password,
     });
-
-    authPo.$getAcceptInviteSubmitButton().click();
   });
 
   it('should be redirected to the dashboard', () => {
+    authPo.$getAcceptInviteSubmitButton().click();
+
     cy.url().should('contain', configuration.paths.appHome);
 
     organizationPageObject.switchToOrganization('Test');
 
+    // we visit
     cy.visit(`/settings/organization/members`);
   });
 
