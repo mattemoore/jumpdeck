@@ -28,6 +28,7 @@ export default function PlanSelector(
           <RadioGroup.Option
             key={plan.name}
             value={plan}
+            data-cy={`subscription-plan`}
             className={({ active, checked }) =>
               `${
                 active

@@ -57,13 +57,21 @@ const configuration = {
       name: 'Basic',
       description: 'Description of your Basic plan',
       price: '$249/year',
-      stripePriceId: '',
+      stripePriceId: 'basic-plan',
     },
     {
       name: 'Pro',
       description: 'Description of your Pro plan',
       price: '$999/year',
       stripePriceId: '',
+    },
+  ],
+  testingPlans: [
+    {
+      name: 'Testing Plan',
+      description: 'Description of your Testing plan',
+      price: '$999/year',
+      stripePriceId: 'price_1LFibmKr5l4rxPx3wWcSO8UY',
     },
   ],
 };

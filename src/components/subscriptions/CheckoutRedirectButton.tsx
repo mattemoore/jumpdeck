@@ -2,6 +2,7 @@ import React from 'react';
 
 import Button from '~/core/ui/Button';
 import configuration from '~/configuration';
+import { isBrowser } from '~/core/generic';
 
 const CHECKOUT_SESSION_API_ENDPOINT = configuration.paths.api.checkout;
 
@@ -12,7 +13,11 @@ const CheckoutRedirectButton: React.FCC<{
   customerId: Maybe<string>;
 }> = ({ children, ...props }) => {
   return (
-    <form action={CHECKOUT_SESSION_API_ENDPOINT} method="POST">
+    <form
+      data-cy={'checkout-form'}
+      action={CHECKOUT_SESSION_API_ENDPOINT}
+      method="POST"
+    >
       <CheckoutFormData
         customerId={props.customerId}
         organizationId={props.organizationId}
@@ -43,6 +48,7 @@ function CheckoutFormData(
         defaultValue={props.organizationId}
       />
 
+      <input type="hidden" name={'returnUrl'} defaultValue={getReturnUrl()} />
       <input type="hidden" name={'priceId'} defaultValue={props.priceId} />
 
       <input
@@ -52,4 +58,10 @@ function CheckoutFormData(
       />
     </>
   );
+}
+
+function getReturnUrl() {
+  return isBrowser()
+    ? [window.location.origin, window.location.pathname].join('')
+    : undefined;
 }

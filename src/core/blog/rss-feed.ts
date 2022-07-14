@@ -17,7 +17,7 @@ const DEFAULT_ATOM_PATH = 'public/atom.xml';
 function generateRSSFeed(articles: Article[]) {
   const baseUrl = configuration.site.siteUrl;
   const description = configuration.site.description;
-  const title = `${configuration.site.name} - Blog`;
+  const title = configuration.site.name;
 
   const author = {
     link: configuration.site.twitterHandle,

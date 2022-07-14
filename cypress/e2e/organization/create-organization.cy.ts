@@ -24,5 +24,9 @@ describe(`Create Organization`, () => {
         .$currentOrganization()
         .should('contain', organizationName);
     });
+
+    it('should switch to the previous Organization', () => {
+      organizationPageObject.switchToOrganization('Test');
+    });
   });
 });

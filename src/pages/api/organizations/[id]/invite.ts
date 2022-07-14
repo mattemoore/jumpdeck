@@ -7,7 +7,10 @@ import { MembershipRole } from '~/lib/organizations/types/membership-role';
 import { inviteMembers } from '~/lib/server/organizations/invite-members';
 import { withAuthedUser } from '~/core/middleware/with-authed-user';
 
-import { badRequestException } from '~/core/http-exceptions';
+import {
+  badRequestException,
+  internalServerErrorException,
+} from '~/core/http-exceptions';
 
 import { withMiddleware } from '~/core/middleware/with-middleware';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
@@ -36,20 +39,34 @@ async function inviteMembersToOrganizationHandler(
   const invites = bodySchemaResult.data;
   const inviterId = req.firebaseUser.uid;
 
-  await inviteMembers({
-    organizationId,
-    inviterId,
-    invites,
-  });
-
-  logger.info(
-    {
+  try {
+    await inviteMembers({
       organizationId,
-    },
-    `User invited to organization`
-  );
+      inviterId,
+      invites,
+    });
 
-  return res.send({ success: true });
+    logger.info(
+      {
+        organizationId,
+      },
+      `User invited to organization`
+    );
+
+    return res.send({ success: true });
+  } catch (e) {
+    logger.error(
+      {
+        organizationId,
+        inviterId,
+      },
+      `Error occurred when inviting user to organization`
+    );
+
+    logger.debug(e);
+
+    return internalServerErrorException(res);
+  }
 }
 
 export default function inviteHandler(

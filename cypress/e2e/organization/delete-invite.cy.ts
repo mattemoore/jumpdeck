@@ -14,6 +14,7 @@ describe(`Delete Invite`, () => {
       organizationPageObject
         .$getInvitedMemberByEmail(invitedMemberEmail)
         .within(() => {
+          organizationPageObject.$getDeleteInviteButton().should('be.visible');
           organizationPageObject.$getDeleteInviteButton().click();
         });
 
