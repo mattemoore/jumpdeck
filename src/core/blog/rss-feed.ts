@@ -5,6 +5,11 @@
 
 import { Feed } from 'feed';
 import { writeFileSync } from 'fs';
+import { loadEnvConfig } from '@next/env';
+
+// call {loadEnvConfig} before importing "configuration" to populate the environment
+// variables
+loadEnvConfig('.');
 
 import Article from './types/post';
 import { getAllPosts } from './api';
@@ -65,7 +70,7 @@ function generateRSSFeed(articles: Article[]) {
       content,
       author: [author],
       date: new Date(date),
-      image: `${baseUrl}/${coverImage}`,
+      image: `${baseUrl}${coverImage}`,
     });
   });
 
