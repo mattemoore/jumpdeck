@@ -17,8 +17,13 @@ interface CreateCheckoutParams {
  * @param params
  */
 export async function createStripeCheckout(params: CreateCheckoutParams) {
-  const successUrl = getSuccessUrl(params.returnUrl);
-  const cancelUrl = getCancelUrl(params.returnUrl);
+  const successUrl = getUrlWithParams(params.returnUrl, {
+    success: 'true',
+  });
+
+  const cancelUrl = getUrlWithParams(params.returnUrl, {
+    cancel: 'true',
+  });
 
   // in MakerKit, a subscription belongs to an organization,
   // rather than to a user
@@ -52,20 +57,21 @@ export async function createStripeCheckout(params: CreateCheckoutParams) {
   });
 }
 
-function getSuccessUrl(origin: string) {
-  return getUrlWithParams(origin, { success: 'true' });
-}
-
-function getCancelUrl(origin: string) {
-  return getUrlWithParams(origin, { canceled: 'true' });
-}
-
 function getUrlWithParams(origin: string, params: StringObject) {
-  const returnUrl = new URL(origin);
+  const url = new URL(origin);
+  const returnUrl = cleanParams(url);
 
   for (const param in params) {
     returnUrl.searchParams.set(param, params[param]);
   }
 
   return returnUrl.toString();
+}
+
+function cleanParams(returnUrl: URL) {
+  returnUrl.searchParams.delete('cancel');
+  returnUrl.searchParams.delete('success');
+  returnUrl.searchParams.delete('error');
+
+  return returnUrl;
 }

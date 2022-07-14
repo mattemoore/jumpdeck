@@ -65,12 +65,15 @@ node_modules/
 # dotenv environment variables file
 .env
 .env.production
+.env.test
 
 .next/
 .idea/
 public/sitemap*.xml
 public/robots.txt
-rss.xml
+public/atom.xml
+public/rss.xml
+public/rss.json
 vcs.xml
 .firebaserc
 tsconfig.tsbuildinfo

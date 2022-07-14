@@ -43,7 +43,7 @@ const organizationPageObject = {
 
     // ugly but needed, elements called right after are detached and Cypress
     // doesn't handle it well
-    cy.wait(100);
+    cy.wait(250);
 
     return this;
   },

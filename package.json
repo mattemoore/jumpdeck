@@ -14,6 +14,7 @@
     "analyze": "ANALYZE=true npm run build",
     "dev": "next dev",
     "build": "next build",
+    "dev:test": "NODE_ENV=test next dev",
     "postbuild": "npm run sitemap && npm run rss",
     "rss": "npx ts-node -O '{\"module\": \"commonjs\"}' -P ./tsconfig.json './src/core/blog/rss-feed.ts'",
     "sitemap": "next-sitemap",
@@ -25,10 +26,11 @@
     "healthcheck": "npm run lint && npm run typecheck",
     "firebase:emulators:start": "firebase emulators:start --project demo-makerkit --import ./firebase-seed",
     "firebase:emulators:export": "firebase emulators:export --project demo-makerkit ./firebase-seed",
-    "cypress": "cypress open",
-    "cypress:headless": "cypress run",
+    "cypress": "NODE_ENV=test cypress open",
+    "cypress:headless": "NODE_ENV=test cypress run",
     "test": "firebase emulators:exec --project demo-makerkit --import ./firebase-seed \"npm run cypress:headless\"",
-    "stripe:listen": "stripe listen --forward-to localhost:3000/api/stripe/webhook"
+    "stripe:listen": "stripe listen --forward-to localhost:3000/api/stripe/webhook",
+    "stripe:mock-server": "docker run --rm -it -p 12111-12112:12111-12112 stripe/stripe-mock:latest"
   },
   "dependencies": {
     "@headlessui/react": "^1.6.5",

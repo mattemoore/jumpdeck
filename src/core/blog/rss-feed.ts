@@ -5,6 +5,11 @@
 
 import { Feed } from 'feed';
 import { writeFileSync } from 'fs';
+import { loadEnvConfig } from '@next/env';
+
+// call {loadEnvConfig} before importing "configuration" to populate the environment
+// variables
+loadEnvConfig('.');
 
 import Article from './types/post';
 import { getAllPosts } from './api';
@@ -17,7 +22,7 @@ const DEFAULT_ATOM_PATH = 'public/atom.xml';
 function generateRSSFeed(articles: Article[]) {
   const baseUrl = configuration.site.siteUrl;
   const description = configuration.site.description;
-  const title = `${configuration.site.name} - Blog`;
+  const title = configuration.site.name;
 
   const author = {
     link: configuration.site.twitterHandle,
@@ -65,7 +70,7 @@ function generateRSSFeed(articles: Article[]) {
       content,
       author: [author],
       date: new Date(date),
-      image: `${baseUrl}/${coverImage}`,
+      image: `${baseUrl}${coverImage}`,
     });
   });
 

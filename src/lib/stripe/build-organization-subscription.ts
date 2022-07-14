@@ -10,15 +10,15 @@ export function buildOrganizationSubscription(
   status: OrganizationPlanStatus = OrganizationPlanStatus.Paid
 ): OrganizationSubscription {
   const lineItem = subscription.items.data[0];
-  const plan = lineItem.plan;
+  const price = lineItem.price;
 
   return {
     id: subscription.id,
-    priceId: plan?.id,
+    priceId: price?.id,
     status,
     currency: lineItem.price.currency ?? null,
-    interval: plan?.interval ?? null,
-    intervalCount: plan?.interval_count ?? null,
+    interval: price?.recurring?.interval ?? null,
+    intervalCount: price?.recurring?.interval_count ?? null,
     createdAt: subscription.created,
     periodStartsAt: subscription.current_period_start,
     periodEndsAt: subscription.current_period_end,

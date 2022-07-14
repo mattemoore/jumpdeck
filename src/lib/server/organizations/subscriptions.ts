@@ -14,7 +14,7 @@ interface AddSubscriptionProps {
 /**
  * @description Adds or updates a subscription to an Organization
  */
-export async function setOrganizationSubscription(props: AddSubscriptionProps) {
+export function setOrganizationSubscription(props: AddSubscriptionProps) {
   const { customerId, subscription, organizationId } = props;
   const organization = getOrganizationsCollection().doc(organizationId);
 

@@ -12,7 +12,6 @@ import { canChangeBilling } from '~/lib/organizations/permissions';
 import { withMiddleware } from '~/core/middleware/with-middleware';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
 import { getApiRefererPath } from '~/core/generic/get-api-referer-path';
-import configuration from '~/configuration';
 
 const SUPPORTED_METHODS: HttpMethod[] = ['POST'];
 
@@ -22,12 +21,11 @@ async function checkoutsSessionHandler(
 ) {
   const { headers, firebaseUser } = req;
 
-  const referer = getApiRefererPath(headers);
   const bodyResult = getBodySchema().safeParse(req.body);
-
   const userId = firebaseUser.uid;
 
   const redirectToErrorPage = () => {
+    const referer = getApiRefererPath(headers);
     const url = join(referer, `?error=true`);
 
     return res.redirect(HttpStatusCode.SeeOther, url);
@@ -37,7 +35,7 @@ async function checkoutsSessionHandler(
     return redirectToErrorPage();
   }
 
-  const { organizationId, priceId, customerId } = bodyResult.data;
+  const { organizationId, priceId, customerId, returnUrl } = bodyResult.data;
 
   const canChangeBilling = await getUserCanAccessCheckout({
     organizationId,
@@ -60,9 +58,6 @@ async function checkoutsSessionHandler(
   }
 
   try {
-    const returnUrl =
-      req.headers.referer || req.headers.origin || configuration.paths.appHome;
-
     const { url } = await createStripeCheckout({
       returnUrl,
       organizationId,
@@ -70,8 +65,10 @@ async function checkoutsSessionHandler(
       customerId,
     });
 
+    const portalUrl = getCheckoutPortalUrl(url, returnUrl);
+
     // redirect user back based on the response
-    res.redirect(HttpStatusCode.SeeOther, url as string);
+    res.redirect(HttpStatusCode.SeeOther, portalUrl);
   } catch (e) {
     logger.error(e, `Stripe Checkout error`);
 
@@ -109,5 +106,32 @@ function getBodySchema() {
     organizationId: z.string().min(1),
     priceId: z.string().min(1),
     customerId: z.string().optional(),
+    returnUrl: z.string().min(1),
   });
+}
+
+/**
+ *
+ * @param portalUrl
+ * @param returnUrl
+ * @description return the URL of the Checkout Portal
+ * if running in emulator mode and the portal URL is undefined (as
+ * stripe-mock does) then return the returnUrl (i.e. it redirects back to
+ * the subscriptions page)
+ */
+function getCheckoutPortalUrl(portalUrl: string | null, returnUrl: string) {
+  if (isTestingMode() && !portalUrl) {
+    return [returnUrl, 'success=true'].join('?');
+  }
+
+  return portalUrl as string;
+}
+
+/**
+ * @description detect if Stripe is running in emulator mode
+ */
+function isTestingMode() {
+  const enableStripeTesting = process.env.ENABLE_STRIPE_TESTING;
+
+  return enableStripeTesting === 'true';
 }

@@ -16,7 +16,10 @@ import {
   updateSubscriptionById,
 } from '~/lib/server/organizations/subscriptions';
 
-import { badRequestException } from '~/core/http-exceptions';
+import {
+  badRequestException,
+  internalServerErrorException,
+} from '~/core/http-exceptions';
 
 import { withMiddleware } from '~/core/middleware/with-middleware';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
@@ -66,55 +69,72 @@ async function checkoutsWebhooksHandler(
     {
       type: event.type,
     },
-    `Received Stripe Webhook`
+    `[Stripe] Received Stripe Webhook`
   );
 
-  switch (event.type) {
-    case StripeWebhooks.Completed: {
-      const session = event.data.object as Stripe.Checkout.Session;
-      const subscriptionId = session.subscription as string;
-      const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+  try {
+    switch (event.type) {
+      case StripeWebhooks.Completed: {
+        const session = event.data.object as Stripe.Checkout.Session;
+        const subscriptionId = session.subscription as string;
 
-      await onCheckoutCompleted(session, subscription);
+        const subscription = await stripe.subscriptions.retrieve(
+          subscriptionId
+        );
 
-      break;
+        await onCheckoutCompleted(session, subscription);
+
+        break;
+      }
+
+      case StripeWebhooks.AsyncPaymentSuccess: {
+        const session = event.data.object as Stripe.Checkout.Session;
+        const organizationId = session.client_reference_id as string;
+
+        await activatePendingSubscription(organizationId);
+
+        break;
+      }
+
+      case StripeWebhooks.SubscriptionDeleted: {
+        const subscription = event.data.object as Stripe.Subscription;
+
+        await deleteOrganizationSubscription(subscription.id);
+
+        break;
+      }
+
+      case StripeWebhooks.SubscriptionUpdated: {
+        const subscription = event.data.object as Stripe.Subscription;
+
+        await onSubscriptionUpdated(subscription);
+
+        break;
+      }
+
+      case StripeWebhooks.PaymentFailed: {
+        const session = event.data.object as Stripe.Checkout.Session;
+
+        // TODO: handle this properly
+        onPaymentFailed(session);
+
+        break;
+      }
     }
 
-    case StripeWebhooks.AsyncPaymentSuccess: {
-      const session = event.data.object as Stripe.Checkout.Session;
-      const organizationId = session.client_reference_id as string;
+    return respondOk(res);
+  } catch (e) {
+    logger.error(
+      {
+        type: event.type,
+      },
+      `[Stripe] Webhook Failed`
+    );
 
-      await activatePendingSubscription(organizationId);
+    logger.debug(e);
 
-      break;
-    }
-
-    case StripeWebhooks.SubscriptionDeleted: {
-      const subscription = event.data.object as Stripe.Subscription;
-
-      await deleteOrganizationSubscription(subscription.id);
-
-      break;
-    }
-
-    case StripeWebhooks.SubscriptionUpdated: {
-      const subscription = event.data.object as Stripe.Subscription;
-
-      await onSubscriptionUpdated(subscription);
-
-      break;
-    }
-
-    case StripeWebhooks.PaymentFailed: {
-      const session = event.data.object as Stripe.Checkout.Session;
-
-      onPaymentFailed(session);
-
-      break;
-    }
+    return internalServerErrorException(res);
   }
-
-  return respondOk(res);
 }
 
 export default function stripeCheckoutsWebhooksHandler(
@@ -150,7 +170,7 @@ async function onCheckoutCompleted(
   // add it to {@link buildOrganizationSubscription}
   const subscriptionData = buildOrganizationSubscription(subscription, status);
 
-  await setOrganizationSubscription({
+  return setOrganizationSubscription({
     organizationId,
     customerId,
     subscription: subscriptionData,
@@ -165,6 +185,7 @@ async function onSubscriptionUpdated(subscription: Stripe.Subscription) {
 
 /**
  * @description When the payment failed, notify the customer by email
+ * TODO: build email and send to user
  */
 function onPaymentFailed(session: Stripe.Checkout.Session) {
   console.log(`Payment failed`, session);
@@ -175,7 +196,9 @@ function respondOk(res: NextApiResponse) {
 }
 
 function getOrderStatus(paymentStatus: string) {
-  return paymentStatus === 'paid'
+  const isPaid = paymentStatus === 'paid';
+
+  return isPaid
     ? OrganizationPlanStatus.Paid
     : OrganizationPlanStatus.AwaitingPayment;
 }

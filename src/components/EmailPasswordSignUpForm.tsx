@@ -70,10 +70,7 @@ const EmailPasswordSignUpForm: React.FCC<{
       const email = data.get(`email`) as string;
       const password = data.get(`password`) as string;
 
-      // sign up with Firebase Auth
-      void (async () => {
-        await signUp(email, password);
-      })();
+      void signUp(email, password);
     },
     [loading, signUp]
   );
@@ -116,9 +113,9 @@ const EmailPasswordSignUpForm: React.FCC<{
         <div>
           <Button
             data-cy={'auth-submit-button'}
-            className={'GradientButton w-full'}
+            className={'w-full'}
+            color={'primary'}
             type="submit"
-            color={'custom'}
             loading={loading}
           >
             <Trans i18nKey={'auth:signUp'} />
