@@ -1,4 +1,4 @@
-import { FormEvent, useCallback, useEffect } from 'react';
+import { FormEvent, useCallback, useEffect, useMemo } from 'react';
 import toast from 'react-hot-toast';
 import { Trans, useTranslation } from 'next-i18next';
 
@@ -18,9 +18,15 @@ const CreateOrganizationModal: React.FC<{
   const { loading, data: newOrganization } = createOrganizationState;
   const { t } = useTranslation();
 
-  const Heading = () => (
-    <Trans i18nKey={'organization:createOrganizationModalHeading'} />
+  const Heading = useMemo(
+    () => <Trans i18nKey={'organization:createOrganizationModalHeading'} />,
+    []
   );
+
+  // Report error when user leaves input empty
+  const onError = useCallback(() => {
+    toast.error(`Please use a valid name`);
+  }, []);
 
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
@@ -28,9 +34,15 @@ const CreateOrganizationModal: React.FC<{
 
       const data = new FormData(event.currentTarget);
       const name = data.get(`name`) as string;
-      const promise = createOrganization(name);
 
-      await toast.promise(promise, {
+      // Adjust logic for error handling as needed
+      const isNameInvalid = !name || name.trim().length === 0;
+
+      if (isNameInvalid) {
+        return onError();
+      }
+
+      await toast.promise(createOrganization(name), {
         success: t(`organization:createOrganizationSuccess`),
         error: t(`organization:createOrganizationError`),
         loading: t(`organization:createOrganizationLoading`),
@@ -38,7 +50,7 @@ const CreateOrganizationModal: React.FC<{
 
       setIsOpen(false);
     },
-    [createOrganization, setIsOpen, t]
+    [createOrganization, onError, setIsOpen, t]
   );
 
   useEffect(() => {
@@ -48,7 +60,7 @@ const CreateOrganizationModal: React.FC<{
   }, [newOrganization, onCreate]);
 
   return (
-    <Modal isOpen={isOpen} setIsOpen={setIsOpen} heading={<Heading />}>
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen} heading={Heading}>
       <form onSubmit={onSubmit}>
         <div className={'flex flex-col space-y-4'}>
           <TextField>
@@ -58,6 +70,7 @@ const CreateOrganizationModal: React.FC<{
               <TextField.Input
                 data-cy={'create-organization-name-input'}
                 name={'name'}
+                minLength={1}
                 required
                 placeholder={'ex. IndieCorp'}
               />

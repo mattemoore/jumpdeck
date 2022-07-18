@@ -1,5 +1,5 @@
 import { useUser } from 'reactfire';
-import { FormEvent } from 'react';
+import { FormEvent, useCallback } from 'react';
 
 import Heading from '~/core/ui/Heading';
 import Button from '~/core/ui/Button';
@@ -16,14 +16,17 @@ export const OrganizationInfoStep: React.FCC<{
   const { data } = useUser();
   const displayName = data?.displayName ?? data?.email ?? '';
 
-  const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
-    const data = new FormData(event.currentTarget);
-    const organization = data.get(`organization`) as string;
+  const handleFormSubmit = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      const data = new FormData(event.currentTarget);
+      const organization = data.get(`organization`) as string;
 
-    onSubmit({
-      organization,
-    });
-  };
+      onSubmit({
+        organization,
+      });
+    },
+    [onSubmit]
+  );
 
   return (
     <form
