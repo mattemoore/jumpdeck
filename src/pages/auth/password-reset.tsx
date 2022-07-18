@@ -57,7 +57,7 @@ export const PasswordReset: React.FCC = () => {
   return (
     <Layout>
       <Head>
-        <title>Password Reset</title>
+        <title key={'title'}>Password Reset</title>
       </Head>
 
       <div className={'flex h-screen items-center justify-center'}>

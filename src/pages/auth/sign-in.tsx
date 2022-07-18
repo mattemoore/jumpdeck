@@ -34,7 +34,7 @@ export const SignIn: React.FCC = () => {
   return (
     <Layout>
       <Head>
-        <title>Sign In</title>
+        <title key={'title'}>Sign In</title>
       </Head>
 
       <div className={'flex h-screen flex-col items-center justify-center'}>

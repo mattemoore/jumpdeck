@@ -15,7 +15,7 @@ const NotFoundPage = () => {
     <>
       <Layout>
         <Head>
-          <title key="title">Page Not Found - {configuration.site.name}</title>
+          <title key="title">{`Page not found - ${configuration.site.name}`}</title>
         </Head>
 
         <SiteHeader />

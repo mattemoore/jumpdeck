@@ -14,7 +14,7 @@ const Contact = () => {
     <>
       <Layout>
         <Head>
-          <title key="title">Contact - {configuration.site.name}</title>
+          <title key="title">{`Contact - ${configuration.site.name}`}</title>
         </Head>
 
         <SiteHeader />

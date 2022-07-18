@@ -23,7 +23,9 @@ export default function Docs({
   return (
     <Layout>
       <Head>
-        <title key="title">Documentation - {configuration.site.siteName}</title>
+        <title key="title">
+          {`Documentation - ${configuration.site.siteName}`}
+        </title>
       </Head>
 
       <SiteHeader />

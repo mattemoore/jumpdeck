@@ -22,7 +22,7 @@ const Blog = ({ posts }: Props) => {
   return (
     <Layout>
       <Head>
-        <title key="title">Blog - {configuration.site.name}</title>
+        <title key="title">{`Blog - ${configuration.site.name}`}</title>
       </Head>
 
       <SiteHeader />

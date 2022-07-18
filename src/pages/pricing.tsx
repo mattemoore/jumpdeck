@@ -39,7 +39,9 @@ const Pricing = () => {
     <>
       <Layout>
         <Head>
-          <title key="title">Pricing - {configuration.site.name}</title>
+          <title key="title">
+            {`Pricing - ${configuration.site.siteName}`}
+          </title>
         </Head>
 
         <SiteHeader />

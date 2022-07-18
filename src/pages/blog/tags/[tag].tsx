@@ -23,9 +23,7 @@ const TagPage = ({ posts, tag }: Props) => {
   return (
     <Layout>
       <Head>
-        <title key="title">
-          {tag} - {configuration.site.name}
-        </title>
+        <title key="title">{`${tag} - ${configuration.site.name}`}</title>
       </Head>
 
       <SiteHeader />
