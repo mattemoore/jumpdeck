@@ -82,18 +82,9 @@ const AppHeaderWithMenu: React.FCC = ({ children }) => {
       </Container>
 
       <div>
-        <div
-          className={
-            'border border-gray-100 py-2 dark:border-black-400' +
-            ' hidden md:block'
-          }
-        >
-          <Container>
-            <AppNavigation />
-          </Container>
-        </div>
+        <AppNavigation />
 
-        <div className={'border-b border-gray-100 py-2 dark:border-black-400'}>
+        <div className={'border-b border-gray-100 py-3 dark:border-black-400'}>
           <Container>
             <Heading type={2}>{children}</Heading>
           </Container>

@@ -9,6 +9,7 @@ import FirebaseStorageProvider from '~/core/firebase/components/FirebaseStorageP
 import UpdateOrganizationForm from '~/components/organizations/UpdateOrganizationForm';
 import OrganizationSettingsTabs from '~/components/organizations/OrganizationSettingsTabs';
 import Head from 'next/head';
+import SettingsPageContainer from '~/components/SettingsPageContainer';
 
 const Organization = () => {
   return (
@@ -17,24 +18,21 @@ const Organization = () => {
         <title key="title">Organization Settings</title>
       </Head>
 
-      <RouteShell title={'Organization'}>
-        <div
-          className={
-            'flex flex-col space-y-4 sm:flex-row sm:space-y-0' +
-            ' sm:space-x-12'
-          }
-        >
+      <SettingsPageContainer title={'Organization'}>
+        <div className={'flex justify-between'}>
           <OrganizationSettingsTabs />
 
-          <div className={'flex flex-col space-y-4'}>
-            <Heading type={3}>
-              <Trans i18nKey={'organization:settingsPageLabel'} />
-            </Heading>
+          <div className={'w-full md:w-9/12'}>
+            <div className={'flex w-full flex-col space-y-4'}>
+              <Heading type={3}>
+                <Trans i18nKey={'organization:settingsPageLabel'} />
+              </Heading>
 
-            <UpdateOrganizationForm />
+              <UpdateOrganizationForm />
+            </div>
           </div>
         </div>
-      </RouteShell>
+      </SettingsPageContainer>
     </FirebaseStorageProvider>
   );
 };

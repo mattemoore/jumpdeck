@@ -47,7 +47,7 @@ const Faq = () => {
   return (
     <Layout>
       <Head>
-        <title key="title">FAQ - {configuration.site.name}</title>
+        <title key="title">{`FAQ - ${configuration.site.siteName}`}</title>
 
         <script
           key={'ld:json'}

@@ -4,13 +4,13 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { Trans } from 'next-i18next';
 
-import RouteShell from '~/components/RouteShell';
 import Plans from '~/components/subscriptions/Plans';
 
 import { withAppProps } from '~/lib/props/with-app-props';
 
 import If from '~/core/ui/If';
 import Alert from '~/core/ui/Alert';
+import SettingsPageContainer from '~/components/SettingsPageContainer';
 
 enum Status {
   Success,
@@ -38,23 +38,21 @@ const Subscription = () => {
   }, [setStatus]);
 
   return (
-    <RouteShell title={'Subscription'}>
+    <SettingsPageContainer title={'Subscription'}>
       <Head>
         <title key="title">Subscription Settings</title>
       </Head>
 
-      <div className={'flex flex-col space-y-4'}>
-        <div>
-          <If condition={status !== undefined}>
+      <div className={'flex flex-col space-y-4 px-2'}>
+        <If condition={status !== undefined}>
+          <div>
             <PlansStatusAlert status={status as Status} />
-          </If>
-        </div>
+          </div>
+        </If>
 
-        <div>
-          <Plans />
-        </div>
+        <Plans />
       </div>
-    </RouteShell>
+    </SettingsPageContainer>
   );
 };
 

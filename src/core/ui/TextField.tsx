@@ -32,7 +32,7 @@ const Input: React.FCC<Props> = ({
   ...props
 }) => {
   const ref = innerRef ?? createRef<HTMLInputElement>();
-  const [value, setValue] = useState<string>();
+  const [value, setValue] = useState<string>('');
 
   const onReset = useCallback(() => {
     if (ref) {

@@ -24,7 +24,7 @@ const SiteHeader: React.FCC<{
 
   return (
     <div
-      className={`w-full border-b border-gray-50 py-2.5 dark:border-black-400 ${
+      className={`w-full border-b border-gray-50 py-2 dark:border-black-400 ${
         fixed ? fixedClassName : ''
       }`}
     >

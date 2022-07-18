@@ -29,7 +29,7 @@ const SignUp: React.FCC = () => {
     <>
       <Layout>
         <Head>
-          <title>Sign Up</title>
+          <title key={'title'}>Sign Up</title>
         </Head>
 
         <div className={'flex h-screen flex-col items-center justify-center'}>

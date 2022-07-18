@@ -20,7 +20,6 @@ import { useLoadSelectedTheme } from '~/core/theming';
 
 import { useAnalyticsTracking } from '~/core/firebase/hooks/use-analytics-tracking';
 import FirebaseAnalyticsProvider from '~/core/firebase/components/FirebaseAnalyticsProvider';
-import AppRouteLoadingIndicator from '~/core/ui/AppRouteLoadingIndicator';
 
 interface DefaultPageProps {
   session?: Maybe<AuthUser>;
@@ -70,10 +69,6 @@ function App(
               value={{ organization, setOrganization }}
             >
               <AnalyticsTrackingEventsProvider>
-                <AppRouteLoadingIndicator>
-                  Loading. Please Wait...
-                </AppRouteLoadingIndicator>
-
                 <Component {...pageProps} />
               </AnalyticsTrackingEventsProvider>
             </OrganizationContext.Provider>
@@ -90,7 +85,7 @@ export default appWithTranslation<AppProps & { pageProps: DefaultPageProps }>(
 
 function AnalyticsTrackingEventsProvider({
   children,
-}: React.PropsWithChildren<unknown>) {
+}: React.PropsWithChildren) {
   useAnalyticsTracking();
 
   return <>{children}</>;

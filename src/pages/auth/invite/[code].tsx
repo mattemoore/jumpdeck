@@ -94,7 +94,9 @@ const InvitePage = ({
   return (
     <Layout>
       <Head>
-        <title>You have been invited to join {organization.name}</title>
+        <title key={'title'}>
+          {`You have been invited to join ${organization.name}`}
+        </title>
       </Head>
 
       <div className={'flex h-screen flex-col items-center justify-center'}>

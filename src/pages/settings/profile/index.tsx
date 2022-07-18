@@ -11,8 +11,8 @@ import { withAppProps } from '~/lib/props/with-app-props';
 import { UserSessionContext } from '~/lib/contexts/session';
 
 import UpdateProfileForm from '~/components/profile/UpdateProfileForm';
-import RouteShell from '~/components/RouteShell';
 import ProfileSettingsTabs from '~/components/profile/ProfileSettingsTabs';
+import SettingsPageContainer from '~/components/SettingsPageContainer';
 
 type ProfileData = {
   photoURL: string | null;
@@ -49,24 +49,21 @@ const Profile = () => {
         <title key={'title'}>Update Profile</title>
       </Head>
 
-      <RouteShell title={'Profile'}>
-        <div
-          className={
-            'flex flex-col space-y-4 sm:flex-row sm:space-y-0' +
-            ' sm:space-x-12'
-          }
-        >
+      <SettingsPageContainer title={'Profile'}>
+        <div className={'flex justify-between'}>
           <ProfileSettingsTabs user={userSession.auth} />
 
-          <div className={'flex flex-col space-y-4'}>
-            <Heading type={3}>
-              <Trans i18nKey={'profile:generalTab'} />
-            </Heading>
+          <div className={'w-full md:w-9/12'}>
+            <div className={'flex flex-col space-y-4'}>
+              <Heading type={3}>
+                <Trans i18nKey={'profile:generalTab'} />
+              </Heading>
 
-            <UpdateProfileForm user={userSession.auth} onUpdate={onUpdate} />
+              <UpdateProfileForm user={userSession.auth} onUpdate={onUpdate} />
+            </div>
           </div>
         </div>
-      </RouteShell>
+      </SettingsPageContainer>
     </FirebaseStorageProvider>
   );
 };

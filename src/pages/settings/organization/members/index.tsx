@@ -11,11 +11,10 @@ import { withAppProps } from '~/lib/props/with-app-props';
 
 import OrganizationSettingsTabs from '~/components/organizations/OrganizationSettingsTabs';
 
-import RouteShell from '~/components/RouteShell';
-
 import Heading from '~/core/ui/Heading';
 import Button from '~/core/ui/Button';
 import If from '~/core/ui/If';
+import SettingsPageContainer from '~/components/SettingsPageContainer';
 
 const OrganizationMembersList = dynamic(
   () => import('~/components/organizations/OrganizationMembersList'),
@@ -35,7 +34,7 @@ const OrganizationMembersPage: React.FCC = () => {
   const canInviteUsers = useUserCanInviteUsers();
 
   return (
-    <RouteShell title={'Organization'}>
+    <SettingsPageContainer title={'Organization'}>
       <Head>
         <title key="title">Organization Members</title>
       </Head>
@@ -45,51 +44,55 @@ const OrganizationMembersPage: React.FCC = () => {
           const id = organization?.id as string;
 
           return (
-            <div className={'flex space-x-12'}>
+            <div className={'flex justify-between'}>
               <OrganizationSettingsTabs />
 
-              <div className="flex flex-1 flex-col space-y-8">
-                <div>
-                  <div className="flex items-center justify-between space-x-8">
-                    <Heading type={3}>
-                      <Trans i18nKey={'organization:membersPageHeading'} />
-                    </Heading>
+              <div className={'w-full md:w-9/12'}>
+                <div className="flex flex-1 flex-col space-y-8">
+                  <div>
+                    <div className="flex items-center justify-between space-x-8">
+                      <Heading type={3}>
+                        <Trans i18nKey={'organization:membersPageHeading'} />
+                      </Heading>
 
-                    <If condition={canInviteUsers}>
-                      <Button
-                        data-cy={'invite-form-link'}
-                        type="button"
-                        href={'/settings/organization/members/invite'}
-                      >
-                        <span className="flex items-center space-x-2">
-                          <UserAddIcon className="h-5" />
+                      <If condition={canInviteUsers}>
+                        <Button
+                          data-cy={'invite-form-link'}
+                          type="button"
+                          href={'/settings/organization/members/invite'}
+                        >
+                          <span className="flex items-center space-x-2">
+                            <UserAddIcon className="h-5" />
 
-                          <span>
-                            <Trans
-                              i18nKey={'organization:inviteMembersButtonLabel'}
-                            />
+                            <span>
+                              <Trans
+                                i18nKey={
+                                  'organization:inviteMembersButtonLabel'
+                                }
+                              />
+                            </span>
                           </span>
-                        </span>
-                      </Button>
-                    </If>
+                        </Button>
+                      </If>
+                    </div>
+
+                    <OrganizationMembersList organizationId={id} />
                   </div>
 
-                  <OrganizationMembersList organizationId={id} />
-                </div>
+                  <div className={'flex flex-col space-y-2'}>
+                    <Heading type={3}>
+                      <Trans i18nKey={'organization:pendingInvitesHeading'} />
+                    </Heading>
 
-                <div className={'flex flex-col space-y-2'}>
-                  <Heading type={3}>
-                    <Trans i18nKey={'organization:pendingInvitesHeading'} />
-                  </Heading>
-
-                  <OrganizationInvitedMembersList organizationId={id} />
+                    <OrganizationInvitedMembersList organizationId={id} />
+                  </div>
                 </div>
               </div>
             </div>
           );
         }}
       </OrganizationContext.Consumer>
-    </RouteShell>
+    </SettingsPageContainer>
   );
 };
 

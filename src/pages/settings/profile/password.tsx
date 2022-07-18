@@ -9,8 +9,8 @@ import { useUserSession } from '~/lib/hooks/use-user-session';
 import UpdatePasswordForm from '~/components/profile/UpdatePasswordForm';
 import ProfileSettingsTabs from '~/components/profile/ProfileSettingsTabs';
 
-import RouteShell from '~/components/RouteShell';
 import Heading from '~/core/ui/Heading';
+import SettingsPageContainer from '~/components/SettingsPageContainer';
 
 const ProfilePasswordSettings = () => {
   const userSession = useUserSession();
@@ -21,23 +21,25 @@ const ProfilePasswordSettings = () => {
   }
 
   return (
-    <RouteShell title={'Profile'}>
+    <SettingsPageContainer title={'Profile'}>
       <Head>
         <title key={'title'}>Update Password</title>
       </Head>
 
-      <div className={'flex space-x-8'}>
+      <div className={'flex justify-between'}>
         <ProfileSettingsTabs user={user} />
 
-        <div className={'flex flex-col space-y-4'}>
-          <Heading type={3}>
-            <Trans i18nKey={'organization:passwordSettingsTab'} />
-          </Heading>
+        <div className={'w-full md:w-9/12'}>
+          <div className={'flex flex-col space-y-4'}>
+            <Heading type={3}>
+              <Trans i18nKey={'organization:passwordSettingsTab'} />
+            </Heading>
 
-          <UpdatePasswordForm user={user} />
+            <UpdatePasswordForm user={user} />
+          </div>
         </div>
       </div>
-    </RouteShell>
+    </SettingsPageContainer>
   );
 };
 

@@ -1,5 +1,3 @@
-import Head from 'next/head';
-
 import configuration from '~/configuration';
 import { withTranslationProps } from '~/lib/props/with-translation-props';
 
@@ -15,10 +13,6 @@ const Index = () => {
   return (
     <>
       <Layout>
-        <Head>
-          <title key="title">{configuration.site.name}</title>
-        </Head>
-
         <SiteHeader />
 
         <Container>

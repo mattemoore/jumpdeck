@@ -75,7 +75,7 @@ const ImageUploadInput: React.FCC<Props> = ({
         accept="image/*"
       />
 
-      <div className={'flex items-center space-x-4'}>
+      <div className={'flex items-center space-x-2'}>
         <div className={'flex'}>
           <If condition={!value}>
             <CloudUploadIcon

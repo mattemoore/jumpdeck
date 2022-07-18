@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useCallback, useState } from 'react';
 import { useStorage } from 'reactfire';
 import type { User } from 'firebase/auth';
 import { Trans, useTranslation } from 'next-i18next';
@@ -40,45 +40,56 @@ function UpdateProfileForm({
 
   const onAvatarCleared = () => setAvatarIsDirty(true);
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const onSubmit = useCallback(
+    async (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
 
-    const data = new FormData(event.currentTarget);
-    const displayName = (data.get('displayName') as string) ?? '';
-    const photoFile = data.get('photoUrl') as Maybe<File>;
+      const data = new FormData(event.currentTarget);
+      const displayName = (data.get('displayName') as string) ?? '';
+      const photoFile = data.get('photoUrl') as Maybe<File>;
 
-    const photoName = photoFile?.name;
+      const photoName = photoFile?.name;
 
-    const photoUrl = photoName
-      ? await uploadUserProfilePhoto(storage, photoFile, user.uid)
-      : currentPhotoURL;
+      const photoUrl = photoName
+        ? await uploadUserProfilePhoto(storage, photoFile, user.uid)
+        : currentPhotoURL;
 
-    const isAvatarRemoved = avatarIsDirty && !photoName;
+      const isAvatarRemoved = avatarIsDirty && !photoName;
 
-    const info = {
-      displayName,
-      photoURL: isAvatarRemoved ? '' : photoUrl,
-    };
+      const info = {
+        displayName,
+        photoURL: isAvatarRemoved ? '' : photoUrl,
+      };
 
-    // delete existing photo if different
-    if (isAvatarRemoved && currentPhotoURL) {
-      try {
-        await deleteObject(ref(storage, currentPhotoURL));
-      } catch (e) {
-        // old photo not found
+      // delete existing photo if different
+      if (isAvatarRemoved && currentPhotoURL) {
+        try {
+          await deleteObject(ref(storage, currentPhotoURL));
+        } catch (e) {
+          // old photo not found
+        }
       }
-    }
 
-    const promise = updateProfile(info);
+      const promise = updateProfile(info);
 
-    await toast.promise(promise, {
-      success: t(`profile:updateProfileSuccess`),
-      error: t(`profile:updateProfileError`),
-      loading: t(`profile:updateProfileLoading`),
-    });
+      await toast.promise(promise, {
+        success: t(`profile:updateProfileSuccess`),
+        error: t(`profile:updateProfileError`),
+        loading: t(`profile:updateProfileLoading`),
+      });
 
-    onUpdate(info);
-  };
+      onUpdate(info);
+    },
+    [
+      avatarIsDirty,
+      currentPhotoURL,
+      onUpdate,
+      storage,
+      t,
+      updateProfile,
+      user.uid,
+    ]
+  );
 
   return (
     <form onSubmit={onSubmit}>
@@ -88,9 +99,11 @@ function UpdateProfileForm({
             <Trans i18nKey={'profile:displayNameLabel'} />
 
             <TextField.Input
+              minLength={1}
+              required
               name={'displayName'}
               placeholder={'Name'}
-              defaultValue={currentDisplayName}
+              value={currentDisplayName}
             />
           </TextField.Label>
         </TextField>
@@ -109,9 +122,11 @@ function UpdateProfileForm({
           </TextField.Label>
         </TextField>
 
-        <Button block loading={loading}>
-          <Trans i18nKey={'profile:updateProfileSubmitLabel'} />
-        </Button>
+        <div>
+          <Button loading={loading}>
+            <Trans i18nKey={'profile:updateProfileSubmitLabel'} />
+          </Button>
+        </div>
       </div>
     </form>
   );

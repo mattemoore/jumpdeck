@@ -7,48 +7,50 @@ import { Trans } from 'next-i18next';
 import { withAppProps } from '~/lib/props/with-app-props';
 
 import OrganizationSettingsTabs from '~/components/organizations/OrganizationSettingsTabs';
-import RouteShell from '~/components/RouteShell';
 import InviteMembersForm from '~/components/organizations/InviteMembersForm';
 
 import Heading from '~/core/ui/Heading';
 import Button from '~/core/ui/Button';
+import SettingsPageContainer from '~/components/SettingsPageContainer';
 
 const OrganizationMembersInvitePage: React.FCC = () => {
   return (
-    <RouteShell title={'Organization'}>
+    <SettingsPageContainer title={'Organization'}>
       <Head>
         <title key="title">Invite Members</title>
       </Head>
 
-      <div className={'flex space-x-12'}>
+      <div className={'flex justify-between'}>
         <OrganizationSettingsTabs />
 
-        <div className="flex flex-1 flex-col space-y-4">
-          <div className={'flex items-center space-x-4'}>
-            <Heading type={3}>
-              <Trans i18nKey={'organization:inviteMembersPageHeading'} />
-            </Heading>
+        <div className={'w-full md:w-9/12'}>
+          <div className={'flex flex-col space-y-4'}>
+            <div className={'flex space-x-4'}>
+              <Heading type={3}>
+                <Trans i18nKey={'organization:inviteMembersPageHeading'} />
+              </Heading>
 
-            <div>
-              <Button
-                size={'small'}
-                color={'transparent'}
-                href={'/settings/organization/members'}
-              >
-                <span className={'flex items-center space-x-1'}>
-                  <ArrowNarrowLeftIcon className={'h-4'} />
-                  <span>
-                    <Trans i18nKey={'organization:goBackToMembersPage'} />
+              <div>
+                <Button
+                  size={'small'}
+                  color={'transparent'}
+                  href={'/settings/organization/members'}
+                >
+                  <span className={'flex items-center space-x-1'}>
+                    <ArrowNarrowLeftIcon className={'h-4'} />
+                    <span>
+                      <Trans i18nKey={'organization:goBackToMembersPage'} />
+                    </span>
                   </span>
-                </span>
-              </Button>
+                </Button>
+              </div>
             </div>
-          </div>
 
-          <InviteMembersForm />
+            <InviteMembersForm />
+          </div>
         </div>
       </div>
-    </RouteShell>
+    </SettingsPageContainer>
   );
 };
 

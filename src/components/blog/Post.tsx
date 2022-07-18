@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import React from 'react';
 
 import { getStructuredData } from '~/core/blog/structured-data';
 import configuration from '~/configuration';
@@ -93,13 +94,12 @@ function PostHead({ post }: React.PropsWithChildren<{ post: Post }>) {
 
   return (
     <Head>
-      <title>{title}</title>
+      <title key="title">{title}</title>
+      <meta key="og:title" property="og:title" content={title} />
+      <meta key="twitter:title" property="twitter:title" content={title} />
 
       <meta property="og:type" content="article" />
-      <meta key="og:title" property="og:title" content={title} />
       <meta property="article:published_time" content={post.date} />
-
-      <meta key="twitter:title" property="twitter:title" content={title} />
 
       <meta
         key="twitter:image"

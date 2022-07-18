@@ -10,7 +10,7 @@ const RouteShellWithTopNavigation: React.FCC<{
       <div className={'relative w-full'}>
         <AppHeaderWithMenu>{title}</AppHeaderWithMenu>
 
-        <div className={'mt-4'}>
+        <div className={'mt-2'}>
           <Container>{children}</Container>
         </div>
       </div>
