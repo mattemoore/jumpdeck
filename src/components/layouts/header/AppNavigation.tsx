@@ -22,7 +22,7 @@ const links = {
 const AppNavigation: React.FCC = () => {
   return (
     <>
-      <ul className={'flex space-x-6'}>
+      <ul className={'flex space-x-2'}>
         <NavigationItem link={links.Dashboard} />
         <NavigationItem link={links.Organization} />
         <NavigationItem link={links.Profile} />
