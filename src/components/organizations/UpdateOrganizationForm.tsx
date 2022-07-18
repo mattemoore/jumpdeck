@@ -127,9 +127,14 @@ const UpdateOrganizationForm = () => {
           </ImageUploadInput>
         </Label>
 
-        <Button data-cy={'update-organization-submit-button'} loading={loading}>
-          <Trans i18nKey={'organization:updateOrganizationSubmitLabel'} />
-        </Button>
+        <div>
+          <Button
+            data-cy={'update-organization-submit-button'}
+            loading={loading}
+          >
+            <Trans i18nKey={'organization:updateOrganizationSubmitLabel'} />
+          </Button>
+        </div>
       </div>
     </form>
   );

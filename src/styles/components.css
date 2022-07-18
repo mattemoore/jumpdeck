@@ -12,30 +12,39 @@
         @apply container mx-auto px-5 xl:px-0;
     }
 
+    /* NavigationContainer.tsx */
+    .NavigationContainer {
+        @apply border-y dark:border-black-400 pt-1 dark:border-black-400 border-gray-100;
+    }
+
     /* NavigationMenu.tsx */
     .NavigationMenu {
-        @apply flex-1 space-x-1 dark:text-gray-300 items-center flex flex-row;
+        @apply flex-1 space-x-4 dark:text-gray-300 items-center flex-row hidden md:flex;
     }
 
     /* NavigationItem.tsx */
     .NavigationItem {
         @apply leading-loose rounded-md text-sm
         transition-colors duration-300 dark:text-gray-300
-        text-gray-800 font-semibold;
+        text-gray-800 font-semibold flex items-center;
     }
 
     .NavigationItem a {
-        @apply px-4 py-1 block;
+        @apply px-2 py-1 block flex items-center;
+    }
+
+    .BorderedNavigationMenu .NavigationItemActive a {
+        @apply border-b-[0.2rem] border-primary-500 relative top-[1px];
     }
 
     .NavigationItemNotActive {
-        @apply hover:text-black-600 dark:hover:text-primary-500 hover:bg-gray-50
-        dark:hover:bg-black-500 hover:text-primary-500;
+        @apply hover:text-black-600 hover:text-primary-500
+            active:text-primary-700 text-gray-500 dark:text-gray-400
+            dark:hover:text-white hover:text-current;
     }
 
     .NavigationItemActive {
-        @apply font-semibold text-black-600 bg-gray-100
-        dark:bg-black-300 outline-2 outline-primary-500;
+        @apply font-semibold text-black-600;
     }
 
     .NavigationItem a[aria-disabled='true'] {

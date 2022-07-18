@@ -1,7 +1,18 @@
 import { PropsWithChildren } from 'react';
 
-function NavigationMenu({ children }: PropsWithChildren<unknown>) {
-  return <ul className="NavigationMenu">{children}</ul>;
+function NavigationMenu({
+  children,
+  bordered,
+}: PropsWithChildren<{
+  bordered?: boolean;
+}>) {
+  return (
+    <ul
+      className={`NavigationMenu ${bordered ? 'BorderedNavigationMenu' : ''}`}
+    >
+      {children}
+    </ul>
+  );
 }
 
 export default NavigationMenu;

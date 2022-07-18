@@ -1,7 +1,8 @@
 {
   "dashboardTabLabel": "Dashboard",
   "organizationSettingsTabLabel": "Organization",
-  "profileSettingsTabLabel": "Profile",
+  "settingsTabLabel": "Settings",
+  "profileSettingsTabLabel": "My Details",
   "subscriptionSettingsTabLabel": "Subscription",
   "emailAddress": "Email Address",
   "password": "Password",

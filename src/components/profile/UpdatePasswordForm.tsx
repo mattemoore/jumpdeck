@@ -77,9 +77,11 @@ const UpdatePasswordForm: React.FCC<{ user: User }> = ({ user }) => {
           </TextField.Label>
         </TextField>
 
-        <Button loading={loading} block>
-          <Trans i18nKey={'profile:updatePasswordSubmitLabel'} />
-        </Button>
+        <div>
+          <Button loading={loading}>
+            <Trans i18nKey={'profile:updatePasswordSubmitLabel'} />
+          </Button>
+        </div>
       </div>
     </form>
   );

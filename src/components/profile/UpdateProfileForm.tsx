@@ -122,9 +122,11 @@ function UpdateProfileForm({
           </TextField.Label>
         </TextField>
 
-        <Button block loading={loading}>
-          <Trans i18nKey={'profile:updateProfileSubmitLabel'} />
-        </Button>
+        <div>
+          <Button loading={loading}>
+            <Trans i18nKey={'profile:updateProfileSubmitLabel'} />
+          </Button>
+        </div>
       </div>
     </form>
   );

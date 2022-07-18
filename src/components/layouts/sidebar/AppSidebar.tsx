@@ -11,6 +11,7 @@ import {
   CreditCardIcon,
   DocumentIcon,
   SupportIcon,
+  CogIcon,
 } from '@heroicons/react/outline';
 
 import Logo from '~/core/ui/Logo';
@@ -76,27 +77,11 @@ function AppSidebarMenu() {
         </span>
       </AppSidebarItem>
 
-      <AppSidebarItem href={'/settings/organization'}>
-        <UserGroupIcon className={'h-6'} />
-
-        <span>
-          <Trans i18nKey={'common:organizationSettingsTabLabel'} />
-        </span>
-      </AppSidebarItem>
-
       <AppSidebarItem href={'/settings/profile'}>
-        <UserIcon className={'h-6'} />
+        <CogIcon className={'h-6'} />
 
         <span>
-          <Trans i18nKey={'common:profileSettingsTabLabel'} />
-        </span>
-      </AppSidebarItem>
-
-      <AppSidebarItem href={'/settings/subscription'}>
-        <CreditCardIcon className={'h-6'} />
-
-        <span>
-          <Trans i18nKey={'common:subscriptionSettingsTabLabel'} />
+          <Trans i18nKey={'common:settingsTabLabel'} />
         </span>
       </AppSidebarItem>
     </div>

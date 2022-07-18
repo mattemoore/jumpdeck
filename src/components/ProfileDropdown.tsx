@@ -3,12 +3,10 @@ import { Trans } from 'next-i18next';
 import { Menu } from '@headlessui/react';
 
 import {
-  UserIcon,
-  UserGroupIcon,
   LogoutIcon,
   ViewGridIcon,
   ChevronDownIcon,
-  CreditCardIcon,
+  CogIcon,
 } from '@heroicons/react/outline';
 
 import Dropdown from '~/core/ui/Dropdown';
@@ -21,7 +19,7 @@ const ProfileDropdown: React.FCC<{
   const ProfileDropdownButton = (
     <Menu.Button
       as={'span'}
-      className={'flex flex-row space-x-2' + ' cursor-pointer items-center'}
+      className={'flex cursor-pointer items-center space-x-2'}
     >
       <ProfileAvatar user={user} />
       <ChevronDownIcon className={'hidden h-3 sm:block'} />
@@ -36,24 +34,9 @@ const ProfileDropdown: React.FCC<{
       </span>
     </ProfileDropdownMenuItem>,
     <ProfileDropdownMenuItem key={'profile'} href={'/settings/profile'}>
-      <UserIcon className={'h-5'} />
+      <CogIcon className={'h-5'} />
       <span>
-        <Trans i18nKey={'common:profileSettingsTabLabel'} />
-      </span>
-    </ProfileDropdownMenuItem>,
-    <ProfileDropdownMenuItem key={'team'} href={'/settings/organization'}>
-      <UserGroupIcon className={'h-5'} />
-      <span>
-        <Trans i18nKey={'common:organizationSettingsTabLabel'} />
-      </span>
-    </ProfileDropdownMenuItem>,
-    <ProfileDropdownMenuItem
-      key={'subscription'}
-      href={'/settings/subscription'}
-    >
-      <CreditCardIcon className={'h-5'} />
-      <span>
-        <Trans i18nKey={'common:subscriptionSettingsTabLabel'} />
+        <Trans i18nKey={'common:settingsTabLabel'} />
       </span>
     </ProfileDropdownMenuItem>,
     <Dropdown.Divider key={'divider'} />,

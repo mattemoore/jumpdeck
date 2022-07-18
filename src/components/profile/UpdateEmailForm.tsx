@@ -98,9 +98,11 @@ const UpdateEmailForm: React.FC<{ user: User }> = ({ user }) => {
           </TextField.Label>
         </TextField>
 
-        <Button loading={state.loading} block>
-          <Trans i18nKey={'profile:updateEmailSubmitLabel'} />
-        </Button>
+        <div>
+          <Button loading={state.loading}>
+            <Trans i18nKey={'profile:updateEmailSubmitLabel'} />
+          </Button>
+        </div>
       </div>
     </form>
   );
