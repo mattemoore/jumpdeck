@@ -28,11 +28,15 @@ const Blog = ({ posts }: Props) => {
       <SiteHeader />
 
       <Container>
-        <Hero>Blog</Hero>
+        <div className={'flex items-center justify-between'}>
+          <div>
+            <Hero>Blog</Hero>
 
-        <SubHeading>
-          Tutorials, Guides and Updates from the MakerKit team
-        </SubHeading>
+            <SubHeading>
+              Tutorials, Guides and Updates from the MakerKit team
+            </SubHeading>
+          </div>
+        </div>
 
         <div className="mt-4 flex-col space-y-12 md:mt-8">
           <PostsList posts={posts} />

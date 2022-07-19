@@ -22,6 +22,7 @@ import If from '~/core/ui/If';
 
 import Directory from '~/core/docs/types/directory';
 import DocumentationPage from '../../core/docs/types/documentation-page';
+import SearchInput from '~/components/SearchInput';
 
 type Props = {
   page: {
@@ -81,7 +82,13 @@ const DocsPage = ({ page, docs, previousPage, nextPage }: Props) => {
           </div>
 
           <div className={'block md:flex md:space-x-8 lg:space-x-16'}>
-            <div className={'DocumentationSidebarContainer'}>
+            <div
+              className={
+                'DocumentationSidebarContainer flex flex-col space-y-2'
+              }
+            >
+              <SearchInput path={'/docs/results'} />
+
               <DocumentationNavigation data={docs} />
             </div>
 

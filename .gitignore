@@ -80,3 +80,4 @@ tsconfig.tsbuildinfo
 
 .DS_Store
 cypress/screenshots
+public/index

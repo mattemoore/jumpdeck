@@ -24,6 +24,7 @@ const TagPage = ({ posts, tag }: Props) => {
     <Layout>
       <Head>
         <title key="title">{`${tag} - ${configuration.site.name}`}</title>
+        <meta name="robots" content="noindex" />
       </Head>
 
       <SiteHeader />
