@@ -18,11 +18,11 @@ import CreateOrganizationModal from './CreateOrganizationModal';
 const PopoverButton: React.FCC<{
   organization: Maybe<WithId<Organization>>;
 }> = ({ organization }) => {
-  return (
-    <If condition={organization}>
-      {(organization) => <OrganizationItem organization={organization} />}
-    </If>
-  );
+  if (organization) {
+    return <OrganizationItem organization={organization} />;
+  }
+
+  return null;
 };
 
 const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
@@ -51,8 +51,8 @@ const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
           {(organizations ?? []).map((item) => {
             const isSelected = item.id === organization?.id;
 
-            return (
-              <If key={item.id} condition={!isSelected}>
+            if (!isSelected) {
+              return (
                 <PopoverDropdownItem
                   key={item.name}
                   onClick={() => organizationSelected(item)}
@@ -61,8 +61,10 @@ const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
                     <OrganizationItem organization={item} />
                   </PopoverDropdownItem.Label>
                 </PopoverDropdownItem>
-              </If>
-            );
+              );
+            }
+
+            return null;
           })}
 
           <PopoverDropdownItem
@@ -104,7 +106,7 @@ function OrganizationItem({ organization }: { organization: Organization }) {
   return (
     <span
       data-cy={'organization-selector-item'}
-      className={`flex items-center space-x-3`}
+      className={`flex items-center space-x-3 ellipsify`}
     >
       <If condition={logoURL}>
         <Image

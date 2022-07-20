@@ -9,8 +9,6 @@ import { initializeBrowserSentry } from '~/core/sentry/initialize-browser-sentry
  */
 export function useSentry() {
   useLayoutEffect(() => {
-    void (async () => {
-      await initializeBrowserSentry();
-    })();
+    void initializeBrowserSentry();
   }, []);
 }
