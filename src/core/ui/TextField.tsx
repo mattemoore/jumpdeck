@@ -3,6 +3,7 @@ import React, {
   LegacyRef,
   RefObject,
   useCallback,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -19,11 +20,11 @@ type Props = React.InputHTMLAttributes<unknown> & {
   onClear?: EmptyCallback;
 };
 
-const Hint: React.FCC = ({ children }) => {
+const Hint: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   return <span className={`TextFieldHint`}>{children}</span>;
 };
 
-const Input: React.FCC<Props> = ({
+const Input: React.FC<Props> = ({
   className,
   innerRef,
   children,
@@ -32,7 +33,8 @@ const Input: React.FCC<Props> = ({
   ...props
 }) => {
   const ref = innerRef ?? createRef<HTMLInputElement>();
-  const [value, setValue] = useState<string>('');
+  const propValue = props.value ?? props.defaultValue;
+  const [value, setValue] = useState(propValue);
 
   const onReset = useCallback(() => {
     if (ref) {
@@ -59,9 +61,15 @@ const Input: React.FCC<Props> = ({
     [props]
   );
 
+  useEffect(() => {
+    setValue(propValue);
+  }, [propValue]);
+
   return (
     <div className={`TextFieldInputContainer ${className ?? ''}`}>
-      <span className={'flex pl-2.5'}>{children}</span>
+      <If condition={children}>
+        <span className={'flex pl-2.5'}>{children}</span>
+      </If>
 
       <input
         value={value}
@@ -82,7 +90,11 @@ const Input: React.FCC<Props> = ({
   );
 };
 
-type TextFieldComponent = React.FCC<Props> & {
+type TextFieldComponent = React.FC<
+  React.PropsWithChildren<{
+    className?: string;
+  }>
+> & {
   Label: typeof Label;
   Hint: typeof Hint;
   Input: typeof Input;

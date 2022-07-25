@@ -12,6 +12,8 @@ const DEFAULT_OPTIONS = {
 
 /**
  * @description A server props pipe to deny access to auth pages while logged in
+ * For example, this is to be used in pages where logged-in users are not
+ * supposes to see, like the sign in page
  * @param ctx
  * @param options
  */

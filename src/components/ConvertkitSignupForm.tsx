@@ -11,7 +11,7 @@ const ConvertkitSignupForm: React.FCC<{
       action={action}
       method={'POST'}
       target="_blank"
-      className={`space-around flex w-full flex-1`}
+      className={`space-around flex w-full flex-1 justify-center`}
     >
       <TextField>
         <TextField.Input
@@ -24,7 +24,7 @@ const ConvertkitSignupForm: React.FCC<{
         />
       </TextField>
 
-      <Button className="formkit-submit rounded-tl-none rounded-bl-none text-sm md:text-base">
+      <Button className="flex justify-center rounded-tl-none rounded-bl-none text-sm md:text-base">
         {children}
       </Button>
     </form>

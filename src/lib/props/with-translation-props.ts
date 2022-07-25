@@ -24,6 +24,8 @@ const DEFAULT_OPTIONS: Options = {
 /**
  * @name withTranslationProps
  * @param options
+ * @description This server side props pipe is to be used for any page that
+ * is using i18n; otherwise, the translation strings won't be loaded
  */
 export async function withTranslationProps(options?: Options) {
   const { localeNamespaces, locale } = mergeOptions(options);

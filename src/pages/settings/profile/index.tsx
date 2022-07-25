@@ -44,13 +44,13 @@ const Profile = () => {
   }
 
   return (
-    <FirebaseStorageProvider>
+    <>
       <Head>
         <title key={'title'}>Update Profile</title>
       </Head>
 
-      <SettingsPageContainer title={'Profile'}>
-        <div className={'flex justify-between'}>
+      <FirebaseStorageProvider>
+        <SettingsPageContainer title={'Profile'}>
           <ProfileSettingsTabs user={userSession.auth} />
 
           <div className={'w-full md:w-9/12'}>
@@ -62,9 +62,9 @@ const Profile = () => {
               <UpdateProfileForm user={userSession.auth} onUpdate={onUpdate} />
             </div>
           </div>
-        </div>
-      </SettingsPageContainer>
-    </FirebaseStorageProvider>
+        </SettingsPageContainer>
+      </FirebaseStorageProvider>
+    </>
   );
 };
 

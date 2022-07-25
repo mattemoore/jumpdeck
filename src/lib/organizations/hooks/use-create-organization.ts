@@ -1,3 +1,6 @@
+import { useCallback } from 'react';
+import { useUser } from 'reactfire';
+
 import { FirebaseError } from 'firebase/app';
 
 import {
@@ -7,8 +10,6 @@ import {
   writeBatch,
   DocumentReference,
 } from 'firebase/firestore';
-
-import { useUser } from 'reactfire';
 
 import { useRequestState } from '~/core/hooks/use-request-state';
 import { MembershipRole } from '~/lib/organizations/types/membership-role';
@@ -26,54 +27,57 @@ export function useCreateOrganization() {
   const { state, setError, setData, setLoading } =
     useRequestState<WithId<Organization>>();
 
-  async function createOrganization(name: string) {
-    const firestore = getFirestore();
-    const batch = writeBatch(firestore);
+  const createOrganizationCallback = useCallback(
+    async (name: string) => {
+      const firestore = getFirestore();
+      const batch = writeBatch(firestore);
 
-    try {
-      setLoading(true);
+      try {
+        setLoading(true);
 
-      const organizations = collection(firestore, 'organizations');
+        const organizations = collection(firestore, 'organizations');
 
-      const userDoc = doc(
-        firestore,
-        `users`,
-        userId
-      ) as DocumentReference<UserData>;
+        const userDoc = doc(
+          firestore,
+          `users`,
+          userId
+        ) as DocumentReference<UserData>;
 
-      const organizationDoc = doc(organizations);
+        const organizationDoc = doc(organizations);
 
-      const organizationData = {
-        name,
-        members: {
-          [userDoc.id]: {
-            role: MembershipRole.Owner,
-            user: userDoc,
+        const organizationData = {
+          name,
+          members: {
+            [userDoc.id]: {
+              role: MembershipRole.Owner,
+              user: userDoc,
+            },
           },
-        },
-      };
+        };
 
-      batch.set(organizationDoc, organizationData);
+        batch.set(organizationDoc, organizationData);
 
-      await batch.commit();
+        await batch.commit();
 
-      setData({
-        name,
-        id: organizationDoc.id,
-        members: {
-          [userDoc.id]: {
-            role: MembershipRole.Owner,
-            user: userDoc,
+        setData({
+          name,
+          id: organizationDoc.id,
+          members: {
+            [userDoc.id]: {
+              role: MembershipRole.Owner,
+              user: userDoc,
+            },
           },
-        },
-      });
-    } catch (e) {
-      setError((e as FirebaseError).message);
-    }
-  }
+        });
+      } catch (e) {
+        setError((e as FirebaseError).message);
+      }
+    },
+    [setData, setError, setLoading, userId]
+  );
 
-  return [createOrganization, state] as [
-    typeof createOrganization,
+  return [createOrganizationCallback, state] as [
+    typeof createOrganizationCallback,
     typeof state
   ];
 }

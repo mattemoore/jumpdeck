@@ -1,6 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
 import nookies from 'nookies';
 import configuration from '~/configuration';
+import { getAuth } from 'firebase-admin/auth';
 
 import { getUserInfoById } from '~/core/firebase/auth/get-user-info-by-id';
 import { getLoggedInUser } from '~/core/firebase/auth/get-logged-in-user';
@@ -91,6 +92,23 @@ export async function withAppProps(
     // if the organization is found, save the ID in a cookie
     // so that we can fetch it on the next request
     if (organization) {
+      const customClaims = metadata?.customClaims ?? {};
+      const authOrganizationId = customClaims.organizationId;
+
+      const userDidChangeOrganization =
+        authOrganizationId !== currentOrganizationId;
+
+      const shouldUpdateTokenClaims =
+        !authOrganizationId || userDidChangeOrganization;
+
+      if (shouldUpdateTokenClaims) {
+        await setOrganizationIdCustomClaims(
+          user.id,
+          organization.id,
+          customClaims
+        );
+      }
+
       saveOrganizationInCookies(ctx, organization.id);
     }
 
@@ -148,6 +166,9 @@ function saveOrganizationInCookies(
   nookies.set(ctx, ORGANIZATION_ID_COOKIE_NAME, organizationId, { path: '/' });
 }
 
+/**
+ * @name redirectToOnboarding
+ */
 function redirectToOnboarding() {
   const destination = configuration.paths.onboarding;
 
@@ -157,4 +178,26 @@ function redirectToOnboarding() {
       destination,
     },
   };
+}
+
+/**
+ * @name setOrganizationIdCustomClaims
+ * @param userId
+ * @param organizationId
+ * @param existingClaims
+ * @description Updates the user's custom claims with the current
+ * organization ID so that we can use the metadata to write Firebase Storage
+ * Security Rules for users belonging to the organization with ID {@link organizationId}
+ */
+function setOrganizationIdCustomClaims(
+  userId: string,
+  organizationId: string,
+  existingClaims: UnknownObject
+) {
+  const auth = getAuth();
+
+  return auth.setCustomUserClaims(userId, {
+    ...existingClaims,
+    organizationId,
+  });
 }

@@ -3,6 +3,7 @@ import React, {
   FormEvent,
   LegacyRef,
   MouseEventHandler,
+  useEffect,
   useState,
 } from 'react';
 
@@ -27,7 +28,8 @@ const ImageUploadInput: React.FCC<Props> = ({
   onClear,
   ...props
 }) => {
-  const [value, setValue] = useState<string | null>(image ?? null);
+  const propValue = image ?? null;
+  const [value, setValue] = useState<string | null>(propValue);
   const [fileName, setFileName] = useState<string>('');
   const ref = createRef<HTMLInputElement>();
 
@@ -63,6 +65,10 @@ const ImageUploadInput: React.FCC<Props> = ({
       onClear();
     }
   };
+
+  useEffect(() => {
+    setValue(propValue);
+  }, [propValue]);
 
   return (
     <div className={'ImageUploadInput'}>

@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import { useAuth } from 'reactfire';
 import { FirebaseError } from 'firebase/app';
 
@@ -18,21 +20,24 @@ export function useSignInWithProvider() {
     FirebaseError
   >();
 
-  async function signInWithProvider(provider: AuthProvider) {
-    setLoading(true);
+  const signInWithProvider = useCallback(
+    async (provider: AuthProvider) => {
+      setLoading(true);
 
-    try {
-      const credential = await signInWithPopup(
-        auth,
-        provider,
-        browserPopupRedirectResolver
-      );
+      try {
+        const credential = await signInWithPopup(
+          auth,
+          provider,
+          browserPopupRedirectResolver
+        );
 
-      setData(credential);
-    } catch (error) {
-      setError(error as FirebaseError);
-    }
-  }
+        setData(credential);
+      } catch (error) {
+        setError(error as FirebaseError);
+      }
+    },
+    [auth, setData, setError, setLoading]
+  );
 
   return [signInWithProvider, state] as [
     typeof signInWithProvider,

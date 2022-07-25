@@ -12,15 +12,16 @@ import InviteMembersForm from '~/components/organizations/InviteMembersForm';
 import Heading from '~/core/ui/Heading';
 import Button from '~/core/ui/Button';
 import SettingsPageContainer from '~/components/SettingsPageContainer';
+import { OrganizationContext } from '~/lib/contexts/organization';
 
 const OrganizationMembersInvitePage: React.FCC = () => {
   return (
-    <SettingsPageContainer title={'Organization'}>
+    <>
       <Head>
         <title key="title">Invite Members</title>
       </Head>
 
-      <div className={'flex justify-between'}>
+      <SettingsPageContainer title={'Organization'}>
         <OrganizationSettingsTabs />
 
         <div className={'w-full md:w-9/12'}>
@@ -38,6 +39,7 @@ const OrganizationMembersInvitePage: React.FCC = () => {
                 >
                   <span className={'flex items-center space-x-1'}>
                     <ArrowNarrowLeftIcon className={'h-4'} />
+
                     <span>
                       <Trans i18nKey={'organization:goBackToMembersPage'} />
                     </span>
@@ -46,11 +48,13 @@ const OrganizationMembersInvitePage: React.FCC = () => {
               </div>
             </div>
 
-            <InviteMembersForm />
+            <OrganizationContext.Consumer>
+              {() => <InviteMembersForm />}
+            </OrganizationContext.Consumer>
           </div>
         </div>
-      </div>
-    </SettingsPageContainer>
+      </SettingsPageContainer>
+    </>
   );
 };
 

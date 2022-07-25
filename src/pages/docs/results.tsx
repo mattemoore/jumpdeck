@@ -11,6 +11,7 @@ import logger from '~/core/logger';
 
 import { withTranslationProps } from '~/lib/props/with-translation-props';
 import SearchResultsPage from '~/components/SearchResultsPage';
+import configuration from '~/configuration';
 
 const DocumentationSearchResults: React.FC<{
   results: SearchResult[];
@@ -46,7 +47,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   }
 
   const query = result.data.query;
-  const indexFilePath = join(process.cwd(), `public/index`);
+  const indexFilePath = join(process.cwd(), configuration.paths.searchIndex);
 
   try {
     const props = await withTranslationProps();

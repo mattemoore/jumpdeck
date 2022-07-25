@@ -34,65 +34,67 @@ const OrganizationMembersPage: React.FCC = () => {
   const canInviteUsers = useUserCanInviteUsers();
 
   return (
-    <SettingsPageContainer title={'Organization'}>
+    <>
       <Head>
         <title key="title">Organization Members</title>
       </Head>
 
-      <OrganizationContext.Consumer>
-        {({ organization }) => {
-          const id = organization?.id as string;
+      <SettingsPageContainer title={'Organization'}>
+        <OrganizationContext.Consumer>
+          {({ organization }) => {
+            const id = organization?.id as string;
 
-          return (
-            <div className={'flex justify-between'}>
-              <OrganizationSettingsTabs />
+            return (
+              <>
+                <OrganizationSettingsTabs />
 
-              <div className={'w-full md:w-9/12'}>
-                <div className="flex flex-1 flex-col space-y-8">
-                  <div>
-                    <div className="flex items-center justify-between space-x-8">
-                      <Heading type={3}>
-                        <Trans i18nKey={'organization:membersPageHeading'} />
-                      </Heading>
+                <div className={'w-full md:w-9/12'}>
+                  <div className="flex flex-1 flex-col space-y-8">
+                    <div>
+                      <div className="flex items-center justify-between space-x-8">
+                        <Heading type={3}>
+                          <Trans i18nKey={'organization:membersPageHeading'} />
+                        </Heading>
 
-                      <If condition={canInviteUsers}>
-                        <Button
-                          data-cy={'invite-form-link'}
-                          type="button"
-                          href={'/settings/organization/members/invite'}
-                        >
-                          <span className="flex items-center space-x-2">
-                            <UserAddIcon className="h-5" />
+                        <If condition={canInviteUsers}>
+                          <Button
+                            data-cy={'invite-form-link'}
+                            type="button"
+                            href={'/settings/organization/members/invite'}
+                          >
+                            <span className="flex items-center space-x-2">
+                              <UserAddIcon className="h-5" />
 
-                            <span>
-                              <Trans
-                                i18nKey={
-                                  'organization:inviteMembersButtonLabel'
-                                }
-                              />
+                              <span>
+                                <Trans
+                                  i18nKey={
+                                    'organization:inviteMembersButtonLabel'
+                                  }
+                                />
+                              </span>
                             </span>
-                          </span>
-                        </Button>
-                      </If>
+                          </Button>
+                        </If>
+                      </div>
+
+                      <OrganizationMembersList organizationId={id} />
                     </div>
 
-                    <OrganizationMembersList organizationId={id} />
-                  </div>
+                    <div className={'flex flex-col space-y-2'}>
+                      <Heading type={3}>
+                        <Trans i18nKey={'organization:pendingInvitesHeading'} />
+                      </Heading>
 
-                  <div className={'flex flex-col space-y-2'}>
-                    <Heading type={3}>
-                      <Trans i18nKey={'organization:pendingInvitesHeading'} />
-                    </Heading>
-
-                    <OrganizationInvitedMembersList organizationId={id} />
+                      <OrganizationInvitedMembersList organizationId={id} />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          );
-        }}
-      </OrganizationContext.Consumer>
-    </SettingsPageContainer>
+              </>
+            );
+          }}
+        </OrganizationContext.Consumer>
+      </SettingsPageContainer>
+    </>
   );
 };
 

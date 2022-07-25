@@ -23,6 +23,7 @@ import If from '~/core/ui/If';
 import Directory from '~/core/docs/types/directory';
 import DocumentationPage from '../../core/docs/types/documentation-page';
 import SearchInput from '~/components/SearchInput';
+import SubHeading from '~/core/ui/SubHeading';
 
 type Props = {
   page: {
@@ -81,22 +82,24 @@ const DocsPage = ({ page, docs, previousPage, nextPage }: Props) => {
             <FloatingDocumentationNavigation data={docs} />
           </div>
 
-          <div className={'block md:flex md:space-x-8 lg:space-x-16'}>
-            <div
-              className={
-                'DocumentationSidebarContainer flex flex-col space-y-2'
-              }
-            >
+          <div className={'md:flex md:space-x-8 lg:space-x-16'}>
+            <div className={'DocumentationSidebarContainer flex-col space-y-2'}>
               <SearchInput path={'/docs/results'} />
 
               <DocumentationNavigation data={docs} />
             </div>
 
-            <div className="mt-8 flex flex-1 flex-col">
+            <div className="mt-8 flex flex-1 flex-col space-y-2">
               <div>
                 <Heading type={1}>
-                  <span className={'dark:text-white'}>{page.title}</span>
+                  <span className={'dark:text-white'}>{page.label}</span>
                 </Heading>
+              </div>
+
+              <div>
+                <SubHeading>
+                  <span>{page.description}</span>
+                </SubHeading>
               </div>
 
               <PostBody content={page.content} />
