@@ -2,22 +2,21 @@ import React from 'react';
 import RouteShell from '~/components/RouteShell';
 import NavigationMenu from '~/core/ui/Navigation/NavigationMenu';
 import NavigationItem from '~/core/ui/Navigation/NavigationItem';
-import NavigationContainer from '~/core/ui/Navigation/NavigationContainer';
 
-const links = {
-  Organization: {
-    path: '/settings/organization',
-    i18n: 'common:organizationSettingsTabLabel',
-  },
-  Profile: {
+const links = [
+  {
     path: '/settings/profile',
     i18n: 'common:profileSettingsTabLabel',
   },
-  Subscription: {
+  {
+    path: '/settings/organization',
+    i18n: 'common:organizationSettingsTabLabel',
+  },
+  {
     path: '/settings/subscription',
     i18n: 'common:subscriptionSettingsTabLabel',
   },
-};
+];
 
 const SettingsPageContainer: React.FCC<{
   title: string;
@@ -25,18 +24,18 @@ const SettingsPageContainer: React.FCC<{
   return (
     <RouteShell title={title}>
       <div className={'flex flex-col space-y-4'}>
-        <NavigationContainer
-          className={'border-t-transparent dark:border-t-transparent'}
-        >
-          <NavigationMenu bordered>
-            <NavigationItem link={links.Profile} />
-            <NavigationItem link={links.Organization} />
-            <NavigationItem link={links.Subscription} />
-          </NavigationMenu>
-        </NavigationContainer>
+        <NavigationMenu bordered>
+          {links.map((link) => (
+            <NavigationItem link={link} key={link.path} />
+          ))}
+        </NavigationMenu>
       </div>
 
-      <div className={'mt-8'}>{children}</div>
+      <div
+        className={`flex flex-col space-y-4 md:mt-8 md:flex-row md:justify-between md:space-y-0`}
+      >
+        {children}
+      </div>
     </RouteShell>
   );
 };

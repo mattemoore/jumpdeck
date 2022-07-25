@@ -1,24 +1,31 @@
+import { useCallback } from 'react';
 import { User, updatePassword } from 'firebase/auth';
 import { useRequestState } from '~/core/hooks/use-request-state';
 
 export function useUpdatePassword() {
   const { state, setLoading, setData, setError } = useRequestState<void>();
 
-  async function fn(user: User, newPassword: string) {
-    if (!newPassword) {
-      return;
-    }
+  const updatePasswordCallback = useCallback(
+    async (user: User, newPassword: string) => {
+      if (!newPassword) {
+        return;
+      }
 
-    try {
-      setLoading(true);
+      try {
+        setLoading(true);
 
-      await updatePassword(user, newPassword);
+        await updatePassword(user, newPassword);
 
-      setData();
-    } catch (e) {
-      setError(`Could not update Password`);
-    }
-  }
+        setData();
+      } catch (e) {
+        setError(`Could not update Password`);
+      }
+    },
+    [setData, setError, setLoading]
+  );
 
-  return [fn, state] as [typeof fn, typeof state];
+  return [updatePasswordCallback, state] as [
+    typeof updatePasswordCallback,
+    typeof state
+  ];
 }

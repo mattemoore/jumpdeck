@@ -38,6 +38,7 @@ const configuration = {
       checkout: `/api/stripe/checkout`,
       billingPortal: `/api/stripe/portal`,
     },
+    searchIndex: `/public/search-index`,
   },
   navigation: {
     style: NavigationStyle.TopHeader,

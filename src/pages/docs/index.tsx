@@ -16,6 +16,7 @@ import SubHeading from '~/core/ui/SubHeading';
 
 import DocumentationNavigation from '~/components/docs/DocumentationNavigation';
 import FloatingDocumentationNavigation from '~/components/docs/FloatingDocumentationNavigation';
+import SearchInput from '~/components/SearchInput';
 
 export default function Docs({
   docs,
@@ -46,7 +47,11 @@ export default function Docs({
 
           <div className={'block md:flex md:space-x-8 lg:space-x-16'}>
             <div className={'DocumentationSidebarContainer'}>
-              <DocumentationNavigation data={docs} />
+              <div className={'flex flex-col space-y-2'}>
+                <SearchInput path={'/docs/results'} />
+
+                <DocumentationNavigation data={docs} />
+              </div>
             </div>
 
             <div className="mt-8 flex flex-1 flex-col">

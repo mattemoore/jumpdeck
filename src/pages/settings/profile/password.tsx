@@ -1,15 +1,14 @@
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
-
 import { Trans } from 'next-i18next';
+
+import Heading from '~/core/ui/Heading';
 
 import { withAppProps } from '~/lib/props/with-app-props';
 import { useUserSession } from '~/lib/hooks/use-user-session';
 
 import UpdatePasswordForm from '~/components/profile/UpdatePasswordForm';
 import ProfileSettingsTabs from '~/components/profile/ProfileSettingsTabs';
-
-import Heading from '~/core/ui/Heading';
 import SettingsPageContainer from '~/components/SettingsPageContainer';
 
 const ProfilePasswordSettings = () => {
@@ -21,12 +20,12 @@ const ProfilePasswordSettings = () => {
   }
 
   return (
-    <SettingsPageContainer title={'Profile'}>
+    <>
       <Head>
         <title key={'title'}>Update Password</title>
       </Head>
 
-      <div className={'flex justify-between'}>
+      <SettingsPageContainer title={'Profile'}>
         <ProfileSettingsTabs user={user} />
 
         <div className={'w-full md:w-9/12'}>
@@ -38,8 +37,8 @@ const ProfilePasswordSettings = () => {
             <UpdatePasswordForm user={user} />
           </div>
         </div>
-      </div>
-    </SettingsPageContainer>
+      </SettingsPageContainer>
+    </>
   );
 };
 

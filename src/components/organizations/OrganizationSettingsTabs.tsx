@@ -12,22 +12,22 @@ const links = {
 };
 
 const OrganizationSettingsTabs = () => {
+  const itemClassName = `flex justify-center md:justify-start items-center flex-auto sm:flex-initial`;
+
   return (
     <div
       className={
-        'flex flex-row space-x-2 sm:flex-col sm:space-x-0 sm:space-y-2'
+        'flex flex-row justify-between space-x-2 md:justify-start' +
+        ' sm:flex-col sm:space-x-0 sm:space-y-2'
       }
     >
       <NavigationItem
-        className={'flex-auto sm:flex-initial'}
+        className={itemClassName}
         link={links.General}
         depth={0}
       />
 
-      <NavigationItem
-        className={'flex-auto sm:flex-initial'}
-        link={links.Members}
-      />
+      <NavigationItem className={itemClassName} link={links.Members} />
     </div>
   );
 };

@@ -60,8 +60,10 @@ const ItemIcon: React.FCC = ({ children }) => {
   return <div className="PopoverItemIcon">{children}</div>;
 };
 
-const ItemLabel: React.FCC = ({ children }) => {
-  return <p className="PopoverItemLabel">{children}</p>;
+const ItemLabel: React.FCC<{
+  className?: string;
+}> = ({ children, className }) => {
+  return <p className={`PopoverItemLabel ${className ?? ''}`}>{children}</p>;
 };
 
 const Item: PopoverDropdownItemComponent = ({

@@ -1,5 +1,7 @@
 import { useCallback, useContext, useState } from 'react';
 import Image from 'next/image';
+import { useAuth } from 'reactfire';
+import { SpringSpinner } from 'react-epic-spinners';
 
 import PlusSmIcon from '@heroicons/react/outline/PlusSmIcon';
 
@@ -8,6 +10,7 @@ import { Trans } from 'next-i18next';
 
 import { Organization } from '~/lib/organizations/types/organization';
 import { useFetchUserOrganizations } from '~/lib/organizations/hooks/use-fetch-user-organizations';
+import { useUpdateOrganizationIdToken } from '~/lib/organizations/hooks/use-update-organization-id-token';
 import { OrganizationContext } from '~/lib/contexts/organization';
 
 import If from '~/core/ui/If';
@@ -18,20 +21,31 @@ import CreateOrganizationModal from './CreateOrganizationModal';
 const PopoverButton: React.FCC<{
   organization: Maybe<WithId<Organization>>;
 }> = ({ organization }) => {
-  return (
-    <If condition={organization}>
-      {(organization) => <OrganizationItem organization={organization} />}
-    </If>
-  );
+  if (organization) {
+    return <OrganizationItem organization={organization} />;
+  }
+
+  return null;
 };
 
 const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
+  const auth = useAuth();
+
   const [isOrganizationModalOpen, setIsOrganizationModalOpen] = useState(false);
   const { organization, setOrganization } = useContext(OrganizationContext);
-  const { data: organizations } = useFetchUserOrganizations(userId);
+  const { data: organizations, status } = useFetchUserOrganizations(userId);
+  const isLoadingOrganizations = status === `loading`;
+
+  const [updateOrganizationIdToken] = useUpdateOrganizationIdToken();
+
+  // this is called by your component when the organization ID changes
+  const updateOrganizationTokenId = useCallback(async () => {
+    await updateOrganizationIdToken();
+    await auth.currentUser?.getIdTokenResult(true);
+  }, [auth.currentUser, updateOrganizationIdToken]);
 
   const organizationSelected = useCallback(
-    (item: WithId<Organization>) => {
+    async (item: WithId<Organization>) => {
       // update the global Organization context
       // with the selected organization
       setOrganization(item);
@@ -40,9 +54,18 @@ const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
       // a cookie so that we can return to it when
       // the user refreshes or navigates elsewhere
       saveOrganizationIdInCookie(item.id);
+
+      // update organization ID
+      // by updating the user's current auth claims
+      // needed for Firebase Storage's rules
+      await updateOrganizationTokenId();
     },
-    [setOrganization]
+    [setOrganization, updateOrganizationTokenId]
   );
+
+  if (isLoadingOrganizations) {
+    return <SpringSpinner size={24} color={`currentColor`} />;
+  }
 
   return (
     <>
@@ -51,8 +74,8 @@ const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
           {(organizations ?? []).map((item) => {
             const isSelected = item.id === organization?.id;
 
-            return (
-              <If key={item.id} condition={!isSelected}>
+            if (!isSelected) {
+              return (
                 <PopoverDropdownItem
                   key={item.name}
                   onClick={() => organizationSelected(item)}
@@ -61,8 +84,10 @@ const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
                     <OrganizationItem organization={item} />
                   </PopoverDropdownItem.Label>
                 </PopoverDropdownItem>
-              </If>
-            );
+              );
+            }
+
+            return null;
           })}
 
           <PopoverDropdownItem
@@ -98,31 +123,25 @@ const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
 
 function OrganizationItem({ organization }: { organization: Organization }) {
   const { logoURL, name } = organization;
-  const maxLabelWidth = `12rem`;
-  const minLabelWidth = `6.5rem`;
-
   return (
     <span
       data-cy={'organization-selector-item'}
-      className={`flex items-center space-x-3`}
+      className={`flex min-w-[6rem] max-w-[12rem] items-center space-x-1`}
     >
       <If condition={logoURL}>
-        <Image
-          layout={'fixed'}
-          width={'20px'}
-          height={'20px'}
-          alt={`${name} Logo`}
-          className={'object-contain'}
-          src={logoURL as string}
-        />
+        <span className={'flex flex-1 items-center'}>
+          <Image
+            layout={'fixed'}
+            width={'22px'}
+            height={'22px'}
+            alt={`${name} Logo`}
+            className={'object-contain'}
+            src={logoURL as string}
+          />
+        </span>
       </If>
 
-      <span
-        className={'text-left font-semibold ellipsify'}
-        style={{ maxWidth: maxLabelWidth, minWidth: minLabelWidth }}
-      >
-        {name}
-      </span>
+      <span className={'w-auto text-left font-semibold ellipsify'}>{name}</span>
     </span>
   );
 }

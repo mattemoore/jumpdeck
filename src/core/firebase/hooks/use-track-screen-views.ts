@@ -29,5 +29,5 @@ export function useTrackScreenViews() {
     return () => {
       Router.events.off('routeChangeComplete', onRouteChangeComplete);
     };
-  });
+  }, [onRouteChangeComplete]);
 }

@@ -8,7 +8,7 @@ const links = {
     i18n: 'common:dashboardTabLabel',
   },
   Settings: {
-    path: '/settings/profile',
+    path: '/settings',
     i18n: 'common:settingsTabLabel',
   },
 };

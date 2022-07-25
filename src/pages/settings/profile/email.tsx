@@ -20,12 +20,12 @@ const ProfileEmailSettings = () => {
   }
 
   return (
-    <SettingsPageContainer title={'Profile'}>
+    <>
       <Head>
         <title key={'title'}>Update Email</title>
       </Head>
 
-      <div className={'flex justify-between'}>
+      <SettingsPageContainer title={'Profile'}>
         <ProfileSettingsTabs user={user} />
 
         <div className={'w-full w-9/12'}>
@@ -37,8 +37,8 @@ const ProfileEmailSettings = () => {
             <UpdateEmailForm user={user} />
           </div>
         </div>
-      </div>
-    </SettingsPageContainer>
+      </SettingsPageContainer>
+    </>
   );
 };
 

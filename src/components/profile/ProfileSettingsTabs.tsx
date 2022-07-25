@@ -1,6 +1,7 @@
-import NavigationItem from '~/core/ui/Navigation/NavigationItem';
 import React, { useMemo } from 'react';
 import { EmailAuthProvider, User } from 'firebase/auth';
+
+import NavigationItem from '~/core/ui/Navigation/NavigationItem';
 
 const links = {
   General: {
@@ -30,26 +31,29 @@ const ProfileSettingsTabs: React.FCC<{
     });
   }, [user]);
 
+  const itemClassName = `flex justify-center md:justify-start items-center flex-auto sm:flex-initial`;
+
   return (
     <div
       className={
-        'flex flex-row space-x-2 sm:flex-col sm:space-x-0 sm:space-y-2'
+        'flex flex-row justify-between space-x-2 md:justify-start' +
+        ' sm:flex-col sm:space-x-0 sm:space-y-2'
       }
     >
       <NavigationItem
-        className={'flex-auto sm:flex-initial'}
+        className={itemClassName}
         link={links.General}
         depth={0}
       />
 
       <NavigationItem
-        className={'flex-auto sm:flex-initial'}
+        className={itemClassName}
         disabled={!canEditEmailAndPassword}
         link={links.Email}
       />
 
       <NavigationItem
-        className={'flex-auto sm:flex-initial'}
+        className={itemClassName}
         disabled={!canEditEmailAndPassword}
         link={links.Password}
       />

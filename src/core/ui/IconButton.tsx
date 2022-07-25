@@ -29,7 +29,7 @@ function IconButton({
     title: label,
   };
 
-  const Element = ({ children }: PropsWithChildren<unknown>) => {
+  const Element = ({ children }: PropsWithChildren) => {
     const tag = 'as' in props ? props.as : 'button';
 
     return createElement(tag, allProps, children);

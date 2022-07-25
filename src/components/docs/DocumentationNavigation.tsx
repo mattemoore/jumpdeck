@@ -39,7 +39,7 @@ export default function DocumentationNavigation({
                       }`}
                       key={page.label}
                     >
-                      <span className={'text-sm'}>{page.label}</span>
+                      <span>{page.label}</span>
                     </a>
                   </Link>
                 );

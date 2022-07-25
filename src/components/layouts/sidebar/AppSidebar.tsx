@@ -5,10 +5,7 @@ import dynamic from 'next/dynamic';
 import type { User } from 'firebase/auth';
 
 import {
-  UserIcon,
-  UserGroupIcon,
   ViewGridIcon,
-  CreditCardIcon,
   DocumentIcon,
   SupportIcon,
   CogIcon,
@@ -19,6 +16,7 @@ import If from '~/core/ui/If';
 import { Trans } from 'next-i18next';
 
 import { useUserSession } from '~/lib/hooks/use-user-session';
+import { isRouteActive } from '~/core/is-route-active';
 
 const OrganizationsSelector = dynamic(
   () => import('../../OrganizationsSelector'),
@@ -77,7 +75,7 @@ function AppSidebarMenu() {
         </span>
       </AppSidebarItem>
 
-      <AppSidebarItem href={'/settings/profile'}>
+      <AppSidebarItem href={'/settings'}>
         <CogIcon className={'h-6'} />
 
         <span>
@@ -113,10 +111,11 @@ function AppSidebarItem({
   href: string;
 }>) {
   const router = useRouter();
-  const active = router.pathname === href;
+  const depth = 2;
+  const active = isRouteActive(href, router.pathname, depth);
 
   return (
-    <Link href={href} passHref shallow>
+    <Link href={href} passHref>
       <a
         className={`AppSidebarItem ${
           active ? `AppSidebarItemActive` : 'AppSidebarItemNotActive'

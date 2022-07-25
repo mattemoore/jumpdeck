@@ -14,23 +14,29 @@
 
     /* NavigationContainer.tsx */
     .NavigationContainer {
-        @apply border-y dark:border-black-400 pt-1 dark:border-black-400 border-gray-100;
+        @apply border-y dark:border-black-400 pt-1
+            dark:border-black-400 border-gray-100;
     }
 
     /* NavigationMenu.tsx */
     .NavigationMenu {
-        @apply flex-1 space-x-4 dark:text-gray-300 items-center flex-row hidden md:flex;
+        @apply flex-1 space-x-4 dark:text-gray-300
+            items-center flex-row hidden md:flex;
     }
 
     /* NavigationItem.tsx */
     .NavigationItem {
         @apply leading-loose rounded-md text-sm
-        transition-colors duration-300 dark:text-gray-300
-        text-gray-800 font-semibold flex items-center;
+            transition-colors duration-300 dark:text-gray-300
+            text-gray-800 font-semibold flex items-center;
     }
 
     .NavigationItem a {
         @apply px-2 py-1 block flex items-center;
+    }
+
+    .NavigationItemActive a {
+        @apply font-bold;
     }
 
     .BorderedNavigationMenu .NavigationItemActive a {
@@ -39,16 +45,16 @@
 
     .NavigationItemNotActive {
         @apply hover:text-black-600 hover:text-primary-500
-            active:text-primary-700 text-gray-500 dark:text-gray-400
-            dark:hover:text-white hover:text-current;
+        active:text-primary-700 text-gray-500 dark:text-gray-400
+        dark:hover:text-white hover:text-current;
     }
 
     .NavigationItemActive {
-        @apply font-semibold text-black-600;
+        @apply font-semibold text-black-600 dark:text-white;
     }
 
     .NavigationItem a[aria-disabled='true'] {
-        @apply cursor-not-allowed text-gray-300 dark:text-gray-500;
+        @apply cursor-not-allowed text-gray-300 dark:text-gray-600;
     }
 
     /* SectionSeparator.tsx */
@@ -58,7 +64,8 @@
 
     /* SubHeading.tsx */
     .SubHeading {
-        @apply text-2xl leading-[2.2rem] text-gray-500 dark:text-gray-400 font-normal;
+        @apply text-2xl leading-[2.2rem] text-gray-500
+            dark:text-gray-400 font-normal;
     }
 
     /* Badge.tsx */
@@ -67,11 +74,13 @@
     }
 
     .Badge.ColorNormal {
-        @apply text-gray-500 bg-gray-100 dark:text-gray-300 dark:bg-black-300;
+        @apply text-gray-500 bg-gray-100
+            dark:text-gray-300 dark:bg-black-300;
     }
 
     .Badge.ColorSuccess {
-        @apply bg-green-100 dark:bg-black-300 text-green-700 font-semibold;
+        @apply bg-green-100 dark:bg-black-300
+            text-green-700 font-semibold;
     }
 
     .Badge.SizeNormal {
@@ -96,7 +105,8 @@
     }
 
     .Alert.AlertSuccess {
-        @apply border-green-500 text-green-800 bg-green-50 dark:bg-black-200 dark:text-green-500;
+        @apply border-green-500 text-green-800
+            bg-green-50 dark:bg-black-200 dark:text-green-500;
     }
 
     .Alert.AlertSuccess .AlertIcon {
@@ -112,7 +122,8 @@
     }
 
     .Alert.AlertWarn {
-        @apply border-orange-500 text-orange-700 bg-orange-50 dark:bg-black-200 dark:text-orange-500;
+        @apply border-orange-500 text-orange-700
+            bg-orange-50 dark:bg-black-200 dark:text-orange-500;
     }
 
     .Alert.AlertWarn .AlertIcon {
@@ -120,14 +131,14 @@
     }
 
     .Alert.AlertInfo {
-        @apply border-blue-500 text-blue-800 bg-blue-50 dark:bg-black-200 dark:text-blue-500;
+        @apply border-blue-500 text-blue-800
+            bg-blue-50 dark:bg-black-200 dark:text-blue-500;
     }
 
     .Alert.AlertInfo .AlertIcon {
         @apply dark:text-blue-500 text-blue-700;
     }
 
-    /* TextField.tsx */
     .TextField {
         @apply flex flex-col space-y-1;
     }
@@ -146,7 +157,7 @@
     .TextFieldInputContainer input.TextFieldInput:-webkit-autofill,
     .TextFieldInputContainer input.TextFieldInput:-webkit-autofill:hover,
     .TextFieldInputContainer input.TextFieldInput:-webkit-autofill:focus {
-        @apply bg-transparent outline-none py-0.5 flex-auto h-10;
+        @apply bg-transparent outline-none py-0.5 flex-auto h-10 px-2;
     }
 
     .TextFieldInputContainer textarea {
@@ -173,12 +184,14 @@
     }
 
     .TextFieldHint {
-        @apply text-xs font-normal text-gray-500 dark:text-gray-400 leading-tight block pl-1;
+        @apply text-xs font-normal text-gray-500
+        dark:text-gray-400 leading-tight block pl-1;
     }
 
     /* Label.tsx */
     .Label {
-        @apply text-gray-700 text-xs font-bold w-full dark:text-gray-300;
+        @apply text-gray-700 text-xs font-bold
+            w-full dark:text-gray-300;
     }
 
     .Label > * {
@@ -191,30 +204,34 @@
 
     /* Button.tsx */
     .Button {
-        @apply rounded-lg
-        font-bold transition-colors duration-300
-        flex items-center justify-center
-        focus:ring;
+        @apply rounded-lg font-bold transition-colors duration-300
+            flex items-center justify-center;
     }
 
     .Button.ButtonPrimary {
         @apply bg-primary-500 text-primary-contrast
-        hover:bg-primary-600 active:bg-primary-700
-        dark:text-primary-contrast outline-primary-800 ring-primary-300;
+            hover:bg-primary-600 active:bg-primary-700
+            dark:text-primary-contrast
+            outline-primary-800 ring-primary-300;
     }
 
     .Button.ButtonDanger {
-        @apply bg-red-400 active:bg-red-600 hover:bg-red-400 text-white ring-red-300;
+        @apply bg-red-400 active:bg-red-600
+            hover:bg-red-400 text-white ring-red-300;
     }
 
     .Button.ButtonSecondary {
-        @apply bg-gray-100 dark:bg-black-300 active:bg-gray-200 dark:outline-black-100
-        outline-gray-50 hover:bg-gray-200 dark:hover:bg-black-200 dark:active:bg-black-400;
+        @apply bg-gray-100 dark:bg-black-300 active:bg-gray-200
+            dark:outline-black-100
+            outline-gray-50 hover:bg-gray-200
+            dark:hover:bg-black-200 dark:active:bg-black-400;
     }
 
     .Button.ButtonTransparent {
-        @apply hover:bg-gray-50 dark:hover:bg-black-300 dark:active:bg-black-400
-        text-gray-800 dark:text-gray-300 dark:outline-black-300 outline-gray-50;
+        @apply hover:bg-gray-50 dark:hover:bg-black-300
+            dark:active:bg-black-400
+            text-gray-800 dark:text-gray-300
+            dark:outline-black-300 outline-gray-50;
     }
 
     .ButtonNormal {
@@ -231,12 +248,12 @@
 
     .Button.ButtonPrimaryOutline {
         @apply bg-transparent text-primary-700
-        border-2 border-primary-500 hover:text-white;
+            border-2 border-primary-500 hover:text-white;
     }
 
     .Button.ButtonDangerOutline {
         @apply bg-transparent text-red-400
-        border-2 border-red-400 hover:text-white;
+            border-2 border-red-400 hover:text-white;
     }
 
     .Button.ButtonPrimaryFlat {
@@ -255,19 +272,19 @@
     /* IconButton.tsx */
     .IconButton {
         @apply rounded-full bg-transparent hover:bg-gray-100
-        dark:hover:bg-black-300 transition-colors duration-300
-        dark:active:bg-gray-100 dark:active:bg-black-200 p-1
-        outline-primary-300 focus:ring ring-primary-400;
+            dark:hover:bg-black-300 transition-colors duration-300
+            dark:active:bg-gray-100 dark:active:bg-black-200 p-1
+            outline-primary-300 focus:ring ring-primary-400;
     }
 
     /* ImageUploadInput.tsx */
     .ImageUploadInput {
         @apply TextFieldInput cursor-pointer relative
-        border-dashed bg-white dark:bg-black-400
-        hover:bg-gray-50 dark:hover:bg-black-300
-        transition-colors duration-300 border
-        border-gray-200 dark:border-black-200
-        py-2.5 px-2 rounded-lg;
+            border-dashed bg-white dark:bg-black-400
+            hover:bg-gray-50 dark:hover:bg-black-300
+            transition-colors duration-300 border
+            border-gray-200 dark:border-black-200
+            py-2.5 px-2 rounded-lg;
     }
 
     /* Footer.tsx */
@@ -277,11 +294,11 @@
 
     /* Popover.tsx */
     button.PopoverButton {
-        @apply flex flex-row shadow hover:shadow-md py-2 px-4
-        dark:hover:bg-black-400 dark:active:bg-black-500 flex-1
-        items-center w-full dark:bg-black-300 rounded-md
-        bg-gray-50 duration-300 hover:bg-gray-100
-        outline-primary-300 focus:outline-2;
+        @apply flex flex-row shadow hover:shadow-md py-2 px-3
+            dark:hover:bg-black-200 dark:active:bg-black-500
+            items-center w-full dark:bg-black-300 rounded-md
+            bg-gray-50 duration-300 hover:bg-gray-100
+            outline-primary-300 focus:outline-2;
     }
 
     button.PopoverButtonActive {
@@ -290,23 +307,26 @@
 
     .PopoverChevronDownIcon {
         @apply ml-2 h-5 w-5 group-hover:text-opacity-80
-        transition ease-in-out duration-150;
+            transition ease-in-out duration-150;
     }
 
     .PopoverPanel {
         @apply absolute rounded-bl-md rounded-br-md shadow-lg
-        z-10 px-2 transform sm:px-0
-        w-full bg-white dark:bg-black-300;
+            z-10 px-2 transform sm:px-0
+            w-full bg-white dark:bg-black-300;
     }
 
     .PopoverPanelItem {
-        @apply flex py-3 px-4 bg-transparent hover:bg-gray-50 dark:hover:bg-black-400
-        items-center cursor-pointer transition
-        duration-150 ease-in-out focus:outline-none;
+        @apply flex bg-transparent
+            hover:bg-gray-50 dark:hover:bg-black-400 active:bg-gray-100
+            dark:active:bg-black-300
+            items-center cursor-pointer transition
+            duration-150 ease-in-out focus:outline-none;
     }
 
     .PopoverItemLabel {
-        @apply text-sm font-semibold text-gray-700 dark:text-gray-300;
+        @apply text-sm font-semibold text-gray-700
+            dark:text-gray-300 py-3 px-4 ellipsify;
     }
 
     .PopoverItemIcon {
@@ -336,13 +356,13 @@
     /* ListBox.tsx */
     .ListBoxButton {
         @apply TextFieldInputContainer px-3 py-2.5 text-left
-        font-semibold hover:text-current dark:text-current;
+            font-semibold hover:text-current dark:text-current;
     }
 
     .ListBoxButton.ListBoxButtonAlt {
         @apply small pl-3 py-1 font-bold bg-gray-100 hover:bg-gray-200
-        dark:bg-black-300 dark:hover:bg-black-200 dark:text-gray-200
-        border-transparent;
+            dark:bg-black-300 dark:hover:bg-black-200 dark:text-gray-200
+            border-transparent;
     }
 
     .ListBoxButtonOpen {
@@ -356,16 +376,16 @@
 
     .ListBoxOptionsContainer {
         @apply absolute w-full mt-0.5 overflow-auto
-        text-base bg-white dark:bg-black-300
-        rounded-lg shadow-md max-h-96 z-50;
+            text-base bg-white dark:bg-black-300
+            rounded-lg shadow-md max-h-96 z-50;
     }
 
     /* ListBoxOption.tsx */
     .ListBoxOption {
         @apply cursor-default select-none relative
-        py-3 pl-4 pr-4 font-semibold
-        text-sm transition-colors duration-75
-        border-b dark:border-b-black-400 border-gray-50
+            py-3 pl-4 pr-4 font-semibold
+            text-sm transition-colors duration-75
+            border-b dark:border-b-black-400 border-gray-50
     }
 
     .ListBoxOption.ListBoxOption[aria-disabled='true'] {
@@ -377,7 +397,8 @@
     }
 
     .ListBoxOptionActive {
-        @apply cursor-pointer text-gray-900 bg-gray-50 dark:bg-black-300 dark:text-white;
+        @apply cursor-pointer text-gray-900
+            bg-gray-50 dark:bg-black-300 dark:text-white;
     }
 
     .ListBoxOptionSelected {
@@ -389,18 +410,17 @@
     }
 
     .ListBoxOptionDescription {
-        font-size: 0.7rem;
-
-        @apply text-gray-600 dark:text-gray-400 leading-tight font-medium;
+        @apply text-gray-600 dark:text-gray-400
+            leading-tight font-medium text-[0.7rem];
     }
 
     /* FallbackUserAvatar.tsx */
     .FallbackUserAvatar {
         @apply h-9 w-9 text-lg flex items-center
-        transition-all justify-center
-        bg-primary-500 hover:bg-primary-600
-        rounded-full uppercase font-extrabold
-        text-black-500 text-primary-contrast;
+            transition-all justify-center
+            bg-primary-500 hover:bg-primary-600
+            rounded-full uppercase font-extrabold
+            text-black-500 text-primary-contrast;
     }
 
     /* Dropdown.tsx */
@@ -410,17 +430,17 @@
 
     .DropdownMenuItemsContainer {
         @apply z-10 absolute right-0 w-full lg:w-60 mt-2
-        lg:mt-2 origin-top-right bg-white dark:bg-black-400
-        lg:rounded-md shadow-xl focus:outline-none
-        border-t border-gray-50 dark:border-black-300 py-1;
+            lg:mt-2 origin-top-right bg-white dark:bg-black-400
+            lg:rounded-md shadow-xl focus:outline-none
+            border-t border-gray-50 dark:border-black-300 py-1;
 
-        top: var(--dropdown-menu-items-top, auto);
-        bottom: var(--dropdown-menu-items-bottom, auto);
+            top: var(--dropdown-menu-items-top, auto);
+            bottom: var(--dropdown-menu-items-bottom, auto);
     }
 
     .DropdownItem {
         @apply flex flex-1 items-center w-full border-none
-        sm:text-sm dark:text-white duration-200;
+            sm:text-sm dark:text-white duration-200 px-2;
     }
 
     .DropdownMenuButtonContainer {
@@ -437,27 +457,29 @@
     }
 
     .DropdownButtonContainer button {
-        @apply dark:active:bg-black-300 active:bg-gray-50 dark:outline-black-400;
+        @apply dark:active:bg-black-300 active:bg-gray-50
+            dark:outline-black-400 h-full;
     }
 
     .DropdownActiveItem {
-        @apply bg-gray-50 dark:bg-black-300 text-black-500 dark:text-current;
+        @apply bg-gray-50 dark:bg-black-300
+            text-black-500 dark:text-current;
     }
 
     .DropdownDivider {
-        height: 1px;
-
-        @apply bg-gray-200 dark:bg-black-300 border-none;
+        @apply bg-gray-200 dark:bg-black-300 border-none h-[1px];
     }
 
     /* Documentation */
     .DocumentationSidebarContainer {
-        @apply mt-6 sticky inset-0 hidden md:flex overflow-y-auto h-screen;
+        @apply mt-6 sticky inset-0 hidden
+            md:flex overflow-y-auto h-screen;
     }
 
     .DocumentationSidebarItem {
         @apply pl-4 border-l-2 dark:active:bg-black-400 active:bg-gray-100
-        dark:hover:border-l-primary-400 py-2 px-3 transition-colors duration-300;
+            md:text-[0.8rem] dark:hover:border-l-primary-400
+            py-1.5 px-3 transition-colors duration-300;
     }
 
     .DocumentationSidebarItemContainer:last-child {
@@ -465,27 +487,26 @@
     }
 
     .DocumentationSidebarItemSelected {
-        @apply font-semibold dark:text-primary-500 border-l-primary-400;
+        @apply font-semibold dark:text-primary-500
+            border-l-primary-400;
     }
 
     .DocumentationSidebarItemNotSelected {
         @apply hover:border-l-primary-400 dark:hover:text-white
-        dark:border-l-black-400 font-medium;
+            dark:border-l-black-400 font-medium;
     }
 
     .AuthProviderButton {
         @apply border-gray-200 bg-gray-100 dark:border-black-300
-        hover:bg-gray-200 active:bg-gray-300 hover:border-gray-300
-        dark:hover:border-black-300 dark:bg-black-300
-        dark:hover:bg-black-400 dark:active:bg-black-500
-        dark:outline-black-300
-        transition-all duration-300 relative;
+            hover:bg-gray-200 active:bg-gray-300 hover:border-gray-300
+            dark:hover:border-black-300 dark:bg-black-300
+            dark:hover:bg-black-400 dark:active:bg-black-500
+            dark:outline-black-300 transition-all duration-300 relative;
     }
 
     .Toggle {
-        @apply h-6 w-12 cursor-pointer appearance-none
-        border-opacity-20 bg-black-200 duration-300
-        ease-in-out rounded-xl;
+        @apply h-6 w-12 cursor-pointer appearance-none border-opacity-20
+        bg-black-200 duration-300 ease-in-out rounded-xl;
 
         transition: all 0.25s ease-in-out;
         box-shadow: calc(1.5rem * -1) 0 0 2px #fff inset, 0 0 0 2px #fff inset;
@@ -505,11 +526,13 @@
 
     .Toggle:focus-visible {
         @apply outline outline-primary-500;
+
         outline-offset: 2px;
     }
 
     .Toggle:checked {
-        @apply border-opacity-100 bg-opacity-100 bg-primary-500 border-primary-400;
+        @apply border-opacity-100 bg-opacity-100
+            bg-primary-500 border-primary-400;
 
         box-shadow: 1.5rem 0 0 2px #fff inset, 0 0 0 2px #fff inset;
     }
@@ -518,20 +541,15 @@
         box-shadow: 1.5rem 0 0 2px #444 inset, 0 0 0 2px #444 inset;
     }
 
-    .StoryCard {
-        @apply flex flex-col h-full min-h-[400px] w-full flex-grow rounded-[12px]
-        cursor-pointer border border-gray-200 dark:border-black-200 dark:bg-black-500
-        ring-primary-500 transition-all dark:hover:bg-black-400
-        dark:active:bg-black-300 active:ring-2 hover:bg-gray-100 dark:hover:bg-black-400;
-    }
-
     .Stepper {
         @apply flex space-x-2 justify-between shadow
-        dark:border-black-400 dark:shadow dark:bg-black-400 px-2 py-1 rounded-md;
+            dark:border-black-400 dark:shadow
+            dark:bg-black-400 px-2 py-1 rounded-md;
     }
 
     .StepperDivider {
-        @apply flex bg-gray-300 dark:bg-black-200 h-[2px] flex-1 transition-colors;
+        @apply flex bg-gray-300 dark:bg-black-200
+            h-[2px] flex-1 transition-colors;
 
         align-items: center;
         justify-items: center;
@@ -554,8 +572,8 @@
 
     .StepperStepCircle {
         @apply rounded-full w-[35px] h-[35px] shadow duration-75
-        font-bold flex justify-center items-center
-        bg-gray-200 dark:bg-black-200 transition-colors;
+            font-bold flex justify-center items-center
+            bg-gray-200 dark:bg-black-200 transition-colors;
     }
 
     .StepperStep.StepperStepSelected {
@@ -568,7 +586,7 @@
 
     .StepperStep {
         @apply flex items-center space-x-4 dark:text-gray-400
-        text-current transition-colors p-2;
+            text-current transition-colors p-2;
     }
 
     .StepperStep:not(.StepperStepSelected):not([disabled]).hover .StepperStepCircle {

@@ -1,3 +1,8 @@
+/**
+ * @name captureApiException
+ * @param exception
+ * @param requestContext
+ */
 export async function captureApiException(
   exception: unknown,
   requestContext: UnknownObject

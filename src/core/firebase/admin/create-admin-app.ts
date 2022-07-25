@@ -1,7 +1,5 @@
 import admin from 'firebase-admin';
-
 import { FirebaseAdminAppParams } from '../types/firebase-admin-app-params';
-import formatFirebasePrivateKey from './format-private-key';
 
 /**
  * @name createFirebaseAdminApp
@@ -25,4 +23,8 @@ export function createFirebaseAdminApp(params: FirebaseAdminAppParams) {
     projectId: params.projectId,
     storageBucket: params.storageBucket,
   });
+}
+
+function formatFirebasePrivateKey(key: string) {
+  return key.replace(/\\n/g, '\n');
 }

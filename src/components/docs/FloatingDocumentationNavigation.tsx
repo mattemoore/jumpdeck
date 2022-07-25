@@ -10,6 +10,7 @@ import If from '~/core/ui/If';
 import Heading from '~/core/ui/Heading';
 
 import DocumentationNavigation from './DocumentationNavigation';
+import SearchInput from '~/components/SearchInput';
 
 export default function FloatingDocumentationNavigation({
   data,
@@ -53,12 +54,13 @@ export default function FloatingDocumentationNavigation({
       <If condition={isVisible}>
         <div
           className={
-            'fixed left-0 top-0 z-10 h-screen w-full py-8 px-3' +
-            ' bg-black-500' +
-            ' flex flex-col space-y-4 overflow-auto'
+            'fixed left-0 top-0 z-10 h-screen w-full py-4 px-4' +
+            ' flex flex-col space-y-4 overflow-auto bg-white dark:bg-black-500'
           }
         >
-          <Heading type={2}>Table of Contents</Heading>
+          <Heading type={1}>Table of Contents</Heading>
+
+          <SearchInput path={'/docs/results'} />
 
           <DocumentationNavigation data={data} />
         </div>
