@@ -1,7 +1,7 @@
 import { CollectionReference, getFirestore } from 'firebase-admin/firestore';
 
 import { Organization } from '~/lib/organizations/types/organization';
-import { UserData } from '~/lib/organizations/types/user-data';
+import { UserData } from '~/core/session/types/user-data';
 
 enum FirestoreCollections {
   Users = 'users',

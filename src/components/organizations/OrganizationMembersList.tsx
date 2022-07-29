@@ -10,7 +10,7 @@ import { useCurrentUserRole } from '~/lib/organizations/hooks/use-current-user-r
 import { useFetchOrganizationMembersMetadata } from '~/lib/organizations/hooks/use-fetch-members-metadata';
 import { Organization } from '~/lib/organizations/types/organization';
 
-import { useUserId } from '~/lib/hooks/use-user-id';
+import { useUserId } from '~/core/hooks/use-user-id';
 
 import OrganizationMembersActionsContainer from './OrganizationMembersActionsContainer';
 import RoleBadge from '../RoleBadge';

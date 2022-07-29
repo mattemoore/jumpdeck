@@ -5,7 +5,7 @@ import { Trans } from 'next-i18next';
 import Heading from '~/core/ui/Heading';
 
 import { withAppProps } from '~/lib/props/with-app-props';
-import { useUserSession } from '~/lib/hooks/use-user-session';
+import { useUserSession } from '~/core/hooks/use-user-session';
 
 import UpdatePasswordForm from '~/components/profile/UpdatePasswordForm';
 import ProfileSettingsTabs from '~/components/profile/ProfileSettingsTabs';

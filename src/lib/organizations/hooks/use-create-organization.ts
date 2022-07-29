@@ -14,7 +14,7 @@ import {
 import { useRequestState } from '~/core/hooks/use-request-state';
 import { MembershipRole } from '~/lib/organizations/types/membership-role';
 import { Organization } from '~/lib/organizations/types/organization';
-import { UserData } from '~/lib/organizations/types/user-data';
+import { UserData } from '~/core/session/types/user-data';
 
 /**
  * @name useCreateOrganization

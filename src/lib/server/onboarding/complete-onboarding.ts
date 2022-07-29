@@ -2,7 +2,7 @@ import { getFirestore } from 'firebase-admin/firestore';
 import { getAuth } from 'firebase-admin/auth';
 
 import { MembershipRole } from '~/lib/organizations/types/membership-role';
-import { GlobalRole } from '~/lib/organizations/types/global-role';
+import { GlobalRole } from '~/core/session/types/global-role';
 
 import { getOrganizationsCollection, getUsersCollection } from '../collections';
 

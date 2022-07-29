@@ -3,8 +3,8 @@ import nookies from 'nookies';
 import configuration from '~/configuration';
 import { getAuth } from 'firebase-admin/auth';
 
-import { getUserInfoById } from '~/core/firebase/auth/get-user-info-by-id';
-import { getLoggedInUser } from '~/core/firebase/auth/get-logged-in-user';
+import { getUserInfoById } from '~/core/firebase/admin/auth/get-user-info-by-id';
+import { getLoggedInUser } from '~/core/firebase/admin/auth/get-logged-in-user';
 import { initializeFirebaseAdminApp } from '~/core/firebase/admin/initialize-firebase-admin-app';
 
 import { getCurrentOrganization } from '~/lib/server/organizations/get-current-organization';

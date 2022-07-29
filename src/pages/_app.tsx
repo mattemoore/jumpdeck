@@ -13,9 +13,9 @@ import FirebaseAuthProvider from '~/core/firebase/components/FirebaseAuthProvide
 
 import { Organization } from '~/lib/organizations/types/organization';
 import { OrganizationContext } from '~/lib/contexts/organization';
-import { UserData } from '~/lib/organizations/types/user-data';
-import { UserSessionContext } from '~/lib/contexts/session';
-import { UserSession } from '~/lib/organizations/types/user-session';
+import { UserData } from '~/core/session/types/user-data';
+import { UserSessionContext } from '~/core/session/contexts/user-session';
+import { UserSession } from '~/core/session/types/user-session';
 import { useLoadSelectedTheme } from '~/core/theming';
 
 import { useAnalyticsTracking } from '~/core/firebase/hooks/use-analytics-tracking';

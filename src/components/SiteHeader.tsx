@@ -1,7 +1,7 @@
 import { useAuth } from 'reactfire';
 import Link from 'next/link';
 
-import { useUserSession } from '~/lib/hooks/use-user-session';
+import { useUserSession } from '~/core/hooks/use-user-session';
 import configuration from '~/configuration';
 
 import Logo from '~/core/ui/Logo';

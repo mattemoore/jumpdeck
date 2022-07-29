@@ -8,7 +8,7 @@ import FirebaseStorageProvider from '~/core/firebase/components/FirebaseStorageP
 import Heading from '~/core/ui/Heading';
 
 import { withAppProps } from '~/lib/props/with-app-props';
-import { UserSessionContext } from '~/lib/contexts/session';
+import { UserSessionContext } from '~/core/session/contexts/user-session';
 
 import UpdateProfileForm from '~/components/profile/UpdateProfileForm';
 import ProfileSettingsTabs from '~/components/profile/ProfileSettingsTabs';

@@ -2,7 +2,7 @@ import { GetServerSidePropsContext } from 'next';
 import { Trans } from 'next-i18next';
 import Head from 'next/head';
 
-import { useUserSession } from '~/lib/hooks/use-user-session';
+import { useUserSession } from '~/core/hooks/use-user-session';
 import { withAppProps } from '~/lib/props/with-app-props';
 
 import UpdateEmailForm from '~/components/profile/UpdateEmailForm';

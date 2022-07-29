@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { Dispatch, useCallback, useEffect } from 'react';
 import { AuthProvider, useAuth, useFirebaseApp } from 'reactfire';
 
 import {
@@ -10,9 +10,8 @@ import {
 } from 'firebase/auth';
 
 import { isBrowser } from '~/core/generic/is-browser';
-import { UserSession } from '~/lib/organizations/types/user-session';
-import { UserData } from '~/lib/organizations/types/user-data';
 import { useDestroySession } from '~/core/hooks/use-destroy-session';
+import { UserSession } from '~/core/session/types/user-session';
 
 export const FirebaseAuthStateListener: React.FCC<{
   onAuthStateChange: (user: User | null) => void;
@@ -40,7 +39,7 @@ export default function FirebaseAuthProvider({
 }: React.PropsWithChildren<{
   useEmulator: boolean;
   userSession: Maybe<UserSession>;
-  setUserSession: (userSession: Maybe<UserSession>) => void;
+  setUserSession: Dispatch<Maybe<UserSession>>;
 }>) {
   const app = useFirebaseApp();
   const signOut = useDestroySession();
@@ -65,7 +64,7 @@ export default function FirebaseAuthProvider({
       if (user) {
         const session = {
           auth: user,
-          data: userSession?.data as UserData,
+          data: userSession?.data,
         };
 
         setUserSession(session);

@@ -3,7 +3,7 @@ import { useAuth } from 'reactfire';
 import dynamic from 'next/dynamic';
 
 import configuration from '~/configuration';
-import { useUserSession } from '~/lib/hooks/use-user-session';
+import { useUserSession } from '~/core/hooks/use-user-session';
 
 import NavigationMenu from '~/core/ui/Navigation/NavigationMenu';
 import NavigationItem from '~/core/ui/Navigation/NavigationItem';

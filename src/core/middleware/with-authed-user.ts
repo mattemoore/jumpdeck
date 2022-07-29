@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { withAdmin } from './with-admin';
 import { withMiddleware } from '~/core/middleware/with-middleware';
-import { authMiddleware } from '../firebase/auth/auth-middleware';
+import { authMiddleware } from '../firebase/admin/auth/auth-middleware';
 
 /**
  * @description

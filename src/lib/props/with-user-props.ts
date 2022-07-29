@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
 
-import { getUserInfoById } from '~/core/firebase/auth/get-user-info-by-id';
-import { getLoggedInUser } from '~/core/firebase/auth/get-logged-in-user';
+import { getUserInfoById } from '~/core/firebase/admin/auth/get-user-info-by-id';
+import { getLoggedInUser } from '~/core/firebase/admin/auth/get-logged-in-user';
 import { withTranslationProps } from '~/lib/props/with-translation-props';
 
 /**

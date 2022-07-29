@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
 import configuration from '../../configuration';
 
-import { getLoggedInUser } from '~/core/firebase/auth/get-logged-in-user';
+import { getLoggedInUser } from '~/core/firebase/admin/auth/get-logged-in-user';
 import { withTranslationProps } from '~/lib/props/with-translation-props';
 
 const DEFAULT_OPTIONS = {
