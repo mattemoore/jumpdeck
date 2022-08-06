@@ -34,7 +34,7 @@ const Input: React.FC<Props> = ({
 }) => {
   const ref = innerRef ?? createRef<HTMLInputElement>();
   const propValue = props.value ?? props.defaultValue;
-  const [value, setValue] = useState(propValue);
+  const [value, setValue] = useState(propValue ?? '');
 
   const onReset = useCallback(() => {
     if (ref) {
