@@ -1,5 +1,6 @@
 import React, { Dispatch, useCallback, useEffect } from 'react';
 import { AuthProvider, useAuth, useFirebaseApp } from 'reactfire';
+import { destroyCookie, parseCookies } from 'nookies';
 
 import {
   initializeAuth,
@@ -12,6 +13,8 @@ import {
 import { isBrowser } from '~/core/generic/is-browser';
 import { useDestroySession } from '~/core/hooks/use-destroy-session';
 import { UserSession } from '~/core/session/types/user-session';
+
+const SESSION_EXPIRES_AT_COOKIE_NAME = `sessionExpiresAt`;
 
 export const FirebaseAuthStateListener: React.FCC<{
   onAuthStateChange: (user: User | null) => void;
@@ -61,7 +64,11 @@ export default function FirebaseAuthProvider({
 
   const onAuthStateChanged = useCallback(
     async (user: User | null) => {
-      if (user) {
+      // We check two thing:
+      // - 1. the user is signed in
+      // - 2. the server-side session hasn't expired: if yes, unset cookie
+
+      if (user && !isSessionExpired()) {
         const session = {
           auth: user,
           data: userSession?.data,
@@ -77,6 +84,7 @@ export default function FirebaseAuthProvider({
             // we also delete the session cookie used for SSR
             await signOut();
 
+            destroyCookie(null, SESSION_EXPIRES_AT_COOKIE_NAME);
             setUserSession(undefined);
           } catch {
             setUserSession(undefined);
@@ -101,4 +109,21 @@ function getAuthEmulatorHost() {
   const port = process.env.NEXT_PUBLIC_FIREBASE_AUTH_EMULATOR_PORT;
 
   return ['http://', host, ':', port].join('');
+}
+
+function isSessionExpired() {
+  const expiresAt = getExpiresAtCookie();
+  const date = new Date();
+  const now = new Date(date.toISOString()).getTime();
+
+  return !expiresAt || now > expiresAt;
+}
+
+function getExpiresAtCookie() {
+  const cookies = parseCookies();
+  const value = cookies[`sessionExpiresAt`];
+
+  if (!Number.isNaN(Number(value))) {
+    return Number(value);
+  }
 }

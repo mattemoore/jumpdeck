@@ -1,9 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { z } from 'zod';
-import { setCookie } from 'nookies';
-import { getAuth } from 'firebase-admin/auth';
 
-import { withAdmin } from '~/core/middleware/with-admin';
 import logger from '~/core/logger';
 
 import {
@@ -11,6 +8,13 @@ import {
   unauthorizedException,
 } from '~/core/http-exceptions';
 
+import {
+  createSessionCookie,
+  getSessionCookieTTL,
+  saveSessionCookie,
+} from '~/lib/server/auth/save-session-cookie';
+
+import { withAdmin } from '~/core/middleware/with-admin';
 import { withMiddleware } from '~/core/middleware/with-middleware';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
 import { withExceptionFilter } from '~/core/middleware/with-exception-filter';
@@ -45,16 +49,10 @@ async function signIn(req: NextApiRequest, res: NextApiResponse) {
   }
 
   try {
-    const auth = getAuth();
-    const expiresIn = getCookieTTL();
-
-    // create a session cookie using Firebase Auth by passing
-    // to it the idToken returned by the client-side SDK
-    const sessionCookie = await auth.createSessionCookie(idToken, {
-      expiresIn,
-    });
-
     // save token as an HTTP-only cookie
+    const expiresIn = getSessionCookieTTL();
+    const sessionCookie = await createSessionCookie(idToken, expiresIn);
+
     saveSessionCookie(res, sessionCookie, expiresIn);
 
     return res.send({ success: true });
@@ -78,40 +76,9 @@ export default function sessionSignInHandler(
   return withExceptionFilter(req, res)(handler);
 }
 
-/**
- *
- * @param days the number of days to keep the session-cookie working. By default, it is 14 days
- * @returns number
- */
-function getCookieTTL(days = 14) {
-  const oneDayToMs = 8.64e7;
-
-  return oneDayToMs * days;
-}
-
 function getBodySchema() {
   return z.object({
     idToken: z.string(),
     csrfToken: z.string(),
   });
-}
-
-function saveSessionCookie(
-  res: NextApiResponse,
-  sessionCookie: string,
-  expiresIn: number
-) {
-  // only save cookie with secure flag if we're not in dev mode
-  const secure = process.env.NEXT_PUBLIC_EMULATOR !== 'true';
-
-  const options = {
-    maxAge: expiresIn,
-    httpOnly: true,
-    secure,
-    path: '/',
-  };
-
-  // when the session-cookie gets created
-  // we store it as an httpOnly cookie (important!)
-  setCookie({ res }, 'session', sessionCookie, options);
 }
