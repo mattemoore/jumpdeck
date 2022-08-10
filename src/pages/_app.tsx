@@ -16,7 +16,7 @@ import { OrganizationContext } from '~/lib/contexts/organization';
 import { UserData } from '~/core/session/types/user-data';
 import { UserSessionContext } from '~/core/session/contexts/user-session';
 import { UserSession } from '~/core/session/types/user-session';
-import { useLoadSelectedTheme } from '~/core/theming';
+import { loadSelectedTheme } from '~/core/theming';
 
 import { useAnalyticsTracking } from '~/core/firebase/hooks/use-analytics-tracking';
 import FirebaseAnalyticsProvider from '~/core/firebase/components/FirebaseAnalyticsProvider';
@@ -54,8 +54,6 @@ function App(
   }, [pageProps.organization]);
 
   useEffect(updateCurrentOrganization, [updateCurrentOrganization]);
-
-  useLoadSelectedTheme();
 
   return (
     <FirebaseAppShell config={firebase}>
@@ -96,4 +94,12 @@ function AnalyticsTrackingEventsProvider({
   const shouldUseAnalytics = isBrowser() && !configuration.emulator;
 
   return shouldUseAnalytics ? <InnerAnalyticsProvider /> : <>{children}</>;
+}
+
+/**
+ * Load selected theme
+ * Do not add it as an effect to _app.tsx, the flashing is very visible
+ */
+if (isBrowser()) {
+  loadSelectedTheme();
 }

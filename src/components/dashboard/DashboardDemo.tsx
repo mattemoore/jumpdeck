@@ -11,10 +11,8 @@ export default function DashboardDemo() {
 
         <p>
           You can configure it by changing the property
-          <span className={'bg-gray-100 p-1 font-monospace'}>
-            paths.appHome
-          </span>{' '}
-          in the configuration file of the application.
+          <Highlight>paths.appHome</Highlight> in the configuration file of the
+          application.
         </p>
       </Tile>
 
@@ -34,9 +32,7 @@ export default function DashboardDemo() {
 
         <p>
           To add a new page, create a file at{' '}
-          <span className={'bg-gray-100 p-1 font-monospace'}>
-            pages/[filename].tsx
-          </span>
+          <Highlight>pages/[filename].tsx</Highlight>
         </p>
       </Tile>
 
@@ -45,9 +41,7 @@ export default function DashboardDemo() {
 
         <p>
           To add a new blog post, add an MDX file at{' '}
-          <span className={'bg-gray-100 p-1 font-monospace'}>
-            _posts/[filename].mdx
-          </span>
+          <Highlight>_posts/[filename].mdx</Highlight>
         </p>
       </Tile>
 
@@ -65,6 +59,14 @@ export default function DashboardDemo() {
   );
 }
 
+function Highlight(props: React.PropsWithChildren<{}>) {
+  return (
+    <span className={'bg-gray-100 p-1 font-monospace dark:bg-black-400'}>
+      {props.children}
+    </span>
+  );
+}
+
 function Tile(
   props: React.PropsWithChildren<{
     className?: string;
@@ -74,7 +76,7 @@ function Tile(
     <div
       className={`${
         props.className ?? ''
-      } flex flex-col space-y-2 rounded-md border border-gray-100 bg-gray-50 p-6`}
+      } flex flex-col space-y-2 rounded-md border border-gray-100 bg-gray-50 p-6 dark:border-black-400 dark:bg-black-400`}
     >
       {props.children}
     </div>

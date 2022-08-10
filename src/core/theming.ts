@@ -29,12 +29,8 @@ export function setTheme(theme: string | null) {
   }
 }
 
-function loadSelectedTheme() {
+export function loadSelectedTheme() {
   setTheme(loadThemeFromLocalStorage());
-}
-
-export function useLoadSelectedTheme() {
-  useEffect(loadSelectedTheme);
 }
 
 function getHtml() {
