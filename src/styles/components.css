@@ -36,7 +36,7 @@
     }
 
     .NavigationItemActive a {
-        @apply font-bold bg-gray-50 dark:bg-black-300;
+        @apply font-bold bg-gray-100 dark:bg-black-300;
     }
 
     .BorderedNavigationMenu .NavigationItemActive a {
@@ -349,12 +349,12 @@
 
     .Tab:not(.TabSelected) {
         @apply hover:bg-gray-50 dark:active:bg-black-300
-        cursor-pointer dark:bg-black-500 dark:hover:bg-black-400;
+            cursor-pointer dark:bg-black-500 dark:hover:bg-black-400;
     }
 
     .TabSelected,
     button.TabSelected {
-        @apply NavigationItemActive bg-gray-100 dark:text-gray-100;
+        @apply NavigationItemActive dark:text-gray-100;
     }
 
     /* ListBox.tsx */

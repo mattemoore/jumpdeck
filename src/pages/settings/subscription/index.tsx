@@ -14,7 +14,7 @@ import Alert from '~/core/ui/Alert';
 
 enum SubscriptionStatusQueryParams {
   Success = 'success',
-  Canceled = 'canceled',
+  Cancel = 'cancel',
   Error = 'error',
 }
 
@@ -31,11 +31,9 @@ const Subscription = () => {
         <div className={'w-full'}>
           <div className={'flex flex-col space-y-4 px-2'}>
             <If condition={status !== undefined}>
-              <div>
-                <PlansStatusAlert
-                  status={status as SubscriptionStatusQueryParams}
-                />
-              </div>
+              <PlansStatusAlert
+                status={status as SubscriptionStatusQueryParams}
+              />
             </If>
 
             <Plans />
@@ -58,7 +56,7 @@ function PlansStatusAlert({
   status: SubscriptionStatusQueryParams;
 }) {
   switch (status) {
-    case SubscriptionStatusQueryParams.Canceled:
+    case SubscriptionStatusQueryParams.Cancel:
       return (
         <Alert type={'warn'} useCloseButton={true}>
           <Trans i18nKey={'subscription:checkOutCanceledAlert'} />
@@ -88,11 +86,11 @@ function useSubscriptionStatus() {
     const params = new URLSearchParams(window.location.search);
 
     const error = params.has(SubscriptionStatusQueryParams.Error);
-    const canceled = params.has(SubscriptionStatusQueryParams.Canceled);
+    const canceled = params.has(SubscriptionStatusQueryParams.Cancel);
     const success = params.has(SubscriptionStatusQueryParams.Success);
 
     if (canceled) {
-      setStatus(SubscriptionStatusQueryParams.Canceled);
+      setStatus(SubscriptionStatusQueryParams.Cancel);
     } else if (success) {
       setStatus(SubscriptionStatusQueryParams.Success);
     } else if (error) {
