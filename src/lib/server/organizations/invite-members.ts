@@ -10,6 +10,7 @@ import configuration from '~/configuration';
 import { getUserInfoById } from '~/core/firebase/admin/auth/get-user-info-by-id';
 
 import { getOrganizationById } from '../queries';
+import logger from '~/core/logger';
 
 interface Invite {
   email: string;
@@ -86,7 +87,19 @@ export async function inviteMembers(params: Params) {
 
     const inviteExists = !existingInvite.empty;
 
-    const catchCallback = () => {};
+    // this callback will be called when the promise fails
+    const catchCallback = (error: unknown) => {
+      logger.error(
+        {
+          inviteId: ref.id,
+          inviter: inviter?.uid,
+          organizationId,
+        },
+        `Error while sending invite to member`
+      );
+
+      logger.debug(error);
+    };
 
     // if an invitation to the email {invite.email} already exists,
     // then we update the existing document
@@ -94,11 +107,15 @@ export async function inviteMembers(params: Params) {
       const doc = existingInvite.docs[0];
 
       const request = async () => {
-        // update invitation document
-        await doc.ref.update({ ...invite });
+        try {
+          // update invitation document
+          await doc.ref.update({ ...invite });
 
-        // send email
-        return sendEmailRequest();
+          // send email
+          await sendEmailRequest();
+        } catch (e) {
+          catchCallback(e);
+        }
       };
 
       // add a promise for each invite
@@ -116,11 +133,15 @@ export async function inviteMembers(params: Params) {
           },
         };
 
-        // add invite to the Firestore collection
-        await invitesCollection.add(data);
+        try {
+          // add invite to the Firestore collection
+          await invitesCollection.add(data);
 
-        // send email to user
-        return sendEmailRequest();
+          // send email to user
+          await sendEmailRequest();
+        } catch (e) {
+          catchCallback(e);
+        }
       };
 
       // add a promise for each invite
@@ -180,14 +201,11 @@ function sendInviteEmail(props: {
 }
 
 function getInviteLink(inviteCode: string) {
+  let siteUrl = configuration.site.siteUrl;
+
   if (configuration.emulator) {
-    const host = `http://localhost`;
-    const port = 3000;
-
-    return [host, port].join(':');
+    siteUrl = getEmulatorHost();
   }
-
-  const siteUrl = configuration.site.siteUrl;
 
   assertSiteUrl(siteUrl);
 
@@ -200,4 +218,11 @@ function assertSiteUrl(siteUrl: Maybe<string>): asserts siteUrl is string {
       `Please configure the "siteUrl" property in the configuration file ~/configuration.ts`
     );
   }
+}
+
+function getEmulatorHost() {
+  const host = `http://localhost`;
+  const port = 3000;
+
+  return [host, port].join(':');
 }

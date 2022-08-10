@@ -51,7 +51,7 @@ const OrganizationMembersPage: React.FCC = () => {
 
         <div className={'w-full md:w-10/12'}>
           <div className="flex flex-1 flex-col space-y-8">
-            <div>
+            <div className={'flex flex-col space-y-2'}>
               <div className="flex items-center justify-between space-x-8">
                 <Heading type={3}>
                   <Trans i18nKey={'organization:membersPageHeading'} />
