@@ -22,6 +22,8 @@ const authPageObject = {
   $oAuthSignInButton: () => cy.cyGet(`oauth-sign-in-button`),
   $getAcceptInviteSubmitButton: () => cy.cyGet(`accept-invite-submit-button`),
   signInWithEmailAndPassword(email: string, password: string) {
+    cy.wait(50);
+
     this.$getEmailInput().type(email);
     this.$getPasswordInput().type(password);
     this.$getSubmitButton().click();

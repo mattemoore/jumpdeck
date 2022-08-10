@@ -7,19 +7,10 @@ import Layout from '~/core/ui/Layout';
 import Hero from '~/core/ui/Hero';
 import Container from '~/core/ui/Container';
 import Heading from '~/core/ui/Heading';
-import Footer from '~/components/Footer';
-
-import SiteHeader from '../components/SiteHeader';
-import GridList from '~/components/blog/GridList';
 import SubHeading from '~/core/ui/SubHeading';
 
-const Question: React.FCC = ({ children }) => {
-  return (
-    <div>
-      <Heading type={2}>{children}</Heading>
-    </div>
-  );
-};
+import Footer from '~/components/Footer';
+import SiteHeader from '../components/SiteHeader';
 
 const DATA = [
   {
@@ -64,18 +55,15 @@ const Faq = () => {
         <SubHeading>Frequently Asked Questions</SubHeading>
 
         <div className={'my-8'}>
-          <GridList>
+          <div className="flex flex-col space-y-6">
             {DATA.map((item, index) => {
               return (
-                <div
-                  className={'rounded-xl bg-gray-50 p-8 dark:bg-black-400'}
-                  key={index}
-                >
-                  <Question>
+                <div className={'FaqItem'} key={index}>
+                  <Heading type={2}>
                     <span className={'font-semibold dark:text-white'}>
                       {item.question}
                     </span>
-                  </Question>
+                  </Heading>
 
                   <div
                     className={
@@ -87,7 +75,7 @@ const Faq = () => {
                 </div>
               );
             })}
-          </GridList>
+          </div>
         </div>
       </Container>
 

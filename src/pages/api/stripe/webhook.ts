@@ -6,16 +6,6 @@ import logger from '~/core/logger';
 import { getStripeInstance } from '~/core/stripe/get-stripe';
 import { StripeWebhooks } from '~/core/stripe/stripe-webhooks.enum';
 
-import { OrganizationPlanStatus } from '~/lib/organizations/types/organization-subscription';
-import { buildOrganizationSubscription } from '~/lib/stripe/build-organization-subscription';
-
-import {
-  deleteOrganizationSubscription,
-  activatePendingSubscription,
-  setOrganizationSubscription,
-  updateSubscriptionById,
-} from '~/lib/server/organizations/subscriptions';
-
 import {
   badRequestException,
   internalServerErrorException,
@@ -23,8 +13,26 @@ import {
 
 import { withMiddleware } from '~/core/middleware/with-middleware';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
+import { getUserInfoById } from '~/core/firebase/admin/auth/get-user-info-by-id';
 import { withAdmin } from '~/core/middleware/with-admin';
 import { withExceptionFilter } from '~/core/middleware/with-exception-filter';
+import { sendEmail } from '~/core/email/send-email';
+
+import {
+  activatePendingSubscription,
+  deleteOrganizationSubscription,
+  setOrganizationSubscription,
+  updateSubscriptionById,
+} from '~/lib/server/organizations/subscriptions';
+
+import { OrganizationPlanStatus } from '~/lib/organizations/types/organization-subscription';
+import { buildOrganizationSubscription } from '~/lib/stripe/build-organization-subscription';
+
+import { getOrganizationById } from '~/lib/server/queries';
+import { MembershipRole } from '~/lib/organizations/types/membership-role';
+import renderPaymentFailed from '~/lib/emails/payment-failed';
+
+import configuration from '~/configuration';
 
 const SUPPORTED_HTTP_METHODS: HttpMethod[] = ['POST'];
 const STRIPE_SIGNATURE_HEADER = 'stripe-signature';
@@ -45,7 +53,7 @@ validateKeys(webhookSecretKey);
 /**
  * @description Handle the webhooks from Stripe related to checkouts
  */
-async function checkoutsWebhooksHandler(
+async function checkoutWebhooksHandler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
@@ -115,8 +123,10 @@ async function checkoutsWebhooksHandler(
       case StripeWebhooks.PaymentFailed: {
         const session = event.data.object as Stripe.Checkout.Session;
 
-        // TODO: handle this properly
-        onPaymentFailed(session);
+        // when the payment fails
+        // we send an email to the customer to redirect them to the
+        // billing page
+        await onPaymentFailed(session);
 
         break;
       }
@@ -128,7 +138,7 @@ async function checkoutsWebhooksHandler(
       {
         type: event.type,
       },
-      `[Stripe] Webhook Failed`
+      `[Stripe] Webhook handling failed`
     );
 
     logger.debug(e);
@@ -144,7 +154,7 @@ export default function stripeCheckoutsWebhooksHandler(
   const handler = withMiddleware(
     withMethodsGuard(SUPPORTED_HTTP_METHODS),
     withAdmin,
-    checkoutsWebhooksHandler
+    checkoutWebhooksHandler
   );
 
   return withExceptionFilter(req, res)(handler);
@@ -185,10 +195,116 @@ async function onSubscriptionUpdated(subscription: Stripe.Subscription) {
 
 /**
  * @description When the payment failed, notify the customer by email
- * TODO: build email and send to user
  */
-function onPaymentFailed(session: Stripe.Checkout.Session) {
-  console.log(`Payment failed`, session);
+async function onPaymentFailed(session: Stripe.Checkout.Session) {
+  const organizationId = session.client_reference_id;
+  const subscription = session.subscription;
+
+  const subscriptionId =
+    subscription && typeof subscription !== 'string'
+      ? subscription.id
+      : subscription;
+
+  logger.info(
+    {
+      organizationId: organizationId,
+      subscriptionId: subscriptionId,
+    },
+    `Payment failed. Sending email to customer...`
+  );
+
+  let customerEmail: string | null = session.customer_email;
+
+  if (!organizationId) {
+    logger.error(
+      {
+        subscriptionId,
+      },
+      `No organization attached to subscription`
+    );
+
+    throw new Error(`No organization attached to subscription`);
+  }
+
+  const organization = await getOrganizationById(organizationId);
+  const organizationData = organization.data();
+
+  if (!organizationData) {
+    logger.error(
+      {
+        organizationId,
+        subscriptionId,
+      },
+      `Organization was not found`
+    );
+
+    throw new Error(`No organization data found for subscription`);
+  }
+
+  if (!customerEmail) {
+    logger.warn(
+      {
+        organizationId,
+        subscriptionId,
+      },
+      `Customer email was not found in Stripe. Attempting to retrieve email of the organization's owner...`
+    );
+
+    const owner = Object.values(organizationData.members).find(
+      (member) => member.role === MembershipRole.Owner
+    );
+
+    if (owner) {
+      const ownerProfile = await getUserInfoById(owner.user.id);
+      customerEmail = ownerProfile?.email ?? null;
+    }
+  }
+
+  if (!customerEmail) {
+    logger.fatal(
+      {
+        organizationId,
+        subscriptionId,
+      },
+      `Unable to locate any customer email. Resolve issue manually.`
+    );
+
+    throw new Error(
+      `Unable to locate a valid customer email for organization with ID ${organizationId}`
+    );
+  }
+
+  const redirectUrl = [
+    configuration.site.siteUrl,
+    `settings/subscription`,
+  ].join('/');
+
+  const { html, errors } = renderPaymentFailed({
+    organizationName: organizationData.name,
+    value: session.amount_total,
+    productName: configuration.site.siteName,
+    redirectUrl,
+  });
+
+  if (errors.length) {
+    throw new Error(
+      `Found errors while rendering failed payment email: ${JSON.stringify(
+        errors,
+        null,
+        2
+      )}`
+    );
+  }
+
+  const subject = `Your payment did not go through`;
+  const sender = configuration.email.senderAddress;
+
+  return sendEmail({
+    to: customerEmail,
+    from: sender,
+    subject,
+    html,
+  });
 }
 
 function respondOk(res: NextApiResponse) {

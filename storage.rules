@@ -1,16 +1,9 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
-    match /{organizationId}/uploads/{fileName=**} {
-      allow read: if true;
-      allow create: if organizationId == request.auth.token.organizationId;
-      allow delete, update: if resource.metadata.organizationId == request.auth.token.organizationId;
-    }
-
     match /organizations/{organizationId}/{fileName=**} {
-      allow read: if request.auth.token.organizationId == organizationId;
-      allow create: if request.auth.token.organizationId == organizationId;
-      allow delete, update: if resource.metadata.organizationId == request.auth.token.organizationId;
+      allow read: if resource.metadata.organizationId == request.auth.token.organizationId;
+      allow write: if request.auth.token.organizationId == organizationId;
     }
 
     match /profiles/{userId}/{fileName=**} {

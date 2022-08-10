@@ -17,8 +17,8 @@ export default defineConfig({
   viewportHeight: 1080,
   pageLoadTimeout: 60000,
   retries: {
-    runMode: 3,
-    openMode: 3,
+    runMode: 1,
+    openMode: 1,
   },
   env: {
     EMAIL: 'test@makerkit.dev',

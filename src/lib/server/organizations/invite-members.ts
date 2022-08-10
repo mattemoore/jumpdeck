@@ -1,12 +1,15 @@
 import { addDays } from 'date-fns';
+
 import { MembershipRole } from '~/lib/organizations/types/membership-role';
 import { canInviteUser } from '~/lib/organizations/permissions';
+import renderInviteEmail from '~/lib/emails/invite';
+import { MembershipInvite } from '~/lib/organizations/types/membership-invite';
 
 import { sendEmail } from '~/core/email/send-email';
 import configuration from '~/configuration';
+import { getUserInfoById } from '~/core/firebase/admin/auth/get-user-info-by-id';
 
 import { getOrganizationById } from '../queries';
-import { MembershipInvite } from '~/lib/organizations/types/membership-invite';
 
 interface Invite {
   email: string;
@@ -26,8 +29,17 @@ const INVITE_EXPIRATION_DAYS = 7;
 export async function inviteMembers(params: Params) {
   const { organizationId, invites, inviterId } = params;
 
+  const inviter = await getUserInfoById(inviterId);
   const organization = await getOrganizationById(organizationId);
   const organizationData = organization.data();
+
+  if (!organizationData) {
+    throw new Error(
+      `Organization data with ID ${organizationId} was not found`
+    );
+  }
+
+  const organizationName = organizationData.name;
   const inviterRole = organizationData?.members[inviterId].role;
 
   // validate that the inviter is currently in the organization
@@ -51,7 +63,19 @@ export async function inviteMembers(params: Params) {
       return;
     }
 
-    const emailRequest = () => sendInviteEmail(invite.email, ref.id);
+    const inviterDisplayName =
+      inviter?.displayName ?? inviter?.email ?? undefined;
+
+    const organizationLogo = organizationData?.logoURL ?? undefined;
+
+    const sendEmailRequest = () =>
+      sendInviteEmail({
+        invitedUserEmail: invite.email,
+        inviteCode: ref.id,
+        organizationName,
+        organizationLogo,
+        inviter: inviterDisplayName,
+      });
 
     const field: keyof MembershipInvite = 'email';
     const op = '==';
@@ -62,20 +86,25 @@ export async function inviteMembers(params: Params) {
 
     const inviteExists = !existingInvite.empty;
 
+    const catchCallback = () => {};
+
     // if an invitation to the email {invite.email} already exists,
     // then we update the existing document
     if (inviteExists) {
       const doc = existingInvite.docs[0];
 
       const request = async () => {
+        // update invitation document
         await doc.ref.update({ ...invite });
-        await emailRequest();
+
+        // send email
+        return sendEmailRequest();
       };
 
+      // add a promise for each invite
       requests.push(request());
     } else {
       // otherwise, we create a new document with the invite
-
       const request = async () => {
         const data: MembershipInvite = {
           ...invite,
@@ -87,10 +116,14 @@ export async function inviteMembers(params: Params) {
           },
         };
 
+        // add invite to the Firestore collection
         await invitesCollection.add(data);
-        await emailRequest();
+
+        // send email to user
+        return sendEmailRequest();
       };
 
+      // add a promise for each invite
       requests.push(request());
     }
   }
@@ -98,19 +131,62 @@ export async function inviteMembers(params: Params) {
   return Promise.all(requests);
 }
 
-function sendInviteEmail(email: string, inviteCode: string) {
+function sendInviteEmail(props: {
+  invitedUserEmail: string;
+  inviteCode: string;
+  organizationName: string;
+  organizationLogo: Maybe<string>;
+  inviter: Maybe<string>;
+}) {
+  const {
+    invitedUserEmail,
+    inviteCode,
+    organizationName,
+    organizationLogo,
+    inviter,
+  } = props;
+
   const sender = configuration.email.senderAddress;
+  const productName = configuration.site.siteName;
+
+  const subject = 'You have been invited to join an organization!';
   const link = getInviteLink(inviteCode);
 
+  const { html, errors } = renderInviteEmail({
+    productName,
+    link,
+    organizationName,
+    organizationLogo,
+    invitedUserEmail,
+    inviter,
+  });
+
+  if (errors.length) {
+    throw new Error(
+      `Found errors while rendering invitation email: ${JSON.stringify(
+        errors,
+        null,
+        2
+      )}`
+    );
+  }
+
   return sendEmail({
-    to: email,
+    to: invitedUserEmail,
     from: sender,
-    subject: 'You have been invited to join an organization!',
-    text: `Hi! You have been invited to join an organization. Join by signing up using the <a href='${link}'>following link</a>`,
+    subject,
+    html,
   });
 }
 
 function getInviteLink(inviteCode: string) {
+  if (configuration.emulator) {
+    const host = `http://localhost`;
+    const port = 3000;
+
+    return [host, port].join(':');
+  }
+
   const siteUrl = configuration.site.siteUrl;
 
   assertSiteUrl(siteUrl);
@@ -119,7 +195,7 @@ function getInviteLink(inviteCode: string) {
 }
 
 function assertSiteUrl(siteUrl: Maybe<string>): asserts siteUrl is string {
-  if (!siteUrl) {
+  if (!siteUrl && configuration.production) {
     throw new Error(
       `Please configure the "siteUrl" property in the configuration file ~/configuration.ts`
     );

@@ -6,7 +6,7 @@ import organizationPageObject from '../../support/organization.po';
 describe(`Create Subscription`, () => {
   before(() => {
     Cypress.Cookies.defaults({
-      preserve: ['session'],
+      preserve: ['session', 'sessionExpiresAt'],
     });
 
     cy.signIn(`/settings/subscription`);

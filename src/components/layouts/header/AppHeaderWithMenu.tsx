@@ -16,7 +16,7 @@ import ProfileDropdown from '../../ProfileDropdown';
 import AppNavigation from './AppNavigation';
 
 const OrganizationsSelector = dynamic(
-  () => import('../../OrganizationsSelector'),
+  () => import('../../organizations/OrganizationsSelector'),
   {
     ssr: false,
   }
@@ -84,7 +84,7 @@ const AppHeaderWithMenu: React.FCC = ({ children }) => {
       <div>
         <AppNavigation />
 
-        <div className={'border-b border-gray-100 py-3 dark:border-black-400'}>
+        <div className={'border-b border-gray-100 py-4 dark:border-black-400'}>
           <Container>
             <Heading type={2}>{children}</Heading>
           </Container>

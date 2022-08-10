@@ -1,8 +1,4 @@
-enum NavigationStyle {
-  Sidebar = 'sidebar',
-  TopHeader = 'topHeader',
-  Custom = 'custom',
-}
+import { LayoutStyle } from '~/core/layout-style';
 
 const configuration = {
   site: {
@@ -41,7 +37,7 @@ const configuration = {
     searchIndex: `/public/search-index`,
   },
   navigation: {
-    style: NavigationStyle.TopHeader,
+    style: LayoutStyle.Sidebar,
   },
   email: {
     host: '',
@@ -49,6 +45,10 @@ const configuration = {
     user: '',
     password: '',
     senderAddress: '',
+  },
+  emailEtherealTestAccount: {
+    email: process.env.ETHEREAL_EMAIL,
+    password: process.env.ETHEREAL_PASSWORD,
   },
   sentry: {
     dsn: process.env.SENTRY_DSN,

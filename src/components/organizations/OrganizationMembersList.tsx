@@ -1,5 +1,5 @@
 import { Trans } from 'next-i18next';
-import { SelfBuildingSquareSpinner } from 'react-epic-spinners';
+import { SpringSpinner } from 'react-epic-spinners';
 
 import If from '~/core/ui/If';
 import Badge from '~/core/ui/Badge';
@@ -36,7 +36,7 @@ const OrganizationMembersList: React.FCC<{
   if (isLoading) {
     return (
       <div className={'flex items-center justify-center'}>
-        <SelfBuildingSquareSpinner />
+        <SpringSpinner />
       </div>
     );
   }

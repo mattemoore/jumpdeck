@@ -11,6 +11,7 @@ import { withExceptionFilter } from '~/core/middleware/with-exception-filter';
 
 const SESSION_COOKIE_NAME = 'session';
 const CSRF_TOKEN_COOKIE_NAME = 'csrfToken';
+const SESSION_EXPIRES_AT_COOKIE_NAME = 'sessionExpiresAt';
 const COOKIE_PATH = '/';
 const SUPPORTED_HTTP_METHODS: HttpMethod[] = ['POST'];
 
@@ -70,4 +71,5 @@ function destroySessionCookies(res: NextApiResponse) {
 
   destroyCookie({ res }, SESSION_COOKIE_NAME, options);
   destroyCookie({ res }, CSRF_TOKEN_COOKIE_NAME, options);
+  destroyCookie({ res }, SESSION_EXPIRES_AT_COOKIE_NAME, options);
 }

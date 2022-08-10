@@ -16,8 +16,8 @@ const Meta = () => {
 
   const structuredData = {
     name: configuration.site.name,
-    url: configuration.site.siteUrl,
-    logo: `${configuration.site.siteUrl}/assets/images/favicon/favicon-150x150.png`,
+    url: siteUrl,
+    logo: `${siteUrl}/assets/images/favicon/favicon-150x150.png`,
     '@context': 'https://schema.org',
     '@type': 'Organization', // change to person for Personal websites
   };

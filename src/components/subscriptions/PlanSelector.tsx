@@ -1,11 +1,10 @@
 import { PropsWithChildren } from 'react';
 import { RadioGroup } from '@headlessui/react';
+import { Trans } from 'next-i18next';
 
 import configuration from '~/configuration';
-
 import If from '~/core/ui/If';
 import { Plan } from '~/lib/organizations/types/plan';
-import { Trans } from 'next-i18next';
 
 export default function PlanSelector(
   props: PropsWithChildren<{
@@ -30,21 +29,11 @@ export default function PlanSelector(
             value={plan}
             data-cy={`subscription-plan`}
             className={({ active, checked }) =>
-              `${
-                active
-                  ? ''
-                  : 'hover:bg-gray-50 dark:bg-black-300' +
-                    ' dark:hover:bg-black-400' +
-                    ' dark:active:bg-black-500' +
-                    ' transition-colors'
+              `PlanSelectorRadioItem ${
+                active ? '' : 'PlanSelectorRadioItemNonActive'
               }
-                  ${
-                    checked
-                      ? 'bg-gray-100 ring-2 dark:bg-black-400' +
-                        ' ring-primary-400 '
-                      : ''
-                  }
-                    relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                  ${checked ? 'PlanSelectorRadioItemChecked' : ''}
+                    `
             }
           >
             {({ checked }) => (
@@ -53,15 +42,12 @@ export default function PlanSelector(
                   <div className="flex w-full items-center space-x-4">
                     <div className="flex-shrink-0">
                       <If condition={checked} fallback={<UncheckIcon />}>
-                        <CheckIcon className="h-6 w-6 rounded-full bg-primary-400 fill-transparent" />
+                        <CheckIcon className="PlanSelectorCheckIcon" />
                       </If>
                     </div>
 
                     <div className="flex-auto text-sm">
-                      <RadioGroup.Label
-                        as="p"
-                        className={`text-sm font-bold text-current dark:text-white`}
-                      >
+                      <RadioGroup.Label as="p" className={`PlanSelectorName`}>
                         {plan.name}
                       </RadioGroup.Label>
 
@@ -75,9 +61,7 @@ export default function PlanSelector(
                       </RadioGroup.Description>
                     </div>
 
-                    <span className={'text-sm font-bold dark:text-white'}>
-                      {plan.price}
-                    </span>
+                    <span className={'PlanSelectorPrice'}>{plan.price}</span>
                   </div>
                 </div>
               </>

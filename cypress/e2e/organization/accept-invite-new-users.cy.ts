@@ -8,7 +8,7 @@ describe(`Accept Invite - New User`, () => {
 
   before(() => {
     Cypress.Cookies.defaults({
-      preserve: ['session'],
+      preserve: ['session', 'sessionExpiresAt'],
     });
 
     visitInvitePage(nonExistingUserInviteCode);
@@ -17,23 +17,29 @@ describe(`Accept Invite - New User`, () => {
     authPo.signInWithEmailAndPassword(nonExistingUserEmail, 'anypass');
   });
 
-  it('should be redirected to the dashboard', () => {
-    cy.url().should('contain', configuration.paths.appHome);
-
-    // go back to members page
-    cy.visit('/settings/organization/members');
+  describe(`After accepting the invite`, () => {
+    it('should be redirected to the app home', () => {
+      cy.url().should('contain', configuration.paths.appHome);
+    });
   });
 
-  it('should remove the new member from the invited list', () => {
-    organizationPageObject
-      .$getInvitedMemberByEmail(nonExistingUserEmail)
-      .should('not.exist');
-  });
+  describe(`The members page`, () => {
+    before(() => {
+      // go back to members page
+      cy.visit('/settings/organization/members');
+    });
 
-  it('should list the new member', () => {
-    organizationPageObject
-      .$getMemberByEmail(nonExistingUserEmail)
-      .should('exist');
+    it('should have removed the new member from the invited list', () => {
+      organizationPageObject
+        .$getInvitedMemberByEmail(nonExistingUserEmail)
+        .should('not.exist');
+    });
+
+    it('should list the new member as an organization member (not invited)', () => {
+      organizationPageObject
+        .$getMemberByEmail(nonExistingUserEmail)
+        .should('exist');
+    });
   });
 });
 

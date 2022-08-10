@@ -21,8 +21,7 @@ const LogoImage: React.FCC<{
           y2="64.4244"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#FFEB3B" />
-          <stop offset="0.540399" stopColor="#F87171" />
+          <stop stopColor="#F87171" />
           <stop offset="1" stopColor="#061EF9" />
           <stop offset="1" stopColor="#2563EB" />
           <stop offset="1" stopColor="#061EF9" />

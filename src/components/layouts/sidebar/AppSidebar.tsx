@@ -19,7 +19,7 @@ import { useUserSession } from '~/core/hooks/use-user-session';
 import { isRouteActive } from '~/core/is-route-active';
 
 const OrganizationsSelector = dynamic(
-  () => import('../../OrganizationsSelector'),
+  () => import('../../organizations/OrganizationsSelector'),
   {
     ssr: false,
   }

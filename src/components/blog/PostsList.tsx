@@ -1,7 +1,7 @@
 import Post from '~/core/blog/types/post';
 
 import PostPreview from './PostPreview';
-import GridList from './GridList';
+import GridList from '../GridList';
 
 type Props = {
   posts: Post[];
@@ -15,7 +15,7 @@ const PostsList = ({ posts }: Props) => {
       {posts.map((post, index) => {
         // to avoid lazy-loading images above-the-fold
         // we preload the first {@link POSTS_IMAGES_TO_PRELOAD} images
-        // so to avoid bad UX and a low Core Vitals score
+        // so to avoid bad UX and a low Core Web Vitals score
         const preloadImage = index < POSTS_IMAGES_TO_PRELOAD;
 
         return (

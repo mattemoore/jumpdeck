@@ -20,6 +20,7 @@ import { useLoadSelectedTheme } from '~/core/theming';
 
 import { useAnalyticsTracking } from '~/core/firebase/hooks/use-analytics-tracking';
 import FirebaseAnalyticsProvider from '~/core/firebase/components/FirebaseAnalyticsProvider';
+import { isBrowser } from '~/core/generic';
 
 interface DefaultPageProps {
   session?: Maybe<AuthUser>;
@@ -86,7 +87,13 @@ export default appWithTranslation<AppProps & { pageProps: DefaultPageProps }>(
 function AnalyticsTrackingEventsProvider({
   children,
 }: React.PropsWithChildren) {
-  useAnalyticsTracking();
+  function InnerAnalyticsProvider() {
+    useAnalyticsTracking();
 
-  return <>{children}</>;
+    return <>{children}</>;
+  }
+
+  const shouldUseAnalytics = isBrowser() && !configuration.emulator;
+
+  return shouldUseAnalytics ? <InnerAnalyticsProvider /> : <>{children}</>;
 }

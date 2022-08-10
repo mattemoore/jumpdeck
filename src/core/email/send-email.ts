@@ -46,23 +46,18 @@ async function getSMTPTransporter() {
 
 /**
  * @description Dev transport for https://ethereal.email that you can use to
- * debug your emails for free. It's the default for the dev enviornment
+ * debug your emails for free. It's the default for the dev environment
  */
 async function getEtherealMailTransporter() {
   const nodemailer = await import('nodemailer');
-  const testAccount = await nodemailer.createTestAccount();
+  const testAccount = await getEtherealTestAccount();
 
-  console.log(
-    `Sending email with Ethereal test account: ${JSON.stringify(
-      testAccount,
-      null,
-      2
-    )}`
-  );
+  const host = 'smtp.ethereal.email';
+  const port = 587;
 
   return nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
+    host,
+    port,
     secure: false,
     auth: {
       user: testAccount.user,
@@ -80,4 +75,42 @@ function getMockMailTransporter() {
       );
     },
   };
+}
+
+async function getEtherealTestAccount() {
+  const testAccount = configuration.emailEtherealTestAccount;
+
+  // if we have added an Ethereal account, we reuse these credentials to
+  // send the email
+  if (testAccount?.email && testAccount?.password) {
+    console.log(`Sending email with Ethereal test account...`);
+
+    return {
+      user: testAccount.email,
+      pass: testAccount.password,
+    };
+  }
+
+  // Otherwise, we create a new account and recommend to add the credentials
+  // to the configuration file
+  return createEtherealTestAccount();
+}
+
+async function createEtherealTestAccount() {
+  const nodemailer = await import('nodemailer');
+  const newAccount = await nodemailer.createTestAccount();
+
+  console.warn(`
+    Configuration property "emailEtherealTestAccount" was not found! 
+    Consider adding a fixed Ethereal account so that you don't need to update the credentials each time you use it.
+    To do so, please use the guide at https://makerkit.dev/docs/email
+  `);
+
+  console.log(
+    `Created Ethereal test account: ${JSON.stringify(newAccount, null, 2)}`
+  );
+
+  console.log(`Consider adding these credentials to your configuration file`);
+
+  return newAccount;
 }

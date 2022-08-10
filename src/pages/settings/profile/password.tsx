@@ -25,10 +25,10 @@ const ProfilePasswordSettings = () => {
         <title key={'title'}>Update Password</title>
       </Head>
 
-      <SettingsPageContainer title={'Profile'}>
+      <SettingsPageContainer title={'Settings'}>
         <ProfileSettingsTabs user={user} />
 
-        <div className={'w-full md:w-9/12'}>
+        <div className={'w-full md:w-10/12'}>
           <div className={'flex flex-col space-y-4'}>
             <Heading type={3}>
               <Trans i18nKey={'organization:passwordSettingsTab'} />

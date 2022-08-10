@@ -24,7 +24,7 @@ const OrganizationMembersInvitePage: React.FCC = () => {
       <SettingsPageContainer title={'Organization'}>
         <OrganizationSettingsTabs />
 
-        <div className={'w-full md:w-9/12'}>
+        <div className={'w-full md:w-10/12'}>
           <div className={'flex flex-col space-y-4'}>
             <div className={'flex space-x-4'}>
               <Heading type={3}>

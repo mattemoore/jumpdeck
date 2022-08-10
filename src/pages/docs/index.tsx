@@ -11,7 +11,7 @@ import Container from '~/core/ui/Container';
 import Footer from '~/components/Footer';
 import Hero from '~/core/ui/Hero';
 import Heading from '~/core/ui/Heading';
-import GridList from '~/components/blog/GridList';
+import GridList from '~/components/GridList';
 import SubHeading from '~/core/ui/SubHeading';
 
 import DocumentationNavigation from '~/components/docs/DocumentationNavigation';
@@ -62,24 +62,24 @@ export default function Docs({
                   const href = `/docs/${page?.slug}`;
 
                   return (
-                    <Heading key={href} type={2}>
-                      <TopicLink href={href}>
-                        <>
+                    <TopicLink key={href} href={href}>
+                      <>
+                        <Heading type={2}>
                           <span className={'dark:text-white'}>
                             {directory.title}
                           </span>
+                        </Heading>
 
-                          <span
-                            className={
-                              'block text-base dark:text-gray-300' +
-                              ' mt-4 font-medium'
-                            }
-                          >
-                            {directory.description}
-                          </span>
-                        </>
-                      </TopicLink>
-                    </Heading>
+                        <span
+                          className={
+                            'block text-base dark:text-gray-300' +
+                            ' mt-4 font-medium'
+                          }
+                        >
+                          {directory.description}
+                        </span>
+                      </>
+                    </TopicLink>
                   );
                 })}
               </GridList>

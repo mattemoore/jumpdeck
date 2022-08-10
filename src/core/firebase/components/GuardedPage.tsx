@@ -1,49 +1,49 @@
 import { useEffect } from 'react';
 import { useAuth, useSigninCheck } from 'reactfire';
-
+import { parseCookies } from 'nookies';
 import { isBrowser } from '~/core/generic';
-import { clearFirestoreCache } from '~/core/generic/clear-firestore-cache';
 
 const AuthRedirectListener: React.FCC<{
   whenSignedOut?: string;
 }> = ({ children, whenSignedOut }) => {
   const auth = useAuth();
   const { status } = useSigninCheck();
+  const isSignInCheckDone = status === 'success';
+
+  useEffect(() => {
+    if (!isSignInCheckDone) {
+      return;
+    }
+
+    // if the session is expired, we sign the user out
+    // the user will be redirected away in the next effect (because "user"
+    // will become null)
+    if (isSessionExpired()) {
+      void auth.signOut();
+    }
+  }, [auth, isSignInCheckDone]);
 
   useEffect(() => {
     // this should run once and only on success
-    if (status !== 'success') {
+    if (!isSignInCheckDone) {
       return;
     }
 
     // keep this running for the whole session
     // unless the component was unmounted, for example, on log-outs
-    const listener = auth.onAuthStateChanged((user) => {
-      const shouldLogOut = !user && whenSignedOut;
-
+    const listener = auth.onAuthStateChanged(async (user) => {
       // log user out if user is falsy
       // and if the consumer provided a route to redirect the user
+      const shouldLogOut = !user && whenSignedOut;
+
       if (shouldLogOut) {
-        clearFirestoreCache();
-
-        const currentPath = window.location.pathname;
-        const isNotCurrentPage = currentPath !== whenSignedOut;
-
-        const navigateToSignOutPage = () => {
-          window.location.assign(whenSignedOut);
-        };
-
-        // we then redirect the user to the page
-        // specified in the props of the component
-        if (isNotCurrentPage) {
-          navigateToSignOutPage();
-        }
+        redirectUserAway(whenSignedOut);
       }
     });
 
     // destroy listener on un-mounts
     return () => listener();
-  }, [auth, status, whenSignedOut]);
+  }, [auth, isSignInCheckDone, status, whenSignedOut]);
 
   return <>{children}</>;
 };
@@ -67,4 +67,32 @@ export default function GuardedPage({
       {children}
     </AuthRedirectListener>
   );
+}
+
+function isSessionExpired() {
+  const expiresAt = getExpiresAtCookie();
+  const date = new Date();
+  const now = new Date(date.toISOString()).getTime();
+
+  return !expiresAt || now > expiresAt;
+}
+
+function getExpiresAtCookie() {
+  const cookies = parseCookies();
+  const value = cookies[`sessionExpiresAt`];
+
+  if (!Number.isNaN(Number(value))) {
+    return Number(value);
+  }
+}
+
+function redirectUserAway(path: string) {
+  const currentPath = window.location.pathname;
+  const isNotCurrentPage = currentPath !== path;
+
+  // we then redirect the user to the page
+  // specified in the props of the component
+  if (isNotCurrentPage) {
+    window.location.assign(path);
+  }
 }

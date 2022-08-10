@@ -1,4 +1,3 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
 import { withAdmin } from './with-admin';
 import { withMiddleware } from '~/core/middleware/with-middleware';
 import { authMiddleware } from '../firebase/admin/auth/auth-middleware';
@@ -14,22 +13,14 @@ import { authMiddleware } from '../firebase/admin/auth/auth-middleware';
  *  // your handler's logic
  * }
  *
- * @param handler
+ * Or use with a pipe:
+ *
+ * export default withMiddleware(
+ *    withAuthedUser,
+ *    (req, res) => {
+ *      res.send([]);
+ *    }
+ * )
+ *
  */
-export const withAuthedUser = withMiddleware(
-  withAdmin,
-  withAuthedUserMiddleware
-);
-
-async function withAuthedUserMiddleware(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  try {
-    await authMiddleware(req);
-  } catch (error) {
-    const response = error as Response;
-
-    return res.status(response.status).end();
-  }
-}
+export const withAuthedUser = withMiddleware(withAdmin, authMiddleware);

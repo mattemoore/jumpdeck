@@ -9,45 +9,61 @@ import RouteShellWithTopNavigation from './layouts/header/RouteShellWithTopNavig
 import RouteShellWithSidebar from './layouts/sidebar/RouteShellWithSidebar';
 
 import GuardedPage from '~/core/firebase/components/GuardedPage';
-import If from '~/core/ui/If';
 import SentryProvider from '~/components/SentryProvider';
+import { LayoutStyle } from '~/core/layout-style';
 
 const RouteShell: React.FCC<{
   title: string;
-  style?: string;
+  style?: LayoutStyle;
 }> = ({ title, style, children }) => {
   const redirectPathWhenSignedOut = '/';
-  const navigationStyle = style ?? configuration.navigation.style;
+  const layout = style ?? configuration.navigation.style;
 
   return (
-    <FirebaseFirestoreProvider>
-      <GuardedPage whenSignedOut={redirectPathWhenSignedOut}>
-        <SentryProvider>
-          <Head>
-            <title key="title">{title}</title>
-          </Head>
+    <>
+      <Head>
+        <title key="title">{title}</title>
+      </Head>
 
-          <Toaster />
+      <FirebaseFirestoreProvider>
+        <GuardedPage whenSignedOut={redirectPathWhenSignedOut}>
+          <SentryProvider>
+            <Toaster />
 
-          <If condition={navigationStyle === 'topHeader'}>
-            <RouteShellWithTopNavigation title={title}>
+            <LayoutRenderer style={layout} title={title}>
               {children}
-            </RouteShellWithTopNavigation>
-          </If>
-
-          <If condition={navigationStyle === 'sidebar'}>
-            <RouteShellWithSidebar title={title}>
-              {children}
-            </RouteShellWithSidebar>
-          </If>
-
-          <If condition={navigationStyle === 'custom'}>
-            <>{children}</>
-          </If>
-        </SentryProvider>
-      </GuardedPage>
-    </FirebaseFirestoreProvider>
+            </LayoutRenderer>
+          </SentryProvider>
+        </GuardedPage>
+      </FirebaseFirestoreProvider>
+    </>
   );
 };
+
+function LayoutRenderer(
+  props: React.PropsWithChildren<{
+    title: string;
+    style: LayoutStyle;
+  }>
+) {
+  switch (props.style) {
+    case LayoutStyle.Sidebar:
+      return (
+        <RouteShellWithSidebar title={props.title}>
+          {props.children}
+        </RouteShellWithSidebar>
+      );
+
+    case LayoutStyle.TopHeader:
+      return (
+        <RouteShellWithTopNavigation title={props.title}>
+          {props.children}
+        </RouteShellWithTopNavigation>
+      );
+
+    case LayoutStyle.Custom:
+      return <>{props.children}</>;
+  }
+}
 
 export default RouteShell;

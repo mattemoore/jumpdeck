@@ -24,7 +24,7 @@ const SettingsPageContainer: React.FCC<{
   return (
     <RouteShell title={title}>
       <div className={'flex flex-col space-y-4'}>
-        <NavigationMenu bordered>
+        <NavigationMenu>
           {links.map((link) => (
             <NavigationItem link={link} key={link.path} />
           ))}
