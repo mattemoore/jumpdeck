@@ -120,13 +120,13 @@ async function checkoutWebhooksHandler(
         break;
       }
 
-      case StripeWebhooks.PaymentFailed: {
+      case StripeWebhooks.AsyncPaymentFailed: {
         const session = event.data.object as Stripe.Checkout.Session;
 
         // when the payment fails
         // we send an email to the customer to redirect them to the
         // billing page
-        await onPaymentFailed(session);
+        await onAsyncPaymentFailed(session);
 
         break;
       }
@@ -196,7 +196,7 @@ async function onSubscriptionUpdated(subscription: Stripe.Subscription) {
 /**
  * @description When the payment failed, notify the customer by email
  */
-async function onPaymentFailed(session: Stripe.Checkout.Session) {
+async function onAsyncPaymentFailed(session: Stripe.Checkout.Session) {
   const organizationId = session.client_reference_id;
   const subscription = session.subscription;
 
