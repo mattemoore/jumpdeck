@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { UserSession } from '~/lib/organizations/types/user-session';
+import { UserSession } from '~/core/session/types/user-session';
 
 export const UserSessionContext = createContext<{
   userSession: Maybe<UserSession>;

@@ -8,7 +8,7 @@ import FirebaseStorageProvider from '~/core/firebase/components/FirebaseStorageP
 import Heading from '~/core/ui/Heading';
 
 import { withAppProps } from '~/lib/props/with-app-props';
-import { UserSessionContext } from '~/lib/contexts/session';
+import { UserSessionContext } from '~/core/session/contexts/user-session';
 
 import UpdateProfileForm from '~/components/profile/UpdateProfileForm';
 import ProfileSettingsTabs from '~/components/profile/ProfileSettingsTabs';
@@ -50,10 +50,10 @@ const Profile = () => {
       </Head>
 
       <FirebaseStorageProvider>
-        <SettingsPageContainer title={'Profile'}>
+        <SettingsPageContainer title={'Settings'}>
           <ProfileSettingsTabs user={userSession.auth} />
 
-          <div className={'w-full md:w-9/12'}>
+          <div className={'w-full md:w-10/12'}>
             <div className={'flex flex-col space-y-4'}>
               <Heading type={3}>
                 <Trans i18nKey={'profile:generalTab'} />

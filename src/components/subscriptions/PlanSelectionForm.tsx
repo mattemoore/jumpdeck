@@ -14,7 +14,6 @@ import { IfHasPermissions } from '~/components/IfHasPermissions';
 import { canChangeBilling } from '~/lib/organizations/permissions';
 
 import If from '~/core/ui/If';
-import Heading from '~/core/ui/Heading';
 
 const PlanSelectionForm: React.FCC<{
   organization: WithId<Organization>;
@@ -32,10 +31,10 @@ const PlanSelectionForm: React.FCC<{
 
   return (
     <>
-      <div className={'mb-4'}>
-        <Heading type={5}>
+      <div>
+        <p>
           <Trans i18nKey={'subscription:notSubscribedToAnyPlan'} />
-        </Heading>
+        </p>
       </div>
 
       <div className={'flex flex-col space-y-4'}>

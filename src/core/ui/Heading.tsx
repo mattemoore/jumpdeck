@@ -11,7 +11,7 @@ const Heading: React.FCC<{ type?: HeadingType }> = ({ type, children }) => {
     case 4:
       return <h4 className={'text-lg font-semibold'}>{children}</h4>;
     case 5:
-      return <h5 className={'text-base font-medium'}>{children}</h5>;
+      return <h5 className={'text-base font-semibold'}>{children}</h5>;
     case 6:
       return <h6 className={'text-sm font-medium'}>{children}</h6>;
 

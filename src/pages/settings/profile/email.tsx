@@ -2,7 +2,7 @@ import { GetServerSidePropsContext } from 'next';
 import { Trans } from 'next-i18next';
 import Head from 'next/head';
 
-import { useUserSession } from '~/lib/hooks/use-user-session';
+import { useUserSession } from '~/core/hooks/use-user-session';
 import { withAppProps } from '~/lib/props/with-app-props';
 
 import UpdateEmailForm from '~/components/profile/UpdateEmailForm';
@@ -25,10 +25,10 @@ const ProfileEmailSettings = () => {
         <title key={'title'}>Update Email</title>
       </Head>
 
-      <SettingsPageContainer title={'Profile'}>
+      <SettingsPageContainer title={'Settings'}>
         <ProfileSettingsTabs user={user} />
 
-        <div className={'w-full w-9/12'}>
+        <div className={'w-full w-10/12'}>
           <div className={'flex flex-col space-y-4'}>
             <Heading type={3}>
               <Trans i18nKey={'profile:emailTab'} />

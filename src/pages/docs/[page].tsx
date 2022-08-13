@@ -21,9 +21,10 @@ import Footer from '~/components/Footer';
 import If from '~/core/ui/If';
 
 import Directory from '~/core/docs/types/directory';
-import DocumentationPage from '../../core/docs/types/documentation-page';
 import SearchInput from '~/components/SearchInput';
 import SubHeading from '~/core/ui/SubHeading';
+
+import DocumentationPage from '../../core/docs/types/documentation-page';
 
 type Props = {
   page: {
@@ -82,14 +83,14 @@ const DocsPage = ({ page, docs, previousPage, nextPage }: Props) => {
             <FloatingDocumentationNavigation data={docs} />
           </div>
 
-          <div className={'md:flex md:space-x-8 lg:space-x-16'}>
+          <div className={'md:flex md:space-x-12 lg:space-x-24'}>
             <div className={'DocumentationSidebarContainer flex-col space-y-2'}>
               <SearchInput path={'/docs/results'} />
 
               <DocumentationNavigation data={docs} />
             </div>
 
-            <div className="mt-8 flex flex-1 flex-col space-y-2">
+            <div className="mt-8 flex max-w-2xl flex-1 flex-col space-y-2">
               <div>
                 <Heading type={1}>
                   <span className={'dark:text-white'}>{page.label}</span>
@@ -104,38 +105,10 @@ const DocsPage = ({ page, docs, previousPage, nextPage }: Props) => {
 
               <PostBody content={page.content} />
 
-              <div
-                className={
-                  'flex flex-col justify-between space-y-4 py-12 md:flex-row md:space-y-0'
-                }
-              >
-                <div className={'flex items-center space-x-1'}>
-                  <If condition={previousPage}>
-                    {(page) => {
-                      return (
-                        <>
-                          <ChevronLeftIcon className={'h-6'} />
-
-                          <PageLink page={page} />
-                        </>
-                      );
-                    }}
-                  </If>
-                </div>
-
-                <div className={'flex items-center justify-end space-x-1'}>
-                  <If condition={nextPage}>
-                    {(page) => {
-                      return (
-                        <>
-                          <PageLink page={page} />
-                          <ChevronRightIcon className={'h-6'} />
-                        </>
-                      );
-                    }}
-                  </If>
-                </div>
-              </div>
+              <DocumentationLinks
+                previousPage={previousPage}
+                nextPage={nextPage}
+              />
             </div>
           </div>
         </Container>
@@ -221,4 +194,47 @@ export function getStaticPaths() {
     paths,
     fallback: false,
   };
+}
+
+function DocumentationLinks({
+  previousPage,
+  nextPage,
+}: React.PropsWithChildren<{
+  previousPage: Maybe<DocumentationPage>;
+  nextPage: Maybe<DocumentationPage>;
+}>) {
+  return (
+    <div
+      className={
+        'flex flex-col justify-between space-y-4 md:flex-row md:space-y-0'
+      }
+    >
+      <div className={'flex items-center space-x-1'}>
+        <If condition={previousPage}>
+          {(page) => {
+            return (
+              <>
+                <ChevronLeftIcon className={'h-6'} />
+
+                <PageLink page={page} />
+              </>
+            );
+          }}
+        </If>
+      </div>
+
+      <div className={'flex items-center justify-end space-x-1'}>
+        <If condition={nextPage}>
+          {(page) => {
+            return (
+              <>
+                <PageLink page={page} />
+                <ChevronRightIcon className={'h-6'} />
+              </>
+            );
+          }}
+        </If>
+      </div>
+    </div>
+  );
 }

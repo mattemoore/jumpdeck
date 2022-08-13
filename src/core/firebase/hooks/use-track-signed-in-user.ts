@@ -2,7 +2,7 @@ import { getAnalytics, setUserId } from 'firebase/analytics';
 import { useEffect } from 'react';
 
 import { isBrowser } from '~/core/generic';
-import { useUserSession } from '~/lib/hooks/use-user-session';
+import { useUserSession } from '~/core/hooks/use-user-session';
 
 /**
  * @name useTrackSignedInUser

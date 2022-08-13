@@ -7,8 +7,8 @@ import { Trans } from 'react-i18next';
 import configuration from '~/configuration';
 
 import { withAuthProps } from '~/lib/props/with-auth-props';
-import OAuthProviders from '~/components/OAuthProviders';
-import EmailPasswordSignUpForm from '~/components/EmailPasswordSignUpForm';
+import OAuthProviders from '~/components/auth/OAuthProviders';
+import EmailPasswordSignUpForm from '~/components/auth/EmailPasswordSignUpForm';
 
 import Layout from '~/core/ui/Layout';
 import Hero from '~/core/ui/Hero';
@@ -20,9 +20,7 @@ const SignUp: React.FCC = () => {
   const signInPath = configuration.paths.signIn;
 
   const onSignUp = useCallback(() => {
-    void (async () => {
-      return router.push(configuration.paths.onboarding);
-    })();
+    return router.push(configuration.paths.onboarding);
   }, [router]);
 
   return (

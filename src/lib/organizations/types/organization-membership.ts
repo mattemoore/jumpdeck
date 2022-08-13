@@ -1,5 +1,5 @@
 import type { MembershipRole } from './membership-role';
-import type { UserData } from './user-data';
+import type { UserData } from '~/core/session/types/user-data';
 
 interface Reference {
   readonly id: string;

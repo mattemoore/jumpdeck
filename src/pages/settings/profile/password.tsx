@@ -5,7 +5,7 @@ import { Trans } from 'next-i18next';
 import Heading from '~/core/ui/Heading';
 
 import { withAppProps } from '~/lib/props/with-app-props';
-import { useUserSession } from '~/lib/hooks/use-user-session';
+import { useUserSession } from '~/core/hooks/use-user-session';
 
 import UpdatePasswordForm from '~/components/profile/UpdatePasswordForm';
 import ProfileSettingsTabs from '~/components/profile/ProfileSettingsTabs';
@@ -25,10 +25,10 @@ const ProfilePasswordSettings = () => {
         <title key={'title'}>Update Password</title>
       </Head>
 
-      <SettingsPageContainer title={'Profile'}>
+      <SettingsPageContainer title={'Settings'}>
         <ProfileSettingsTabs user={user} />
 
-        <div className={'w-full md:w-9/12'}>
+        <div className={'w-full md:w-10/12'}>
           <div className={'flex flex-col space-y-4'}>
             <Heading type={3}>
               <Trans i18nKey={'organization:passwordSettingsTab'} />

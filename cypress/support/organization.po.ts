@@ -11,9 +11,8 @@ const organizationPageObject = {
   $confirmCreateOrganizationButton: () =>
     $get(`confirm-create-organization-button`),
   $createOrganizationNameInput: () => $get(`create-organization-name-input`),
-  $getMembers: () => $get(`organization-member`),
   $getMemberByEmail(invitedMemberEmail: string) {
-    return this.$getMembers().contains(`[data-cy]`, invitedMemberEmail);
+    return cy.contains(`[data-cy="organization-member"]`, invitedMemberEmail);
   },
   $getInvitedMembers: () => $get(`invited-member`),
   $getInvitedMemberByEmail(invitedMemberEmail: string) {
@@ -43,7 +42,7 @@ const organizationPageObject = {
 
     // ugly but needed, elements called right after are detached and Cypress
     // doesn't handle it well
-    cy.wait(250);
+    cy.wait(150);
 
     return this;
   },

@@ -8,12 +8,14 @@ import { MembershipInvite } from '~/lib/organizations/types/membership-invite';
  */
 export function useFetchInvitedMembers(organizationId: string) {
   const firestore = useFirestore();
+  const organizationsCollection = 'organizations';
+  const invitesCollection = 'invites';
 
   const collectionRef = collection(
     firestore,
-    'organizations',
+    organizationsCollection,
     organizationId,
-    'invites'
+    invitesCollection
   ) as CollectionReference<WithId<MembershipInvite>>;
 
   return useFirestoreCollectionData(collectionRef, {

@@ -15,11 +15,11 @@ import Logo from '~/core/ui/Logo';
 import If from '~/core/ui/If';
 import { Trans } from 'next-i18next';
 
-import { useUserSession } from '~/lib/hooks/use-user-session';
+import { useUserSession } from '~/core/hooks/use-user-session';
 import { isRouteActive } from '~/core/is-route-active';
 
 const OrganizationsSelector = dynamic(
-  () => import('../../OrganizationsSelector'),
+  () => import('../../organizations/OrganizationsSelector'),
   {
     ssr: false,
   }

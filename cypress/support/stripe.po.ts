@@ -4,7 +4,7 @@ import { StripeWebhooks } from '~/core/stripe/stripe-webhooks.enum';
 const stripe = new StripeLib.Stripe(`sk_test_12345`, {
   host: `localhost`,
   port: 12111,
-  apiVersion: '2020-08-27',
+  apiVersion: '2022-08-01',
   protocol: `http`,
 });
 
@@ -31,7 +31,7 @@ const stripePo = {
     });
   },
   selectPlan(number: number = 0) {
-    this.$plans().eq(number).click();
+    this.$plans().eq(number).click({ force: true });
     this.$checkoutForm().submit();
   },
   createSignature(payload: unknown) {

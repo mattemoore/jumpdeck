@@ -1,5 +1,5 @@
 import type { User as AuthUser } from 'firebase/auth';
-import type { UserData } from '~/lib/organizations/types/user-data';
+import type { UserData } from '~/core/session/types/user-data';
 
 /**
  * This interface combines the user's metadata from

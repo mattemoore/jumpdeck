@@ -1,4 +1,4 @@
-import { GlobalRole } from './global-role';
+import { GlobalRole } from '~/core/session/types/global-role';
 
 /**
  * This interface represents the user record in Firestore

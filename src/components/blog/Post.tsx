@@ -77,7 +77,10 @@ function MorePostsList({
 function PostHead({ post }: React.PropsWithChildren<{ post: Post }>) {
   const ogImage = post.ogImage?.url ?? post.coverImage;
   const title = post.title;
-  const fullImagePath = `${configuration.site.siteUrl}${ogImage}`;
+  const siteUrl = configuration.site.siteUrl;
+  const fullImagePath = `${siteUrl}${ogImage}`;
+  const creator = configuration.site.twitterHandle;
+  const siteName = configuration.site.siteName;
 
   const structuredDataJson = getStructuredData({
     type: 'Article',
@@ -87,31 +90,35 @@ function PostHead({ post }: React.PropsWithChildren<{ post: Post }>) {
     date: post.date,
     imagePath: fullImagePath,
     author: {
-      name: configuration.site.siteName,
-      url: configuration.site.siteUrl,
+      type: `Organization`,
+      name: siteName,
+      url: siteUrl,
     },
   });
 
   return (
     <Head>
-      <title key="title">{title}</title>
-      <meta key="og:title" property="og:title" content={title} />
-      <meta key="twitter:title" property="twitter:title" content={title} />
+      <title>{title}</title>
 
-      <meta property="og:type" content="article" />
-      <meta property="article:published_time" content={post.date} />
+      <meta key="og:type" property="og:type" content="article" />
+      <meta key="og:title" property="og:title" content={title} />
+      <meta key="og:site_name" property="og:site_name" content={siteName} />
 
       <meta
-        key="twitter:image"
-        property="twitter:image"
-        content={fullImagePath}
+        key="article:published_time"
+        property="article:published_time"
+        content={post.date}
       />
+
+      <meta key="twitter:title" name="twitter:title" content={title} />
+      <meta key="twitter:image" name="twitter:image" content={fullImagePath} />
+      <meta key="twitter:site" name="twitter:site" content={creator} />
 
       {post.excerpt && (
         <>
           <meta
             key="twitter:description"
-            property="twitter:description"
+            name="twitter:description"
             content={post.excerpt}
           />
 
@@ -133,8 +140,8 @@ function PostHead({ post }: React.PropsWithChildren<{ post: Post }>) {
         <link rel="canonical" href={post.canonical} key="canonical" />
       )}
 
-      {ogImage && (
-        <meta key={'og:image'} property="og:image" content={ogImage} />
+      {fullImagePath && (
+        <meta key={'og:image'} property="og:image" content={fullImagePath} />
       )}
 
       <script

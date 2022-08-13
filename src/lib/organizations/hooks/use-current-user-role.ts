@@ -1,5 +1,5 @@
 import { useCurrentOrganization } from './use-current-organization';
-import { useUserSession } from '~/lib/hooks/use-user-session';
+import { useUserSession } from '~/core/hooks/use-user-session';
 
 /**
  * @name useCurrentUserRole

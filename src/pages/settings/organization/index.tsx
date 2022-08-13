@@ -18,10 +18,10 @@ const Organization = () => {
         <title key="title">Organization Settings</title>
       </Head>
 
-      <SettingsPageContainer title={'Organization'}>
+      <SettingsPageContainer title={'Settings'}>
         <OrganizationSettingsTabs />
 
-        <div className={'w-full md:w-9/12'}>
+        <div className={'w-full md:w-10/12'}>
           <div className={'flex w-full flex-col space-y-4'}>
             <Heading type={3}>
               <Trans i18nKey={'organization:settingsPageLabel'} />

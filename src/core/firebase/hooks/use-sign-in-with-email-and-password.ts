@@ -1,8 +1,9 @@
+import { useCallback } from 'react';
 import { useAuth } from 'reactfire';
 import { FirebaseError } from 'firebase/app';
 import { signInWithEmailAndPassword, UserCredential } from 'firebase/auth';
+
 import { useRequestState } from '../../hooks/use-request-state';
-import { useCallback } from 'react';
 
 export function useSignInWithEmailAndPassword() {
   const auth = useAuth();

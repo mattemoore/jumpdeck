@@ -12,30 +12,14 @@ import { withAppProps } from '~/lib/props/with-app-props';
 import If from '~/core/ui/If';
 import Alert from '~/core/ui/Alert';
 
-enum SubscriptionPageStatus {
-  Success,
-  Canceled,
-  Error,
+enum SubscriptionStatusQueryParams {
+  Success = 'success',
+  Cancel = 'cancel',
+  Error = 'error',
 }
 
 const Subscription = () => {
-  const [status, setStatus] = useState<SubscriptionPageStatus>();
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-
-    const error = params.has(`error`);
-    const canceled = params.has(`canceled`);
-    const success = params.has(`success`);
-
-    if (canceled) {
-      setStatus(SubscriptionPageStatus.Canceled);
-    } else if (success) {
-      setStatus(SubscriptionPageStatus.Success);
-    } else if (error) {
-      setStatus(SubscriptionPageStatus.Error);
-    }
-  }, [setStatus]);
+  const status = useSubscriptionStatus();
 
   return (
     <>
@@ -43,13 +27,13 @@ const Subscription = () => {
         <title key="title">Subscription Settings</title>
       </Head>
 
-      <SettingsPageContainer title={'Subscription'}>
+      <SettingsPageContainer title={'Settings'}>
         <div className={'w-full'}>
           <div className={'flex flex-col space-y-4 px-2'}>
             <If condition={status !== undefined}>
-              <div>
-                <PlansStatusAlert status={status as SubscriptionPageStatus} />
-              </div>
+              <PlansStatusAlert
+                status={status as SubscriptionStatusQueryParams}
+              />
             </If>
 
             <Plans />
@@ -66,27 +50,53 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   return await withAppProps(ctx);
 }
 
-function PlansStatusAlert({ status }: { status: SubscriptionPageStatus }) {
+function PlansStatusAlert({
+  status,
+}: {
+  status: SubscriptionStatusQueryParams;
+}) {
   switch (status) {
-    case SubscriptionPageStatus.Canceled:
+    case SubscriptionStatusQueryParams.Cancel:
       return (
         <Alert type={'warn'} useCloseButton={true}>
           <Trans i18nKey={'subscription:checkOutCanceledAlert'} />
         </Alert>
       );
 
-    case SubscriptionPageStatus.Error:
+    case SubscriptionStatusQueryParams.Error:
       return (
         <Alert type={'error'} useCloseButton={true}>
           <Trans i18nKey={'subscription:unknownErrorAlert'} />
         </Alert>
       );
 
-    case SubscriptionPageStatus.Success:
+    case SubscriptionStatusQueryParams.Success:
       return (
         <Alert type={'success'} useCloseButton={true}>
           <Trans i18nKey={'subscription:checkOutCompletedAlert'} />
         </Alert>
       );
   }
+}
+
+function useSubscriptionStatus() {
+  const [status, setStatus] = useState<SubscriptionStatusQueryParams>();
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+
+    const error = params.has(SubscriptionStatusQueryParams.Error);
+    const canceled = params.has(SubscriptionStatusQueryParams.Cancel);
+    const success = params.has(SubscriptionStatusQueryParams.Success);
+
+    if (canceled) {
+      setStatus(SubscriptionStatusQueryParams.Cancel);
+    } else if (success) {
+      setStatus(SubscriptionStatusQueryParams.Success);
+    } else if (error) {
+      setStatus(SubscriptionStatusQueryParams.Error);
+    }
+  }, []);
+
+  return status;
 }

@@ -5,7 +5,7 @@
   "choosePlan": "Choose Plan",
   "currentPlan": "Current Plan",
   "subscriptionWillEndOn": "The subscription will end on {{ endDate }}",
-  "unknownErrorAlert": "An unknown error happened. Please try again or contact support.",
+  "unknownErrorAlert": "We encountered an unknown error while processing your payment. Please try again or contact support.",
   "checkOutCanceledAlert": "The checkout was canceled",
   "checkOutCompletedAlert": "Well done! The checkout was successfully completed",
   "awaitingPaymentAlert": "We are awaiting for the payment to go through."

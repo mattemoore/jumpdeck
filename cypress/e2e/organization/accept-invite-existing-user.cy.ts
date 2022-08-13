@@ -16,24 +16,31 @@ describe(`Accept Invite - Existing User`, () => {
     });
   });
 
-  it('should be redirected to the dashboard', () => {
-    authPo.$getAcceptInviteSubmitButton().click();
+  describe(`when the user accepts the invite`, () => {
+    it('should be redirected to the dashboard', () => {
+      authPo.$getAcceptInviteSubmitButton().click();
 
-    cy.url().should('contain', configuration.paths.appHome);
-
-    organizationPageObject.switchToOrganization('Test');
-
-    // we visit
-    cy.visit(`/settings/organization/members`);
+      cy.url().should('contain', configuration.paths.appHome);
+    });
   });
 
-  it('should remove the new member from the invited list', () => {
-    organizationPageObject
-      .$getInvitedMemberByEmail(existingUserEmail)
-      .should('not.exist');
-  });
+  describe(`when the user visits the members page`, () => {
+    before(() => {
+      organizationPageObject.switchToOrganization('Test');
 
-  it('should list the new member', () => {
-    organizationPageObject.$getMemberByEmail(existingUserEmail).should('exist');
+      cy.visit(`/settings/organization/members`);
+    });
+
+    it('should remove the new member from the invited list', () => {
+      organizationPageObject
+        .$getInvitedMemberByEmail(existingUserEmail)
+        .should('not.exist');
+    });
+
+    it('should list the new member', () => {
+      organizationPageObject
+        .$getMemberByEmail(existingUserEmail)
+        .should('exist');
+    });
   });
 });

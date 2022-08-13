@@ -6,7 +6,6 @@ import dynamic from 'next/dynamic';
 import UserAddIcon from '@heroicons/react/outline/UserAddIcon';
 
 import { useUserCanInviteUsers } from '~/lib/organizations/hooks/use-user-can-invite-users';
-import { OrganizationContext } from '~/lib/contexts/organization';
 import { withAppProps } from '~/lib/props/with-app-props';
 
 import OrganizationSettingsTabs from '~/components/organizations/OrganizationSettingsTabs';
@@ -14,7 +13,9 @@ import OrganizationSettingsTabs from '~/components/organizations/OrganizationSet
 import Heading from '~/core/ui/Heading';
 import Button from '~/core/ui/Button';
 import If from '~/core/ui/If';
+
 import SettingsPageContainer from '~/components/SettingsPageContainer';
+import { useCurrentOrganization } from '~/lib/organizations/hooks/use-current-organization';
 
 const OrganizationMembersList = dynamic(
   () => import('~/components/organizations/OrganizationMembersList'),
@@ -32,6 +33,12 @@ const OrganizationInvitedMembersList = dynamic(
 
 const OrganizationMembersPage: React.FCC = () => {
   const canInviteUsers = useUserCanInviteUsers();
+  const organization = useCurrentOrganization();
+  const id = organization?.id as string;
+
+  if (!id) {
+    return null;
+  }
 
   return (
     <>
@@ -40,59 +47,47 @@ const OrganizationMembersPage: React.FCC = () => {
       </Head>
 
       <SettingsPageContainer title={'Organization'}>
-        <OrganizationContext.Consumer>
-          {({ organization }) => {
-            const id = organization?.id as string;
+        <OrganizationSettingsTabs />
 
-            return (
-              <>
-                <OrganizationSettingsTabs />
+        <div className={'w-full md:w-10/12'}>
+          <div className="flex flex-1 flex-col space-y-8">
+            <div className={'flex flex-col space-y-2'}>
+              <div className="flex items-center justify-between space-x-8">
+                <Heading type={3}>
+                  <Trans i18nKey={'organization:membersPageHeading'} />
+                </Heading>
 
-                <div className={'w-full md:w-9/12'}>
-                  <div className="flex flex-1 flex-col space-y-8">
-                    <div>
-                      <div className="flex items-center justify-between space-x-8">
-                        <Heading type={3}>
-                          <Trans i18nKey={'organization:membersPageHeading'} />
-                        </Heading>
+                <If condition={canInviteUsers}>
+                  <Button
+                    data-cy={'invite-form-link'}
+                    type="button"
+                    href={'/settings/organization/members/invite'}
+                  >
+                    <span className="flex items-center space-x-2">
+                      <UserAddIcon className="h-5" />
 
-                        <If condition={canInviteUsers}>
-                          <Button
-                            data-cy={'invite-form-link'}
-                            type="button"
-                            href={'/settings/organization/members/invite'}
-                          >
-                            <span className="flex items-center space-x-2">
-                              <UserAddIcon className="h-5" />
+                      <span>
+                        <Trans
+                          i18nKey={'organization:inviteMembersButtonLabel'}
+                        />
+                      </span>
+                    </span>
+                  </Button>
+                </If>
+              </div>
 
-                              <span>
-                                <Trans
-                                  i18nKey={
-                                    'organization:inviteMembersButtonLabel'
-                                  }
-                                />
-                              </span>
-                            </span>
-                          </Button>
-                        </If>
-                      </div>
+              <OrganizationMembersList organizationId={id} />
+            </div>
 
-                      <OrganizationMembersList organizationId={id} />
-                    </div>
+            <div className={'flex flex-col space-y-2'}>
+              <Heading type={3}>
+                <Trans i18nKey={'organization:pendingInvitesHeading'} />
+              </Heading>
 
-                    <div className={'flex flex-col space-y-2'}>
-                      <Heading type={3}>
-                        <Trans i18nKey={'organization:pendingInvitesHeading'} />
-                      </Heading>
-
-                      <OrganizationInvitedMembersList organizationId={id} />
-                    </div>
-                  </div>
-                </div>
-              </>
-            );
-          }}
-        </OrganizationContext.Consumer>
+              <OrganizationInvitedMembersList organizationId={id} />
+            </div>
+          </div>
+        </div>
       </SettingsPageContainer>
     </>
   );

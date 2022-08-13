@@ -10,8 +10,6 @@ import Button from '~/core/ui/Button';
 import Badge from '~/core/ui/Badge';
 import ImageUploadInput from '~/core/ui/ImageUploadInput';
 import Heading from '~/core/ui/Heading';
-
-import PostsList from './PostsList';
 import TweetEmbed from './TweetEmbed';
 
 type ImageLayout = 'fixed' | 'fill' | 'intrinsic' | 'responsive' | undefined;
@@ -78,7 +76,6 @@ const Video: React.FCC<{
 const MDXComponents = {
   img: NextImage,
   a: ExternalLink,
-  PostsList,
   TweetEmbed,
   Video,
   Alert,

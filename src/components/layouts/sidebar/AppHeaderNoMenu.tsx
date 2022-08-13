@@ -1,6 +1,6 @@
 import { useAuth } from 'reactfire';
 
-import { useUserSession } from '~/lib/hooks/use-user-session';
+import { useUserSession } from '~/core/hooks/use-user-session';
 
 import Heading from '~/core/ui/Heading';
 import ProfileDropdown from '~/components/ProfileDropdown';

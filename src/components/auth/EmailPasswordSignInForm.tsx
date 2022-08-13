@@ -1,4 +1,4 @@
-import { FormEvent, useEffect } from 'react';
+import { FormEvent, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import type { User } from 'firebase/auth';
 import { Trans } from 'next-i18next';
@@ -23,19 +23,22 @@ const EmailPasswordSignInForm: React.FCC<{
 
   const isLoading = sessionState.loading || status.loading;
 
-  const signInWithCredentials = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const signInWithCredentials = useCallback(
+    async (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
 
-    if (status.loading) {
-      return;
-    }
+      if (status.loading) {
+        return;
+      }
 
-    const data = new FormData(event.currentTarget);
-    const email = data.get(`email`) as string;
-    const password = data.get(`password`) as string;
+      const data = new FormData(event.currentTarget);
+      const email = data.get(`email`) as string;
+      const password = data.get(`password`) as string;
 
-    await signIn(email, password);
-  };
+      return signIn(email, password);
+    },
+    [signIn, status.loading]
+  );
 
   useEffect(() => {
     if (!status.data) {

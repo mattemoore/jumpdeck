@@ -10,8 +10,8 @@ import configuration from '~/configuration';
 import { getRedirectPathWithoutSearchParam } from '~/core/generic/get-redirect-url';
 
 import { withAuthProps } from '~/lib/props/with-auth-props';
-import OAuthProviders from '~/components/OAuthProviders';
-import EmailPasswordSignInForm from '~/components/EmailPasswordSignInForm';
+import OAuthProviders from '~/components/auth/OAuthProviders';
+import EmailPasswordSignInForm from '~/components/auth/EmailPasswordSignInForm';
 
 import Layout from '~/core/ui/Layout';
 import Hero from '~/core/ui/Hero';
@@ -22,13 +22,11 @@ export const SignIn: React.FCC = () => {
   const router = useRouter();
   const signUpPath = configuration.paths.signUp;
 
-  const onSignIn = useCallback(() => {
-    void (async () => {
-      const appHome = configuration.paths.appHome;
-      const path = getRedirectPathWithoutSearchParam(appHome);
+  const onSignIn = useCallback(async () => {
+    const appHome = configuration.paths.appHome;
+    const path = getRedirectPathWithoutSearchParam(appHome);
 
-      return router.push(path);
-    })();
+    return router.push(path);
   }, [router]);
 
   return (

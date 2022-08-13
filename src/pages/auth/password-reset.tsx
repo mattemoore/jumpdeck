@@ -14,7 +14,7 @@ import { getFirebaseErrorCode } from '~/core/firebase/utils/get-firebase-error-c
 import configuration from '~/configuration';
 
 import { withAuthProps } from '~/lib/props/with-auth-props';
-import AuthErrorMessage from '~/components/AuthErrorMessage';
+import AuthErrorMessage from '~/components/auth/AuthErrorMessage';
 
 import Layout from '~/core/ui/Layout';
 import Button from '~/core/ui/Button';

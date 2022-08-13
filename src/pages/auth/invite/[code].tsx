@@ -23,10 +23,10 @@ import { useApiRequest } from '~/core/hooks/use-api';
 import logger from '~/core/logger';
 
 import { initializeFirebaseAdminApp } from '~/core/firebase/admin/initialize-firebase-admin-app';
-import OAuthProviders from '~/components/OAuthProviders';
-import EmailPasswordSignUpForm from '~/components/EmailPasswordSignUpForm';
+import OAuthProviders from '~/components/auth/OAuthProviders';
+import EmailPasswordSignUpForm from '~/components/auth/EmailPasswordSignUpForm';
 import GuardedPage from '~/core/firebase/components/GuardedPage';
-import EmailPasswordSignInForm from '~/components/EmailPasswordSignInForm';
+import EmailPasswordSignInForm from '~/components/auth/EmailPasswordSignInForm';
 import PageLoadingIndicator from '~/core/ui/PageLoadingIndicator';
 
 import { getInviteByCode } from '~/lib/server/organizations/get-invite-by-code';

@@ -1,13 +1,11 @@
-import configuration from '~/configuration';
 import { withTranslationProps } from '~/lib/props/with-translation-props';
 
 import Layout from '~/core/ui/Layout';
 import Container from '~/core/ui/Container';
 import Footer from '~/components/Footer';
-
-import ConvertkitSignupForm from '~/components/ConvertkitSignupForm';
 import SiteHeader from '~/components/SiteHeader';
 import SubHeading from '~/core/ui/SubHeading';
+import Button from '~/core/ui/Button';
 
 const Index = () => {
   return (
@@ -23,41 +21,27 @@ const Index = () => {
             }
           >
             <div
-              className={'flex w-full flex-1 flex-col items-center space-y-12'}
+              className={'flex w-full flex-1 flex-col items-center space-y-8'}
             >
               <h1
                 className={
                   'text-center text-5xl text-black-500 dark:text-current' +
-                  ' sm:text-6xl md:text-7xl lg:text-[5.75rem]' +
-                  ' font-extrabold'
+                  ' flex flex-col space-y-2 font-extrabold md:text-6xl' +
+                  ' xl:text-7xl'
                 }
               >
-                <span className={'block'}>
-                  <span className={'text-current dark:text-white'}>
-                    Tell us why your SaaS is awesome
-                  </span>
-                </span>
+                <span>Tell your visitors why</span>
+                <span className={'text-primary-500'}>your SaaS is awesome</span>
               </h1>
 
               <div className={'text-center text-gray-700 dark:text-gray-400'}>
-                <SubHeading>A short description of your SaaS</SubHeading>
+                <SubHeading>Here goes a short</SubHeading>
+                <SubHeading>description of your SaaS</SubHeading>
               </div>
 
-              <div className={'flex flex-col space-y-2'}>
-                <ConvertkitSignupForm
-                  formId={configuration.site.convertKitFormId}
-                >
-                  Subscribe
-                </ConvertkitSignupForm>
-
-                <span
-                  className={
-                    'text-center text-xs text-gray-600 dark:text-gray-400'
-                  }
-                >
-                  Subscribe to our newsletter to receive updates
-                </span>
-              </div>
+              <Button size={'large'} href={'/auth/sign-up'}>
+                Get Started for free
+              </Button>
             </div>
           </div>
         </Container>

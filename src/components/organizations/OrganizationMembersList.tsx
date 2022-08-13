@@ -1,5 +1,5 @@
 import { Trans } from 'next-i18next';
-import { SelfBuildingSquareSpinner } from 'react-epic-spinners';
+import { SpringSpinner } from 'react-epic-spinners';
 
 import If from '~/core/ui/If';
 import Badge from '~/core/ui/Badge';
@@ -10,7 +10,7 @@ import { useCurrentUserRole } from '~/lib/organizations/hooks/use-current-user-r
 import { useFetchOrganizationMembersMetadata } from '~/lib/organizations/hooks/use-fetch-members-metadata';
 import { Organization } from '~/lib/organizations/types/organization';
 
-import { useUserId } from '~/lib/hooks/use-user-id';
+import { useUserId } from '~/core/hooks/use-user-id';
 
 import OrganizationMembersActionsContainer from './OrganizationMembersActionsContainer';
 import RoleBadge from '../RoleBadge';
@@ -36,7 +36,7 @@ const OrganizationMembersList: React.FCC<{
   if (isLoading) {
     return (
       <div className={'flex items-center justify-center'}>
-        <SelfBuildingSquareSpinner />
+        <SpringSpinner />
       </div>
     );
   }

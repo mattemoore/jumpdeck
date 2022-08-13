@@ -160,7 +160,11 @@ async function uploadLogo({
   const fileRef = ref(storage, path);
 
   // first, we upload the logo to Firebase Storage
-  await uploadBytes(fileRef, bytes);
+  await uploadBytes(fileRef, bytes, {
+    customMetadata: {
+      organizationId,
+    },
+  });
 
   // now we can get the download URL from its reference
   return await getDownloadURL(fileRef);

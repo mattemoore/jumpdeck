@@ -1,7 +1,7 @@
 import { useAuth } from 'reactfire';
 import Link from 'next/link';
 
-import { useUserSession } from '~/lib/hooks/use-user-session';
+import { useUserSession } from '~/core/hooks/use-user-session';
 import configuration from '~/configuration';
 
 import Logo from '~/core/ui/Logo';
@@ -36,13 +36,13 @@ const SiteHeader: React.FCC<{
 
           <div className={'flex items-center justify-end space-x-4'}>
             {
-              // ON MOBILE WE DISPLAY THE HAMBURGER MENU AT THE END 0
+              // ON MOBILE WE DISPLAY THE HAMBURGER MENU AT THE END
             }
             <div className={'order-1 md:order-none md:ml-0'}>
               <SiteNavigation />
             </div>
 
-            <If condition={userSession?.auth} fallback={<SignInButton />}>
+            <If condition={userSession?.auth}>
               {(user) => (
                 <ProfileDropdown
                   user={user}
@@ -56,15 +56,5 @@ const SiteHeader: React.FCC<{
     </div>
   );
 };
-
-function SignInButton() {
-  const isEmulator = configuration.emulator;
-
-  return isEmulator ? (
-    <Button className={'rounded-full'}>
-      <Link href={'/auth/sign-in'}>Get Started</Link>
-    </Button>
-  ) : null;
-}
 
 export default SiteHeader;

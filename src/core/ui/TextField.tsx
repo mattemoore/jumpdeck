@@ -30,11 +30,12 @@ const Input: React.FC<Props> = ({
   children,
   useResetButton,
   onClear,
+  defaultValue,
   ...props
 }) => {
   const ref = innerRef ?? createRef<HTMLInputElement>();
-  const propValue = props.value ?? props.defaultValue;
-  const [value, setValue] = useState(propValue);
+  const currentValue = props.value ?? '';
+  const [value, setValue] = useState(currentValue);
 
   const onReset = useCallback(() => {
     if (ref) {
@@ -62,8 +63,8 @@ const Input: React.FC<Props> = ({
   );
 
   useEffect(() => {
-    setValue(propValue);
-  }, [propValue]);
+    setValue(currentValue);
+  }, [currentValue]);
 
   return (
     <div className={`TextFieldInputContainer ${className ?? ''}`}>
@@ -72,7 +73,8 @@ const Input: React.FC<Props> = ({
       </If>
 
       <input
-        value={value}
+        value={defaultValue ? undefined : value}
+        defaultValue={defaultValue}
         className={`TextFieldInput flex-1 ${className ?? ''}`}
         {...props}
         ref={ref}

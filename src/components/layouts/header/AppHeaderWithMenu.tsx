@@ -3,7 +3,7 @@ import { useAuth } from 'reactfire';
 import dynamic from 'next/dynamic';
 
 import configuration from '~/configuration';
-import { useUserSession } from '~/lib/hooks/use-user-session';
+import { useUserSession } from '~/core/hooks/use-user-session';
 
 import NavigationMenu from '~/core/ui/Navigation/NavigationMenu';
 import NavigationItem from '~/core/ui/Navigation/NavigationItem';
@@ -16,7 +16,7 @@ import ProfileDropdown from '../../ProfileDropdown';
 import AppNavigation from './AppNavigation';
 
 const OrganizationsSelector = dynamic(
-  () => import('../../OrganizationsSelector'),
+  () => import('../../organizations/OrganizationsSelector'),
   {
     ssr: false,
   }
@@ -84,7 +84,7 @@ const AppHeaderWithMenu: React.FCC = ({ children }) => {
       <div>
         <AppNavigation />
 
-        <div className={'border-b border-gray-100 py-3 dark:border-black-400'}>
+        <div className={'border-b border-gray-100 py-4 dark:border-black-400'}>
           <Container>
             <Heading type={2}>{children}</Heading>
           </Container>

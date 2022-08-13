@@ -42,7 +42,7 @@ Cypress.Commands.add(
     // preserve the session cookie between tests
     // otherwise the user will get logged out
     Cypress.Cookies.defaults({
-      preserve: ['session'],
+      preserve: ['session', 'sessionExpiresAt'],
     });
 
     cy.log('Signing in programmatically...');
@@ -54,7 +54,6 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add(`clearStorage`, () => {
-  cy.signOutSession();
   cy.clearCookies();
   indexedDB.deleteDatabase('firebaseLocalStorageDb');
   localStorage.clear();

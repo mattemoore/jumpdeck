@@ -1,9 +1,14 @@
 const { resolve } = require('path');
 
-module.exports = {
+/**
+ * @type {import("next/dist/server/config-shared").I18NConfig}
+ */
+const config = {
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
-    localePath: resolve('./public/locales'),
   },
+  localePath: resolve('./public/locales'),
 };
+
+module.exports = config;
