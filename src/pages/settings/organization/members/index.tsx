@@ -14,7 +14,10 @@ import Heading from '~/core/ui/Heading';
 import Button from '~/core/ui/Button';
 import If from '~/core/ui/If';
 
-import SettingsPageContainer from '~/components/SettingsPageContainer';
+import SettingsPageContainer from '~/components/settings/SettingsPageContainer';
+import SettingsContentContainer from '~/components/settings/SettingsContentContainer';
+import SettingsTile from '~/components/settings/SettingsTile';
+
 import { useCurrentOrganization } from '~/lib/organizations/hooks/use-current-organization';
 
 const OrganizationMembersList = dynamic(
@@ -49,45 +52,31 @@ const OrganizationMembersPage: React.FCC = () => {
       <SettingsPageContainer title={'Organization'}>
         <OrganizationSettingsTabs />
 
-        <div className={'w-full md:w-10/12'}>
-          <div className="flex flex-1 flex-col space-y-8">
-            <div className={'flex flex-col space-y-2'}>
+        <SettingsContentContainer>
+          <div className="flex flex-1 flex-col space-y-4">
+            <SettingsTile>
               <div className="flex items-center justify-between space-x-8">
                 <Heading type={3}>
                   <Trans i18nKey={'organization:membersPageHeading'} />
                 </Heading>
 
                 <If condition={canInviteUsers}>
-                  <Button
-                    data-cy={'invite-form-link'}
-                    type="button"
-                    href={'/settings/organization/members/invite'}
-                  >
-                    <span className="flex items-center space-x-2">
-                      <UserAddIcon className="h-5" />
-
-                      <span>
-                        <Trans
-                          i18nKey={'organization:inviteMembersButtonLabel'}
-                        />
-                      </span>
-                    </span>
-                  </Button>
+                  <InviteMembersButton />
                 </If>
               </div>
 
               <OrganizationMembersList organizationId={id} />
-            </div>
+            </SettingsTile>
 
-            <div className={'flex flex-col space-y-2'}>
+            <SettingsTile>
               <Heading type={3}>
                 <Trans i18nKey={'organization:pendingInvitesHeading'} />
               </Heading>
 
               <OrganizationInvitedMembersList organizationId={id} />
-            </div>
+            </SettingsTile>
           </div>
-        </div>
+        </SettingsContentContainer>
       </SettingsPageContainer>
     </>
   );
@@ -97,4 +86,22 @@ export default OrganizationMembersPage;
 
 export function getServerSideProps(ctx: GetServerSidePropsContext) {
   return withAppProps(ctx);
+}
+
+function InviteMembersButton() {
+  return (
+    <Button
+      data-cy={'invite-form-link'}
+      type="button"
+      href={'/settings/organization/members/invite'}
+    >
+      <span className="flex items-center space-x-2">
+        <UserAddIcon className="h-5" />
+
+        <span>
+          <Trans i18nKey={'organization:inviteMembersButtonLabel'} />
+        </span>
+      </span>
+    </Button>
+  );
 }

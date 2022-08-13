@@ -126,7 +126,7 @@ function OrganizationItem({ organization }: { organization: Organization }) {
   return (
     <span
       data-cy={'organization-selector-item'}
-      className={`flex min-w-[6rem] max-w-[12rem] items-center space-x-1`}
+      className={`flex min-w-[6rem] max-w-[12rem] items-center space-x-2`}
     >
       <If condition={logoURL}>
         <span className={'flex flex-1 items-center'}>

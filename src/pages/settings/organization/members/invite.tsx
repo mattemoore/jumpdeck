@@ -8,11 +8,12 @@ import { withAppProps } from '~/lib/props/with-app-props';
 
 import OrganizationSettingsTabs from '~/components/organizations/OrganizationSettingsTabs';
 import InviteMembersForm from '~/components/organizations/InviteMembersForm';
+import SettingsPageContainer from '~/components/settings/SettingsPageContainer';
+import SettingsContentContainer from '~/components/settings/SettingsContentContainer';
 
 import Heading from '~/core/ui/Heading';
 import Button from '~/core/ui/Button';
-import SettingsPageContainer from '~/components/SettingsPageContainer';
-import { OrganizationContext } from '~/lib/contexts/organization';
+import SettingsTile from '~/components/settings/SettingsTile';
 
 const OrganizationMembersInvitePage: React.FCC = () => {
   return (
@@ -24,35 +25,21 @@ const OrganizationMembersInvitePage: React.FCC = () => {
       <SettingsPageContainer title={'Organization'}>
         <OrganizationSettingsTabs />
 
-        <div className={'w-full md:w-10/12'}>
-          <div className={'flex flex-col space-y-4'}>
+        <SettingsContentContainer>
+          <SettingsTile>
             <div className={'flex space-x-4'}>
               <Heading type={3}>
                 <Trans i18nKey={'organization:inviteMembersPageHeading'} />
               </Heading>
 
               <div>
-                <Button
-                  size={'small'}
-                  color={'transparent'}
-                  href={'/settings/organization/members'}
-                >
-                  <span className={'flex items-center space-x-1'}>
-                    <ArrowNarrowLeftIcon className={'h-4'} />
-
-                    <span>
-                      <Trans i18nKey={'organization:goBackToMembersPage'} />
-                    </span>
-                  </span>
-                </Button>
+                <GoBackToMembersButton />
               </div>
             </div>
 
-            <OrganizationContext.Consumer>
-              {() => <InviteMembersForm />}
-            </OrganizationContext.Consumer>
-          </div>
-        </div>
+            <InviteMembersForm />
+          </SettingsTile>
+        </SettingsContentContainer>
       </SettingsPageContainer>
     </>
   );
@@ -62,4 +49,22 @@ export default OrganizationMembersInvitePage;
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   return await withAppProps(ctx);
+}
+
+function GoBackToMembersButton() {
+  return (
+    <Button
+      size={'small'}
+      color={'transparent'}
+      href={'/settings/organization/members'}
+    >
+      <span className={'flex items-center space-x-1'}>
+        <ArrowNarrowLeftIcon className={'h-4'} />
+
+        <span>
+          <Trans i18nKey={'organization:goBackToMembersPage'} />
+        </span>
+      </span>
+    </Button>
+  );
 }

@@ -26,6 +26,7 @@ interface DefaultPageProps {
   session?: Maybe<AuthUser>;
   user?: Maybe<UserData>;
   organization?: Maybe<WithId<Organization>>;
+  refreshClaims?: boolean;
 }
 
 function App(
@@ -58,6 +59,7 @@ function App(
   return (
     <FirebaseAppShell config={firebase}>
       <FirebaseAuthProvider
+        refreshClaims={props.pageProps.refreshClaims}
         userSession={userSession}
         setUserSession={setUserSession}
         useEmulator={emulator}

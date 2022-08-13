@@ -50,6 +50,7 @@
   "inviteMembersButtonLabel": "Invite Members",
   "pendingInvitesHeading": "Pending Invites",
   "noPendingInvites": "No pending invites found",
-  "loadingMembers": "Loading Members...",
+  "loadingMembers": "Loading members...",
+  "loadingInvitedMembers": "Loading invited members...",
   "invitedBadge": "Invited"
 }

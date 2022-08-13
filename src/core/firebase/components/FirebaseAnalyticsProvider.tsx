@@ -1,24 +1,16 @@
-import { AnalyticsProvider, useInitAnalytics } from 'reactfire';
-
+import { AnalyticsProvider } from 'reactfire';
+import { getAnalytics } from 'firebase/analytics';
 import { isBrowser } from '~/core/generic';
 import configuration from '~/configuration';
 
 const FirebaseAnalyticsProvider: React.FCC = ({ children }) => {
-  const { data: sdk } = useInitAnalytics(async (app) => {
-    const isEmulator = configuration.emulator;
+  const isEmulator = configuration.emulator;
 
-    if (!isBrowser() || isEmulator) {
-      return { app };
-    }
-
-    const { getAnalytics } = await import('firebase/analytics');
-
-    return getAnalytics(app);
-  });
-
-  if (!sdk) {
+  if (!isBrowser() || isEmulator) {
     return <>{children}</>;
   }
+
+  const sdk = getAnalytics();
 
   return <AnalyticsProvider sdk={sdk}>{children}</AnalyticsProvider>;
 };

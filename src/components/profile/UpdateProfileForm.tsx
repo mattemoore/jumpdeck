@@ -38,7 +38,9 @@ function UpdateProfileForm({
   const currentDisplayName = user?.displayName ?? '';
   const currentPhotoURL = user?.photoURL ?? null;
 
-  const onAvatarCleared = () => setAvatarIsDirty(true);
+  const onAvatarCleared = useCallback(() => {
+    setAvatarIsDirty(true);
+  }, []);
 
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
@@ -103,7 +105,7 @@ function UpdateProfileForm({
               required
               name={'displayName'}
               placeholder={'Name'}
-              value={currentDisplayName}
+              defaultValue={currentDisplayName}
             />
           </TextField.Label>
         </TextField>

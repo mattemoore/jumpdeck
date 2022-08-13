@@ -24,6 +24,11 @@
             items-center flex-row hidden md:flex;
     }
 
+    .NavigationMenu.VerticalNavigationMenu {
+        @apply flex flex-row justify-between space-x-2 md:justify-start
+            md:flex-col md:space-x-0 md:space-y-2 items-start;
+    }
+
     /* NavigationItem.tsx */
     .NavigationItem {
         @apply leading-loose rounded-md
@@ -32,22 +37,25 @@
     }
 
     .NavigationItem a {
-        @apply px-4 py-1.5 block flex items-center rounded-md;
+        @apply px-4 py-2 block flex items-center rounded-md text-sm w-full;
     }
 
     .NavigationItemActive a {
-        @apply font-bold bg-gray-100 dark:bg-black-300;
+        @apply font-semibold bg-primary-50 text-primary-900 dark:text-white dark:bg-black-300;
+    }
+
+    .SecondaryNavigationMenu .NavigationItemActive a {
+        @apply bg-transparent border-primary-800 border;
     }
 
     .BorderedNavigationMenu .NavigationItemActive a {
-        @apply border-b-[0.2rem] border-primary-500
+        @apply border-b-[0.2rem] border-primary-500 text-current
             relative top-[1px] bg-transparent rounded-none;
     }
 
     .NavigationItemNotActive {
-        @apply hover:text-black-600 hover:text-primary-500
-        active:text-primary-700 text-gray-500 dark:text-gray-400
-        dark:hover:text-white hover:text-current;
+        @apply active:text-primary-700 text-gray-500 dark:text-gray-400
+            dark:hover:text-white hover:text-current hover:text-primary-900;
     }
 
     .NavigationItemActive {
@@ -146,7 +154,7 @@
             text-gray-800 dark:text-gray-200 transition-all duration-300
             text-sm items-center flex rounded-lg font-medium
             bg-white hover:bg-gray-50 dark:bg-black-400 ring-primary-500
-            focus:border-transparent focus-within:ring shadow-sm
+            focus:border-transparent focus-within:ring-2 shadow-sm
             dark:focus:bg-black-400 hover:border-gray-300
             dark:hover:border-black-200 relative flex;
     }

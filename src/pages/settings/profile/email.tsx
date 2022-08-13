@@ -8,8 +8,9 @@ import { withAppProps } from '~/lib/props/with-app-props';
 import UpdateEmailForm from '~/components/profile/UpdateEmailForm';
 import ProfileSettingsTabs from '~/components/profile/ProfileSettingsTabs';
 
-import Heading from '~/core/ui/Heading';
-import SettingsPageContainer from '~/components/SettingsPageContainer';
+import SettingsPageContainer from '~/components/settings/SettingsPageContainer';
+import SettingsContentContainer from '~/components/settings/SettingsContentContainer';
+import SettingsTile from '~/components/settings/SettingsTile';
 
 const ProfileEmailSettings = () => {
   const userSession = useUserSession();
@@ -28,15 +29,11 @@ const ProfileEmailSettings = () => {
       <SettingsPageContainer title={'Settings'}>
         <ProfileSettingsTabs user={user} />
 
-        <div className={'w-full w-10/12'}>
-          <div className={'flex flex-col space-y-4'}>
-            <Heading type={3}>
-              <Trans i18nKey={'profile:emailTab'} />
-            </Heading>
-
+        <SettingsContentContainer>
+          <SettingsTile heading={<Trans i18nKey={'profile:emailTab'} />}>
             <UpdateEmailForm user={user} />
-          </div>
-        </div>
+          </SettingsTile>
+        </SettingsContentContainer>
       </SettingsPageContainer>
     </>
   );

@@ -2,14 +2,14 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { Trans } from 'next-i18next';
 
-import Heading from '~/core/ui/Heading';
-
 import { withAppProps } from '~/lib/props/with-app-props';
 import { useUserSession } from '~/core/hooks/use-user-session';
 
 import UpdatePasswordForm from '~/components/profile/UpdatePasswordForm';
 import ProfileSettingsTabs from '~/components/profile/ProfileSettingsTabs';
-import SettingsPageContainer from '~/components/SettingsPageContainer';
+import SettingsPageContainer from '~/components/settings/SettingsPageContainer';
+import SettingsContentContainer from '~/components/settings/SettingsContentContainer';
+import SettingsTile from '~/components/settings/SettingsTile';
 
 const ProfilePasswordSettings = () => {
   const userSession = useUserSession();
@@ -28,15 +28,13 @@ const ProfilePasswordSettings = () => {
       <SettingsPageContainer title={'Settings'}>
         <ProfileSettingsTabs user={user} />
 
-        <div className={'w-full md:w-10/12'}>
-          <div className={'flex flex-col space-y-4'}>
-            <Heading type={3}>
-              <Trans i18nKey={'organization:passwordSettingsTab'} />
-            </Heading>
-
+        <SettingsContentContainer>
+          <SettingsTile
+            heading={<Trans i18nKey={'organization:passwordSettingsTab'} />}
+          >
             <UpdatePasswordForm user={user} />
-          </div>
-        </div>
+          </SettingsTile>
+        </SettingsContentContainer>
       </SettingsPageContainer>
     </>
   );

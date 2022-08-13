@@ -5,14 +5,15 @@ import Head from 'next/head';
 import { Trans } from 'next-i18next';
 
 import FirebaseStorageProvider from '~/core/firebase/components/FirebaseStorageProvider';
-import Heading from '~/core/ui/Heading';
 
 import { withAppProps } from '~/lib/props/with-app-props';
 import { UserSessionContext } from '~/core/session/contexts/user-session';
 
 import UpdateProfileForm from '~/components/profile/UpdateProfileForm';
 import ProfileSettingsTabs from '~/components/profile/ProfileSettingsTabs';
-import SettingsPageContainer from '~/components/SettingsPageContainer';
+import SettingsPageContainer from '~/components/settings/SettingsPageContainer';
+import SettingsContentContainer from '~/components/settings/SettingsContentContainer';
+import SettingsTile from '~/components/settings/SettingsTile';
 
 type ProfileData = {
   photoURL: string | null;
@@ -53,15 +54,11 @@ const Profile = () => {
         <SettingsPageContainer title={'Settings'}>
           <ProfileSettingsTabs user={userSession.auth} />
 
-          <div className={'w-full md:w-10/12'}>
-            <div className={'flex flex-col space-y-4'}>
-              <Heading type={3}>
-                <Trans i18nKey={'profile:generalTab'} />
-              </Heading>
-
+          <SettingsContentContainer>
+            <SettingsTile heading={<Trans i18nKey={'profile:generalTab'} />}>
               <UpdateProfileForm user={userSession.auth} onUpdate={onUpdate} />
-            </div>
-          </div>
+            </SettingsTile>
+          </SettingsContentContainer>
         </SettingsPageContainer>
       </FirebaseStorageProvider>
     </>

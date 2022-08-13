@@ -3,13 +3,13 @@ import { Trans } from 'next-i18next';
 import Head from 'next/head';
 
 import { withAppProps } from '~/lib/props/with-app-props';
-import Heading from '~/core/ui/Heading';
 
 import FirebaseStorageProvider from '~/core/firebase/components/FirebaseStorageProvider';
 import UpdateOrganizationForm from '~/components/organizations/UpdateOrganizationForm';
 import OrganizationSettingsTabs from '~/components/organizations/OrganizationSettingsTabs';
-import SettingsPageContainer from '~/components/SettingsPageContainer';
-import { OrganizationContext } from '~/lib/contexts/organization';
+import SettingsPageContainer from '~/components/settings/SettingsPageContainer';
+import SettingsContentContainer from '~/components/settings/SettingsContentContainer';
+import SettingsTile from '~/components/settings/SettingsTile';
 
 const Organization = () => {
   return (
@@ -21,17 +21,13 @@ const Organization = () => {
       <SettingsPageContainer title={'Settings'}>
         <OrganizationSettingsTabs />
 
-        <div className={'w-full md:w-10/12'}>
-          <div className={'flex w-full flex-col space-y-4'}>
-            <Heading type={3}>
-              <Trans i18nKey={'organization:settingsPageLabel'} />
-            </Heading>
-
-            <OrganizationContext.Consumer>
-              {() => <UpdateOrganizationForm />}
-            </OrganizationContext.Consumer>
-          </div>
-        </div>
+        <SettingsContentContainer>
+          <SettingsTile
+            heading={<Trans i18nKey={'organization:settingsPageLabel'} />}
+          >
+            <UpdateOrganizationForm />
+          </SettingsTile>
+        </SettingsContentContainer>
       </SettingsPageContainer>
     </FirebaseStorageProvider>
   );

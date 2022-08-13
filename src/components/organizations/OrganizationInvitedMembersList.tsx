@@ -1,11 +1,14 @@
 import { Trans } from 'next-i18next';
 
 import { useFetchInvitedMembers } from '~/lib/organizations/hooks/use-fetch-invited-members';
-import FallbackUserAvatar from '../FallbackUserAvatar';
-import RoleBadge from '../RoleBadge';
-import DeleteInviteButton from './DeleteInviteButton';
-import { IfHasPermissions } from '~/components/IfHasPermissions';
 import { canDeleteInvites } from '~/lib/organizations/permissions';
+
+import FallbackUserAvatar from '../FallbackUserAvatar';
+import RoleBadge from './RoleBadge';
+import DeleteInviteButton from './DeleteInviteButton';
+
+import { IfHasPermissions } from '~/components/IfHasPermissions';
+import LoadingMembersSpinner from '~/components/organizations/LoadingMembersSpinner';
 
 const OrganizationInvitedMembersList: React.FCC<{
   organizationId: string;
@@ -13,7 +16,11 @@ const OrganizationInvitedMembersList: React.FCC<{
   const { data: members, status } = useFetchInvitedMembers(organizationId);
 
   if (status === 'loading') {
-    return <Trans i18nKey={'organization:loadingMembers'} />;
+    return (
+      <LoadingMembersSpinner>
+        <Trans i18nKey={'organization:loadingInvitedMembers'} />
+      </LoadingMembersSpinner>
+    );
   }
 
   if (!members.length) {

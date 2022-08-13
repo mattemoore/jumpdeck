@@ -1,5 +1,4 @@
 import { Trans } from 'next-i18next';
-import { SpringSpinner } from 'react-epic-spinners';
 
 import If from '~/core/ui/If';
 import Badge from '~/core/ui/Badge';
@@ -13,8 +12,9 @@ import { Organization } from '~/lib/organizations/types/organization';
 import { useUserId } from '~/core/hooks/use-user-id';
 
 import OrganizationMembersActionsContainer from './OrganizationMembersActionsContainer';
-import RoleBadge from '../RoleBadge';
+import RoleBadge from './RoleBadge';
 import ProfileAvatar from '../ProfileAvatar';
+import LoadingMembersSpinner from '~/components/organizations/LoadingMembersSpinner';
 
 const OrganizationMembersList: React.FCC<{
   organizationId: string;
@@ -35,9 +35,9 @@ const OrganizationMembersList: React.FCC<{
 
   if (isLoading) {
     return (
-      <div className={'flex items-center justify-center'}>
-        <SpringSpinner />
-      </div>
+      <LoadingMembersSpinner>
+        <Trans i18nKey={'organization:loadingMembers'} />
+      </LoadingMembersSpinner>
     );
   }
 

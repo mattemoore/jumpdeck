@@ -1,4 +1,5 @@
 import NavigationItem from '~/core/ui/Navigation/NavigationItem';
+import NavigationMenu from '~/core/ui/Navigation/NavigationMenu';
 
 const links = {
   General: {
@@ -12,15 +13,10 @@ const links = {
 };
 
 const OrganizationSettingsTabs = () => {
-  const itemClassName = `flex justify-center md:justify-start items-center flex-auto sm:flex-initial`;
+  const itemClassName = `flex justify-center md:justify-start items-center flex-auto md:flex-initial`;
 
   return (
-    <div
-      className={
-        'flex flex-row justify-between space-x-2 md:justify-start' +
-        ' sm:flex-col sm:space-x-0 sm:space-y-2'
-      }
-    >
+    <NavigationMenu secondary vertical>
       <NavigationItem
         className={itemClassName}
         link={links.General}
@@ -28,7 +24,7 @@ const OrganizationSettingsTabs = () => {
       />
 
       <NavigationItem className={itemClassName} link={links.Members} />
-    </div>
+    </NavigationMenu>
   );
 };
 

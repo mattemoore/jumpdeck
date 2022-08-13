@@ -6,9 +6,8 @@ import roles from '~/lib/organizations/roles';
 
 const classNames = {
   [MembershipRole.Owner]:
-    'bg-primary-400 text-current font-semibold dark:text-black-500',
-  [MembershipRole.Admin]:
-    'bg-primary-600 text-current font-semibold dark:text-black-500',
+    'bg-yellow-400 text-current font-semibold dark:text-black-500',
+  [MembershipRole.Admin]: 'bg-blue-500 text-white font-semibold',
   [MembershipRole.Member]: 'bg-blue-500 text-white font-semibold',
 };
 

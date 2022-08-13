@@ -24,11 +24,19 @@ const UpdateOrganizationForm = () => {
   const storage = useStorage();
   const { organization, setOrganization } = useContext(OrganizationContext);
   const [updateOrganization, { loading }] = useUpdateOrganization();
+
+  const [organizationName, setOrganizationName] = useState(
+    organization?.name ?? ''
+  );
+
   const [logoIsDirty, setLogoIsDirty] = useState(false);
   const { t } = useTranslation('organization');
 
   const oldLogoUrl = organization?.logoURL || null;
-  const onLogoCleared = () => setLogoIsDirty(true);
+
+  const onLogoCleared = useCallback(() => {
+    setLogoIsDirty(true);
+  }, []);
 
   const onSubmit = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
@@ -98,6 +106,10 @@ const UpdateOrganizationForm = () => {
     ]
   );
 
+  useEffect(() => {
+    setOrganizationName(organization?.name ?? '');
+  }, [organization?.name]);
+
   return (
     <form onSubmit={onSubmit} className={'space-y-4'}>
       <div className={'flex flex-col space-y-4'}>
@@ -108,9 +120,10 @@ const UpdateOrganizationForm = () => {
             <TextField.Input
               data-cy={'organization-name-input'}
               required
-              defaultValue={organization?.name}
+              value={organizationName}
               name={'name'}
               placeholder={'ex. IndieCorp'}
+              onValueChange={(name) => setOrganizationName(name as string)}
             />
           </TextField.Label>
         </TextField>

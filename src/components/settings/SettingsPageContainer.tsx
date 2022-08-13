@@ -23,16 +23,14 @@ const SettingsPageContainer: React.FCC<{
 }> = ({ children, title }) => {
   return (
     <RouteShell title={title}>
-      <div className={'flex flex-col space-y-4'}>
-        <NavigationMenu>
-          {links.map((link) => (
-            <NavigationItem link={link} key={link.path} />
-          ))}
-        </NavigationMenu>
-      </div>
+      <NavigationMenu>
+        {links.map((link) => (
+          <NavigationItem link={link} key={link.path} />
+        ))}
+      </NavigationMenu>
 
       <div
-        className={`flex flex-col space-y-4 md:mt-8 md:flex-row md:justify-between md:space-y-0`}
+        className={`flex flex-col space-y-4 md:mt-8 md:flex-row md:justify-between md:space-x-2 md:space-y-0`}
       >
         {children}
       </div>

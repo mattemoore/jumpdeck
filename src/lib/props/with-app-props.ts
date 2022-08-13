@@ -89,6 +89,8 @@ export async function withAppProps(
       return redirectToOnboarding();
     }
 
+    let refreshClaims = false;
+
     // if the organization is found, save the ID in a cookie
     // so that we can fetch it on the next request
     if (organization) {
@@ -102,6 +104,8 @@ export async function withAppProps(
         !authOrganizationId || userDidChangeOrganization;
 
       if (shouldUpdateTokenClaims) {
+        refreshClaims = true;
+
         await setOrganizationIdCustomClaims(
           user.id,
           organization.id,
@@ -121,6 +125,7 @@ export async function withAppProps(
         session: metadata,
         user,
         organization,
+        refreshClaims,
         ...translationProps,
       },
     };

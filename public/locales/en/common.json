@@ -7,7 +7,7 @@
   "emailAddress": "Email Address",
   "password": "Password",
   "modalConfirmationQuestion": "Are you sure you want to continue?",
-  "imageInputLabel": "Click here to upload a picture",
+  "imageInputLabel": "Click here to upload an image",
   "cancel": "Cancel",
   "roles": {
     "owner": {
