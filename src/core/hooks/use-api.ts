@@ -1,19 +1,25 @@
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
+import { AppCheckSdkContext, useAppCheck } from 'reactfire';
+import { getToken } from 'firebase/app-check';
 import { useRequestState } from '~/core/hooks/use-request-state';
 
 /**
  * @name useApiRequest
  * @param path
  * @param method
+ * @param headers
  */
 export function useApiRequest<Resp = unknown, Body = void>(
   path: string,
-  method: HttpMethod = 'POST'
+  method: HttpMethod = 'POST',
+  headers?: StringObject
 ) {
   const { setError, setLoading, setData, state } = useRequestState<
     Resp,
     string
   >();
+
+  const getAppCheckToken = useGetAppCheckToken();
 
   const fn = useCallback(
     async (body: Body) => {
@@ -21,7 +27,24 @@ export function useApiRequest<Resp = unknown, Body = void>(
 
       try {
         const payload = JSON.stringify(body);
-        const data = await executeFetchRequest<Resp>(path, payload, method);
+        const token = await getAppCheckToken();
+
+        // if the app-check token was found
+        // we add the header to the API request
+        if (token) {
+          if (!headers) {
+            headers = {};
+          }
+
+          headers['X-Firebase-AppCheck'] = token;
+        }
+
+        const data = await executeFetchRequest<Resp>(
+          path,
+          payload,
+          method,
+          headers
+        );
 
         setData(data);
       } catch (error) {
@@ -33,7 +56,7 @@ export function useApiRequest<Resp = unknown, Body = void>(
         return Promise.reject(error);
       }
     },
-    [path, method, setLoading, setData, setError]
+    [setLoading, getAppCheckToken, path, method, headers, setData, setError]
   );
 
   return [fn, state] as [typeof fn, typeof state];
@@ -42,13 +65,15 @@ export function useApiRequest<Resp = unknown, Body = void>(
 async function executeFetchRequest<Resp = unknown>(
   url: string,
   payload: string,
-  method = 'POST'
+  method = 'POST',
+  headers?: StringObject
 ) {
   const options: RequestInit = {
     method,
     headers: {
       accept: 'application/json',
       'Content-Type': 'application/json',
+      ...(headers ?? {}),
     },
   };
 
@@ -70,4 +95,27 @@ async function executeFetchRequest<Resp = unknown>(
   } catch (e) {
     return Promise.reject(e);
   }
+}
+
+function useGetAppCheckToken() {
+  // instead of using useAppCheck()
+  // we manually request the SDK
+  // because we *may not have initialized it*
+  const sdk = useContext(AppCheckSdkContext);
+
+  return useCallback(async () => {
+    try {
+      // if the SDK does not exist, we cannot generate a token
+      if (!sdk) {
+        return;
+      }
+
+      const forceRefresh = false;
+      const { token } = await getToken(sdk, forceRefresh);
+
+      return token;
+    } catch (e) {
+      return;
+    }
+  }, [sdk]);
 }

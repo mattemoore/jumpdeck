@@ -1,7 +1,14 @@
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
 // add your private routes here
-const exclude = ['/dashboard*', '/settings*', '/onboarding*', '/blog/tags*'];
+const exclude = [
+  '/dashboard*',
+  '/settings*',
+  '/onboarding*',
+  '/blog/tags*',
+  '/400',
+  '/500',
+];
 
 // Save crawling budget by not fetching SSG meta files
 const NEXT_SSG_FILES = [
