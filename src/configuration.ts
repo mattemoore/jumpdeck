@@ -21,7 +21,6 @@ const configuration = {
     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
     measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
   },
-  appCheckSiteKey: process.env.NEXT_PUBLIC_APPCHECK_KEY,
   emulatorHost: process.env.NEXT_PUBLIC_EMULATOR_HOST,
   emulator: process.env.NEXT_PUBLIC_EMULATOR === 'true',
   production: process.env.NODE_ENV === 'production',

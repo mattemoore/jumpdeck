@@ -1,5 +1,5 @@
-import { useCallback, useContext } from 'react';
-import { AppCheckSdkContext, useAppCheck } from 'reactfire';
+import { useCallback, useContext, useRef } from 'react';
+import { AppCheckSdkContext } from 'reactfire';
 import { getToken } from 'firebase/app-check';
 import { useRequestState } from '~/core/hooks/use-request-state';
 
@@ -19,6 +19,7 @@ export function useApiRequest<Resp = unknown, Body = void>(
     string
   >();
 
+  const headersRef = useRef(headers);
   const getAppCheckToken = useGetAppCheckToken();
 
   const fn = useCallback(
@@ -32,18 +33,18 @@ export function useApiRequest<Resp = unknown, Body = void>(
         // if the app-check token was found
         // we add the header to the API request
         if (token) {
-          if (!headers) {
-            headers = {};
+          if (!headersRef.current) {
+            headersRef.current = {};
           }
 
-          headers['X-Firebase-AppCheck'] = token;
+          headersRef.current['X-Firebase-AppCheck'] = token;
         }
 
         const data = await executeFetchRequest<Resp>(
           path,
           payload,
           method,
-          headers
+          headersRef.current
         );
 
         setData(data);
@@ -56,7 +57,7 @@ export function useApiRequest<Resp = unknown, Body = void>(
         return Promise.reject(error);
       }
     },
-    [setLoading, getAppCheckToken, path, method, headers, setData, setError]
+    [setLoading, getAppCheckToken, path, method, setData, setError]
   );
 
   return [fn, state] as [typeof fn, typeof state];

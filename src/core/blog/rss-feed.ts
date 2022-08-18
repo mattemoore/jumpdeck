@@ -1,19 +1,11 @@
-/*
-- This file gets processed by ts-node as a post-build script
-- Please leave the file imports as relative
- */
-
 import { Feed } from 'feed';
 import { writeFileSync } from 'fs';
-import { loadEnvConfig } from '@next/env';
-
-// call {loadEnvConfig} before importing "configuration" to populate the environment
-// variables
-loadEnvConfig('.');
-
 import Article from './types/post';
+
+// load environment variables before importing the next files
+import '../load-env';
 import { getAllPosts } from './api';
-import configuration from '../../configuration';
+import configuration from '~/configuration';
 
 const DEFAULT_RSS_PATH = 'public/rss.xml';
 const DEFAULT_JSON_PATH = 'public/rss.json';
