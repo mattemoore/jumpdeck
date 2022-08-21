@@ -26,11 +26,15 @@ export default defineConfig({
     slowTestThreshold: 5000,
     baseUrl: 'http://localhost:3000',
     specPattern: './cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
-    excludeSpecPattern: process.env.ENABLE_STRIPE_TESTING
-      ? []
-      : ['./cypress/e2e/stripe/*'],
+    excludeSpecPattern: getExcludeSpecPattern(),
   },
 });
+
+function getExcludeSpecPattern() {
+  const enableStripeTests = process.env.ENABLE_STRIPE_TESTING === 'true';
+
+  return enableStripeTests ? [] : ['**/stripe/*'];
+}
 
 function getEnv() {
   const env = process.env;
