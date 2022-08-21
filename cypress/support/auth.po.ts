@@ -19,7 +19,6 @@ const authPageObject = {
   $getPasswordInput: () => cy.cyGet(`password-input`),
   $getSubmitButton: () => cy.cyGet(`auth-submit-button`),
   $getErrorMessage: () => cy.cyGet(`auth-error-message`),
-  $oAuthSignInButton: () => cy.cyGet(`oauth-sign-in-button`),
   $getAcceptInviteSubmitButton: () => cy.cyGet(`accept-invite-submit-button`),
   signInWithEmailAndPassword(email: string, password: string) {
     cy.wait(50);
@@ -38,7 +37,9 @@ const authPageObject = {
     // let's clean everything up
     cy.clearStorage();
 
-    const signIn = signInWithEmailAndPassword(getAuth(), email, password).catch(
+    const auth = getAuth();
+
+    const signIn = signInWithEmailAndPassword(auth, email, password).catch(
       (e) => {
         cy.log(`User could not sign in programmatically`);
         console.error(e);
@@ -69,18 +70,18 @@ function createFirebaseApp() {
   const env = (varName: string) => Cypress.env(varName) as string;
 
   const config = {
-    apiKey: env('NEXT_PUBLIC_FIREBASE_API_KEY'),
-    projectId: env('NEXT_PUBLIC_FIREBASE_PROJECT_ID'),
-    storageBucket: env('NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET'),
-    appId: env('NEXT_PUBLIC_FIREBASE_APP_ID'),
+    apiKey: env('FIREBASE_API_KEY'),
+    projectId: env('FIREBASE_PROJECT_ID'),
+    storageBucket: env('FIREBASE_STORAGE_BUCKET'),
+    appId: env('FIREBASE_APP_ID'),
   };
 
   return initializeApp(config);
 }
 
 function getAuthEmulatorHost() {
-  const host = Cypress.env('NEXT_PUBLIC_FIREBASE_EMULATOR_HOST') as string;
-  const port = Cypress.env('NEXT_PUBLIC_FIREBASE_AUTH_EMULATOR_PORT') as string;
+  const host = Cypress.env('FIREBASE_EMULATOR_HOST');
+  const port = Cypress.env('FIREBASE_AUTH_EMULATOR_PORT');
 
   return ['http://', host, ':', port].join('');
 }

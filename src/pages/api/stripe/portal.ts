@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { z } from 'zod';
 import { join } from 'path';
 
-import { HttpStatusCode } from '~/core/generic';
 import logger from '~/core/logger';
 import configuration from '~/configuration';
 
@@ -30,7 +29,7 @@ async function billingPortalRedirectHandler(
   const redirectToErrorPage = () => {
     const url = join(referrerPath, `?error=true`);
 
-    return res.redirect(HttpStatusCode.SeeOther, url);
+    return res.redirect(url);
   };
 
   if (!schemaResult.success) {
@@ -50,15 +49,16 @@ async function billingPortalRedirectHandler(
   }
 
   try {
+    const headers = req.headers;
     const returnUrl =
-      req.headers.referer || req.headers.origin || configuration.paths.appHome;
+      headers.referer || headers.origin || configuration.paths.appHome;
 
     const { url } = await createBillingPortalSession({
       returnUrl,
       customerId,
     });
 
-    res.redirect(HttpStatusCode.SeeOther, url);
+    res.redirect(url);
   } catch (e) {
     logger.error(e, `Stripe Billing Portal redirect error`);
 

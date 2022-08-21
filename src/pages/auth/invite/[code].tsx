@@ -7,7 +7,7 @@ import Head from 'next/head';
 import { Trans } from 'react-i18next';
 
 import type { User } from 'firebase/auth';
-import { useAuth } from 'reactfire';
+import { useAuth, useSigninCheck } from 'reactfire';
 
 import configuration from '~/configuration';
 import { isBrowser } from '~/core/generic';
@@ -45,15 +45,17 @@ interface Invite {
   };
 }
 
-const InvitePage = ({
-  session,
-  invite,
-}: PropsWithChildren<{
-  session: Maybe<User>;
-  invite: Invite;
-}>) => {
+const InvitePage = (
+  props: PropsWithChildren<{
+    session: Maybe<User>;
+    invite: Invite;
+  }>
+) => {
   const auth = useAuth();
   const router = useRouter();
+  const [currentSession, setCurrentSession] = useState(props.session);
+  const signInCheck = useSigninCheck();
+  const invite = props.invite;
 
   const organization = invite.organization;
   const redirectOnSignOut = getRedirectPath();
@@ -72,6 +74,12 @@ const InvitePage = ({
   const onInviteAccepted = useCallback(() => {
     return addMemberToOrganization({ code: invite.code });
   }, [addMemberToOrganization, invite.code]);
+
+  useEffect(() => {
+    if (signInCheck.status === 'success' && !signInCheck.data.signedIn) {
+      setCurrentSession(undefined);
+    }
+  }, [signInCheck]);
 
   useEffect(() => {
     if (requestState.success) {
@@ -132,14 +140,14 @@ const InvitePage = ({
             </p>
 
             <p className={'text-center'}>
-              <If condition={!session}>
+              <If condition={!currentSession}>
                 <Trans i18nKey={'auth:signUpToAcceptInvite'} />
               </If>
             </p>
           </div>
 
           {/* FLOW FOR AUTHENTICATED USERS */}
-          <If condition={session}>
+          <If condition={currentSession}>
             <GuardedPage whenSignedOut={redirectOnSignOut}>
               <form
                 onSubmit={(e) => {
@@ -151,7 +159,7 @@ const InvitePage = ({
                 <p className={'text-center text-sm'}>
                   <Trans
                     i18nKey={'auth:clickToAcceptAs'}
-                    values={{ email: session?.email }}
+                    values={{ email: currentSession?.email }}
                     components={{ b: <b /> }}
                   />
                 </p>
@@ -186,7 +194,7 @@ const InvitePage = ({
           </If>
 
           {/* FLOW FOR NEW USERS */}
-          <If condition={!session}>
+          <If condition={!currentSession}>
             <OAuthProviders onSuccess={onInviteAccepted} />
 
             <div className={'text-sm text-gray-400'}>

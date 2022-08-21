@@ -63,21 +63,22 @@ node_modules/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
-.env.production
-.env.test
+.env.local
 
 .next/
-.idea/
+
+# Generated public files
 public/sitemap*.xml
 public/robots.txt
 public/atom.xml
 public/rss.xml
 public/rss.json
-vcs.xml
-.firebaserc
+public/search-index
 tsconfig.tsbuildinfo
 
 .DS_Store
 cypress/screenshots
-public/search-index
+
+# Jetbrains IDE
+vcs.xml
+.idea/

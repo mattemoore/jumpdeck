@@ -4,9 +4,6 @@ import { loadEnvConfig } from '@next/env';
 // load environment variables from .env
 loadEnvConfig('.');
 
-const ENABLE_STRIPE_TESTING = process.env.ENABLE_STRIPE_TESTING;
-const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
-
 export default defineConfig({
   fileServerFolder: '.',
   fixturesFolder: './cypress/fixtures',
@@ -20,14 +17,8 @@ export default defineConfig({
     runMode: 1,
     openMode: 1,
   },
-  env: {
-    EMAIL: 'test@makerkit.dev',
-    PASSWORD: 'testingpassword',
-    STRIPE_WEBHOOK_SECRET,
-  },
+  env: getEnv(),
   e2e: {
-    // We've imported your old cypress plugins here.
-    // You may want to clean this up later by importing these.
     setupNodeEvents(on, config) {
       return require('./cypress/plugins/index.ts').default(on, config);
     },
@@ -35,6 +26,36 @@ export default defineConfig({
     slowTestThreshold: 5000,
     baseUrl: 'http://localhost:3000',
     specPattern: './cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
-    excludeSpecPattern: ENABLE_STRIPE_TESTING ? [] : ['./cypress/e2e/stripe/*'],
+    excludeSpecPattern: process.env.ENABLE_STRIPE_TESTING
+      ? []
+      : ['./cypress/e2e/stripe/*'],
   },
 });
+
+function getEnv() {
+  const env = process.env;
+
+  const STRIPE_WEBHOOK_SECRET = env.STRIPE_WEBHOOK_SECRET;
+  const FIREBASE_PROJECT_ID = env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+  const FIREBASE_API_KEY = env.NEXT_PUBLIC_FIREBASE_API_KEY;
+  const FIREBASE_APP_ID = env.NEXT_PUBLIC_FIREBASE_APP_ID;
+  const FIREBASE_STORAGE_BUCKET = env.FIREBASE_STORAGE_BUCKET;
+  const FIREBASE_EMULATOR_HOST = env.NEXT_PUBLIC_FIREBASE_EMULATOR_HOST;
+  const FIREBASE_AUTH_EMULATOR_PORT =
+    env.NEXT_PUBLIC_FIREBASE_AUTH_EMULATOR_PORT;
+
+  const USER_EMAIL = env.USER_EMAIL;
+  const USER_PASSWORD = env.USER_PASSWORD;
+
+  return {
+    STRIPE_WEBHOOK_SECRET,
+    FIREBASE_API_KEY,
+    FIREBASE_STORAGE_BUCKET,
+    FIREBASE_APP_ID,
+    FIREBASE_PROJECT_ID,
+    FIREBASE_EMULATOR_HOST,
+    FIREBASE_AUTH_EMULATOR_PORT,
+    USER_EMAIL,
+    USER_PASSWORD,
+  };
+}

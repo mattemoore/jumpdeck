@@ -61,8 +61,6 @@ class SearchEngine {
               collection: data.collection,
             })
           );
-
-          console.log(`Indexed file ${file}`);
         }
       }
     }
@@ -72,6 +70,10 @@ class SearchEngine {
     return this.engine.search(query, {
       filter,
     });
+  }
+
+  getDocumentCount() {
+    return this.engine.documentCount;
   }
 }
 

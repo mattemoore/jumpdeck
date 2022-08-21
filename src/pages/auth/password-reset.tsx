@@ -29,27 +29,25 @@ export const PasswordReset: React.FCC = () => {
   const { state, setError, setData, setLoading } = useRequestState();
 
   const onSubmit = useCallback(
-    (event: FormEvent<HTMLFormElement>) => {
-      void (async () => {
-        event.preventDefault();
+    async (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
 
-        const data = new FormData(event.currentTarget);
-        const email = data.get('email') as string;
+      const data = new FormData(event.currentTarget);
+      const email = data.get('email') as string;
 
-        setLoading(true);
+      setLoading(true);
 
-        try {
-          const returnUrl = getReturnUrl();
+      try {
+        const returnUrl = getReturnUrl();
 
-          await sendPasswordResetEmail(auth, email, {
-            url: returnUrl,
-          });
+        await sendPasswordResetEmail(auth, email, {
+          url: returnUrl,
+        });
 
-          setData(true);
-        } catch (e) {
-          setError(getFirebaseErrorCode(e));
-        }
-      })();
+        setData(true);
+      } catch (e) {
+        setError(getFirebaseErrorCode(e));
+      }
     },
     [auth, setData, setError, setLoading]
   );

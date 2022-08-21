@@ -23,11 +23,13 @@ const SUPPORTED_HTTP_METHODS: HttpMethod[] = ['POST'];
 async function signOut(req: NextApiRequest, res: NextApiResponse) {
   const sessionCookie = req.cookies[SESSION_COOKIE_NAME];
 
+  const ok = () => res.send({ success: true });
+
   // if the session cookies does not exist
   // we cannot delete nor sign the user out
   // so, we end the request
   if (!sessionCookie) {
-    return res.end();
+    return ok();
   }
 
   try {
@@ -39,7 +41,7 @@ async function signOut(req: NextApiRequest, res: NextApiResponse) {
     logger.error(e, `Could not sign user out`);
   }
 
-  return res.end();
+  return ok();
 }
 
 export default function sessionSignOutHandler(

@@ -47,9 +47,6 @@ export const config = {
 
 const webhookSecretKey = process.env.STRIPE_WEBHOOK_SECRET as string;
 
-// assert webhook key was provided as an environment variable
-validateKeys(webhookSecretKey);
-
 /**
  * @description Handle the webhooks from Stripe related to checkouts
  */

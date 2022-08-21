@@ -70,7 +70,7 @@ function getMockMailTransporter() {
   return {
     sendMail(params: SendEmailParams) {
       console.log(
-        `Mock email transporter wit params`,
+        `Using mock email transporter with params`,
         JSON.stringify(params, null, 2)
       );
     },

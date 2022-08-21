@@ -19,8 +19,8 @@ describe(`Sign in`, () => {
 
     describe(`when the request is successful`, () => {
       it('should take the user to the app home page', () => {
-        const email = Cypress.env('EMAIL') as string;
-        const password = Cypress.env('PASSWORD') as string;
+        const email = Cypress.env('USER_EMAIL') as string;
+        const password = Cypress.env('USER_PASSWORD') as string;
 
         auth.signInWithEmailAndPassword(email, password);
         cy.url().should('contain', configuration.paths.appHome);
@@ -39,8 +39,8 @@ describe(`Sign in`, () => {
     it('should redirect to the route provided', () => {
       cy.visit(`/auth/sign-in?returnUrl=${returnUrl}`);
 
-      const email = Cypress.env('EMAIL') as string;
-      const password = Cypress.env('PASSWORD') as string;
+      const email = Cypress.env('USER_EMAIL') as string;
+      const password = Cypress.env('USER_PASSWORD') as string;
 
       auth.signInWithEmailAndPassword(email, password);
       cy.url().should('contain', returnUrl);

@@ -3,15 +3,14 @@ import { z } from 'zod';
 import { join } from 'path';
 
 import logger from '~/core/logger';
-import { HttpStatusCode } from '~/core/generic';
-import { createStripeCheckout } from '~/lib/stripe/create-checkout';
 import { withAuthedUser } from '~/core/middleware/with-authed-user';
-import { getUserRoleByOrganization } from '~/lib/server/organizations/get-user-role-by-organization';
-import { canChangeBilling } from '~/lib/organizations/permissions';
-
 import { withMiddleware } from '~/core/middleware/with-middleware';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
 import { getApiRefererPath } from '~/core/generic/get-api-referer-path';
+
+import { createStripeCheckout } from '~/lib/stripe/create-checkout';
+import { getUserRoleByOrganization } from '~/lib/server/organizations/get-user-role-by-organization';
+import { canChangeBilling } from '~/lib/organizations/permissions';
 
 const SUPPORTED_METHODS: HttpMethod[] = ['POST'];
 
@@ -28,7 +27,7 @@ async function checkoutsSessionHandler(
     const referer = getApiRefererPath(headers);
     const url = join(referer, `?error=true`);
 
-    return res.redirect(HttpStatusCode.SeeOther, url);
+    return res.redirect(url);
   };
 
   if (!bodyResult.success) {
@@ -67,8 +66,10 @@ async function checkoutsSessionHandler(
 
     const portalUrl = getCheckoutPortalUrl(url, returnUrl);
 
+    console.log({ portalUrl });
+
     // redirect user back based on the response
-    res.redirect(HttpStatusCode.SeeOther, portalUrl);
+    res.redirect(portalUrl);
   } catch (e) {
     logger.error(e, `Stripe Checkout error`);
 
@@ -132,6 +133,8 @@ function getCheckoutPortalUrl(portalUrl: string | null, returnUrl: string) {
  */
 function isTestingMode() {
   const enableStripeTesting = process.env.ENABLE_STRIPE_TESTING;
+
+  console.log(process.env);
 
   return enableStripeTesting === 'true';
 }

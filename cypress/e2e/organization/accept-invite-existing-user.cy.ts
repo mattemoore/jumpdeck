@@ -7,7 +7,7 @@ describe(`Accept Invite - Existing User`, () => {
   const existingUserInviteCode = 'pUhu9GACbZg1Cwj3muYw';
 
   before(() => {
-    const password = Cypress.env('PASSWORD') as string;
+    const password = Cypress.env('USER_PASSWORD') as string;
     const invitePath = `/auth/invite/${existingUserInviteCode}`;
 
     cy.signIn(invitePath, {

@@ -24,6 +24,10 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
+import { loadEnvConfig } from '@next/env';
+
+loadEnvConfig('.', true);
+
 import authPo from './auth.po';
 
 Cypress.Commands.add('cyGet', (name: string) => {
@@ -35,8 +39,8 @@ Cypress.Commands.add(
   (
     redirectPath = '/',
     credentials = {
-      email: Cypress.env(`EMAIL`) as string,
-      password: Cypress.env(`PASSWORD`) as string,
+      email: Cypress.env(`USER_EMAIL`) as string,
+      password: Cypress.env(`USER_PASSWORD`) as string,
     }
   ) => {
     // preserve the session cookie between tests
