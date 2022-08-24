@@ -39,6 +39,7 @@ const configuration = {
   navigation: {
     style: LayoutStyle.Sidebar,
   },
+  appCheckSiteKey: process.env.NEXT_PUBLIC_APPCHECK_KEY,
   email: {
     host: '',
     port: 0,

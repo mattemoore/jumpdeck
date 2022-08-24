@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Menu } from '@headlessui/react';
-import MenuIcon from '@heroicons/react/outline/MenuIcon';
+import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon';
 
 import NavigationMenuItem from '~/core/ui/Navigation/NavigationItem';
 import NavigationMenu from '~/core/ui/Navigation/NavigationMenu';
@@ -60,7 +60,7 @@ const SiteNavigation = () => {
 function MobileDropdown() {
   const Button = (
     <Menu.Button>
-      <MenuIcon className={'h-9'} />
+      <Bars3Icon className={'h-9'} />
     </Menu.Button>
   );
 

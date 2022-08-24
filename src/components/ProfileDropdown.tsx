@@ -3,11 +3,11 @@ import { Trans } from 'next-i18next';
 import { Menu } from '@headlessui/react';
 
 import {
-  LogoutIcon,
-  ViewGridIcon,
+  MinusIcon,
+  Squares2X2Icon,
   ChevronDownIcon,
-  CogIcon,
-} from '@heroicons/react/outline';
+  Cog8ToothIcon,
+} from '@heroicons/react/24/outline';
 
 import Dropdown from '~/core/ui/Dropdown';
 import ProfileAvatar from './ProfileAvatar';
@@ -28,20 +28,20 @@ const ProfileDropdown: React.FCC<{
 
   const items = [
     <ProfileDropdownMenuItem key={'profile'} href={'/dashboard'}>
-      <ViewGridIcon className={'h-5'} />
+      <Squares2X2Icon className={'h-5'} />
       <span>
         <Trans i18nKey={'common:dashboardTabLabel'} />
       </span>
     </ProfileDropdownMenuItem>,
     <ProfileDropdownMenuItem key={'profile'} href={'/settings/profile'}>
-      <CogIcon className={'h-5'} />
+      <Cog8ToothIcon className={'h-5'} />
       <span>
         <Trans i18nKey={'common:settingsTabLabel'} />
       </span>
     </ProfileDropdownMenuItem>,
     <Dropdown.Divider key={'divider'} />,
     <ProfileDropdownMenuItem key={'sign-out'} onClick={signOutRequested}>
-      <LogoutIcon className={'h-5'} />
+      <MinusIcon className={'h-5'} />
       <span>
         <Trans i18nKey={'auth:signOut'} />
       </span>

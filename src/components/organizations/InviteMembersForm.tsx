@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 import { Trans, useTranslation } from 'next-i18next';
 
-import PlusCircleIcon from '@heroicons/react/outline/PlusCircleIcon';
-import XIcon from '@heroicons/react/outline/XIcon';
+import PlusCircleIcon from '@heroicons/react/24/outline/PlusCircleIcon';
+import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
 
 import { useFieldArray, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -116,7 +116,7 @@ const InviteMembersForm: React.FCC = () => {
                       clearErrors(emailInputName);
                     }}
                   >
-                    <XIcon className={'h-5'} />
+                    <XMarkIcon className={'h-5'} />
                   </IconButton>
                 </If>
               </div>

@@ -2,7 +2,7 @@ import { Fragment, PropsWithChildren } from 'react';
 import { Trans } from 'next-i18next';
 
 import { Listbox, Transition } from '@headlessui/react';
-import SelectorIcon from '@heroicons/react/outline/SelectorIcon';
+import SelectorIcon from '~/core/ui/SelectorIcon';
 
 export interface ListBoxOptionModel<Value = unknown> {
   label: string;
@@ -35,10 +35,7 @@ function ListBox<Value>({
           </span>
 
           <span className="ListBoxButtonIcon">
-            <SelectorIcon
-              className="h-5 w-5 text-gray-400"
-              aria-hidden="true"
-            />
+            <SelectorIcon aria-hidden="true" />
           </span>
         </Listbox.Button>
 

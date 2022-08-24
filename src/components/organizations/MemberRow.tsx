@@ -1,4 +1,4 @@
-import UserRemoveIcon from '@heroicons/react/outline/UserRemoveIcon';
+import MinusIcon from '@heroicons/react/24/outline/MinusIcon';
 
 import { MembershipRole } from '~/lib/organizations/types/membership-role';
 import Button from '~/core/ui/Button';
@@ -34,7 +34,7 @@ const MemberRow: React.FCC<{
           color={'transparent'}
           onClick={() => memberRemoved(member)}
         >
-          <UserRemoveIcon className={'h-5'} />
+          <MinusIcon className={'h-5'} />
         </Button>
       </div>
     </div>

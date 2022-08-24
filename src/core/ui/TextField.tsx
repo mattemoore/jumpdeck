@@ -8,7 +8,7 @@ import React, {
   useState,
 } from 'react';
 
-import { XIcon } from '@heroicons/react/outline';
+import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
 
 import Label from './Label';
 import If from '~/core/ui/If';
@@ -92,7 +92,7 @@ const Input: React.FC<Props> = ({
       <If condition={shouldShowResetButton}>
         <div className={'flex pr-2.5'}>
           <IconButton type={'button'} onClick={onReset}>
-            <XIcon className={'h-5'} />
+            <XMarkIcon className={'h-5'} />
           </IconButton>
         </div>
       </If>

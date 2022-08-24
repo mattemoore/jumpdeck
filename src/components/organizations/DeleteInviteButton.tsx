@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import toaster from 'react-hot-toast';
 import { Trans, useTranslation } from 'next-i18next';
 
-import XIcon from '@heroicons/react/outline/XIcon';
+import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
 
 import { useDeleteInvite } from '~/lib/organizations/hooks/use-delete-invite';
 
@@ -47,7 +47,7 @@ const DeleteInviteButton: React.FCC<{
         label={'Delete Invite'}
         onClick={() => setIsDeleting(true)}
       >
-        <XIcon className={'h-6'} />
+        <XMarkIcon className={'h-6'} />
       </IconButton>
 
       <If condition={isDeleting}>

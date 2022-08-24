@@ -3,7 +3,7 @@ import { Trans } from 'next-i18next';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 
-import UserAddIcon from '@heroicons/react/outline/UserAddIcon';
+import PlusIcon from '@heroicons/react/24/outline/PlusIcon';
 
 import { useUserCanInviteUsers } from '~/lib/organizations/hooks/use-user-can-invite-users';
 import { withAppProps } from '~/lib/props/with-app-props';
@@ -96,7 +96,7 @@ function InviteMembersButton() {
       href={'/settings/organization/members/invite'}
     >
       <span className="flex items-center space-x-2">
-        <UserAddIcon className="h-5" />
+        <PlusIcon className="h-5" />
 
         <span>
           <Trans i18nKey={'organization:inviteMembersButtonLabel'} />

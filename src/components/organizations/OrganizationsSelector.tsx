@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useAuth } from 'reactfire';
 import { SpringSpinner } from 'react-epic-spinners';
 
-import PlusSmIcon from '@heroicons/react/outline/PlusSmIcon';
+import PlusIcon from '@heroicons/react/24/outline/PlusIcon';
 
 import { setCookie } from 'nookies';
 import { Trans } from 'next-i18next';
@@ -99,7 +99,7 @@ const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
                 data-cy={'create-organization-button'}
                 className={'flex flex-row items-center space-x-2 ellipsify'}
               >
-                <PlusSmIcon className={'h-4 font-bold'} />
+                <PlusIcon className={'h-4 font-bold'} />
 
                 <span>
                   <Trans

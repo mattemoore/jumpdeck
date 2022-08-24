@@ -5,11 +5,10 @@ import dynamic from 'next/dynamic';
 import type { User } from 'firebase/auth';
 
 import {
-  ViewGridIcon,
+  Squares2X2Icon,
   DocumentIcon,
-  SupportIcon,
-  CogIcon,
-} from '@heroicons/react/outline';
+  Cog8ToothIcon,
+} from '@heroicons/react/24/outline';
 
 import Logo from '~/core/ui/Logo';
 import If from '~/core/ui/If';
@@ -68,7 +67,7 @@ function AppSidebarMenu() {
   return (
     <div className={'flex flex-col space-y-2'}>
       <AppSidebarItem href={'/dashboard'}>
-        <ViewGridIcon className={'h-6'} />
+        <Squares2X2Icon className={'h-6'} />
 
         <span>
           <Trans i18nKey={'common:dashboardTabLabel'} />
@@ -76,7 +75,7 @@ function AppSidebarMenu() {
       </AppSidebarItem>
 
       <AppSidebarItem href={'/settings'}>
-        <CogIcon className={'h-6'} />
+        <Cog8ToothIcon className={'h-6'} />
 
         <span>
           <Trans i18nKey={'common:settingsTabLabel'} />
@@ -93,11 +92,6 @@ function AppSidebarFooterMenu() {
         <FooterItem href={'/docs'}>
           <DocumentIcon className={'h-4'} />
           <span>Documentation</span>
-        </FooterItem>
-
-        <FooterItem href={'/help'}>
-          <SupportIcon className={'h-4'} />
-          <span>Help</span>
         </FooterItem>
       </div>
     </div>

@@ -3,10 +3,10 @@ import { Menu } from '@headlessui/react';
 import { Trans } from 'next-i18next';
 
 import {
-  AdjustmentsIcon,
-  DotsVerticalIcon,
-  XIcon,
-} from '@heroicons/react/outline';
+  AdjustmentsHorizontalIcon,
+  EllipsisVerticalIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline';
 
 import Dropdown from '~/core/ui/Dropdown';
 import IconButton from '~/core/ui/IconButton';
@@ -28,7 +28,7 @@ const OrganizationMemberActionsDropdown: React.FCC<{
           onClick={onChangeRoleSelected}
         >
           <span className={'flex items-center space-x-2'}>
-            <AdjustmentsIcon className={'h-5'} />
+            <AdjustmentsHorizontalIcon className={'h-5'} />
             <span>
               <Trans i18nKey={'organization:changeRole'} />
             </span>
@@ -45,7 +45,7 @@ const OrganizationMemberActionsDropdown: React.FCC<{
               'flex items-center space-x-2 text-red-700 dark:text-red-500'
             }
           >
-            <XIcon className={'h-5'} />
+            <XMarkIcon className={'h-5'} />
             <span>
               <Trans i18nKey={'organization:removeMember'} />
             </span>
@@ -66,7 +66,7 @@ function DropdownButton({
       disabled={disabled}
     >
       <IconButton label={'Open members actions menu'} as={'div'}>
-        <DotsVerticalIcon className={'h-6'} />
+        <EllipsisVerticalIcon className={'h-6'} />
       </IconButton>
     </Menu.Button>
   );

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 
-import MenuAlt4Icon from '@heroicons/react/outline/MenuAlt4Icon';
+import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon';
 
 import { DocsTree } from '~/core/docs/types/docs-tree';
 import { isBrowser } from '~/core/generic/is-browser';
@@ -70,7 +70,7 @@ export default function FloatingDocumentationNavigation({
         className={'fixed bottom-5 right-5 z-10 h-16 w-16 rounded-full'}
         onClick={onClick}
       >
-        <MenuAlt4Icon className={'h-8'} />
+        <Bars3Icon className={'h-8'} />
       </Button>
     </>
   );

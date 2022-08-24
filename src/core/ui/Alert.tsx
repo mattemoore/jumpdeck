@@ -1,12 +1,12 @@
 import { useState, useMemo } from 'react';
 
 import {
-  XIcon,
+  XMarkIcon,
   CheckCircleIcon,
-  ExclamationIcon,
-  ExclamationCircleIcon,
+  ExclaimationCircleIcon,
+  ExclaimationTriangleIcon,
   InformationCircleIcon,
-} from '@heroicons/react/outline';
+} from '@heroicons/react/24/outline';
 
 const colorClassNames = {
   success: `AlertSuccess`,
@@ -17,8 +17,8 @@ const colorClassNames = {
 
 const icons = {
   success: () => <CheckCircleIcon className={'AlertIcon h-6'} />,
-  error: () => <ExclamationCircleIcon className={'AlertIcon h-6'} />,
-  warn: () => <ExclamationIcon className={'AlertIcon h-6'} />,
+  error: () => <ExclaimationCircleIcon className={'AlertIcon h-6'} />,
+  warn: () => <ExclaimationTriangleIcon className={'AlertIcon h-6'} />,
   info: () => <InformationCircleIcon className={'AlertIcon h-6'} />,
 };
 
@@ -46,7 +46,7 @@ const Alert: React.FCC<{
 
       <If condition={useCloseButton ?? false}>
         <IconButton onClick={() => setVisible(false)}>
-          <XIcon className={'h-6'} />
+          <XMarkIcon className={'h-6'} />
         </IconButton>
       </If>
     </div>

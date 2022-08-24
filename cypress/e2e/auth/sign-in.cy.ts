@@ -33,7 +33,6 @@ describe(`Sign in`, () => {
 
     before(() => {
       cy.clearStorage();
-      cy.reload();
     });
 
     it('should redirect to the route provided', () => {

@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import CheckCircleIcon from '@heroicons/react/outline/CheckCircleIcon';
+import CheckCircleIcon from '@heroicons/react/24/outline/CheckCircleIcon';
 
 import { withTranslationProps } from '~/lib/props/with-translation-props';
 

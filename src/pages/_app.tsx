@@ -21,6 +21,7 @@ import { loadSelectedTheme } from '~/core/theming';
 import { useAnalyticsTracking } from '~/core/firebase/hooks/use-analytics-tracking';
 import FirebaseAnalyticsProvider from '~/core/firebase/components/FirebaseAnalyticsProvider';
 import { isBrowser } from '~/core/generic';
+import FirebaseAppCheckProvider from '~/core/firebase/components/FirebaseAppCheckProvider';
 
 interface DefaultPageProps {
   session?: Maybe<AuthUser>;
@@ -58,24 +59,28 @@ function App(
 
   return (
     <FirebaseAppShell config={firebase}>
-      <FirebaseAuthProvider
-        refreshClaims={props.pageProps.refreshClaims}
-        userSession={userSession}
-        setUserSession={setUserSession}
-        useEmulator={emulator}
-      >
-        <FirebaseAnalyticsProvider>
-          <UserSessionContext.Provider value={{ userSession, setUserSession }}>
-            <OrganizationContext.Provider
-              value={{ organization, setOrganization }}
+      <FirebaseAppCheckProvider>
+        <FirebaseAuthProvider
+          refreshClaims={props.pageProps.refreshClaims}
+          userSession={userSession}
+          setUserSession={setUserSession}
+          useEmulator={emulator}
+        >
+          <FirebaseAnalyticsProvider>
+            <UserSessionContext.Provider
+              value={{ userSession, setUserSession }}
             >
-              <AnalyticsTrackingEventsProvider>
-                <Component {...pageProps} />
-              </AnalyticsTrackingEventsProvider>
-            </OrganizationContext.Provider>
-          </UserSessionContext.Provider>
-        </FirebaseAnalyticsProvider>
-      </FirebaseAuthProvider>
+              <OrganizationContext.Provider
+                value={{ organization, setOrganization }}
+              >
+                <AnalyticsTrackingEventsProvider>
+                  <Component {...pageProps} />
+                </AnalyticsTrackingEventsProvider>
+              </OrganizationContext.Provider>
+            </UserSessionContext.Provider>
+          </FirebaseAnalyticsProvider>
+        </FirebaseAuthProvider>
+      </FirebaseAppCheckProvider>
     </FirebaseAppShell>
   );
 }

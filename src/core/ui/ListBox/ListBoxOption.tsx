@@ -1,6 +1,6 @@
 import { Listbox } from '@headlessui/react';
 import { Trans } from 'next-i18next';
-import CheckCircleIcon from '@heroicons/react/outline/CheckCircleIcon';
+import CheckCircleIcon from '@heroicons/react/24/outline/CheckCircleIcon';
 
 import If from '~/core/ui/If';
 

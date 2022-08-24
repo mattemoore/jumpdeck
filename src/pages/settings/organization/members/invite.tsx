@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 
-import ArrowNarrowLeftIcon from '@heroicons/react/outline/ArrowNarrowLeftIcon';
+import ArrowLeftIcon from '@heroicons/react/24/outline/ArrowLeftIcon';
 import { Trans } from 'next-i18next';
 
 import { withAppProps } from '~/lib/props/with-app-props';
@@ -59,7 +59,7 @@ function GoBackToMembersButton() {
       href={'/settings/organization/members'}
     >
       <span className={'flex items-center space-x-1'}>
-        <ArrowNarrowLeftIcon className={'h-4'} />
+        <ArrowLeftIcon className={'h-4'} />
 
         <span>
           <Trans i18nKey={'organization:goBackToMembersPage'} />

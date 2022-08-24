@@ -3,8 +3,8 @@ import { PropsWithChildren } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 
-import ChevronLeftIcon from '@heroicons/react/outline/ChevronLeftIcon';
-import ChevronRightIcon from '@heroicons/react/outline/ChevronRightIcon';
+import ChevronLeftIcon from '@heroicons/react/24/outline/ChevronLeftIcon';
+import ChevronRightIcon from '@heroicons/react/24/outline/ChevronRightIcon';
 
 import { withTranslationProps } from '~/lib/props/with-translation-props';
 import { getDocs, getDocsPageBySlug, getDocsSlugs } from '~/core/docs/api';

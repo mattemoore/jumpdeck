@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 
-import XIcon from '@heroicons/react/outline/XIcon';
+import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
 import { Trans } from 'next-i18next';
 
 import IconButton from '~/core/ui/IconButton';
@@ -70,7 +70,7 @@ const Modal: React.FC<
                     label={'Close Modal'}
                     onClick={() => setIsOpen(false)}
                   >
-                    <XIcon className={'h-6'} />
+                    <XMarkIcon className={'h-6'} />
                   </IconButton>
                 </div>
               </div>

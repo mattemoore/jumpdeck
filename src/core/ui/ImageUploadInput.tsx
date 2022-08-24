@@ -9,8 +9,7 @@ import React, {
 
 import Image from 'next/image';
 
-import CloudUploadIcon from '@heroicons/react/outline/CloudUploadIcon';
-import XIcon from '@heroicons/react/outline/XIcon';
+import { CloudArrowUpIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 import Label from '~/core/ui/Label';
 import If from '~/core/ui/If';
@@ -84,7 +83,7 @@ const ImageUploadInput: React.FCC<Props> = ({
       <div className={'flex items-center space-x-2'}>
         <div className={'flex'}>
           <If condition={!value}>
-            <CloudUploadIcon
+            <CloudArrowUpIcon
               className={'h-5 text-gray-500 dark:text-black-100'}
             />
           </If>
@@ -130,7 +129,7 @@ const ImageUploadInput: React.FCC<Props> = ({
 
         <If condition={value}>
           <IconButton onClick={imageRemoved}>
-            <XIcon className="h-3 w-3" />
+            <XMarkIcon className="h-3 w-3" />
           </IconButton>
         </If>
       </div>

@@ -52,5 +52,5 @@ function getConfiguredDomains() {
 
   return [
     isProduction ? firebaseStorageBucket : "localhost"
-  ];
+  ].filter(Boolean);
 }
