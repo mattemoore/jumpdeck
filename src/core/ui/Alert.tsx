@@ -3,8 +3,8 @@ import { useState, useMemo } from 'react';
 import {
   XMarkIcon,
   CheckCircleIcon,
-  ExclaimationCircleIcon,
-  ExclaimationTriangleIcon,
+  ExclamationCircleIcon,
+  ExclamationTriangleIcon,
   InformationCircleIcon,
 } from '@heroicons/react/24/outline';
 
@@ -17,8 +17,8 @@ const colorClassNames = {
 
 const icons = {
   success: () => <CheckCircleIcon className={'AlertIcon h-6'} />,
-  error: () => <ExclaimationCircleIcon className={'AlertIcon h-6'} />,
-  warn: () => <ExclaimationTriangleIcon className={'AlertIcon h-6'} />,
+  error: () => <ExclamationCircleIcon className={'AlertIcon h-6'} />,
+  warn: () => <ExclamationTriangleIcon className={'AlertIcon h-6'} />,
   info: () => <InformationCircleIcon className={'AlertIcon h-6'} />,
 };
 

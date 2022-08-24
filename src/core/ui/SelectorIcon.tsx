@@ -7,8 +7,8 @@ function SelectorIcon(
 ) {
   return (
     <div className={`flex flex-col ${props.className ?? ''}`}>
-      <ChevronUpIcon className={'relative top-[0.1rem] h-6'} />
-      <ChevronDownIcon className={'relative bottom-[0.1rem] h-6'} />
+      <ChevronUpIcon className={'relative top-[0.1rem] h-3'} />
+      <ChevronDownIcon className={'relative bottom-[0.1rem] h-3'} />
     </div>
   );
 }
