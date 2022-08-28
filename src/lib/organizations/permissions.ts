@@ -21,6 +21,7 @@ import { MembershipRole } from '~/lib/organizations/types/membership-role';
  * @param currentUserRole The current logged-in user
  * @param targetUser The role of the target of the action
  * @description Checks if a user can perform actions (such as update a role) of another user
+ * @name canUpdateUser
  */
 export function canUpdateUser(
   currentUserRole: MembershipRole,
@@ -40,7 +41,7 @@ export function canChangeBilling(currentUserRole: MembershipRole) {
 }
 
 /**
- * @name canChangeBilling
+ * @name canInviteUsers
  * @param currentUserRole
  * @description Checks if a role can change invite new users to an organization.
  * By default, only Owners and Admin can invite users
@@ -57,6 +58,7 @@ export function canInviteUsers(currentUserRole: MembershipRole) {
  * ownership can only be transferred
  * @param inviterRole
  * @param inviteeRole
+ * @name canInviteUser
  */
 export function canInviteUser(
   inviterRole: MembershipRole,
@@ -72,6 +74,7 @@ export function canInviteUser(
 /**
  * @description Check if a user can delete invites
  * @param inviterRole
+ * @name canDeleteInvites
  */
 export function canDeleteInvites(inviterRole: MembershipRole) {
   return canInviteUsers(inviterRole);

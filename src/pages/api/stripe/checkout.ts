@@ -50,7 +50,7 @@ async function checkoutsSessionHandler(
         userId,
         organizationId,
       },
-      `User attempted to access checkout, but lacked permissions`
+      `User attempted to access checkout but lacked permissions`
     );
 
     return redirectToErrorPage();
@@ -65,8 +65,6 @@ async function checkoutsSessionHandler(
     });
 
     const portalUrl = getCheckoutPortalUrl(url, returnUrl);
-
-    console.log({ portalUrl });
 
     // redirect user back based on the response
     res.redirect(portalUrl);
@@ -133,8 +131,6 @@ function getCheckoutPortalUrl(portalUrl: string | null, returnUrl: string) {
  */
 function isTestingMode() {
   const enableStripeTesting = process.env.ENABLE_STRIPE_TESTING;
-
-  console.log(process.env);
 
   return enableStripeTesting === 'true';
 }

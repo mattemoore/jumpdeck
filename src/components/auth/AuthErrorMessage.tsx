@@ -1,5 +1,5 @@
 import { Trans } from 'next-i18next';
-import ExclaimationCircleIcon from '@heroicons/react/24/outline/ExclaimationCircleIcon';
+import ExclamationCircleIcon from '@heroicons/react/24/outline/ExclamationCircleIcon';
 
 /**
  * @name AuthErrorMessage
@@ -21,7 +21,7 @@ export default function AuthErrorMessage({ error }: { error: Maybe<string> }) {
         'my-2 flex items-center space-x-1 text-sm font-medium text-red-500 dark:text-red-400'
       }
     >
-      <ExclaimationCircleIcon className={'h-5'} />
+      <ExclamationCircleIcon className={'h-5'} />
 
       <span data-cy={'auth-error-message'}>
         <Trans

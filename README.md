@@ -27,8 +27,8 @@ git init
 git remote add upstream https://github.com/makerkit/next-firebase-saas-kit
 ```
 
-Subscribe to the repository so you can pull the updates. To do so, you can 
-either pull the latest version:
+We recommend to watch to the repository, so you know when there's an update. 
+To pull the latest updates, use:
 
 ```
 git pull upstream main
@@ -66,11 +66,22 @@ npm run stripe:listen
 
 Then, copy the printed webhook key and add it to your environment files. 
 This can also be used for running the E2E tests.
+
 My recommendation is to add it to both `.env.test` and `.env.development`.
 
 ### After Creating your Firebase Project
 
-Make sure to update the environment files
+Make sure to update the environment files with your project's configuration. 
+To do so, create the file `.env.production` copied from `.env.production.
+template`, and fill the environment variables with the values from your 
+Firebase project's configuration.
+
+This is particularly important when:
+
+1. **Running the build process**: You're building the project with `npm build` 
+   because it uses the production environment
+2. **Deploying to Vercel**: Of course, when you're publishing the project to 
+   Vercel, as it will execute `npm build` on the CI
 
 ### Running Tests
 
