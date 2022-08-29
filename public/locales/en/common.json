@@ -9,6 +9,10 @@
   "modalConfirmationQuestion": "Are you sure you want to continue?",
   "imageInputLabel": "Click here to upload an image",
   "cancel": "Cancel",
+  "backToHomePage": "Back to Home Page",
+  "pageNotFound": "Oooops. Page not Found.",
+  "pageNotFoundSubHeading": "Apologies, the page you were looking for was not found",
+  "genericError": "Oooops. An error occurred",
   "roles": {
     "owner": {
       "label": "Owner",

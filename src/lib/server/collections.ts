@@ -1,7 +1,12 @@
-import { CollectionReference, getFirestore } from 'firebase-admin/firestore';
+import {
+  CollectionReference,
+  CollectionGroup,
+  getFirestore,
+} from 'firebase-admin/firestore';
 
 import { Organization } from '~/lib/organizations/types/organization';
 import { UserData } from '~/core/session/types/user-data';
+import { MembershipInvite } from '~/lib/organizations/types/membership-invite';
 
 enum FirestoreCollections {
   Users = 'users',
@@ -22,7 +27,9 @@ export function getOrganizationsCollection() {
 }
 
 export function getInvitesCollection() {
-  return getCollectionGroupByName(FirestoreCollections.Invites);
+  return getCollectionGroupByName(
+    FirestoreCollections.Invites
+  ) as CollectionGroup<MembershipInvite>;
 }
 
 function getCollectionByName(collection: FirestoreCollections) {

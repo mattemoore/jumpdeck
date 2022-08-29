@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
-import { Trans } from 'react-i18next';
+import { Trans } from 'next-i18next';
 
 import configuration from '~/configuration';
 import { getRedirectPathWithoutSearchParam } from '~/core/generic/get-redirect-url';

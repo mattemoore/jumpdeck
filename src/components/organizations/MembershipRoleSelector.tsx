@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import ListBox from '~/core/ui/ListBox/ListBox';
 import ListBoxOption from '~/core/ui/ListBox/ListBoxOption';
 
@@ -12,20 +10,14 @@ const MembershipRoleSelector: React.FCC<{
   value?: MembershipRole;
   onChange?: (role: MembershipRole) => unknown;
 }> = ({ value: currentRole, onChange }) => {
-  const [selectedRole, setSelectedRole] = useState(
-    getSelectedRoleModel(currentRole)
-  );
-
-  useEffect(() => {
-    if (onChange && selectedRole.value !== undefined) {
-      onChange(selectedRole.value);
-    }
-  }, [selectedRole.value, onChange]);
+  const selectedRole = getSelectedRoleModel(currentRole);
 
   return (
     <ListBox
       value={selectedRole}
-      setValue={setSelectedRole}
+      setValue={(role) => {
+        onChange && onChange(role.value);
+      }}
       cy={'invite-role-selector-button'}
     >
       {roles.map((role) => {

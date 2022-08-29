@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { Trans } from 'react-i18next';
+import { Trans } from 'next-i18next';
 
 import configuration from '~/configuration';
 

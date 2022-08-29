@@ -4,7 +4,8 @@ import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
-import { Trans } from 'react-i18next';
+import toaster from 'react-hot-toast';
+import { useTranslation, Trans } from 'next-i18next';
 
 import type { User } from 'firebase/auth';
 import { useAuth, useSigninCheck } from 'reactfire';
@@ -30,6 +31,7 @@ import EmailPasswordSignInForm from '~/components/auth/EmailPasswordSignInForm';
 import PageLoadingIndicator from '~/core/ui/PageLoadingIndicator';
 
 import { getInviteByCode } from '~/lib/server/organizations/get-invite-by-code';
+import { getUserRoleByOrganization } from '~/lib/server/organizations/get-user-role-by-organization';
 
 enum Mode {
   SignUp,
@@ -55,6 +57,7 @@ const InvitePage = (
   const router = useRouter();
   const [currentSession, setCurrentSession] = useState(props.session);
   const signInCheck = useSigninCheck();
+  const { t } = useTranslation('organization');
   const invite = props.invite;
 
   const organization = invite.organization;
@@ -72,7 +75,14 @@ const InvitePage = (
   }, [router]);
 
   const onInviteAccepted = useCallback(() => {
-    return addMemberToOrganization({ code: invite.code });
+    const body = { code: invite.code };
+    const promise = addMemberToOrganization(body);
+
+    return toaster.promise(promise, {
+      loading: t('auth:acceptingInvite'),
+      success: t('auth:acceptInviteSuccess'),
+      error: t('auth:acceptInviteError'),
+    });
   }, [addMemberToOrganization, invite.code]);
 
   useEffect(() => {
@@ -245,6 +255,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   await initializeFirebaseAdminApp();
 
   const { props } = await withUserProps(ctx);
+  const userId = props.session?.uid;
   const code = ctx.params?.code as Maybe<string>;
 
   // if the code wasn't provided we cannot continue
@@ -266,6 +277,23 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
       );
 
       return notFound();
+    }
+
+    const organizationId = invite.organization.id;
+
+    // We check if the user is already part of the organization
+    if (userId) {
+      const userRole = await getUserRoleByOrganization({
+        organizationId,
+        userId,
+      });
+
+      const isPartOfOrganization = userRole !== undefined;
+
+      // if yes, we redirect the user to the error page
+      if (isPartOfOrganization) {
+        return redirectToErrorPage();
+      }
     }
 
     return {
@@ -290,6 +318,15 @@ function redirectToHomePage() {
     redirect: {
       permanent: false,
       destination: '/',
+    },
+  };
+}
+
+function redirectToErrorPage() {
+  return {
+    redirect: {
+      permanent: false,
+      destination: '/500',
     },
   };
 }

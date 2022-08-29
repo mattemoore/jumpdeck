@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Head from 'next/head';
 
 import { FormEvent, useCallback } from 'react';
-import { Trans } from 'react-i18next';
+import { Trans } from 'next-i18next';
 
 import { useAuth } from 'reactfire';
 import { sendPasswordResetEmail } from 'firebase/auth';

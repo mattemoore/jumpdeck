@@ -4,6 +4,7 @@ import { join } from 'path';
 
 import logger from '~/core/logger';
 import configuration from '~/configuration';
+import { HttpStatusCode } from '~/core/generic';
 
 import { createBillingPortalSession } from '~/lib/stripe/create-billing-portal-session';
 import { withAuthedUser } from '~/core/middleware/with-authed-user';
@@ -58,7 +59,7 @@ async function billingPortalRedirectHandler(
       customerId,
     });
 
-    res.redirect(url);
+    res.redirect(HttpStatusCode.MovedPermanently, url);
   } catch (e) {
     logger.error(e, `Stripe Billing Portal redirect error`);
 

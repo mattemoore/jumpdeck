@@ -3,6 +3,8 @@ import { z } from 'zod';
 import { join } from 'path';
 
 import logger from '~/core/logger';
+import { HttpStatusCode } from '~/core/generic';
+
 import { withAuthedUser } from '~/core/middleware/with-authed-user';
 import { withMiddleware } from '~/core/middleware/with-middleware';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
@@ -67,7 +69,7 @@ async function checkoutsSessionHandler(
     const portalUrl = getCheckoutPortalUrl(url, returnUrl);
 
     // redirect user back based on the response
-    res.redirect(portalUrl);
+    res.redirect(HttpStatusCode.MovedPermanently, portalUrl);
   } catch (e) {
     logger.error(e, `Stripe Checkout error`);
 

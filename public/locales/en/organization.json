@@ -52,5 +52,6 @@
   "noPendingInvites": "No pending invites found",
   "loadingMembers": "Loading members...",
   "loadingInvitedMembers": "Loading invited members...",
-  "invitedBadge": "Invited"
+  "invitedBadge": "Invited",
+  "duplicateInviteEmailError": "You have already entered this email address"
 }

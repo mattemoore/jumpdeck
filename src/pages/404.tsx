@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { Trans } from 'next-i18next';
 
 import configuration from '~/configuration';
 import Layout from '~/core/ui/Layout';
@@ -22,15 +23,19 @@ const NotFoundPage = () => {
 
         <Container>
           <div>
-            <Hero>Oooops. Page not Found.</Hero>
+            <Hero>
+              <Trans i18nKey={'common:pageNotFound'} />
+            </Hero>
 
             <SubHeading>
-              Apologies, the page you were looking for was not found
+              <Trans i18nKey={'common:pageNotFoundSubHeading'} />
             </SubHeading>
           </div>
 
           <div className={'my-8'}>
-            <Button href={'/'}>Get back to the home page</Button>
+            <Button href={'/'}>
+              <Trans i18nKey={'common:backToHomePage'} />
+            </Button>
           </div>
         </Container>
       </Layout>

@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { Trans } from 'next-i18next';
 
 import configuration from '~/configuration';
 import Layout from '~/core/ui/Layout';
@@ -22,13 +23,17 @@ const InternalServerErrorPage = () => {
 
         <Container>
           <div>
-            <Hero>Oooops. An error occurred.</Hero>
+            <Hero>
+              <Trans i18nKey={'common:genericError'} />
+            </Hero>
 
             <SubHeading>It&apos;s on us, sorry.</SubHeading>
           </div>
 
           <div className={'my-8'}>
-            <Button href={'/'}>Get back to the home page</Button>
+            <Button href={'/'}>
+              <Trans i18nKey={'common:backToHomePage'} />
+            </Button>
           </div>
         </Container>
       </Layout>
