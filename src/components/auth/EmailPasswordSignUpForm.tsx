@@ -1,6 +1,9 @@
-import { FormEvent, useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { FirebaseError } from 'firebase/app';
+import { User } from 'firebase/auth';
+
 import { Trans } from 'next-i18next';
+import { useForm } from 'react-hook-form';
 
 import TextField from '~/core/ui/TextField';
 import Button from '~/core/ui/Button';
@@ -24,59 +27,59 @@ const EmailPasswordSignUpForm: React.FCC<{
   const loading = state.loading || sessionState.loading;
   const user = state.data?.user;
 
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  const emailControl = register('email', { required: true });
+  const passwordControl = register('password', { required: true });
+
   const callOnErrorCallback = useCallback(() => {
     if (state.error && onError) {
       onError(state.error);
     }
   }, [state.error, onError]);
 
-  useEffect(() => {
-    async function createSession() {
-      if (!user) {
-        return;
-      }
+  const createSession = useCallback(async (user: User) => {
+    const idToken = await user.getIdToken();
+    const csrfToken = createCsrfToken();
 
-      const idToken = await user.getIdToken();
-      const csrfToken = createCsrfToken();
+    // using the ID token, we will make a request to initiate the session
+    // to make SSR possible via session cookie
+    await sessionRequest({
+      idToken,
+      csrfToken,
+    });
 
-      // using the ID token, we will make a request to initiate the session
-      // to make SSR possible via session cookie
-      await sessionRequest({
-        idToken,
-        csrfToken,
-      });
-
-      // we notify the parent component that
-      // the user signed up successfully, so they can be redirected
-      onSignUp();
-    }
-
-    void createSession();
-  }, [createCsrfToken, onSignUp, sessionRequest, user]);
+    // we notify the parent component that
+    // the user signed up successfully, so they can be redirected
+    onSignUp();
+  }, []);
 
   useEffect(() => {
     callOnErrorCallback();
   }, [callOnErrorCallback]);
 
   const onSubmit = useCallback(
-    (event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-
+    async (params: { email: string; password: string }) => {
       if (loading) {
         return;
       }
 
-      const data = new FormData(event.currentTarget);
-      const email = data.get(`email`) as string;
-      const password = data.get(`password`) as string;
+      const credential = await signUp(params.email, params.password);
 
-      void signUp(email, password);
+      if (credential) {
+        await createSession(credential.user);
+      }
     },
     [loading, signUp]
   );
 
   return (
-    <form className={'w-full'} onSubmit={onSubmit}>
+    <form className={'w-full'} onSubmit={handleSubmit(onSubmit)}>
       <div className={'flex-col space-y-4'}>
         <TextField>
           <TextField.Label>
@@ -84,10 +87,13 @@ const EmailPasswordSignUpForm: React.FCC<{
 
             <TextField.Input
               data-cy={'email-input'}
-              name="email"
               required
               type="email"
               placeholder={'your@email.com'}
+              innerRef={emailControl.ref}
+              onBlur={emailControl.onBlur}
+              onChange={emailControl.onChange}
+              name={emailControl.name}
             />
           </TextField.Label>
         </TextField>
@@ -99,9 +105,12 @@ const EmailPasswordSignUpForm: React.FCC<{
             <TextField.Input
               data-cy={'password-input'}
               required
-              name="password"
               type="password"
               placeholder={''}
+              innerRef={passwordControl.ref}
+              onBlur={passwordControl.onBlur}
+              onChange={passwordControl.onChange}
+              name={passwordControl.name}
             />
           </TextField.Label>
         </TextField>
@@ -119,7 +128,12 @@ const EmailPasswordSignUpForm: React.FCC<{
             type="submit"
             loading={loading}
           >
-            <Trans i18nKey={'auth:signUp'} />
+            <If
+              condition={loading}
+              fallback={<Trans i18nKey={'auth:signUp'} />}
+            >
+              <span>Signing you up...</span>
+            </If>
           </Button>
         </div>
       </div>
