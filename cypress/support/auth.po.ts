@@ -15,6 +15,14 @@ let auth: Auth;
 
 // we use a namespace not to pollute the IDE with methods from the tests
 const authPageObject = {
+  getDefaultUserEmail: () => Cypress.env(`USER_EMAIL`) as string,
+  getDefaultUserPassword: () => Cypress.env(`USER_PASSWORD`) as string,
+  getDefaultUserCredentials: () => {
+    return {
+      email: authPageObject.getDefaultUserEmail(),
+      password: authPageObject.getDefaultUserPassword(),
+    };
+  },
   $getEmailInput: () => cy.cyGet(`email-input`),
   $getPasswordInput: () => cy.cyGet(`password-input`),
   $getSubmitButton: () => cy.cyGet(`auth-submit-button`),
@@ -51,16 +59,14 @@ const authPageObject = {
       const csrfToken = nanoid(12);
 
       cy.wrap(user.getIdToken()).then((idToken) => {
-        cy.setCookie('csrfToken', csrfToken);
-
-        const sessionSignIn = cy.request('POST', `/api/session/sign-in`, {
-          idToken: idToken,
-          csrfToken,
-        });
-
-        sessionSignIn.then(() => {
-          cy.log(`Successfully signed in`);
-        });
+        cy.setCookie('csrfToken', csrfToken).request(
+          'POST',
+          `/api/session/sign-in`,
+          {
+            idToken: idToken,
+            csrfToken,
+          }
+        );
       });
     });
   },

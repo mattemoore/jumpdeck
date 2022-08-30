@@ -13,6 +13,7 @@ import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
 import Label from './Label';
 import If from '~/core/ui/If';
 import IconButton from '~/core/ui/IconButton';
+import classNames from 'classnames';
 
 type Props = React.InputHTMLAttributes<unknown> & {
   innerRef?: RefObject<HTMLInputElement> | LegacyRef<HTMLInputElement>;
@@ -21,7 +22,7 @@ type Props = React.InputHTMLAttributes<unknown> & {
   onValueChange?: (value: string | number | readonly string[]) => void;
 };
 
-const Hint: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+const Hint: React.FC<React.PropsWithChildren> = ({ children }) => {
   return <span className={`TextFieldHint`}>{children}</span>;
 };
 
@@ -75,13 +76,17 @@ const Input: React.FC<Props> = ({
   }, [currentValue, onValueChange]);
 
   return (
-    <div className={`TextFieldInputContainer ${className ?? ''}`}>
+    <div
+      className={classNames(`TextFieldInputContainer`, className, {
+        [`TextFieldInputContainerDisabled`]: props.disabled,
+      })}
+    >
       <If condition={children}>
         <span className={'flex pl-2.5'}>{children}</span>
       </If>
 
       <input
-        value={value}
+        value={innerRef ? undefined : value}
         defaultValue={defaultValue}
         className={`TextFieldInput flex-1 ${className ?? ''}`}
         {...props}
@@ -111,7 +116,7 @@ type TextFieldComponent = React.FC<
 };
 
 const TextField: TextFieldComponent = ({ children, className }) => {
-  return <div className={`TextField ${className}`}>{children}</div>;
+  return <div className={`TextField ${className ?? ''}`}>{children}</div>;
 };
 
 TextField.Hint = Hint;

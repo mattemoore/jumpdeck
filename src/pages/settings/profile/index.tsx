@@ -1,7 +1,5 @@
 import { useCallback, useContext } from 'react';
 import { GetServerSidePropsContext } from 'next';
-import Head from 'next/head';
-
 import { Trans } from 'next-i18next';
 
 import FirebaseStorageProvider from '~/core/firebase/components/FirebaseStorageProvider';
@@ -45,23 +43,17 @@ const Profile = () => {
   }
 
   return (
-    <>
-      <Head>
-        <title key={'title'}>Update Profile</title>
-      </Head>
+    <FirebaseStorageProvider>
+      <SettingsPageContainer title={'Settings'}>
+        <ProfileSettingsTabs user={userSession.auth} />
 
-      <FirebaseStorageProvider>
-        <SettingsPageContainer title={'Settings'}>
-          <ProfileSettingsTabs user={userSession.auth} />
-
-          <SettingsContentContainer>
-            <SettingsTile heading={<Trans i18nKey={'profile:generalTab'} />}>
-              <UpdateProfileForm user={userSession.auth} onUpdate={onUpdate} />
-            </SettingsTile>
-          </SettingsContentContainer>
-        </SettingsPageContainer>
-      </FirebaseStorageProvider>
-    </>
+        <SettingsContentContainer>
+          <SettingsTile heading={<Trans i18nKey={'profile:generalTab'} />}>
+            <UpdateProfileForm user={userSession.auth} onUpdate={onUpdate} />
+          </SettingsTile>
+        </SettingsContentContainer>
+      </SettingsPageContainer>
+    </FirebaseStorageProvider>
   );
 };
 

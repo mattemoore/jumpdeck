@@ -7,7 +7,7 @@ import { createFirebaseAdminApp } from './create-admin-app';
  * @description Initializes the firebase Admin app.
  * If emulator=true, will start the emulator admin
  */
-export async function initializeFirebaseAdminApp() {
+export function initializeFirebaseAdminApp() {
   const emulator = configuration.emulator;
 
   if (emulator) {

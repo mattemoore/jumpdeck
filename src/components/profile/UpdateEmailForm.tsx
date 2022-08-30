@@ -1,5 +1,5 @@
 import { User } from 'firebase/auth';
-import { FormEvent, useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Trans, useTranslation } from 'next-i18next';
 
@@ -9,6 +9,7 @@ import Button from '~/core/ui/Button';
 import TextField from '~/core/ui/TextField';
 import Alert from '~/core/ui/Alert';
 import If from '~/core/ui/If';
+import { useForm } from 'react-hook-form';
 
 const UpdateEmailForm: React.FC<{ user: User }> = ({ user }) => {
   const [errorMessage, setErrorMessage] = useState<Maybe<string>>();
@@ -17,15 +18,21 @@ const UpdateEmailForm: React.FC<{ user: User }> = ({ user }) => {
 
   const currentEmail = user?.email as string;
 
+  const { register, handleSubmit, reset } = useForm({
+    defaultValues: {
+      email: '',
+      repeatEmail: '',
+      password: '',
+    },
+  });
+
   const onSubmit = useCallback(
-    async (event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-
-      const data = new FormData(event.currentTarget);
-
-      const email = (data.get('email') as string) ?? null;
-      const repeatEmail = (data.get('repeatEmail') as string) ?? null;
-      const password = (data.get('password') as string) ?? null;
+    async (params: {
+      email: string;
+      repeatEmail: string;
+      password: string;
+    }) => {
+      const { email, repeatEmail, password } = params;
 
       if (email !== repeatEmail) {
         const message = t(`profile:emailsNotMatching`);
@@ -45,7 +52,15 @@ const UpdateEmailForm: React.FC<{ user: User }> = ({ user }) => {
         oldEmail: currentEmail,
         email,
         password,
-      });
+      })
+        .then(() => {
+          setErrorMessage(undefined);
+        })
+        .catch((e) => {
+          setErrorMessage(t(`profile:updateEmailError`));
+
+          return e;
+        });
 
       await toast.promise(promise, {
         success: t(`profile:updateEmailSuccess`),
@@ -56,11 +71,34 @@ const UpdateEmailForm: React.FC<{ user: User }> = ({ user }) => {
     [currentEmail, t, updateEmail]
   );
 
+  const emailControl = register('email', {
+    value: '',
+    required: true,
+  });
+
+  const repeatEmailControl = register('repeatEmail', {
+    value: '',
+    required: true,
+  });
+
+  const passwordControl = register('password', {
+    value: '',
+    required: true,
+  });
+
+  useEffect(() => {
+    if (state.success) {
+      reset();
+    }
+  }, [state.success, reset]);
+
   return (
-    <form onSubmit={onSubmit}>
+    <form data-cy={'update-email-form'} onSubmit={handleSubmit(onSubmit)}>
       <div className={'flex flex-col space-y-4'}>
         <If condition={errorMessage}>
-          <Alert type={'error'}>{errorMessage}</Alert>
+          <div data-cy={'update-email-error-alert'}>
+            <Alert type={'error'}>{errorMessage}</Alert>
+          </div>
         </If>
 
         <TextField>
@@ -68,11 +106,14 @@ const UpdateEmailForm: React.FC<{ user: User }> = ({ user }) => {
             <Trans i18nKey={'profile:newEmail'} />
 
             <TextField.Input
+              data-cy={'profile-new-email-input'}
+              name={emailControl.name}
+              onChange={emailControl.onChange}
+              onBlur={emailControl.onBlur}
+              innerRef={emailControl.ref}
               required
               type={'email'}
-              name={'email'}
-              placeholder={'your@email.com'}
-              defaultValue={user?.email ?? ''}
+              placeholder={''}
             />
           </TextField.Label>
         </TextField>
@@ -81,7 +122,15 @@ const UpdateEmailForm: React.FC<{ user: User }> = ({ user }) => {
           <TextField.Label>
             <Trans i18nKey={'profile:repeatEmail'} />
 
-            <TextField.Input required type={'email'} name={'repeatEmail'} />
+            <TextField.Input
+              data-cy={'profile-repeat-email-input'}
+              name={repeatEmailControl.name}
+              onChange={repeatEmailControl.onChange}
+              onBlur={repeatEmailControl.onBlur}
+              innerRef={repeatEmailControl.ref}
+              required
+              type={'email'}
+            />
           </TextField.Label>
         </TextField>
 
@@ -90,10 +139,14 @@ const UpdateEmailForm: React.FC<{ user: User }> = ({ user }) => {
             <Trans i18nKey={'profile:yourPassword'} />
 
             <TextField.Input
+              data-cy={'profile-password-input'}
               required
               type={'password'}
-              name={'password'}
-              placeholder={'Password'}
+              name={passwordControl.name}
+              onChange={passwordControl.onChange}
+              onBlur={passwordControl.onBlur}
+              innerRef={passwordControl.ref}
+              placeholder={''}
             />
           </TextField.Label>
         </TextField>

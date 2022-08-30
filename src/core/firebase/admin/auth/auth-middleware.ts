@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { HttpStatusCode } from '~/core/generic';
 import { getUserFromSessionCookie } from './get-user-from-session-cookie';
 import { forbiddenException } from '~/core/http-exceptions';
 

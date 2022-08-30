@@ -53,5 +53,6 @@
   "loadingMembers": "Loading members...",
   "loadingInvitedMembers": "Loading invited members...",
   "invitedBadge": "Invited",
-  "duplicateInviteEmailError": "You have already entered this email address"
+  "duplicateInviteEmailError": "You have already entered this email address",
+  "invitingOwnAccountError": "Hey, that's your email!"
 }

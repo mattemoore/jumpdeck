@@ -1,5 +1,3 @@
-import { QueryDocumentSnapshot } from 'firebase-admin/firestore';
-
 import {
   getInvitesCollection,
   getOrganizationsCollection,
@@ -20,7 +18,7 @@ export async function getInviteByCode(code: string) {
     return;
   }
 
-  return docs[0] as QueryDocumentSnapshot<MembershipInvite>;
+  return docs[0];
 }
 
 export async function getOrganizationById(organizationId: string) {

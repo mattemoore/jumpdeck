@@ -1,7 +1,8 @@
-import { FormEvent, useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useStorage } from 'reactfire';
 import { Trans, useTranslation } from 'next-i18next';
+import { useForm } from 'react-hook-form';
 
 import {
   deleteObject,
@@ -25,79 +26,74 @@ const UpdateOrganizationForm = () => {
   const { organization, setOrganization } = useContext(OrganizationContext);
   const [updateOrganization, { loading }] = useUpdateOrganization();
 
-  const [organizationName, setOrganizationName] = useState(
-    organization?.name ?? ''
-  );
-
   const [logoIsDirty, setLogoIsDirty] = useState(false);
   const { t } = useTranslation('organization');
 
-  const oldLogoUrl = organization?.logoURL || null;
+  const currentOrganizationName = organization?.name ?? '';
+  const currentLogoUrl = organization?.logoURL || null;
+
+  const { register, handleSubmit, reset } = useForm({
+    defaultValues: {
+      name: currentOrganizationName,
+      logoURL: currentLogoUrl,
+    },
+  });
 
   const onLogoCleared = useCallback(() => {
     setLogoIsDirty(true);
   }, []);
 
   const onSubmit = useCallback(
-    (event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
+    async (organizationName: string, logoFile: Maybe<File>) => {
+      const organizationId = organization?.id;
 
-      if (!organization) {
-        return;
+      if (!organizationId) {
+        return toast.error(t(`updateOrganizationErrorMessage`));
       }
 
-      void (async () => {
-        const data = new FormData(event.currentTarget);
+      const logoName = logoFile?.name;
 
-        const name = data.get(`name`) as string;
-        const timezone = data.get(`timezone`) as string;
-        const logoFile = data.get(`logo`) as File | null;
+      const logoURL = logoName
+        ? await uploadLogo({
+            logo: logoFile,
+            storage,
+            organizationId,
+          })
+        : currentLogoUrl;
 
-        const logoName = logoFile?.name;
+      const isLogoRemoved = logoIsDirty && !logoName;
 
-        const logoURL = logoName
-          ? await uploadLogo({
-              logo: logoFile,
-              storage,
-              organizationId: organization.id,
-            })
-          : oldLogoUrl;
-
-        const isLogoRemoved = logoIsDirty && !logoName;
-
-        // delete existing logo if different
-        if (isLogoRemoved && oldLogoUrl) {
-          try {
-            await deleteObject(ref(storage, oldLogoUrl));
-          } catch (e) {
-            // old logo not found
-          }
+      // delete existing logo if different
+      if (isLogoRemoved && currentLogoUrl) {
+        try {
+          await deleteObject(ref(storage, currentLogoUrl));
+        } catch (e) {
+          // old logo not found
         }
+      }
 
-        const organizationData: WithId<Partial<Organization>> = {
-          id: organization.id,
-          name,
-          timezone,
-          logoURL: isLogoRemoved ? null : logoURL,
-        };
+      const organizationData: WithId<Partial<Organization>> = {
+        id: organization.id,
+        name: organizationName,
+        logoURL: isLogoRemoved ? null : logoURL,
+      };
 
-        const promise = updateOrganization(organizationData);
-
-        await toast.promise(promise, {
-          loading: t(`updateOrganizationLoadingMessage`),
-          success: t(`updateOrganizationSuccessMessage`),
-          error: t(`updateOrganizationErrorMessage`),
-        });
-
+      const promise = updateOrganization(organizationData).then(() => {
         setOrganization({
           ...organization,
           ...organizationData,
         });
-      })();
+      });
+
+      await toast.promise(promise, {
+        loading: t(`updateOrganizationLoadingMessage`),
+        success: t(`updateOrganizationSuccessMessage`),
+        error: t(`updateOrganizationErrorMessage`),
+      });
     },
     [
       logoIsDirty,
-      oldLogoUrl,
+      currentLogoUrl,
       organization,
       setOrganization,
       storage,
@@ -107,11 +103,28 @@ const UpdateOrganizationForm = () => {
   );
 
   useEffect(() => {
-    setOrganizationName(organization?.name ?? '');
-  }, [organization?.name]);
+    reset({
+      name: organization?.name,
+      logoURL: organization?.logoURL,
+    });
+  }, [organization, reset]);
+
+  const nameControl = register('name', {
+    required: true,
+  });
+
+  const logoControl = register('logoURL');
 
   return (
-    <form onSubmit={onSubmit} className={'space-y-4'}>
+    <form
+      onSubmit={handleSubmit((value) => {
+        const logoFileList = value.logoURL as unknown as FileList;
+        const logoFile = logoFileList ? logoFileList.item(0) : undefined;
+
+        return onSubmit(value.name, logoFile ?? undefined);
+      })}
+      className={'space-y-4'}
+    >
       <div className={'flex flex-col space-y-4'}>
         <TextField>
           <TextField.Label>
@@ -120,10 +133,11 @@ const UpdateOrganizationForm = () => {
             <TextField.Input
               data-cy={'organization-name-input'}
               required
-              value={organizationName}
-              name={'name'}
+              name={nameControl.name}
+              innerRef={nameControl.ref}
+              onChange={nameControl.onChange}
+              onBlur={nameControl.onBlur}
               placeholder={'ex. IndieCorp'}
-              onValueChange={(name) => setOrganizationName(name as string)}
             />
           </TextField.Label>
         </TextField>
@@ -132,8 +146,11 @@ const UpdateOrganizationForm = () => {
           <Trans i18nKey={'organization:organizationLogoInputLabel'} />
 
           <ImageUploadInput
-            name={'logo'}
-            image={oldLogoUrl}
+            name={logoControl.name}
+            onChange={logoControl.onChange}
+            onBlur={logoControl.onBlur}
+            innerRef={logoControl.ref}
+            image={currentLogoUrl}
             onClear={onLogoCleared}
           >
             <Trans i18nKey={'common:imageInputLabel'} />

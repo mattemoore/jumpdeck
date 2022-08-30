@@ -14,8 +14,8 @@ import { useCsrfToken } from '~/core/firebase/hooks/use-csrf-token';
 import AuthErrorMessage from './AuthErrorMessage';
 
 const EmailPasswordSignUpForm: React.FCC<{
-  onSignUp: () => void;
-  onError?: (error: FirebaseError) => void;
+  onSignUp: () => unknown;
+  onError?: (error: FirebaseError) => unknown;
 }> = ({ onSignUp, onError }) => {
   const createCsrfToken = useCsrfToken();
   const [sessionRequest, sessionState] = useCreateSession();
@@ -112,6 +112,7 @@ const EmailPasswordSignUpForm: React.FCC<{
 
         <div>
           <Button
+            size={'large'}
             data-cy={'auth-submit-button'}
             className={'w-full'}
             color={'primary'}

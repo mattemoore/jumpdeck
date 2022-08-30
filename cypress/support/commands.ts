@@ -36,13 +36,7 @@ Cypress.Commands.add('cyGet', (name: string) => {
 
 Cypress.Commands.add(
   'signIn',
-  (
-    redirectPath = '/',
-    credentials = {
-      email: Cypress.env(`USER_EMAIL`) as string,
-      password: Cypress.env(`USER_PASSWORD`) as string,
-    }
-  ) => {
+  (redirectPath = '/', credentials = authPo.getDefaultUserCredentials()) => {
     // preserve the session cookie between tests
     // otherwise the user will get logged out
     Cypress.Cookies.defaults({
@@ -52,6 +46,8 @@ Cypress.Commands.add(
     cy.log('Signing in programmatically...');
 
     authPo.signInProgrammatically(credentials);
+
+    cy.log(`Successfully signed in`);
 
     cy.visit(redirectPath);
   }

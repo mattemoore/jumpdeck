@@ -48,6 +48,8 @@ export function useApiRequest<Resp = unknown, Body = void>(
         );
 
         setData(data);
+
+        return Promise.resolve(data);
       } catch (error) {
         const message =
           error instanceof Error ? error.message : `Unknown error`;

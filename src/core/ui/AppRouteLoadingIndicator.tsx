@@ -4,7 +4,7 @@ import Router from 'next/router';
 import If from '~/core/ui/If';
 import PageLoadingIndicator from '~/core/ui/PageLoadingIndicator';
 
-function AppRouteLoadingIndicator({ children }: React.PropsWithChildren<{}>) {
+function AppRouteLoadingIndicator({ children }: React.PropsWithChildren) {
   const [loading, setLoading] = useState(false);
   const onRouteChangeStartCallback = useCallback(() => setLoading(true), []);
 

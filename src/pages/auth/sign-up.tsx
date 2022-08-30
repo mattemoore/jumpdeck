@@ -36,7 +36,7 @@ const SignUp: React.FCC = () => {
               'flex w-11/12 flex-col items-center space-y-8 md:w-8/12 lg:w-4/12 xl:w-3/12'
             }
           >
-            <div className={'mb-2 sm:mb-4 lg:mb-8'}>
+            <div className={'mb-2 sm:mb-4 lg:mb-6'}>
               <Logo className={'w-[85px]'} />
             </div>
 

@@ -92,13 +92,13 @@ const EmailPasswordSignInForm: React.FCC<{
               placeholder={''}
             />
 
-            <TextField.Hint>
+            <div className={'py-0.5 text-xs'}>
               <Link href={'/auth/password-reset'} passHref>
-                <a>
+                <a className={'hover:underline'}>
                   <Trans i18nKey={'auth:passwordForgottenQuestion'} />
                 </a>
               </Link>
-            </TextField.Hint>
+            </div>
           </TextField.Label>
         </TextField>
 
@@ -111,6 +111,7 @@ const EmailPasswordSignInForm: React.FCC<{
         <div>
           <Button
             className={'w-full'}
+            size={'large'}
             color={'primary'}
             data-cy="auth-submit-button"
             type="submit"

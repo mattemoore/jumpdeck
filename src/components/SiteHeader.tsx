@@ -1,13 +1,9 @@
 import { useAuth } from 'reactfire';
-import Link from 'next/link';
-
 import { useUserSession } from '~/core/hooks/use-user-session';
-import configuration from '~/configuration';
 
 import Logo from '~/core/ui/Logo';
 import Container from '~/core/ui/Container';
 import If from '~/core/ui/If';
-import Button from '~/core/ui/Button';
 
 import SiteNavigation from './SiteNavigation';
 import ProfileDropdown from './ProfileDropdown';

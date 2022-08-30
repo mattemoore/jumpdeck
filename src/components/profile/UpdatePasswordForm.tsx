@@ -1,7 +1,8 @@
 import { User } from 'firebase/auth';
-import { FormEvent, useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Trans, useTranslation } from 'next-i18next';
+import { useForm } from 'react-hook-form';
 
 import { useUpdatePassword } from '~/lib/profile/hooks/use-update-password';
 
@@ -12,28 +13,50 @@ import If from '~/core/ui/If';
 
 const UpdatePasswordForm: React.FCC<{ user: User }> = ({ user }) => {
   const [errorMessage, setErrorMessage] = useState<Maybe<string>>();
-  const [updatePassword, { loading }] = useUpdatePassword();
+  const [updatePassword, { loading, success }] = useUpdatePassword();
   const { t } = useTranslation();
 
+  const { register, handleSubmit, reset } = useForm({
+    defaultValues: {
+      currentPassword: '',
+      newPassword: '',
+      repeatPassword: '',
+    },
+  });
+
   const onSubmit = useCallback(
-    (event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
+    async (params: {
+      currentPassword: string;
+      newPassword: string;
+      repeatPassword: string;
+    }) => {
+      const { newPassword, currentPassword, repeatPassword } = params;
 
-      const data = new FormData(event.currentTarget);
-
-      const newPassword = (data.get('newPassword') as string) ?? null;
-      const repeatPassword = (data.get('repeatPassword') as string) ?? null;
-
-      if (newPassword !== repeatPassword) {
-        const message = t(`profile.passwordNotMatching`);
+      if (currentPassword === newPassword) {
+        const message = t(`profile:passwordNotChanged`);
         setErrorMessage(message);
 
         return;
       }
 
-      const promise = updatePassword(user, newPassword);
+      if (newPassword !== repeatPassword) {
+        const message = t(`profile:passwordNotMatching`);
+        setErrorMessage(message);
 
-      void toast.promise(promise, {
+        return;
+      }
+
+      const promise = updatePassword(user, currentPassword, newPassword)
+        .then(() => {
+          setErrorMessage(undefined);
+        })
+        .catch((e) => {
+          setErrorMessage(t(`profile:updatePasswordError`));
+
+          return e;
+        });
+
+      await toast.promise(promise, {
         success: t(`profile:updatePasswordSuccess`),
         error: t(`profile:updatePasswordError`),
         loading: t(`profile:updatePasswordLoading`),
@@ -42,18 +65,49 @@ const UpdatePasswordForm: React.FCC<{ user: User }> = ({ user }) => {
     [t, updatePassword, user]
   );
 
+  const currentPasswordControl = register('currentPassword', {
+    value: '',
+    required: true,
+  });
+
+  const newPasswordControl = register('newPassword', {
+    value: '',
+    required: true,
+  });
+
+  const repeatPasswordControl = register('repeatPassword', {
+    value: '',
+    required: true,
+  });
+
+  useEffect(() => {
+    if (success) {
+      reset();
+    }
+  }, [success, reset]);
+
   return (
-    <form onSubmit={onSubmit}>
+    <form data-cy={'update-password-form'} onSubmit={handleSubmit(onSubmit)}>
       <div className={'flex flex-col space-y-4'}>
         <If condition={errorMessage}>
-          <Alert type={'error'}>{errorMessage}</Alert>
+          <div data-cy={'update-password-error-alert'}>
+            <Alert type={'error'}>{errorMessage}</Alert>
+          </div>
         </If>
 
         <TextField>
           <TextField.Label>
             <Trans i18nKey={'profile:currentPassword'} />
 
-            <TextField.Input required type={'password'} name={'oldPassword'} />
+            <TextField.Input
+              data-cy={'current-password'}
+              required
+              type={'password'}
+              name={currentPasswordControl.name}
+              innerRef={currentPasswordControl.ref}
+              onChange={currentPasswordControl.onChange}
+              onBlur={currentPasswordControl.onBlur}
+            />
           </TextField.Label>
         </TextField>
 
@@ -61,7 +115,15 @@ const UpdatePasswordForm: React.FCC<{ user: User }> = ({ user }) => {
           <TextField.Label>
             <Trans i18nKey={'profile:newPassword'} />
 
-            <TextField.Input required type={'password'} name={'newPassword'} />
+            <TextField.Input
+              data-cy={'new-password'}
+              required
+              type={'password'}
+              name={newPasswordControl.name}
+              innerRef={newPasswordControl.ref}
+              onChange={newPasswordControl.onChange}
+              onBlur={newPasswordControl.onBlur}
+            />
           </TextField.Label>
         </TextField>
 
@@ -70,9 +132,13 @@ const UpdatePasswordForm: React.FCC<{ user: User }> = ({ user }) => {
             <Trans i18nKey={'profile:repeatPassword'} />
 
             <TextField.Input
+              data-cy={'repeat-new-password'}
               required
               type={'password'}
-              name={'repeatPassword'}
+              name={repeatPasswordControl.name}
+              innerRef={repeatPasswordControl.ref}
+              onChange={repeatPasswordControl.onChange}
+              onBlur={repeatPasswordControl.onBlur}
             />
           </TextField.Label>
         </TextField>

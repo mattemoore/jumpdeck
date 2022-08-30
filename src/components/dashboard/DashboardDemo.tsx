@@ -59,7 +59,7 @@ export default function DashboardDemo() {
   );
 }
 
-function Highlight(props: React.PropsWithChildren<{}>) {
+function Highlight(props: React.PropsWithChildren) {
   return (
     <span className={'bg-gray-100 p-1 font-monospace dark:bg-black-400'}>
       {props.children}

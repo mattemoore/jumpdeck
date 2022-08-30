@@ -6,17 +6,17 @@ describe(`Accept Invite - Existing User`, () => {
   const existingUserEmail = `test2@makerkit.dev`;
   const existingUserInviteCode = 'pUhu9GACbZg1Cwj3muYw';
 
-  before(() => {
-    const password = Cypress.env('USER_PASSWORD') as string;
-    const invitePath = `/auth/invite/${existingUserInviteCode}`;
-
-    cy.signIn(invitePath, {
-      email: existingUserEmail,
-      password,
-    });
-  });
-
   describe(`when the user accepts the invite`, () => {
+    before(() => {
+      const password = authPo.getDefaultUserPassword();
+      const invitePath = `/auth/invite/${existingUserInviteCode}`;
+
+      cy.signIn(invitePath, {
+        email: existingUserEmail,
+        password,
+      });
+    });
+
     it('should be redirected to the dashboard', () => {
       authPo.$getAcceptInviteSubmitButton().click();
 

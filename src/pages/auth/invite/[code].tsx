@@ -83,7 +83,7 @@ const InvitePage = (
       success: t('auth:acceptInviteSuccess'),
       error: t('auth:acceptInviteError'),
     });
-  }, [addMemberToOrganization, invite.code]);
+  }, [addMemberToOrganization, invite.code, t]);
 
   useEffect(() => {
     if (signInCheck.status === 'success' && !signInCheck.data.signedIn) {

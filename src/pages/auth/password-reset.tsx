@@ -83,10 +83,10 @@ export const PasswordReset: React.FCC = () => {
           <If condition={!state.data}>
             <>
               <form
-                onSubmit={onSubmit}
+                onSubmit={(e) => void onSubmit(e)}
                 className={'container mx-auto flex justify-center'}
               >
-                <div className={'flex-col space-y-6'}>
+                <div className={'flex-col space-y-4'}>
                   <div>
                     <p className={'text-sm text-gray-700 dark:text-gray-400'}>
                       <Trans i18nKey={'auth:passwordResetSubheading'} />

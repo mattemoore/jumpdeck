@@ -18,6 +18,7 @@ import Button from '~/core/ui/Button';
 import IconButton from '~/core/ui/IconButton';
 
 import MembershipRoleSelector from './MembershipRoleSelector';
+import { useUserSession } from '~/core/hooks/use-user-session';
 
 type InviteModel = ReturnType<typeof memberFactory>;
 
@@ -25,6 +26,7 @@ const InviteMembersForm: React.FCC = () => {
   const { t } = useTranslation('organization');
   const router = useRouter();
 
+  const user = useUserSession();
   const organization = useCurrentOrganization();
   const organizationId = organization?.id ?? '';
 
@@ -35,9 +37,7 @@ const InviteMembersForm: React.FCC = () => {
       defaultValues: {
         members: [memberFactory()],
       },
-      mode: 'onChange',
       shouldUseNativeValidation: true,
-      reValidateMode: 'onChange',
       shouldFocusError: true,
       shouldUnregister: true,
     });
@@ -76,6 +76,7 @@ const InviteMembersForm: React.FCC = () => {
 
   return (
     <form
+      data-cy={'invite-members-form'}
       onSubmit={(event) => {
         void handleSubmit(onSubmit)(event);
       }}
@@ -91,7 +92,17 @@ const InviteMembersForm: React.FCC = () => {
             validate: (value) => {
               const invalid = getFormValidator(watchFieldArray)(value, index);
 
-              return invalid ? t(`duplicateInviteEmailError`) : true;
+              if (invalid) {
+                return t(`duplicateInviteEmailError`);
+              }
+
+              const isSameAsCurrentUserEmail = user?.auth?.email === value;
+
+              if (isSameAsCurrentUserEmail) {
+                return t(`invitingOwnAccountError`);
+              }
+
+              return true;
             },
           });
 
@@ -150,7 +161,7 @@ const InviteMembersForm: React.FCC = () => {
 
         <div>
           <Button
-            data-cy={'create-invite-button'}
+            data-cy={'append-new-invite-button'}
             type={'button'}
             color={'transparent'}
             size={'small'}

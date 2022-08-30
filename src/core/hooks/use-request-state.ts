@@ -58,11 +58,21 @@ export function useRequestState<Data = unknown, ErrorType = unknown>() {
     });
   }, []);
 
+  const resetState = useCallback(() => {
+    setState({
+      loading: false,
+      success: false,
+      error: undefined,
+      data: undefined,
+    });
+  }, []);
+
   return {
     state,
     setState,
     setLoading,
     setData,
     setError,
+    resetState,
   };
 }

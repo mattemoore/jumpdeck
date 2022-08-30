@@ -31,7 +31,7 @@ const AuthRedirectListener: React.FCC<{
 
     // keep this running for the whole session
     // unless the component was unmounted, for example, on log-outs
-    const listener = auth.onAuthStateChanged(async (user) => {
+    const listener = auth.onAuthStateChanged((user) => {
       // log user out if user is falsy
       // and if the consumer provided a route to redirect the user
       const shouldLogOut = !user && whenSignedOut;

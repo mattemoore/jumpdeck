@@ -315,15 +315,3 @@ function getOrderStatus(paymentStatus: string) {
     ? OrganizationPlanStatus.Paid
     : OrganizationPlanStatus.AwaitingPayment;
 }
-
-function throwKeyNotProvided(variableName: string) {
-  throw new Error(
-    `Webhooks Secret key not found. Please add the ${variableName} your environment variables`
-  );
-}
-
-function validateKeys(webhookSecretKey: string) {
-  if (!webhookSecretKey) {
-    throwKeyNotProvided(`STRIPE_WEBHOOK_SECRET`);
-  }
-}

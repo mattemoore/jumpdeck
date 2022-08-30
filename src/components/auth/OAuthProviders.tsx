@@ -14,7 +14,7 @@ import If from '~/core/ui/If';
 import AuthErrorMessage from './AuthErrorMessage';
 
 const OAuthProviders: React.FCC<{
-  onSuccess: () => void;
+  onSuccess: () => unknown;
 }> = ({ onSuccess }) => {
   const [signInWithProvider, signInState] = useSignInWithProvider();
   const [sessionRequest, sessionRequestState] = useCreateSession();
@@ -61,7 +61,7 @@ const OAuthProviders: React.FCC<{
 
   return (
     <div className={'flex w-full flex-1 flex-col space-y-3'}>
-      <div className={'flex-col space-y-4'}>
+      <div className={'flex-col space-y-2'}>
         <SignInWithGoogleButton
           onSignIn={() => signInWithProvider(new GoogleAuthProvider())}
         />

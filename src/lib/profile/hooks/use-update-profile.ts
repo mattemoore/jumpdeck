@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import { useUser } from 'reactfire';
-import { updateProfile } from '@firebase/auth';
+import { updateProfile } from 'firebase/auth';
 import { useRequestState } from '~/core/hooks/use-request-state';
 
-type Info = {
+type ProfileInfo = {
   displayName: string | null;
   photoURL: string | null;
 };
@@ -13,7 +13,7 @@ export function useUpdateProfile() {
   const { state, setLoading, setData, setError } = useRequestState<void>();
 
   const updateProfileCallback = useCallback(
-    async (info: Maybe<Info>) => {
+    async (info: Maybe<ProfileInfo>) => {
       if (info && user) {
         setLoading(true);
 
@@ -21,8 +21,10 @@ export function useUpdateProfile() {
           await updateProfile(user, info);
 
           setData();
-        } catch {
+        } catch (e) {
           setError(`Could not update Profile`);
+
+          return Promise.reject(e);
         }
       }
     },

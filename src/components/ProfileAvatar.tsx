@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import type { UserInfo } from 'firebase/auth';
-import If from '~/core/ui/If';
 
 import FallbackUserAvatar from './FallbackUserAvatar';
 
@@ -11,23 +10,20 @@ const ProfileAvatar: React.FCC<{ user: Maybe<UserInfo> }> = ({ user }) => {
     return null;
   }
 
-  return (
-    <If
-      condition={photoURL}
-      fallback={<FallbackUserAvatar text={getUserInitials(user)} />}
-    >
-      {(url) => (
-        <Image
-          objectFit={'contain'}
-          width={'36'}
-          height={'36'}
-          className={'rounded-full'}
-          src={url}
-          alt={url}
-        />
-      )}
-    </If>
-  );
+  if (photoURL) {
+    return (
+      <Image
+        objectFit={'cover'}
+        width={'36'}
+        height={'36'}
+        className={'rounded-full'}
+        src={photoURL}
+        alt={photoURL}
+      />
+    );
+  }
+
+  return <FallbackUserAvatar text={getUserInitials(user)} />;
 };
 
 function getUserInitials(user: UserInfo) {

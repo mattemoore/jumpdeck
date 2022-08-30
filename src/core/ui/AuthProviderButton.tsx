@@ -3,29 +3,32 @@ import Button from '../ui/Button';
 
 const AuthProviderButton: React.FCC<{
   image: string;
-  onClick: () => Promise<unknown>;
+  onClick: () => unknown;
 }> = ({ children, image, onClick }) => {
   return (
     <Button
       data-cy={'oauth-sign-in-button'}
       block
       color={'custom'}
+      size={'large'}
       className={`AuthProviderButton`}
       onClick={onClick}
     >
-      <div className={'absolute left-2 top-1.5 h-full items-center'}>
+      <span className={'absolute left-3 flex items-center justify-start'}>
         <Image
-          className={'h-full rounded-full'}
+          className={'flex h-full items-center rounded-full'}
           src={image}
           alt={'Auth Provider Logo'}
-          width={27}
-          height={27}
+          width={28}
+          height={28}
         />
-      </div>
+      </span>
 
-      <div className={'flex items-center justify-center'}>
-        <span className={'text-current'}>{children}</span>
-      </div>
+      <span className={'flex items-center'}>
+        <span className={'flex items-center justify-center'}>
+          <span className={'text-current'}>{children}</span>
+        </span>
+      </span>
     </Button>
   );
 };

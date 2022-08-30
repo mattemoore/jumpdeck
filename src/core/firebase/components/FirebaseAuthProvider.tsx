@@ -14,7 +14,7 @@ import { useDestroySession } from '~/core/hooks/use-destroy-session';
 import { UserSession } from '~/core/session/types/user-session';
 
 export const FirebaseAuthStateListener: React.FCC<{
-  onAuthStateChange: (user: User | null) => void;
+  onAuthStateChange: (user: User | null) => void | Promise<void>;
 }> = ({ children, onAuthStateChange }) => {
   const auth = useAuth();
 

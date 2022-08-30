@@ -19,13 +19,15 @@ const organizationPageObject = {
     return this.$getInvitedMembers().contains(`[data-cy]`, invitedMemberEmail);
   },
   $getMemberActionsDropdown: () => $get(`member-actions-dropdown`),
-  $getInvitationEmailInput: () => $get(`invite-email-input`),
-  $getCreateInviteButton: () => $get(`create-invite-button`),
+  $getInviteMembersForm: () => $get('invite-members-form'),
+  $getInvitationEmailInput: (index = 0) => $get(`invite-email-input`).eq(index),
+  $getAppendNewInviteButton: () => $get(`append-new-invite-button`),
   $getRemoveInviteButton: () => $get(`remove-invite-button`),
   $getInvitationsSubmitButton: () => $get(`send-invites-button`),
   $getDeleteInviteButton: () => $get(`delete-invite-button`),
   $getConfirmDeleteInviteButton: () => $get(`confirm-delete-invite-button`),
-  $getRoleSelector: () => $get(`invite-role-selector-button`),
+  $getRoleSelector: (index = 0) =>
+    $get(`invite-role-selector-button`).eq(index),
   $getRoleBadge: () => $get(`member-role-badge`),
   $removeMemberActionButton: () => $get(`remove-member-action`),
   $updateMemberRoleActionButton: () => $get(`update-member-role-action`),
@@ -58,7 +60,6 @@ const organizationPageObject = {
     return this;
   },
   inviteMember(email: string, role = MembershipRole.Member) {
-    this.navigateToInviteForm();
     this.$getInvitationEmailInput().type(email);
     this.selectRole(role);
     this.$getInvitationsSubmitButton().click();

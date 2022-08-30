@@ -1,9 +1,9 @@
 import React, {
-  createRef,
   FormEvent,
-  LegacyRef,
   MouseEventHandler,
+  RefCallback,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 
@@ -16,7 +16,7 @@ import If from '~/core/ui/If';
 import IconButton from '~/core/ui/IconButton';
 
 type Props = Omit<React.InputHTMLAttributes<unknown>, 'value'> & {
-  innerRef?: LegacyRef<HTMLInputElement>;
+  innerRef?: RefCallback<HTMLInputElement>;
   image?: string | null;
   onClear?: () => void;
 };
@@ -25,12 +25,13 @@ const ImageUploadInput: React.FCC<Props> = ({
   children,
   image,
   onClear,
+  innerRef,
   ...props
 }) => {
   const propValue = image ?? null;
   const [value, setValue] = useState<string | null>(propValue);
   const [fileName, setFileName] = useState<string>('');
-  const ref = createRef<HTMLInputElement>();
+  const ref = useRef<HTMLInputElement>();
 
   const onInput = (e: FormEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -73,7 +74,13 @@ const ImageUploadInput: React.FCC<Props> = ({
     <div className={'ImageUploadInput'}>
       <input
         {...props}
-        ref={ref}
+        ref={(inputRef) => {
+          ref.current = inputRef ?? undefined;
+
+          if (innerRef) {
+            innerRef(inputRef);
+          }
+        }}
         className={'hidden'}
         type={'file'}
         onInput={onInput}

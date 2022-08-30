@@ -13,10 +13,16 @@
 
     .AppSidebarItem {
         @apply rounded-md hover:text-current text-sm
-        items-center duration-300 border-transparent
-        dark:bg-black-400 px-3 w-full pr-12 w-full py-2 font-medium
-        flex space-x-3 hover:bg-gray-200 dark:hover:bg-black-300
+        items-center transition-colors border-transparent
+        dark:bg-black-400 px-3 w-full pr-12 w-full py-3 font-medium
+        flex space-x-3 hover:bg-gray-100 dark:hover:bg-black-300
         dark:hover:text-primary-500 transition;
+    }
+
+    .AppSidebarItemActive {
+        @apply bg-gray-100 text-current
+        dark:text-primary-500
+        dark:bg-black-300 font-bold;
     }
 
     .AppSidebarItemActive {

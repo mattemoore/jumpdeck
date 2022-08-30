@@ -1,5 +1,6 @@
 import auth from '../../support/auth.po';
 import configuration from '~/configuration';
+import authPo from '../../support/auth.po';
 
 describe(`Sign in`, () => {
   beforeEach(() => {
@@ -19,8 +20,8 @@ describe(`Sign in`, () => {
 
     describe(`when the request is successful`, () => {
       it('should take the user to the app home page', () => {
-        const email = Cypress.env('USER_EMAIL') as string;
-        const password = Cypress.env('USER_PASSWORD') as string;
+        const email = authPo.getDefaultUserEmail();
+        const password = authPo.getDefaultUserPassword();
 
         auth.signInWithEmailAndPassword(email, password);
         cy.url().should('contain', configuration.paths.appHome);
@@ -38,8 +39,8 @@ describe(`Sign in`, () => {
     it('should redirect to the route provided', () => {
       cy.visit(`/auth/sign-in?returnUrl=${returnUrl}`);
 
-      const email = Cypress.env('USER_EMAIL') as string;
-      const password = Cypress.env('USER_PASSWORD') as string;
+      const email = authPo.getDefaultUserEmail();
+      const password = authPo.getDefaultUserPassword();
 
       auth.signInWithEmailAndPassword(email, password);
       cy.url().should('contain', returnUrl);

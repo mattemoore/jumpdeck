@@ -31,17 +31,17 @@
 
     /* NavigationItem.tsx */
     .NavigationItem {
-        @apply leading-loose rounded-md
+        @apply leading-loose rounded-md justify-center
             transition-colors duration-300 dark:text-gray-300
-            text-gray-800 font-semibold flex items-center;
+            text-gray-800 flex items-center;
     }
 
     .NavigationItem a {
-        @apply px-4 py-2 block flex items-center rounded-md text-sm w-full;
+        @apply p-2 block flex font-medium items-center justify-center rounded-md text-sm w-full;
     }
 
     .NavigationItemActive a {
-        @apply font-semibold bg-primary-50 text-primary-900 dark:text-white dark:bg-black-300;
+        @apply bg-primary-50 text-primary-900 dark:text-white dark:bg-black-300;
     }
 
     .SecondaryNavigationMenu .NavigationItemActive a {
@@ -157,6 +157,11 @@
             focus:border-transparent focus-within:ring-2 shadow-sm
             dark:focus:bg-black-400 hover:border-gray-300
             dark:hover:border-black-200 relative flex;
+    }
+
+    .TextFieldInputContainerDisabled {
+        @apply bg-gray-100 hover:bg-gray-100 dark:bg-black-200
+            hover:dark:bg-black-200 cursor-not-allowed;
     }
 
     .TextFieldInputContainer input.TextFieldInput,
@@ -306,11 +311,12 @@
 
     /* Popover.tsx */
     button.PopoverButton {
-        @apply flex flex-row shadow hover:shadow-md py-2 px-3
-            dark:hover:bg-black-200 dark:active:bg-black-500
-            items-center w-full dark:bg-black-300 rounded-md
-            bg-gray-50 duration-300 hover:bg-gray-100
-            outline-primary-300 focus:outline-2;
+        @apply flex flex-row py-2 px-3
+        dark:hover:bg-black-300 dark:active:bg-black-200
+        items-center w-full dark:bg-black-400 rounded-md
+        bg-gray-100 hover:bg-gray-200 active:bg-gray-300 border
+        dark:border-black-300 text-sm dark:focus:bg-black-300
+        transition-colors outline-none dark:text-gray-400 border-transparent;
     }
 
     button.PopoverButtonActive {
@@ -318,8 +324,8 @@
     }
 
     .PopoverChevronDownIcon {
-        @apply ml-2 h-5 w-5 group-hover:text-opacity-80
-            transition ease-in-out duration-150;
+        @apply ml-2 h-4 w-4 group-hover:text-opacity-80
+        transition ease-in-out duration-150;
     }
 
     .PopoverPanel {
@@ -513,7 +519,8 @@
             hover:bg-gray-200 active:bg-gray-300 hover:border-gray-300
             dark:hover:border-black-300 dark:bg-black-300
             dark:hover:bg-black-400 dark:active:bg-black-500
-            dark:outline-black-300 transition-all duration-300 relative;
+            dark:outline-black-300 transition-all duration-300 relative
+            text-gray-600 dark:text-gray-200;
     }
 
     .Toggle {

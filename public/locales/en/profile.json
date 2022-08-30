@@ -9,6 +9,7 @@
   "updatePasswordLoading": "Updating password...",
   "updateProfileLoading": "Updating profile...",
   "displayNameLabel": "Your Name",
+  "emailLabel": "Your Email Address",
   "profilePictureLabel": "Your Photo",
   "updateProfileSubmitLabel": "Update Profile",
   "currentPassword": "Current Password",
@@ -23,6 +24,7 @@
   "updateEmailLoading": "Updating your email...",
   "updateEmailError": "Email not updated. Please try again",
   "passwordNotMatching": "Passwords do not match. Make sure you're using the correct password",
+  "passwordNotChanged": "Your password has not changed",
   "emailsNotMatching": "Emails do not match. Make sure you're using the correct email",
   "updatingSameEmail": "The email chosen is the same as your current one"
 }

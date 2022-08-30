@@ -5,13 +5,48 @@ describe(`Create Invite`, () => {
   const email = `invited-member@makerkit.dev`;
 
   before(() => {
-    cy.signIn(`/settings/organization/members`);
+    cy.signIn(`/settings/organization/members/invite`);
     organizationPageObject.switchToOrganization('Test');
   });
 
   describe(`Given a user invites a new member`, () => {
-    describe(`When the user is invited`, () => {
+    describe(`When entering current user's email address`, () => {
       before(() => {
+        const emailAddress = `test@makerkit.dev`;
+        organizationPageObject.$getInvitationEmailInput().type(emailAddress);
+        organizationPageObject.$getInviteMembersForm().submit();
+      });
+
+      it('should disallow the form submission', () => {
+        const validity = false;
+        getInviteMembersFormValidity().should('equal', validity);
+      });
+    });
+
+    describe(`When entering the same email address multiple times`, () => {
+      before(() => {
+        const emailAddress = `dupe@makerkit.dev`;
+
+        // here we add the same email into multiple rows
+        organizationPageObject
+          .$getInvitationEmailInput()
+          .clear()
+          .type(emailAddress);
+
+        organizationPageObject.$getAppendNewInviteButton().click();
+        organizationPageObject.$getInvitationEmailInput(1).type(emailAddress);
+        organizationPageObject.$getInviteMembersForm().submit();
+      });
+
+      it('should disallow the form submission', () => {
+        const validity = false;
+        getInviteMembersFormValidity().should('equal', validity);
+      });
+    });
+
+    describe(`When the user is invited successfully`, () => {
+      before(() => {
+        cy.reload();
         organizationPageObject.inviteMember(email, MembershipRole.Member);
       });
 
@@ -22,6 +57,7 @@ describe(`Create Invite`, () => {
 
     describe(`When the same user is invited again`, () => {
       it('should update the existing invite', () => {
+        organizationPageObject.navigateToInviteForm();
         organizationPageObject.inviteMember(email, MembershipRole.Admin);
 
         organizationPageObject.$getInvitedMemberByEmail(email).within(() => {
@@ -31,3 +67,11 @@ describe(`Create Invite`, () => {
     });
   });
 });
+
+function getInviteMembersFormValidity() {
+  return organizationPageObject.$getInviteMembersForm().then(($form) => {
+    const form = $form.get()[0] as HTMLFormElement;
+
+    return form.checkValidity();
+  });
+}
