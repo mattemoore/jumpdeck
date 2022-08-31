@@ -5,11 +5,8 @@ import dynamic from 'next/dynamic';
 import configuration from '~/configuration';
 import { useUserSession } from '~/core/hooks/use-user-session';
 
-import NavigationMenu from '~/core/ui/Navigation/NavigationMenu';
-import NavigationItem from '~/core/ui/Navigation/NavigationItem';
 import Heading from '~/core/ui/Heading';
 import Logo from '~/core/ui/Logo';
-
 import Container from '~/core/ui/Container';
 
 import ProfileDropdown from '../../ProfileDropdown';
@@ -21,13 +18,6 @@ const OrganizationsSelector = dynamic(
     ssr: false,
   }
 );
-
-const links = {
-  Docs: {
-    label: 'Docs',
-    path: '/docs',
-  },
-};
 
 const AppHeaderWithMenu: React.FCC = ({ children }) => {
   const userSession = useUserSession();
@@ -63,18 +53,10 @@ const AppHeaderWithMenu: React.FCC = ({ children }) => {
               </div>
 
               <div className={'flex flex-1 justify-end'}>
-                <div className={'flex items-center space-x-4'}>
-                  <div className={'hidden md:flex'}>
-                    <NavigationMenu>
-                      <NavigationItem link={links.Docs} />
-                    </NavigationMenu>
-                  </div>
-
-                  <ProfileDropdown
-                    user={userSession?.auth}
-                    signOutRequested={signOutRequested}
-                  />
-                </div>
+                <ProfileDropdown
+                  user={userSession?.auth}
+                  signOutRequested={signOutRequested}
+                />
               </div>
             </div>
           </div>

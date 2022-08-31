@@ -32,7 +32,7 @@
     /* NavigationItem.tsx */
     .NavigationItem {
         @apply leading-loose rounded-md justify-center
-            transition-colors duration-300 dark:text-gray-300
+            transition-colors dark:text-gray-300
             text-gray-800 flex items-center;
     }
 
@@ -50,7 +50,7 @@
 
     .BorderedNavigationMenu .NavigationItemActive a {
         @apply border-b-[0.2rem] border-primary-500 text-current
-            relative top-[1px] bg-transparent rounded-none;
+            relative top-[1px] bg-transparent rounded-none px-3;
     }
 
     .NavigationItemNotActive {

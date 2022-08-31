@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import type { User } from 'firebase/auth';
 
 import { useApiRequest } from '~/core/hooks/use-api';
@@ -9,17 +9,11 @@ import { useApiRequest } from '~/core/hooks/use-api';
  */
 export function useFetchOrganizationMembersMetadata(organizationId: string) {
   const path = `/api/organizations/${organizationId}/members`;
-  const [request, state] = useApiRequest<User[]>(path, 'GET');
-
-  const fetchMembersRequestCallback = useCallback(() => {
-    if (organizationId) {
-      void request();
-    }
-  }, [organizationId, request]);
+  const [fetchMembersRequest, state] = useApiRequest<User[]>(path, 'GET');
 
   useEffect(() => {
-    fetchMembersRequestCallback();
-  }, [organizationId, fetchMembersRequestCallback]);
+    void fetchMembersRequest();
+  }, [organizationId, fetchMembersRequest]);
 
   return state;
 }

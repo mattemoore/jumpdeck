@@ -4,7 +4,7 @@ import { getAppCheck } from 'firebase-admin/app-check';
 import { throwUnauthorizedException } from '~/core/http-exceptions';
 import configuration from '~/configuration';
 
-const FIREBASE_APPCHECK_HEADER = 'X-Firebase-AppCheck';
+const FIREBASE_APPCHECK_HEADER = 'x-firebase-appcheck';
 
 /**
  * @name appCheckMiddleware

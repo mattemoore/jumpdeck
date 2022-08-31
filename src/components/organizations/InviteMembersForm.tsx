@@ -114,7 +114,7 @@ const InviteMembersForm: React.FCC = () => {
 
           return (
             <Fragment key={field.id}>
-              <div className={'flex items-center justify-between md:space-x-2'}>
+              <div className={'flex items-center space-x-0.5 md:space-x-2'}>
                 <div className={'w-6/12 md:w-8/12'}>
                   <TextField.Input
                     data-cy={'invite-email-input'}

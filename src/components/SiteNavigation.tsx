@@ -38,7 +38,7 @@ const links: Record<string, Link> = {
 const SiteNavigation = () => {
   return (
     <>
-      <div className={'hidden items-center space-x-2 md:flex'}>
+      <div className={'hidden items-center space-x-0.5 md:flex'}>
         <NavigationMenu>
           <NavigationMenuItem link={links.Blog} />
           <NavigationMenuItem link={links.Docs} />
