@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { methodNotAllowedException } from '~/core/http-exceptions';
+import { throwMethodNotAllowedException } from '~/core/http-exceptions';
 
 /**
  * @param methods
@@ -7,7 +7,7 @@ import { methodNotAllowedException } from '~/core/http-exceptions';
  * It can be used as a middleware for your writing your API handlers. For
  * example, if you API only supports GET requests:
  *
- * export default withMiddleware(
+ * export default withPipe(
  *    withAdmin(),
  *    withMethodsGuard(['GET']),
  *    (req, res) => {...}
@@ -18,7 +18,7 @@ export function withMethodsGuard(methods: HttpMethod[]) {
     const method = req.method as HttpMethod;
 
     if (!methods.includes(method)) {
-      methodNotAllowedException(res, methods, method);
+      throwMethodNotAllowedException(res, methods, method);
     }
   };
 }

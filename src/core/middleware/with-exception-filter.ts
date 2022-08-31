@@ -20,7 +20,7 @@ import { getClientIp } from '~/core/generic/get-client-ip';
  *
  * export default function apiHandler(req, res) {
  *   return withExceptionFilter(req, res)(
- *     withMiddleware(
+ *     withPipe(
  *       withAdmin,
  *       yourApiHandler,
  *     )

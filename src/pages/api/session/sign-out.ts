@@ -4,7 +4,7 @@ import { destroyCookie } from 'nookies';
 
 import logger from '~/core/logger';
 
-import { withMiddleware } from '~/core/middleware/with-middleware';
+import { withPipe } from '~/core/middleware/with-pipe';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
 import { withAuthedUser } from '~/core/middleware/with-authed-user';
 import { withExceptionFilter } from '~/core/middleware/with-exception-filter';
@@ -48,7 +48,7 @@ export default function sessionSignOutHandler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const handler = withMiddleware(
+  const handler = withPipe(
     withMethodsGuard(SUPPORTED_HTTP_METHODS),
     withAuthedUser,
     signOut

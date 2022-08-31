@@ -8,11 +8,11 @@ import { inviteMembers } from '~/lib/server/organizations/invite-members';
 import { withAuthedUser } from '~/core/middleware/with-authed-user';
 
 import {
-  badRequestException,
-  internalServerErrorException,
+  throwBadRequestException,
+  throwInternalServerErrorException,
 } from '~/core/http-exceptions';
 
-import { withMiddleware } from '~/core/middleware/with-middleware';
+import { withPipe } from '~/core/middleware/with-pipe';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
 import { withExceptionFilter } from '~/core/middleware/with-exception-filter';
 
@@ -26,13 +26,13 @@ async function inviteMembersToOrganizationHandler(
   const queryParamsSchemaResult = getQueryParamsSchema().safeParse(query);
 
   if (!queryParamsSchemaResult.success) {
-    return badRequestException(res);
+    return throwBadRequestException(res);
   }
 
   const bodySchemaResult = getBodySchema().safeParse(req.body);
 
   if (!bodySchemaResult.success) {
-    return badRequestException(res);
+    return throwBadRequestException(res);
   }
 
   const { id: organizationId } = queryParamsSchemaResult.data;
@@ -65,7 +65,7 @@ async function inviteMembersToOrganizationHandler(
 
     logger.debug(e);
 
-    return internalServerErrorException(res);
+    return throwInternalServerErrorException(res);
   }
 }
 
@@ -73,7 +73,7 @@ export default function inviteHandler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const handler = withMiddleware(
+  const handler = withPipe(
     withMethodsGuard(SUPPORTED_METHODS),
     withAuthedUser,
     inviteMembersToOrganizationHandler

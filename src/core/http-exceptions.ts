@@ -1,39 +1,40 @@
 import { NextApiResponse } from 'next';
 import { HttpStatusCode } from '~/core/generic';
+import { ApiError } from 'next/dist/server/api-utils';
 
-export const internalServerErrorException = buildException(
+export const throwInternalServerErrorException = buildException(
   HttpStatusCode.InternalServerError
 );
 
-export const badRequestException = buildException(HttpStatusCode.BadRequest);
-export const notFoundException = buildException(HttpStatusCode.NotFound);
+export const throwBadRequestException = buildException(
+  HttpStatusCode.BadRequest
+);
+export const throwNotFoundException = buildException(HttpStatusCode.NotFound);
 
-export const methodNotAllowedException = function methodNotAllowed(
+export const throwMethodNotAllowedException = function methodNotAllowed(
   res: NextApiResponse,
   allowedMethodsList: string[],
   methodNotAllowed?: string | undefined
 ) {
+  const errorMessage = `Method ${
+    methodNotAllowed ?? '[unknown]'
+  } is not allowed. Please use one of the following methods: ${allowedMethodsList.join(
+    ', '
+  )}`;
+
   res.setHeader('Allow', allowedMethodsList);
 
-  res
-    .status(HttpStatusCode.MethodNotAllowed)
-    .end(
-      `Method ${
-        methodNotAllowed ?? '[unknown]'
-      } is not allowed. Please use one of the following methods: ${allowedMethodsList.join(
-        ', '
-      )}`
-    );
+  throw new ApiError(HttpStatusCode.MethodNotAllowed, errorMessage);
 };
 
-export const unauthorizedException = buildException(
+export const throwUnauthorizedException = buildException(
   HttpStatusCode.Unauthorized
 );
 
-export const forbiddenException = buildException(HttpStatusCode.Forbidden);
+export const throwForbiddenException = buildException(HttpStatusCode.Forbidden);
 
 function buildException(statusCode: HttpStatusCode) {
-  return (res: NextApiResponse, body?: UnknownObject) => {
-    res.status(statusCode).send(body ?? { success: false });
+  return (res: NextApiResponse, message?: string) => {
+    throw new ApiError(statusCode, message ?? `Unknown Error`);
   };
 }

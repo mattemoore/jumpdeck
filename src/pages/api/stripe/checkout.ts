@@ -6,7 +6,7 @@ import logger from '~/core/logger';
 import { HttpStatusCode } from '~/core/generic';
 
 import { withAuthedUser } from '~/core/middleware/with-authed-user';
-import { withMiddleware } from '~/core/middleware/with-middleware';
+import { withPipe } from '~/core/middleware/with-pipe';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
 import { getApiRefererPath } from '~/core/generic/get-api-referer-path';
 
@@ -77,7 +77,7 @@ async function checkoutsSessionHandler(
   }
 }
 
-export default withMiddleware(
+export default withPipe(
   withMethodsGuard(SUPPORTED_METHODS),
   withAuthedUser,
   checkoutsSessionHandler

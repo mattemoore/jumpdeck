@@ -4,8 +4,8 @@ import { z } from 'zod';
 import logger from '~/core/logger';
 
 import {
-  badRequestException,
-  unauthorizedException,
+  throwBadRequestException,
+  throwUnauthorizedException,
 } from '~/core/http-exceptions';
 
 import {
@@ -15,7 +15,7 @@ import {
 } from '~/lib/server/auth/save-session-cookie';
 
 import { withAdmin } from '~/core/middleware/with-admin';
-import { withMiddleware } from '~/core/middleware/with-middleware';
+import { withPipe } from '~/core/middleware/with-pipe';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
 import { withExceptionFilter } from '~/core/middleware/with-exception-filter';
 
@@ -34,7 +34,7 @@ async function signIn(req: NextApiRequest, res: NextApiResponse) {
   const body = getBodySchema().safeParse(req.body);
 
   if (!body.success) {
-    return badRequestException(res);
+    return throwBadRequestException(res);
   }
 
   // this is the ID token that is retrieved
@@ -45,7 +45,7 @@ async function signIn(req: NextApiRequest, res: NextApiResponse) {
   // we need to check that the CSRF token in the body
   // matches the relative token in the cookies
   if (csrfToken !== cookies.csrfToken) {
-    return unauthorizedException(res);
+    return throwUnauthorizedException(res);
   }
 
   try {
@@ -59,7 +59,7 @@ async function signIn(req: NextApiRequest, res: NextApiResponse) {
   } catch (e) {
     logger.error(e);
 
-    return unauthorizedException(res);
+    return throwUnauthorizedException(res);
   }
 }
 
@@ -67,7 +67,7 @@ export default function sessionSignInHandler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const handler = withMiddleware(
+  const handler = withPipe(
     withMethodsGuard(SUPPORTED_HTTP_METHODS),
     withAdmin,
     signIn

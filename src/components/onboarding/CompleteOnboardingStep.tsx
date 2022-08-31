@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { ScalingSquaresSpinner } from 'react-epic-spinners';
+import { SpringSpinner } from 'react-epic-spinners';
 
 import { useApiRequest } from '~/core/hooks/use-api';
 import Alert from '~/core/ui/Alert';
@@ -50,7 +50,7 @@ export const CompleteOnboardingStep: React.FCC<{
   return (
     <div className={'flex flex-1 items-center space-x-8'}>
       <span>
-        <ScalingSquaresSpinner color={'currentColor'} />
+        <SpringSpinner size={36} color={'currentColor'} />
       </span>
 
       <span>Getting Started. Please wait...</span>

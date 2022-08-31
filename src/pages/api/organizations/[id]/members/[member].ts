@@ -11,8 +11,8 @@ import {
   updateMemberRole,
 } from '~/lib/server/organizations/memberships';
 
-import { badRequestException } from '~/core/http-exceptions';
-import { withMiddleware } from '~/core/middleware/with-middleware';
+import { throwBadRequestException } from '~/core/http-exceptions';
+import { withPipe } from '~/core/middleware/with-pipe';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
 import { withExceptionFilter } from '~/core/middleware/with-exception-filter';
 
@@ -28,7 +28,7 @@ async function organizationMemberHandler(
   const queryParamsSchema = getQueryParamsSchema().safeParse(query);
 
   if (!queryParamsSchema.success) {
-    return badRequestException(res);
+    return throwBadRequestException(res);
   }
 
   const payload = {
@@ -63,7 +63,7 @@ export default function membersHandler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const handler = withMiddleware(
+  const handler = withPipe(
     withMethodsGuard(SUPPORTED_HTTP_METHODS),
     withAuthedUser,
     organizationMemberHandler

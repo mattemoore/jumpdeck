@@ -2,12 +2,16 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getAuth } from 'firebase-admin/auth';
 
 import { withAuthedUser } from '~/core/middleware/with-authed-user';
-import { withMiddleware } from '~/core/middleware/with-middleware';
+import { withPipe } from '~/core/middleware/with-pipe';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
 import { getCurrentOrganization } from '~/lib/server/organizations/get-current-organization';
-import { forbiddenException, notFoundException } from '~/core/http-exceptions';
+import {
+  throwForbiddenException,
+  throwNotFoundException,
+} from '~/core/http-exceptions';
+import { withExceptionFilter } from '~/core/middleware/with-exception-filter';
 
-export async function organizationTokenHandler(
+async function organizationTokenHandler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
@@ -15,20 +19,20 @@ export async function organizationTokenHandler(
   const organizationId = req.cookies.organizationId;
 
   if (!userId || !organizationId) {
-    return forbiddenException(res);
+    return throwForbiddenException(res);
   }
 
   const organization = await getCurrentOrganization(userId);
 
   if (!organization) {
-    return forbiddenException(res);
+    return throwForbiddenException(res);
   }
 
   const auth = getAuth();
   const user = await auth.getUser(userId);
 
   if (!user) {
-    return notFoundException(res);
+    return throwNotFoundException(res);
   }
 
   await auth.setCustomUserClaims(userId, {
@@ -39,8 +43,12 @@ export async function organizationTokenHandler(
   return res.send({ success: true });
 }
 
-export default withMiddleware(
-  withMethodsGuard(['POST']),
-  withAuthedUser,
-  organizationTokenHandler
-);
+export default function (req: NextApiRequest, res: NextApiResponse) {
+  const handler = withPipe(
+    withMethodsGuard(['POST']),
+    withAuthedUser,
+    organizationTokenHandler
+  );
+
+  return withExceptionFilter(req, res)(handler);
+}

@@ -1,5 +1,5 @@
 import { withAdmin } from './with-admin';
-import { withMiddleware } from '~/core/middleware/with-middleware';
+import { withPipe } from '~/core/middleware/with-pipe';
 import { authMiddleware } from '../firebase/admin/auth/auth-middleware';
 
 /**
@@ -15,7 +15,7 @@ import { authMiddleware } from '../firebase/admin/auth/auth-middleware';
  *
  * Or use with a pipe:
  *
- * export default withMiddleware(
+ * export default withPipe(
  *    withAuthedUser,
  *    (req, res) => {
  *      res.send([]);
@@ -23,4 +23,4 @@ import { authMiddleware } from '../firebase/admin/auth/auth-middleware';
  * )
  *
  */
-export const withAuthedUser = withMiddleware(withAdmin, authMiddleware);
+export const withAuthedUser = withPipe(withAdmin, authMiddleware);

@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getAppCheck } from 'firebase-admin/app-check';
-import { forbiddenException } from '~/core/http-exceptions';
+
+import { throwUnauthorizedException } from '~/core/http-exceptions';
+import configuration from '~/configuration';
 
 const FIREBASE_APPCHECK_HEADER = 'X-Firebase-AppCheck';
 
@@ -15,9 +17,9 @@ const FIREBASE_APPCHECK_HEADER = 'X-Firebase-AppCheck';
  *   await withAppCheck(req, res);
  * }
  *
- * 2) Use with withMiddleware
+ * 2) Use with withPipe
  *
- * export default withMiddleware(
+ * export default withPipe(
  *   withAdmin,
  *   withAppCheck,
  *   (req, res) => {
@@ -32,19 +34,16 @@ const FIREBASE_APPCHECK_HEADER = 'X-Firebase-AppCheck';
  * Use if:
  * - You expect the requests to come from the application UI
  */
-export async function withAppCheck(req: NextApiRequest, res: NextApiResponse) {
-  const appCheck = getAppCheck();
+export function withAppCheck(req: NextApiRequest, res: NextApiResponse) {
+  if (!configuration.appCheckSiteKey) {
+    return;
+  }
+
   const token = req.headers[FIREBASE_APPCHECK_HEADER];
 
-  const forbidden = () => forbiddenException(res);
-
   if (!token || typeof token !== 'string') {
-    return forbidden();
+    return throwUnauthorizedException(res);
   }
 
-  try {
-    await appCheck.verifyToken(token);
-  } catch (e) {
-    return forbidden();
-  }
+  return getAppCheck().verifyToken(token);
 }

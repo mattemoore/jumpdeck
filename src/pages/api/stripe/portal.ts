@@ -11,7 +11,7 @@ import { withAuthedUser } from '~/core/middleware/with-authed-user';
 import { getOrganizationByCustomerId } from '~/lib/server/organizations/get-organization-by-customer-id';
 import { getUserRoleByOrganization } from '~/lib/server/organizations/get-user-role-by-organization';
 import { canChangeBilling } from '~/lib/organizations/permissions';
-import { withMiddleware } from '~/core/middleware/with-middleware';
+import { withPipe } from '~/core/middleware/with-pipe';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
 import { getApiRefererPath } from '~/core/generic/get-api-referer-path';
 
@@ -71,7 +71,7 @@ export default function stripePortalHandler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  return withMiddleware(
+  return withPipe(
     withMethodsGuard(SUPPORTED_HTTP_METHODS),
     withAuthedUser,
     billingPortalRedirectHandler

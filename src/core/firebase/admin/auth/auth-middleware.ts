@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getUserFromSessionCookie } from './get-user-from-session-cookie';
-import { forbiddenException } from '~/core/http-exceptions';
+import { throwForbiddenException } from '~/core/http-exceptions';
 
 /**
  * @name authMiddleware
@@ -15,23 +15,19 @@ export async function authMiddleware(
   res: NextApiResponse
 ) {
   const session = req.cookies.session;
-  const forbidden = () => forbiddenException(res);
+  const forbidden = () => throwForbiddenException(res);
 
   if (!session) {
     return forbidden();
   }
 
-  try {
-    const user = await getUserFromSessionCookie(session);
+  const user = await getUserFromSessionCookie(session);
 
-    if (user) {
-      // Attaching the current Firebase user object (DecodedIdToken) to
-      // NextApiRequest so that it can be used in any API handler
-      req.firebaseUser = user;
-    } else {
-      return forbidden();
-    }
-  } catch (e) {
+  if (user) {
+    // Attaching the current Firebase user object (DecodedIdToken) to
+    // NextApiRequest so that it can be used in any API handler
+    req.firebaseUser = user;
+  } else {
     return forbidden();
   }
 }

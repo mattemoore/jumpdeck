@@ -7,11 +7,11 @@ import { getStripeInstance } from '~/core/stripe/get-stripe';
 import { StripeWebhooks } from '~/core/stripe/stripe-webhooks.enum';
 
 import {
-  badRequestException,
-  internalServerErrorException,
+  throwBadRequestException,
+  throwInternalServerErrorException,
 } from '~/core/http-exceptions';
 
-import { withMiddleware } from '~/core/middleware/with-middleware';
+import { withPipe } from '~/core/middleware/with-pipe';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
 import { getUserInfoById } from '~/core/firebase/admin/auth/get-user-info-by-id';
 import { withAdmin } from '~/core/middleware/with-admin';
@@ -58,7 +58,7 @@ async function checkoutWebhooksHandler(
 
   // verify signature header is not missing
   if (!signature) {
-    return badRequestException(res);
+    return throwBadRequestException(res);
   }
 
   const rawBody = await getRawBody(req);
@@ -140,7 +140,7 @@ async function checkoutWebhooksHandler(
 
     logger.debug(e);
 
-    return internalServerErrorException(res);
+    return throwInternalServerErrorException(res);
   }
 }
 
@@ -148,7 +148,7 @@ export default function stripeCheckoutsWebhooksHandler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const handler = withMiddleware(
+  const handler = withPipe(
     withMethodsGuard(SUPPORTED_HTTP_METHODS),
     withAdmin,
     checkoutWebhooksHandler

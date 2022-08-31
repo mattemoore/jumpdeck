@@ -15,6 +15,7 @@ import OrganizationMembersActionsContainer from './OrganizationMembersActionsCon
 import RoleBadge from './RoleBadge';
 import ProfileAvatar from '../ProfileAvatar';
 import LoadingMembersSpinner from '~/components/organizations/LoadingMembersSpinner';
+import Alert from '~/core/ui/Alert';
 
 const OrganizationMembersList: React.FCC<{
   organizationId: string;
@@ -28,10 +29,21 @@ const OrganizationMembersList: React.FCC<{
 
   // fetch the metadata from the admin
   // so that we can display email/name and profile picture
-  const { data: membersMetadata, loading } =
-    useFetchOrganizationMembersMetadata(organizationId);
+  const {
+    data: membersMetadata,
+    loading,
+    error,
+  } = useFetchOrganizationMembersMetadata(organizationId);
 
   const isLoading = status === 'loading' || loading;
+
+  if (error) {
+    return (
+      <Alert type={'error'}>
+        <Trans i18nKey={'organization:loadMembersError'} />
+      </Alert>
+    );
+  }
 
   if (isLoading) {
     return (

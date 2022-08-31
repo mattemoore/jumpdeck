@@ -3,13 +3,13 @@ import { NextApiRequest, NextApiResponse } from 'next';
 type Middleware = (req: NextApiRequest, res: NextApiResponse) => unknown;
 
 /**
- * @name withMiddleware
+ * @name withPipe
  * @description combine multiple middleware before handling your API endpoint
  *
  * For example, any function that accepts (req: NextApiRequest, res:
  * NextApiResponse) can be chained
  *
- * export default withMiddleware(
+ * export default withPipe(
  *   withAdmin,
  *   withAuthedUser,
  *   withMethodsGuard(['GET']),
@@ -27,8 +27,8 @@ type Middleware = (req: NextApiRequest, res: NextApiResponse) => unknown;
  *
  * @param middlewares
  */
-export function withMiddleware(...middlewares: Middleware[]) {
-  return async function withMiddlewareHandler(
+export function withPipe(...middlewares: Middleware[]) {
+  return async function withPipeHandler(
     req: NextApiRequest,
     res: NextApiResponse
   ) {
