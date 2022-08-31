@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext } from 'next';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { useRouter } from 'next/router';
 import Head from 'next/head';
@@ -20,14 +20,21 @@ import Button from '~/core/ui/Button';
 
 export const SignIn: React.FCC = () => {
   const router = useRouter();
+
   const signUpPath = configuration.paths.signUp;
+  const appHome = configuration.paths.appHome;
 
   const onSignIn = useCallback(async () => {
-    const appHome = configuration.paths.appHome;
     const path = getRedirectPathWithoutSearchParam(appHome);
 
     return router.push(path);
   }, [router]);
+
+  // let's prefetch the application home
+  // to avoid slow redirects
+  useEffect(() => {
+    void router.prefetch(appHome);
+  }, []);
 
   return (
     <Layout>

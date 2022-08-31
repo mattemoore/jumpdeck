@@ -27,14 +27,14 @@ const OrganizationMembersInvitePage: React.FCC = () => {
 
         <SettingsContentContainer>
           <SettingsTile>
+            <div>
+              <GoBackToMembersButton />
+            </div>
+
             <div className={'flex space-x-4'}>
               <Heading type={3}>
                 <Trans i18nKey={'organization:inviteMembersPageHeading'} />
               </Heading>
-
-              <div>
-                <GoBackToMembersButton />
-              </div>
             </div>
 
             <InviteMembersForm />
@@ -59,7 +59,7 @@ function GoBackToMembersButton() {
       href={'/settings/organization/members'}
     >
       <span className={'flex items-center space-x-1'}>
-        <ArrowLeftIcon className={'h-4'} />
+        <ArrowLeftIcon className={'h-3'} />
 
         <span>
           <Trans i18nKey={'organization:goBackToMembersPage'} />

@@ -59,14 +59,15 @@ const EmailPasswordSignInForm: React.FCC<{
         onSignIn();
       }
     },
-    [signIn, status.loading, createSession]
+    [
+      signIn,
+      status.loading,
+      createSession,
+      createCsrfToken,
+      sessionRequest,
+      onSignIn,
+    ]
   );
-
-  useEffect(() => {
-    if (!status.data) {
-      return;
-    }
-  }, [createCsrfToken, onSignIn, sessionRequest, status.data]);
 
   return (
     <form className={'w-full'} onSubmit={handleSubmit(signInWithCredentials)}>

@@ -1,18 +1,18 @@
 import { PropsWithChildren } from 'react';
 import Link from 'next/link';
-import { FulfillingBouncingCircleSpinner } from 'react-epic-spinners';
+import { SpringSpinner } from 'react-epic-spinners';
 
 import If from '~/core/ui/If';
 
 type Color = 'primary' | 'secondary' | 'transparent' | 'danger' | 'custom';
 type Size = 'normal' | 'small' | 'large' | 'custom';
-type Style = `normal` | `outline` | `flat`;
+type Variant = `normal` | `outline` | `flat`;
 
 type Props = React.ButtonHTMLAttributes<unknown> & {
   block?: boolean;
   color?: Color;
   size?: Size;
-  style?: Style;
+  variant?: Variant;
   loading?: boolean;
   href?: string;
 };
@@ -41,9 +41,9 @@ const getSizeClasses = (size: Size) => {
   return sizes[size];
 };
 
-const getStyleClasses = (style: Style, color: Color = `primary`) => {
+const getVariantClasses = (variant: Variant, color: Color = `primary`) => {
   // cannot be too smart here due to purge-js
-  const styles: Record<Style, Record<Color, string>> = {
+  const variants: Record<Variant, Record<Color, string>> = {
     normal: {
       primary: ``,
       danger: ``,
@@ -67,14 +67,14 @@ const getStyleClasses = (style: Style, color: Color = `primary`) => {
     },
   };
 
-  return styles[style][color];
+  return variants[variant][color];
 };
 
 const Button: React.FCC<Props> = ({
   children,
   color,
   size,
-  style,
+  variant,
   block,
   loading,
   href,
@@ -82,18 +82,18 @@ const Button: React.FCC<Props> = ({
 }) => {
   const defaultColor: Color = `primary`;
   const defaultSize: Size = `normal`;
-  const defaultStyle: Style = `normal`;
+  const defaultVariant: Variant = `normal`;
 
   const useColor = color ?? defaultColor;
   const useSize = size ?? defaultSize;
-  const useStyle = style ?? defaultStyle;
+  const useVariant = variant ?? defaultVariant;
 
   const className = [
-    `Button`,
+    `Button relative`,
     getColorClasses(useColor),
-    getStyleClasses(useStyle, useColor),
+    getVariantClasses(useVariant, useColor),
     block ? `w-full` : ``,
-    loading ? `opacity-70` : ``,
+    loading ? `opacity-90` : ``,
     props.className ?? '',
   ]
     .filter(Boolean)
@@ -105,31 +105,27 @@ const Button: React.FCC<Props> = ({
       className={className}
       disabled={loading || props.disabled}
     >
-      <If condition={loading}>
-        <span className={getSizeClasses(useSize)}>
-          <Animation style={style || 'normal'} />
-        </span>
-      </If>
+      <InnerButtonContainerElement
+        href={href}
+        className={getSizeClasses(useSize)}
+      >
+        <span className={'flex items-center space-x-2.5'}>
+          <If condition={loading}>
+            <Animation />
+          </If>
 
-      <If condition={!loading}>
-        <InnerButtonContainerElement
-          href={href}
-          className={getSizeClasses(useSize)}
-        >
-          {children}
-        </InnerButtonContainerElement>
-      </If>
+          <span>{children}</span>
+        </span>
+      </InnerButtonContainerElement>
     </button>
   );
 };
 
-function Animation({ style }: { style: Style }) {
-  const color = style === 'normal' ? `#323232` : `currentColor`;
-
+function Animation() {
   return (
-    <FulfillingBouncingCircleSpinner
+    <SpringSpinner
       className={'mx-auto'}
-      color={color}
+      color={'currentColor'}
       size={20}
       animationDuration={2000}
     />

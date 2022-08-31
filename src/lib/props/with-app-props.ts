@@ -132,6 +132,8 @@ export async function withAppProps(
   } catch (e) {
     console.debug(e);
 
+    clearAuthenticationCookies(ctx);
+
     // if the user is signed out, we save the requested URL
     // so, we can redirect them to where they originally navigated to
     return redirectToLogin(ctx.resolvedUrl, redirectPath);
@@ -205,4 +207,16 @@ function setOrganizationIdCustomClaims(
     ...existingClaims,
     organizationId,
   });
+}
+
+/**
+ * @name clearAuthenticationCookies
+ * @description When authentication fails, we clear session cookies that may
+ * be stale
+ * @param ctx
+ */
+function clearAuthenticationCookies(ctx: GetServerSidePropsContext) {
+  nookies.destroy(ctx, 'session');
+  nookies.destroy(ctx, 'sessionExpiresAt');
+  nookies.destroy(ctx, 'csrfToken');
 }

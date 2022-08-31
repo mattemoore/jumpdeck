@@ -11,6 +11,7 @@ import RouteShellWithSidebar from './layouts/sidebar/RouteShellWithSidebar';
 import GuardedPage from '~/core/firebase/components/GuardedPage';
 import SentryProvider from '~/components/SentryProvider';
 import { LayoutStyle } from '~/core/layout-style';
+import Layout from '~/core/ui/Layout';
 
 const RouteShell: React.FCC<{
   title: string;
@@ -20,7 +21,7 @@ const RouteShell: React.FCC<{
   const layout = style ?? configuration.navigation.style;
 
   return (
-    <>
+    <Layout>
       <Head>
         <title key="title">{title}</title>
       </Head>
@@ -36,7 +37,7 @@ const RouteShell: React.FCC<{
           </SentryProvider>
         </GuardedPage>
       </FirebaseFirestoreProvider>
-    </>
+    </Layout>
   );
 };
 

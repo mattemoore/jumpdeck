@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -17,11 +17,19 @@ import Button from '~/core/ui/Button';
 
 const SignUp: React.FCC = () => {
   const router = useRouter();
+
   const signInPath = configuration.paths.signIn;
+  const onboarding = configuration.paths.onboarding;
 
   const onSignUp = useCallback(() => {
-    return router.push(configuration.paths.onboarding);
+    return router.push(onboarding);
   }, [router]);
+
+  // let's prefetch the onboarding route
+  // to avoid slow redirects
+  useEffect(() => {
+    void router.prefetch(onboarding);
+  }, []);
 
   return (
     <>

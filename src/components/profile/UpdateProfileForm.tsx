@@ -146,7 +146,7 @@ function UpdateProfileForm({
         </TextField>
 
         <div>
-          <Button loading={loading}>
+          <Button className={'w-full md:w-auto'} loading={loading}>
             <Trans i18nKey={'profile:updateProfileSubmitLabel'} />
           </Button>
         </div>

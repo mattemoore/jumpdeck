@@ -152,7 +152,7 @@ const UpdateEmailForm: React.FC<{ user: User }> = ({ user }) => {
         </TextField>
 
         <div>
-          <Button loading={state.loading}>
+          <Button className={'w-full md:w-auto'} loading={state.loading}>
             <Trans i18nKey={'profile:updateEmailSubmitLabel'} />
           </Button>
         </div>

@@ -19,6 +19,7 @@ import IconButton from '~/core/ui/IconButton';
 
 import MembershipRoleSelector from './MembershipRoleSelector';
 import { useUserSession } from '~/core/hooks/use-user-session';
+import Tooltip from '~/core/ui/Tooltip';
 
 type InviteModel = ReturnType<typeof memberFactory>;
 
@@ -113,8 +114,8 @@ const InviteMembersForm: React.FCC = () => {
 
           return (
             <Fragment key={field.id}>
-              <div className={'space-between flex items-center space-x-3'}>
-                <div className={'w-8/12'}>
+              <div className={'flex items-center justify-between md:space-x-2'}>
+                <div className={'w-6/12 md:w-8/12'}>
                   <TextField.Input
                     data-cy={'invite-email-input'}
                     name={emailControl.name}
@@ -131,7 +132,7 @@ const InviteMembersForm: React.FCC = () => {
                   />
                 </div>
 
-                <div className={'w-3/12'}>
+                <div className={'w-4/12 md:w-3/12'}>
                   <MembershipRoleSelector
                     value={field.role}
                     onChange={(role) => {
@@ -140,20 +141,25 @@ const InviteMembersForm: React.FCC = () => {
                   />
                 </div>
 
-                <div className={'w-1/12'}>
-                  <If condition={fields.length > 1}>
-                    <IconButton
-                      data-cy={'remove-invite-button'}
-                      label={t('removeInviteButtonLabel')}
-                      onClick={() => {
-                        remove(index);
-                        clearErrors(emailInputName);
-                      }}
+                <If condition={fields.length > 1}>
+                  <div className={'w-1/12'}>
+                    <Tooltip
+                      className={'flex justify-center'}
+                      content={t('removeInviteButtonLabel')}
                     >
-                      <XMarkIcon className={'h-5'} />
-                    </IconButton>
-                  </If>
-                </div>
+                      <IconButton
+                        data-cy={'remove-invite-button'}
+                        label={t('removeInviteButtonLabel')}
+                        onClick={() => {
+                          remove(index);
+                          clearErrors(emailInputName);
+                        }}
+                      >
+                        <XMarkIcon className={'h-5'} />
+                      </IconButton>
+                    </Tooltip>
+                  </div>
+                </If>
               </div>
             </Fragment>
           );

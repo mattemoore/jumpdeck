@@ -159,6 +159,7 @@ const UpdateOrganizationForm = () => {
 
         <div>
           <Button
+            className={'w-full md:w-auto'}
             data-cy={'update-organization-submit-button'}
             loading={loading}
           >

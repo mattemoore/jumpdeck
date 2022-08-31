@@ -43,21 +43,24 @@ const EmailPasswordSignUpForm: React.FCC<{
     }
   }, [state.error, onError]);
 
-  const createSession = useCallback(async (user: User) => {
-    const idToken = await user.getIdToken();
-    const csrfToken = createCsrfToken();
+  const createSession = useCallback(
+    async (user: User) => {
+      const idToken = await user.getIdToken();
+      const csrfToken = createCsrfToken();
 
-    // using the ID token, we will make a request to initiate the session
-    // to make SSR possible via session cookie
-    await sessionRequest({
-      idToken,
-      csrfToken,
-    });
+      // using the ID token, we will make a request to initiate the session
+      // to make SSR possible via session cookie
+      await sessionRequest({
+        idToken,
+        csrfToken,
+      });
 
-    // we notify the parent component that
-    // the user signed up successfully, so they can be redirected
-    onSignUp();
-  }, []);
+      // we notify the parent component that
+      // the user signed up successfully, so they can be redirected
+      onSignUp();
+    },
+    [onSignUp, sessionRequest, createCsrfToken]
+  );
 
   useEffect(() => {
     callOnErrorCallback();
