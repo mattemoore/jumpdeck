@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -18,10 +18,13 @@ import {
   OrganizationInfoStep,
   OrganizationInfoStepData,
 } from '~/components/onboarding/OrganizationInfoStep';
+import Layout from '~/core/ui/Layout';
 
 interface Data {
   organization: string;
 }
+
+const appHome = configuration.paths.appHome;
 
 const Onboarding = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -39,14 +42,17 @@ const Onboarding = () => {
     []
   );
 
+  // prefetch application home route
+  useEffect(() => {
+    void router.prefetch(appHome);
+  }, [router]);
+
   const onComplete = useCallback(() => {
-    void (async () => {
-      return router.push(configuration.paths.appHome);
-    })();
+    void router.push(appHome);
   }, [router]);
 
   return (
-    <>
+    <Layout>
       <Head>
         <title key="title">Onboarding</title>
       </Head>
@@ -76,7 +82,7 @@ const Onboarding = () => {
           </If>
         </div>
       </div>
-    </>
+    </Layout>
   );
 };
 

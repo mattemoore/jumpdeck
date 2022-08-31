@@ -25,7 +25,6 @@ const EmailPasswordSignUpForm: React.FCC<{
   const [signUp, state] = useSignUpWithEmailAndPassword();
 
   const loading = state.loading || sessionState.loading;
-  const user = state.data?.user;
 
   const { register, handleSubmit } = useForm({
     defaultValues: {
@@ -78,7 +77,7 @@ const EmailPasswordSignUpForm: React.FCC<{
         await createSession(credential.user);
       }
     },
-    [loading, signUp]
+    [loading, signUp, createSession]
   );
 
   return (

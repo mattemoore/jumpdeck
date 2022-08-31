@@ -15,11 +15,11 @@ import Hero from '~/core/ui/Hero';
 import Logo from '~/core/ui/Logo';
 import Button from '~/core/ui/Button';
 
+const signInPath = configuration.paths.signIn;
+const onboarding = configuration.paths.onboarding;
+
 const SignUp: React.FCC = () => {
   const router = useRouter();
-
-  const signInPath = configuration.paths.signIn;
-  const onboarding = configuration.paths.onboarding;
 
   const onSignUp = useCallback(() => {
     return router.push(onboarding);
@@ -29,7 +29,7 @@ const SignUp: React.FCC = () => {
   // to avoid slow redirects
   useEffect(() => {
     void router.prefetch(onboarding);
-  }, []);
+  }, [router]);
 
   return (
     <>

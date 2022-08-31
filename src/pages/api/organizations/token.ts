@@ -5,13 +5,15 @@ import { withAuthedUser } from '~/core/middleware/with-authed-user';
 import { withPipe } from '~/core/middleware/with-pipe';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
 import { getCurrentOrganization } from '~/lib/server/organizations/get-current-organization';
+
 import {
   throwForbiddenException,
   throwNotFoundException,
 } from '~/core/http-exceptions';
+
 import { withExceptionFilter } from '~/core/middleware/with-exception-filter';
 
-async function organizationTokenHandler(
+async function setCurrentOrganizationCustomClaims(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
@@ -43,11 +45,14 @@ async function organizationTokenHandler(
   return res.send({ success: true });
 }
 
-export default function (req: NextApiRequest, res: NextApiResponse) {
+export default function organizationTokenHandler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const handler = withPipe(
     withMethodsGuard(['POST']),
     withAuthedUser,
-    organizationTokenHandler
+    setCurrentOrganizationCustomClaims
   );
 
   return withExceptionFilter(req, res)(handler);

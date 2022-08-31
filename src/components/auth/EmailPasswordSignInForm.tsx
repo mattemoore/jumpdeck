@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import Link from 'next/link';
 import type { User } from 'firebase/auth';
 import { Trans } from 'next-i18next';
@@ -34,12 +34,15 @@ const EmailPasswordSignInForm: React.FCC<{
 
   const isLoading = sessionState.loading || status.loading;
 
-  const createSession = useCallback(async (user: User) => {
-    const idToken = await user.getIdToken();
-    const csrfToken = createCsrfToken();
+  const createSession = useCallback(
+    async (user: User) => {
+      const idToken = await user.getIdToken();
+      const csrfToken = createCsrfToken();
 
-    return sessionRequest({ idToken, csrfToken });
-  }, []);
+      return sessionRequest({ idToken, csrfToken });
+    },
+    [createCsrfToken, sessionRequest]
+  );
 
   const signInWithCredentials = useCallback(
     async (params: { email: string; password: string }) => {
@@ -59,14 +62,7 @@ const EmailPasswordSignInForm: React.FCC<{
         onSignIn();
       }
     },
-    [
-      signIn,
-      status.loading,
-      createSession,
-      createCsrfToken,
-      sessionRequest,
-      onSignIn,
-    ]
+    [signIn, status.loading, createSession, onSignIn]
   );
 
   return (

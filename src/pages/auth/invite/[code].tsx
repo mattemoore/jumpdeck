@@ -252,7 +252,7 @@ export default InvitePage;
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   // we need to create the admin app before
   // we can use Firestore on the server-side
-  await initializeFirebaseAdminApp();
+  initializeFirebaseAdminApp();
 
   const { props } = await withUserProps(ctx);
   const userId = props.session?.uid;

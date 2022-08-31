@@ -33,7 +33,7 @@ export async function withAppProps(
   const { redirectPath, requirePlans } = mergedOptions;
 
   try {
-    await initializeFirebaseAdminApp();
+    initializeFirebaseAdminApp();
 
     const metadata = await getUserAuthMetadata(ctx);
 

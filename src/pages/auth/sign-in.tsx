@@ -18,11 +18,11 @@ import Hero from '~/core/ui/Hero';
 import Logo from '~/core/ui/Logo';
 import Button from '~/core/ui/Button';
 
+const signUpPath = configuration.paths.signUp;
+const appHome = configuration.paths.appHome;
+
 export const SignIn: React.FCC = () => {
   const router = useRouter();
-
-  const signUpPath = configuration.paths.signUp;
-  const appHome = configuration.paths.appHome;
 
   const onSignIn = useCallback(async () => {
     const path = getRedirectPathWithoutSearchParam(appHome);
@@ -34,7 +34,7 @@ export const SignIn: React.FCC = () => {
   // to avoid slow redirects
   useEffect(() => {
     void router.prefetch(appHome);
-  }, []);
+  }, [router]);
 
   return (
     <Layout>
