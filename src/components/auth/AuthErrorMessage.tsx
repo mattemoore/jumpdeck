@@ -1,5 +1,5 @@
 import { Trans } from 'next-i18next';
-import ExclamationCircleIcon from '@heroicons/react/24/outline/ExclamationCircleIcon';
+import Alert from '~/core/ui/Alert';
 
 /**
  * @name AuthErrorMessage
@@ -16,20 +16,14 @@ export default function AuthErrorMessage({ error }: { error: Maybe<string> }) {
   const DefaultError = <Trans i18nKey="auth:errors.default" />;
 
   return (
-    <div
-      className={
-        'my-2 flex items-center space-x-1 text-sm font-medium text-red-500 dark:text-red-400'
-      }
-    >
-      <ExclamationCircleIcon className={'h-5'} />
-
-      <span data-cy={'auth-error-message'}>
+    <Alert type={'error'}>
+      <span className={'text-sm'} data-cy={'auth-error-message'}>
         <Trans
           i18nKey={`auth:errors.${error}`}
           defaults={'<DefaultError />'}
           components={{ DefaultError }}
         />
       </span>
-    </div>
+    </Alert>
   );
 }

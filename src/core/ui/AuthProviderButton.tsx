@@ -24,8 +24,8 @@ const AuthProviderButton: React.FCC<{
         />
       </span>
 
-      <span className={'flex items-center'}>
-        <span className={'flex items-center justify-center'}>
+      <span className={'flex w-full flex-1 items-center'}>
+        <span className={'flex w-full items-center justify-center'}>
           <span className={'text-current'}>{children}</span>
         </span>
       </span>

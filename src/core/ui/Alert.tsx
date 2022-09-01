@@ -39,13 +39,16 @@ const Alert: React.FCC<{
 
   return (
     <div className={`Alert ${colorClassNames[type]} ${className ?? ''}`}>
-      <span className={'flex items-center space-x-4'}>
+      <span className={'flex items-center space-x-2'}>
         <span>{Icon}</span>
         <span>{children}</span>
       </span>
 
       <If condition={useCloseButton ?? false}>
-        <IconButton onClick={() => setVisible(false)}>
+        <IconButton
+          className={'dark:hover:bg-transparent'}
+          onClick={() => setVisible(false)}
+        >
           <XMarkIcon className={'h-6'} />
         </IconButton>
       </If>

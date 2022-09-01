@@ -1,43 +1,54 @@
 import React from 'react';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 import { Toaster } from 'react-hot-toast';
 
 import configuration from '~/configuration';
 
 import FirebaseFirestoreProvider from '~/core/firebase/components/FirebaseFirestoreProvider';
-import RouteShellWithTopNavigation from './layouts/header/RouteShellWithTopNavigation';
-import RouteShellWithSidebar from './layouts/sidebar/RouteShellWithSidebar';
 
 import GuardedPage from '~/core/firebase/components/GuardedPage';
-import SentryProvider from '~/components/SentryProvider';
 import { LayoutStyle } from '~/core/layout-style';
 import Layout from '~/core/ui/Layout';
+
+const redirectPathWhenSignedOut = '/';
+
+const SentryProvider = dynamic(() => import('~/components/SentryProvider'), {
+  ssr: false,
+});
+
+const RouteShellWithTopNavigation = dynamic(
+  () => import('./layouts/header/RouteShellWithTopNavigation')
+);
+
+const RouteShellWithSidebar = dynamic(
+  () => import('./layouts/sidebar/RouteShellWithSidebar')
+);
 
 const RouteShell: React.FCC<{
   title: string;
   style?: LayoutStyle;
 }> = ({ title, style, children }) => {
-  const redirectPathWhenSignedOut = '/';
   const layout = style ?? configuration.navigation.style;
 
   return (
-    <Layout>
+    <FirebaseFirestoreProvider>
       <Head>
         <title key="title">{title}</title>
       </Head>
 
-      <FirebaseFirestoreProvider>
-        <GuardedPage whenSignedOut={redirectPathWhenSignedOut}>
-          <SentryProvider>
+      <GuardedPage whenSignedOut={redirectPathWhenSignedOut}>
+        <SentryProvider>
+          <Layout>
             <Toaster />
 
             <LayoutRenderer style={layout} title={title}>
               {children}
             </LayoutRenderer>
-          </SentryProvider>
-        </GuardedPage>
-      </FirebaseFirestoreProvider>
-    </Layout>
+          </Layout>
+        </SentryProvider>
+      </GuardedPage>
+    </FirebaseFirestoreProvider>
   );
 };
 

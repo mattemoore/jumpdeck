@@ -109,11 +109,11 @@
 
     /** Alert.tsx */
     .Alert {
-        @apply p-5 rounded-md font-medium flex text-base items-center justify-between;
+        @apply p-4 rounded-lg font-medium flex text-base items-center justify-between text-black-300;
     }
 
     .Alert.AlertSuccess {
-        @apply text-green-900 bg-green-50 dark:bg-green-300;
+        @apply bg-green-50 dark:bg-green-200;
     }
 
     .Alert.AlertSuccess .AlertIcon {
@@ -121,7 +121,7 @@
     }
 
     .Alert.AlertError {
-        @apply bg-red-50 dark:bg-red-300 text-red-900;
+        @apply bg-red-50 dark:bg-red-100;
     }
 
     .Alert.AlertError .AlertIcon {
@@ -129,7 +129,7 @@
     }
 
     .Alert.AlertWarn {
-        @apply text-orange-900 bg-orange-50 dark:bg-orange-300;
+        @apply bg-orange-50 dark:bg-orange-100;
     }
 
     .Alert.AlertWarn .AlertIcon {
@@ -137,7 +137,7 @@
     }
 
     .Alert.AlertInfo {
-        @apply text-blue-800 bg-blue-50 dark:bg-blue-300 dark:text-blue-900;
+        @apply bg-blue-50 dark:bg-blue-200;
     }
 
     .Alert.AlertInfo .AlertIcon {

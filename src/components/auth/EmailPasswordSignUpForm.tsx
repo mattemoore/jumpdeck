@@ -134,7 +134,7 @@ const EmailPasswordSignUpForm: React.FCC<{
               condition={loading}
               fallback={<Trans i18nKey={'auth:signUp'} />}
             >
-              <span>Signing you up...</span>
+              <Trans i18nKey={'auth:signingUp'} />
             </If>
           </Button>
         </div>
