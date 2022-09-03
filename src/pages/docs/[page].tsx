@@ -46,36 +46,36 @@ type Props = {
 const DocsPage = ({ page, docs, previousPage, nextPage }: Props) => {
   return (
     <>
-      <Head>
-        <title key="title">{page.title}</title>
-        <meta property="og:title" content={page.title} key="og:title" />
-
-        <meta
-          key="twitter:description"
-          property="twitter:description"
-          content={page.description}
-        />
-
-        <meta
-          property="og:description"
-          content={page.description}
-          key="og:description"
-        />
-
-        <meta
-          name="description"
-          content={page.description}
-          key="meta:description"
-        />
-
-        <meta
-          key="twitter:title"
-          property="twitter:title"
-          content={page.title}
-        />
-      </Head>
-
       <Layout>
+        <Head>
+          <title key="title">{page.title}</title>
+          <meta property="og:title" content={page.title} key="og:title" />
+
+          <meta
+            key="twitter:description"
+            property="twitter:description"
+            content={page.description}
+          />
+
+          <meta
+            property="og:description"
+            content={page.description}
+            key="og:description"
+          />
+
+          <meta
+            name="description"
+            content={page.description}
+            key="meta:description"
+          />
+
+          <meta
+            key="twitter:title"
+            property="twitter:title"
+            content={page.title}
+          />
+        </Head>
+
         <SiteHeader />
 
         <Container>

@@ -28,6 +28,7 @@ const configuration = {
   paths: {
     signIn: '/auth/sign-in',
     signUp: '/auth/sign-up',
+    emailLinkSignIn: '/auth/link',
     onboarding: `/onboarding`,
     appHome: '/dashboard',
     api: {
