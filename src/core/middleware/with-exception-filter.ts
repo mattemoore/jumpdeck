@@ -42,8 +42,8 @@ export function withExceptionFilter(req: NextApiRequest, res: NextApiResponse) {
       const statusCode = getExceptionStatus(exception);
       const message = getExceptionMessage(exception);
       const stack = getExceptionStack(exception);
-
       const ip = getClientIp(req);
+
       const userId = firebaseUser?.uid ?? 'Not Authenticated';
       const referer = headers['referer'];
       const userAgent = headers['user-agent'];
@@ -55,7 +55,6 @@ export function withExceptionFilter(req: NextApiRequest, res: NextApiResponse) {
         userId,
         referer,
         userAgent,
-        message,
         organizationId,
       };
 
@@ -67,10 +66,7 @@ export function withExceptionFilter(req: NextApiRequest, res: NextApiResponse) {
         );
       });
 
-      // edit the message according your preferences
-      const exceptionMessage = `An unhandled exception occurred.`;
-
-      logger.error(requestContext, exceptionMessage);
+      logger.error(requestContext, message);
 
       // if we are able to retrieve the stack, we add it to the debugging logs
       if (stack) {

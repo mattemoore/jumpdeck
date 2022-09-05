@@ -11,7 +11,10 @@ import {
   updateMemberRole,
 } from '~/lib/server/organizations/memberships';
 
-import { throwBadRequestException } from '~/core/http-exceptions';
+import {
+  throwBadRequestException,
+  throwUnauthorizedException,
+} from '~/core/http-exceptions';
 import { withPipe } from '~/core/middleware/with-pipe';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
 import { withExceptionFilter } from '~/core/middleware/with-exception-filter';
@@ -22,19 +25,27 @@ async function organizationMemberHandler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { method, query } = req;
+  const { method, query, firebaseUser } = req;
+  const currentUserId = firebaseUser.uid;
 
   // validate and parse query params
   const queryParamsSchema = getQueryParamsSchema().safeParse(query);
 
   if (!queryParamsSchema.success) {
-    return throwBadRequestException(res);
+    return throwBadRequestException();
   }
 
   const payload = {
     organizationId: queryParamsSchema.data.id,
-    userId: queryParamsSchema.data.member,
+    targetUserId: queryParamsSchema.data.member,
+    currentUserId,
   };
+
+  if (payload.targetUserId === currentUserId) {
+    return throwUnauthorizedException(
+      `The current user cannot dispatch actions about itself`
+    );
+  }
 
   // for PUT requests - update the member
   if (method === 'PUT') {
@@ -42,6 +53,7 @@ async function organizationMemberHandler(
     const { role } = schema.parse(req.body);
     const updatePayload = { ...payload, role };
 
+    // update member role
     await updateMemberRole(updatePayload);
 
     logger.info(updatePayload, `User role updated`);
@@ -51,6 +63,7 @@ async function organizationMemberHandler(
 
   // for DELETE requests - remove the member
   if (method === 'DELETE') {
+    // remove member from organization
     await removeMemberFromOrganization(payload);
 
     logger.info(payload, `User removed from organization`);

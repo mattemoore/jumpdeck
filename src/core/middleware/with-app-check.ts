@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest } from 'next';
 import { getAppCheck } from 'firebase-admin/app-check';
 
 import { throwUnauthorizedException } from '~/core/http-exceptions';
@@ -7,7 +7,7 @@ import configuration from '~/configuration';
 const FIREBASE_APPCHECK_HEADER = 'x-firebase-appcheck';
 
 /**
- * @name appCheckMiddleware
+ * @name withAppCheck
  * @description Protect an API endpoint with Firebase AppCheck.
  *
  * Usage:
@@ -34,7 +34,7 @@ const FIREBASE_APPCHECK_HEADER = 'x-firebase-appcheck';
  * Use if:
  * - You expect the requests to come from the application UI
  */
-export function withAppCheck(req: NextApiRequest, res: NextApiResponse) {
+export function withAppCheck(req: NextApiRequest) {
   if (!configuration.appCheckSiteKey) {
     return;
   }
@@ -42,7 +42,7 @@ export function withAppCheck(req: NextApiRequest, res: NextApiResponse) {
   const token = req.headers[FIREBASE_APPCHECK_HEADER];
 
   if (!token || typeof token !== 'string') {
-    return throwUnauthorizedException(res);
+    return throwUnauthorizedException();
   }
 
   return getAppCheck().verifyToken(token);

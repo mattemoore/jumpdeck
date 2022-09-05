@@ -1,8 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
-
-import ArrowLeftIcon from '@heroicons/react/24/outline/ArrowLeftIcon';
 import { Trans } from 'next-i18next';
+import ArrowLeftIcon from '@heroicons/react/24/outline/ArrowLeftIcon';
 
 import { withAppProps } from '~/lib/props/with-app-props';
 

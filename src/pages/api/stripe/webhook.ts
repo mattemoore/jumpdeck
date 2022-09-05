@@ -58,7 +58,7 @@ async function checkoutWebhooksHandler(
 
   // verify signature header is not missing
   if (!signature) {
-    return throwBadRequestException(res);
+    return throwBadRequestException();
   }
 
   const rawBody = await getRawBody(req);
@@ -140,7 +140,7 @@ async function checkoutWebhooksHandler(
 
     logger.debug(e);
 
-    return throwInternalServerErrorException(res);
+    return throwInternalServerErrorException();
   }
 }
 

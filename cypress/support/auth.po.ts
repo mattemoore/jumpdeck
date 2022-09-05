@@ -95,11 +95,13 @@ function getAuthEmulatorHost() {
 function getAuth() {
   firebaseApp = firebaseApp || createFirebaseApp();
 
-  auth =
-    auth ||
-    initializeAuth(firebaseApp, {
-      persistence: indexedDBLocalPersistence,
-    });
+  if (auth) {
+    return auth;
+  }
+
+  auth = initializeAuth(firebaseApp, {
+    persistence: indexedDBLocalPersistence,
+  });
 
   connectAuthEmulator(auth, getAuthEmulatorHost());
 

@@ -26,10 +26,13 @@ const organizationPageObject = {
   $getInvitationsSubmitButton: () => $get(`send-invites-button`),
   $getDeleteInviteButton: () => $get(`delete-invite-button`),
   $getConfirmDeleteInviteButton: () => $get(`confirm-delete-invite-button`),
+  $getConfirmTransferOwnershipButton: () =>
+    $get(`confirm-transfer-ownership-button`),
   $getRoleSelector: (index = 0) =>
     $get(`invite-role-selector-button`).eq(index),
   $getRoleBadge: () => $get(`member-role-badge`),
   $removeMemberActionButton: () => $get(`remove-member-action`),
+  $transferOwnershipAction: () => $get('transfer-ownership-action'),
   $updateMemberRoleActionButton: () => $get(`update-member-role-action`),
   navigateToInviteForm: () => $get(`invite-form-link`).click(),
   switchToOrganization(name: string) {
@@ -86,6 +89,12 @@ const organizationPageObject = {
     cy.cyGet(`confirm-update-member-role`).click();
 
     return this;
+  },
+  transferOwnership(email: string) {
+    this.$getMemberByEmail(email).within(() => {
+      this.openMemberActionsDropdown();
+      this.$transferOwnershipAction().click({ force: true });
+    });
   },
 };
 

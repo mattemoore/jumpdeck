@@ -34,7 +34,7 @@ async function signIn(req: NextApiRequest, res: NextApiResponse) {
   const body = getBodySchema().safeParse(req.body);
 
   if (!body.success) {
-    return throwBadRequestException(res);
+    return throwBadRequestException();
   }
 
   // this is the ID token that is retrieved
@@ -45,7 +45,7 @@ async function signIn(req: NextApiRequest, res: NextApiResponse) {
   // we need to check that the CSRF token in the body
   // matches the relative token in the cookies
   if (csrfToken !== cookies.csrfToken) {
-    return throwUnauthorizedException(res);
+    return throwUnauthorizedException();
   }
 
   try {
@@ -59,7 +59,7 @@ async function signIn(req: NextApiRequest, res: NextApiResponse) {
   } catch (e) {
     logger.error(e);
 
-    return throwUnauthorizedException(res);
+    return throwUnauthorizedException();
   }
 }
 

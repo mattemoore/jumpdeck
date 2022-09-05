@@ -24,10 +24,6 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-import { loadEnvConfig } from '@next/env';
-
-loadEnvConfig('.', true);
-
 import authPo from './auth.po';
 
 Cypress.Commands.add('cyGet', (name: string) => {

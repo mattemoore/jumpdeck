@@ -2,8 +2,7 @@ import { GetServerSidePropsContext } from 'next';
 import { Trans } from 'next-i18next';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
-
-import PlusIcon from '@heroicons/react/24/outline/PlusIcon';
+import { UserPlusIcon } from '@heroicons/react/24/outline';
 
 import { useUserCanInviteUsers } from '~/lib/organizations/hooks/use-user-can-invite-users';
 import { withAppProps } from '~/lib/props/with-app-props';
@@ -96,7 +95,7 @@ function InviteMembersButton() {
       href={'/settings/organization/members/invite'}
     >
       <span className="flex items-center space-x-2">
-        <PlusIcon className="h-5" />
+        <UserPlusIcon className="h-5" />
 
         <span>
           <Trans i18nKey={'organization:inviteMembersButtonLabel'} />

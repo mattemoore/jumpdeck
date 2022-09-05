@@ -1,4 +1,5 @@
 import profilePo from '../../support/profile.po';
+import configuration from '~/configuration';
 
 describe(`Update Password`, () => {
   const existingEmailAddress = `new-email@makerkit.dev`;
@@ -50,6 +51,17 @@ describe(`Update Password`, () => {
 
     it('should remove the error alert', () => {
       profilePo.$getUpdatePasswordErrorAlert().should('not.exist');
+    });
+  });
+
+  describe('When logging in with the new password', () => {
+    it('should work', () => {
+      cy.signIn(configuration.paths.appHome, {
+        email: existingEmailAddress,
+        password: newPassword,
+      });
+
+      cy.url().should('contain', configuration.paths.appHome);
     });
   });
 });

@@ -5,25 +5,23 @@ import Badge from '~/core/ui/Badge';
 
 import { useFetchOrganization } from '~/lib/organizations/hooks/use-fetch-organization';
 import { canUpdateUser } from '~/lib/organizations/permissions';
-import { useCurrentUserRole } from '~/lib/organizations/hooks/use-current-user-role';
 import { useFetchOrganizationMembersMetadata } from '~/lib/organizations/hooks/use-fetch-members-metadata';
 import { Organization } from '~/lib/organizations/types/organization';
 
 import { useUserId } from '~/core/hooks/use-user-id';
+import LoadingMembersSpinner from '~/components/organizations/LoadingMembersSpinner';
 
 import OrganizationMembersActionsContainer from './OrganizationMembersActionsContainer';
 import RoleBadge from './RoleBadge';
 import ProfileAvatar from '../ProfileAvatar';
-import LoadingMembersSpinner from '~/components/organizations/LoadingMembersSpinner';
 import Alert from '~/core/ui/Alert';
 
 const OrganizationMembersList: React.FCC<{
   organizationId: string;
 }> = ({ organizationId }) => {
   const userId = useUserId();
-  const userRole = useCurrentUserRole();
 
-  // fetch the organization members
+  // fetch the organization members with an active listener
   // and re-render on changes
   const { data: organization, status } = useFetchOrganization(organizationId);
 
@@ -37,14 +35,6 @@ const OrganizationMembersList: React.FCC<{
 
   const isLoading = status === 'loading' || loading;
 
-  if (error) {
-    return (
-      <Alert type={'error'}>
-        <Trans i18nKey={'organization:loadMembersError'} />
-      </Alert>
-    );
-  }
-
   if (isLoading) {
     return (
       <LoadingMembersSpinner>
@@ -53,71 +43,82 @@ const OrganizationMembersList: React.FCC<{
     );
   }
 
-  if (userRole === undefined) {
-    return null;
+  if (error) {
+    return (
+      <Alert type={'error'}>
+        <Trans i18nKey={'organization:loadMembersError'} />
+      </Alert>
+    );
   }
 
   const members = getSortedMembers(organization);
+  const currentUser = members.find((member) => member.id === userId);
+
+  if (!currentUser) {
+    return null;
+  }
+
+  const userRole = currentUser.role;
 
   return (
-    <>
-      <div className={'w-full space-y-10'}>
-        <div className="flex flex-col divide-y divide-gray-100 dark:divide-black-300">
-          {members.map(({ role, id: memberId }) => {
-            const metadata = membersMetadata?.find((metadata) => {
-              return metadata.uid === memberId;
-            });
+    <div className={'w-full space-y-10'}>
+      <div className="flex flex-col divide-y divide-gray-100 dark:divide-black-300">
+        {members.map(({ role, id: memberId }) => {
+          const metadata = membersMetadata?.find((metadata) => {
+            return metadata.uid === memberId;
+          });
 
-            if (!metadata) {
-              return null;
-            }
+          if (!metadata) {
+            return null;
+          }
 
-            const displayName = metadata.displayName
-              ? metadata.displayName
-              : metadata.email;
+          const displayName = metadata.displayName
+            ? metadata.displayName
+            : metadata.email;
 
-            const isCurrentUser = userId === metadata.uid;
+          const isCurrentUser = userId === metadata.uid;
 
-            // check if user has the permissions to update another member of
-            // the organization. If it returns false, the actions' dropdown
-            // should be disabled
-            const shouldEnableActions = canUpdateUser(userRole, role);
+          // check if user has the permissions to update another member of
+          // the organization. If it returns false, the actions' dropdown
+          // should be disabled
+          const shouldEnableActions = canUpdateUser(userRole, role);
+          const key = `${metadata.uid}:${userRole}`;
 
-            return (
-              <div
-                key={metadata.uid}
-                data-cy={'organization-member'}
-                className={'flex items-center space-x-2 py-3'}
-              >
-                <div className={'flex flex-auto items-center space-x-4'}>
-                  <ProfileAvatar user={metadata} />
+          return (
+            <div
+              key={key}
+              data-cy={'organization-member'}
+              className={'flex items-center space-x-2 py-3'}
+            >
+              <div className={'flex flex-auto items-center space-x-4'}>
+                <ProfileAvatar user={metadata} />
 
-                  <div className={'block truncate text-sm'}>{displayName}</div>
+                <div className={'block truncate text-sm'}>{displayName}</div>
 
-                  <If condition={isCurrentUser}>
-                    <Badge>
-                      <Trans i18nKey={'organization:youBadgeLabel'} />
-                    </Badge>
-                  </If>
-                </div>
-
-                <div className={'flex items-center justify-end space-x-4'}>
-                  <div>
-                    <RoleBadge role={role} />
-                  </div>
-
-                  <OrganizationMembersActionsContainer
-                    disabled={!shouldEnableActions}
-                    targetMember={metadata}
-                    role={role}
-                  />
-                </div>
+                <If condition={isCurrentUser}>
+                  <Badge>
+                    <Trans i18nKey={'organization:youBadgeLabel'} />
+                  </Badge>
+                </If>
               </div>
-            );
-          })}
-        </div>
+
+              <div className={'flex items-center justify-end space-x-4'}>
+                <div>
+                  <RoleBadge role={role} />
+                </div>
+
+                <OrganizationMembersActionsContainer
+                  disabled={!shouldEnableActions}
+                  targetMember={metadata}
+                  targetMemberRole={role}
+                  currentUserRole={userRole}
+                />
+              </div>
+            </div>
+          );
+        })}
       </div>
-    </>
+    </div>
   );
 };
 

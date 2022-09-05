@@ -26,13 +26,13 @@ async function inviteMembersToOrganizationHandler(
   const queryParamsSchemaResult = getQueryParamsSchema().safeParse(query);
 
   if (!queryParamsSchemaResult.success) {
-    return throwBadRequestException(res);
+    return throwBadRequestException();
   }
 
   const bodySchemaResult = getBodySchema().safeParse(req.body);
 
   if (!bodySchemaResult.success) {
-    return throwBadRequestException(res);
+    return throwBadRequestException();
   }
 
   const { id: organizationId } = queryParamsSchemaResult.data;
@@ -65,7 +65,7 @@ async function inviteMembersToOrganizationHandler(
 
     logger.debug(e);
 
-    return throwInternalServerErrorException(res);
+    return throwInternalServerErrorException();
   }
 }
 

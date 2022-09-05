@@ -10,35 +10,25 @@ describe(`Update User Role`, () => {
   });
 
   describe(`Given the current user updates a member's role`, () => {
-    before(() => {
-      organizationPageObject.updateMemberRole(email, MembershipRole.Admin);
-    });
-
-    describe('When the request is successful', () => {
-      it('the UI will be updated accordingly', () => {
-        organizationPageObject.$getMemberByEmail(email).within(() => {
-          organizationPageObject.$getRoleBadge().should(`contain`, `Admin`);
-        });
-      });
-    });
-
     describe('When the role is the same as the current one', () => {
-      it('the UI will display an error', () => {
-        organizationPageObject.updateMemberRole(email, MembershipRole.Admin);
+      before(() => {
+        organizationPageObject.updateMemberRole(email, MembershipRole.Member);
+      });
 
+      it('the UI will display an error', () => {
         cy.get(`.chooseDifferentRoleError`).should('be.visible');
         cy.cyGet(`close-modal-button`).click();
       });
     });
-  });
 
-  describe(`Given the current user reverts the previous member's role`, () => {
     describe('When the request is successful', () => {
-      it('the UI will be updated accordingly', () => {
-        organizationPageObject.updateMemberRole(email, MembershipRole.Member);
+      before(() => {
+        organizationPageObject.updateMemberRole(email, MembershipRole.Admin);
+      });
 
+      it('the UI will be updated accordingly', () => {
         organizationPageObject.$getMemberByEmail(email).within(() => {
-          organizationPageObject.$getRoleBadge().should(`contain`, `Member`);
+          organizationPageObject.$getRoleBadge().should(`contain`, `Admin`);
         });
       });
     });

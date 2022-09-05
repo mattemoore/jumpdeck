@@ -7,6 +7,10 @@ import { MembershipRole } from '~/lib/organizations/types/membership-role';
 import { Organization } from '~/lib/organizations/types/organization';
 
 import { getInviteByCode, getOrganizationById, getUserById } from '../queries';
+import {
+  throwNotFoundException,
+  throwUnauthorizedException,
+} from '~/core/http-exceptions';
 
 /**
  * @description Returns the {@link UserInfo} object from the members of an organization
@@ -38,13 +42,26 @@ export async function getOrganizationMembers(params: {
  */
 export async function removeMemberFromOrganization(params: {
   organizationId: string;
-  userId: string;
+  targetUserId: string;
+  currentUserId: string;
 }) {
-  const { userId, organizationId } = params;
-  const organization = await getOrganizationById(organizationId);
-  const memberPath = getMemberPath(userId);
+  const { targetUserId, currentUserId, organizationId } = params;
+  const doc = await getOrganizationById(organizationId);
+  const organization = doc.data();
 
-  await organization.ref.update({
+  if (!organization) {
+    throw throwNotFoundException();
+  }
+
+  assertUserCanUpdateMember({
+    organization,
+    currentUserId,
+    targetUserId,
+  });
+
+  const memberPath = getMemberPath(targetUserId);
+
+  await doc.ref.update({
     [memberPath]: FieldValue.delete(),
   });
 }
@@ -55,16 +72,28 @@ export async function removeMemberFromOrganization(params: {
  */
 export async function updateMemberRole(params: {
   organizationId: string;
-  userId: string;
+  targetUserId: string;
+  currentUserId: string;
   role: MembershipRole;
 }) {
-  const { role, userId, organizationId } = params;
+  const { role, currentUserId, targetUserId, organizationId } = params;
+  const doc = await getOrganizationById(organizationId);
+  const organization = doc.data();
 
-  const organization = await getOrganizationById(organizationId);
-  const user = await getUserById(userId);
-  const memberPath = getMemberPath(userId);
+  if (!organization) {
+    throw throwNotFoundException();
+  }
 
-  await organization.ref.update({
+  assertUserCanUpdateMember({
+    organization,
+    currentUserId,
+    targetUserId,
+  });
+
+  const user = await getUserById(targetUserId);
+  const memberPath = getMemberPath(targetUserId);
+
+  await doc.ref.update({
     [memberPath]: {
       role,
       user: user.ref,
@@ -136,4 +165,32 @@ function getMemberPath(userId: string) {
   const membersPropertyKey: keyof Organization = 'members';
 
   return `${membersPropertyKey}.${userId}`;
+}
+
+/**
+ * @name assertUserCanUpdateMember
+ * @param params
+ */
+function assertUserCanUpdateMember(params: {
+  organization: Organization;
+  currentUserId: string;
+  targetUserId: string;
+}) {
+  const members = params.organization.members;
+  const currentUser = members[params.currentUserId];
+  const targetUser = members[params.targetUserId];
+
+  if (!targetUser) {
+    return throwNotFoundException(`Target member was not found`);
+  }
+
+  if (!currentUser) {
+    return throwNotFoundException(`Current member was not found`);
+  }
+
+  if (currentUser.role <= targetUser.role) {
+    return throwUnauthorizedException(
+      `Current member does not have a greater role than target member`
+    );
+  }
 }

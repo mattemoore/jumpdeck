@@ -1,20 +1,20 @@
 import organizationPageObject from '../../support/organization.po';
 
 describe(`Remove Member`, () => {
-  const email = `test-remove@makerkit.dev`;
+  const targetEmail = `test-remove@makerkit.dev`;
 
   before(() => {
     cy.signIn(`/settings/organization/members`);
+    organizationPageObject.switchToOrganization('Test');
   });
 
-  describe(`Given the current user updates a member's role`, () => {
+  describe(`Given the current user removes a member from the organization`, () => {
     before(() => {
-      organizationPageObject.switchToOrganization('Test');
-      organizationPageObject.removeMember(email);
+      organizationPageObject.removeMember(targetEmail);
     });
 
-    it('the UI will be updated', () => {
-      organizationPageObject.$getMemberByEmail(email).should('not.exist');
+    it('the member should disappear from the list', () => {
+      organizationPageObject.$getMemberByEmail(targetEmail).should('not.exist');
     });
   });
 });

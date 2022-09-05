@@ -15,10 +15,9 @@ export async function authMiddleware(
   res: NextApiResponse
 ) {
   const session = req.cookies.session;
-  const forbidden = () => throwForbiddenException(res);
 
   if (!session) {
-    return forbidden();
+    return throwForbiddenException();
   }
 
   const user = await getUserFromSessionCookie(session);
@@ -28,6 +27,6 @@ export async function authMiddleware(
     // NextApiRequest so that it can be used in any API handler
     req.firebaseUser = user;
   } else {
-    return forbidden();
+    return throwForbiddenException();
   }
 }

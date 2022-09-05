@@ -9,6 +9,7 @@ export const throwInternalServerErrorException = buildException(
 export const throwBadRequestException = buildException(
   HttpStatusCode.BadRequest
 );
+
 export const throwNotFoundException = buildException(HttpStatusCode.NotFound);
 
 export const throwMethodNotAllowedException = function methodNotAllowed(
@@ -34,7 +35,7 @@ export const throwUnauthorizedException = buildException(
 export const throwForbiddenException = buildException(HttpStatusCode.Forbidden);
 
 function buildException(statusCode: HttpStatusCode) {
-  return (res: NextApiResponse, message?: string) => {
+  return (message?: string) => {
     throw new ApiError(statusCode, message ?? `Unknown Error`);
   };
 }

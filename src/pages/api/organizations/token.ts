@@ -21,20 +21,20 @@ async function setCurrentOrganizationCustomClaims(
   const organizationId = req.cookies.organizationId;
 
   if (!userId || !organizationId) {
-    return throwForbiddenException(res);
+    return throwForbiddenException();
   }
 
   const organization = await getCurrentOrganization(userId);
 
   if (!organization) {
-    return throwForbiddenException(res);
+    return throwForbiddenException();
   }
 
   const auth = getAuth();
   const user = await auth.getUser(userId);
 
   if (!user) {
-    return throwNotFoundException(res);
+    return throwNotFoundException();
   }
 
   await auth.setCustomUserClaims(userId, {

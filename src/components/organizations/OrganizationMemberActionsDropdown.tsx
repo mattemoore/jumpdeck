@@ -5,27 +5,31 @@ import { Trans } from 'next-i18next';
 import {
   AdjustmentsHorizontalIcon,
   EllipsisVerticalIcon,
+  UserCircleIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
 
 import Dropdown from '~/core/ui/Dropdown';
 import IconButton from '~/core/ui/IconButton';
+import If from '~/core/ui/If';
 
 const OrganizationMemberActionsDropdown: React.FCC<{
-  onRemoveSelected: () => void;
-  onChangeRoleSelected: () => void;
+  onRemoveSelected: EmptyCallback;
+  onChangeRoleSelected: EmptyCallback;
+  onTransferOwnershipSelected: EmptyCallback;
   disabled: boolean;
-}> = ({ onRemoveSelected, onChangeRoleSelected, disabled }) => {
-  const button = <DropdownButton disabled={disabled} />;
+  isOwner: boolean;
+}> = (props) => {
+  const Button = <DropdownButton disabled={props.disabled} />;
 
   return (
     <Dropdown
-      button={button}
+      button={Button}
       items={[
         <Dropdown.Item
           key={1}
           data-cy={'update-member-role-action'}
-          onClick={onChangeRoleSelected}
+          onClick={props.onChangeRoleSelected}
         >
           <span className={'flex items-center space-x-2'}>
             <AdjustmentsHorizontalIcon className={'h-5'} />
@@ -34,11 +38,24 @@ const OrganizationMemberActionsDropdown: React.FCC<{
             </span>
           </span>
         </Dropdown.Item>,
+        <If key={2} condition={props.isOwner}>
+          <Dropdown.Item
+            data-cy={'transfer-ownership-action'}
+            onClick={props.onTransferOwnershipSelected}
+          >
+            <span className={'flex items-center space-x-2'}>
+              <UserCircleIcon className={'h-5'} />
+              <span>
+                <Trans i18nKey={'organization:transferOwnership'} />
+              </span>
+            </span>
+          </Dropdown.Item>
+        </If>,
         <Dropdown.Divider key={'divider'} />,
         <Dropdown.Item
-          key={2}
+          key={3}
           data-cy={'remove-member-action'}
-          onClick={onRemoveSelected}
+          onClick={props.onRemoveSelected}
         >
           <span
             className={
