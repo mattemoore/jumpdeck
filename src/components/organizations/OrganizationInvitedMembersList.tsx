@@ -9,6 +9,7 @@ import DeleteInviteButton from './DeleteInviteButton';
 
 import { IfHasPermissions } from '~/components/IfHasPermissions';
 import LoadingMembersSpinner from '~/components/organizations/LoadingMembersSpinner';
+import Alert from '~/core/ui/Alert';
 
 const OrganizationInvitedMembersList: React.FCC<{
   organizationId: string;
@@ -23,6 +24,14 @@ const OrganizationInvitedMembersList: React.FCC<{
     );
   }
 
+  if (status === 'error') {
+    return (
+      <Alert type={'error'}>
+        <Trans i18nKey={'organization:loadInvitedMembersError'} />
+      </Alert>
+    );
+  }
+
   if (!members.length) {
     return (
       <p className={'text-sm'}>
@@ -33,13 +42,13 @@ const OrganizationInvitedMembersList: React.FCC<{
 
   return (
     <div className="flex flex-col divide-y divide-gray-100 dark:divide-black-400">
-      {(members ?? []).map(({ email, role, code, id }) => {
+      {members.map(({ email, role, code, id }) => {
         return (
           <div
             key={id}
             data-cy={'invited-member'}
             data-code={code}
-            className={'flex items-center space-x-2 py-3'}
+            className={'flex items-center space-x-2 py-2'}
           >
             <div className={'flex flex-auto items-center space-x-4'}>
               <FallbackUserAvatar text={email} />

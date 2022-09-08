@@ -57,6 +57,7 @@
   "noPendingInvites": "No pending invites found",
   "loadingMembers": "Loading members...",
   "loadMembersError": "Sorry, we couldn't fetch your organization's members.",
+  "loadInvitedMembersError": "Sorry, we couldn't fetch your organization's invited members.",
   "loadingInvitedMembers": "Loading invited members...",
   "invitedBadge": "Invited",
   "duplicateInviteEmailError": "You have already entered this email address",

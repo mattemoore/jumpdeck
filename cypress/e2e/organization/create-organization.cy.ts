@@ -2,6 +2,8 @@ import organizationPageObject from '../../support/organization.po';
 
 describe(`Create Organization`, () => {
   const organizationName = `New Organization`;
+  const defaultOrganizationId =
+    organizationPageObject.getDefaultOrganizationId();
 
   before(() => {
     cy.signIn(`/dashboard`);
@@ -23,10 +25,22 @@ describe(`Create Organization`, () => {
       organizationPageObject
         .$currentOrganization()
         .should('contain', organizationName);
+
+      cy.getCookie('organizationId').should(
+        'not.have.property',
+        'value',
+        defaultOrganizationId
+      );
     });
 
-    it('should switch to the previous Organization', () => {
+    it('should go back to the previous organization', () => {
       organizationPageObject.switchToOrganization('Test');
+
+      cy.getCookie('organizationId').should(
+        'have.property',
+        'value',
+        defaultOrganizationId
+      );
     });
   });
 });

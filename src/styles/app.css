@@ -15,24 +15,17 @@
         @apply rounded-md hover:text-current text-sm
         items-center transition-colors border-transparent
         dark:bg-black-400 px-3 w-full pr-12 w-full py-3 font-medium
-        flex space-x-3 hover:bg-gray-100 dark:hover:bg-black-300
-        dark:hover:text-primary-500 transition;
-    }
-
-    .AppSidebarItemActive {
-        @apply bg-gray-100 text-current
-        dark:text-primary-500
-        dark:bg-black-300 font-bold;
+        flex space-x-3 dark:hover:bg-black-300
+        transition;
     }
 
     .AppSidebarItemActive {
         @apply bg-gray-200 text-current
-        dark:text-primary-500
         dark:bg-black-300 font-bold;
     }
 
     .AppSidebarItemNotActive {
-        @apply dark:text-gray-300 text-gray-600;
+        @apply dark:text-gray-300 hover:bg-gray-100 text-gray-600;
     }
 
     .AppSidebarFooterItem {

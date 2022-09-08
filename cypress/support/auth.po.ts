@@ -25,6 +25,7 @@ const authPageObject = {
   },
   $getEmailInput: () => cy.cyGet(`email-input`),
   $getPasswordInput: () => cy.cyGet(`password-input`),
+  $getRepeatPasswordInput: () => cy.cyGet(`repeat-password-input`),
   $getSubmitButton: () => cy.cyGet(`auth-submit-button`),
   $getErrorMessage: () => cy.cyGet(`auth-error-message`),
   $getAcceptInviteSubmitButton: () => cy.cyGet(`accept-invite-submit-button`),
@@ -33,6 +34,18 @@ const authPageObject = {
 
     this.$getEmailInput().type(email);
     this.$getPasswordInput().type(password);
+    this.$getSubmitButton().click();
+  },
+  signUpWithEmailAndPassword(
+    email: string,
+    password: string,
+    repeatPassword?: string
+  ) {
+    cy.wait(50);
+
+    this.$getEmailInput().type(email);
+    this.$getPasswordInput().type(password);
+    this.$getRepeatPasswordInput().type(repeatPassword || password);
     this.$getSubmitButton().click();
   },
   signInProgrammatically({

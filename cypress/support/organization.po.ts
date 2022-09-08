@@ -1,6 +1,7 @@
 import { MembershipRole } from '~/lib/organizations/types/membership-role';
 
 const $get = cy.cyGet.bind(cy);
+const DEFAULT_ORGANIZATION_ID = `jpbCRSjRqW7IddsaKomZ`;
 
 const organizationPageObject = {
   $getOrganizationNameInput: () => $get(`organization-name-input`),
@@ -35,6 +36,12 @@ const organizationPageObject = {
   $transferOwnershipAction: () => $get('transfer-ownership-action'),
   $updateMemberRoleActionButton: () => $get(`update-member-role-action`),
   navigateToInviteForm: () => $get(`invite-form-link`).click(),
+  getDefaultOrganizationId() {
+    return DEFAULT_ORGANIZATION_ID;
+  },
+  useDefaultOrganization() {
+    cy.setCookie('organizationId', this.getDefaultOrganizationId());
+  },
   switchToOrganization(name: string) {
     this.$currentOrganization().click();
 

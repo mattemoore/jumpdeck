@@ -1,8 +1,13 @@
 import { Fragment, PropsWithChildren } from 'react';
 import { Menu, Transition } from '@headlessui/react';
+import classNames from 'classnames';
+
 import Button from '~/core/ui/Button';
 
-type ItemProps = PropsWithChildren<{ className?: string; href?: string }> &
+type ItemProps = PropsWithChildren<{
+  className?: string;
+  href?: string;
+}> &
   React.ComponentProps<typeof Button>;
 
 const Dropdown: React.FCC<{
@@ -57,7 +62,9 @@ function Divider() {
   return <hr className="DropdownDivider" />;
 }
 
-function Item({ children, ...props }: ItemProps) {
+function Item({ children, className, ...props }: ItemProps) {
+  const isStaticItem = !props.onClick && !props.href;
+
   return (
     <Button
       block
@@ -65,10 +72,12 @@ function Item({ children, ...props }: ItemProps) {
       onClick={props.onClick}
       color={'custom'}
       size={'custom'}
-      className={'justify-start'}
+      className={classNames(`justify-start`, className, {
+        [`static`]: isStaticItem,
+      })}
       {...props}
     >
-      <span className={'flex w-full flex-1 px-6 py-4 font-normal'}>
+      <span className={'flex w-full flex-1 px-5 py-3 font-normal'}>
         {children}
       </span>
     </Button>

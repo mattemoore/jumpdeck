@@ -3,10 +3,10 @@ import { Trans } from 'next-i18next';
 import { Menu } from '@headlessui/react';
 
 import {
-  MinusIcon,
-  Squares2X2Icon,
   ChevronDownIcon,
   Cog8ToothIcon,
+  ArrowLeftOnRectangleIcon,
+  Squares2X2Icon,
 } from '@heroicons/react/24/outline';
 
 import Dropdown from '~/core/ui/Dropdown';
@@ -27,6 +27,13 @@ const ProfileDropdown: React.FCC<{
   );
 
   const items = [
+    <Dropdown.Item className={'rounded-none py-0'} key={'signedInAs'}>
+      <div className={'flex flex-col justify-start text-left text-xs'}>
+        <div className={'text-gray-500'}>Signed in as</div>
+        <div>{user?.email}</div>
+      </div>
+    </Dropdown.Item>,
+    <Dropdown.Divider key={'divider1'} />,
     <ProfileDropdownMenuItem key={'profile'} href={'/dashboard'}>
       <Squares2X2Icon className={'h-5'} />
       <span>
@@ -39,9 +46,9 @@ const ProfileDropdown: React.FCC<{
         <Trans i18nKey={'common:settingsTabLabel'} />
       </span>
     </ProfileDropdownMenuItem>,
-    <Dropdown.Divider key={'divider'} />,
+    <Dropdown.Divider key={'divider2'} />,
     <ProfileDropdownMenuItem key={'sign-out'} onClick={signOutRequested}>
-      <MinusIcon className={'h-5'} />
+      <ArrowLeftOnRectangleIcon className={'h-5'} />
       <span>
         <Trans i18nKey={'auth:signOut'} />
       </span>

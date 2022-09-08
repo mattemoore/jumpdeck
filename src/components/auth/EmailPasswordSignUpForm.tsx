@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react';
 import { FirebaseError } from 'firebase/app';
 import { User } from 'firebase/auth';
 
-import { Trans } from 'next-i18next';
+import { Trans, useTranslation } from 'next-i18next';
 import { useForm } from 'react-hook-form';
 
 import TextField from '~/core/ui/TextField';
@@ -23,18 +23,39 @@ const EmailPasswordSignUpForm: React.FCC<{
   const createCsrfToken = useCsrfToken();
   const [sessionRequest, sessionState] = useCreateSession();
   const [signUp, state] = useSignUpWithEmailAndPassword();
+  const { t } = useTranslation();
 
   const loading = state.loading || sessionState.loading;
 
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, watch } = useForm({
+    shouldUseNativeValidation: true,
     defaultValues: {
       email: '',
       password: '',
+      repeatPassword: '',
     },
   });
 
   const emailControl = register('email', { required: true });
-  const passwordControl = register('password', { required: true });
+
+  const passwordControl = register('password', {
+    required: true,
+    minLength: 6,
+  });
+
+  const passwordValue = watch(`password`);
+
+  const repeatPasswordControl = register('repeatPassword', {
+    required: true,
+    minLength: 6,
+    validate: (value) => {
+      if (value !== passwordValue) {
+        return t(`auth:passwordsDoNotMatch`);
+      }
+
+      return true;
+    },
+  });
 
   const callOnErrorCallback = useCallback(() => {
     if (state.error && onError) {
@@ -82,7 +103,7 @@ const EmailPasswordSignUpForm: React.FCC<{
 
   return (
     <form className={'w-full'} onSubmit={handleSubmit(onSubmit)}>
-      <div className={'flex-col space-y-4'}>
+      <div className={'flex-col space-y-2.5'}>
         <TextField>
           <TextField.Label>
             <Trans i18nKey={'common:emailAddress'} />
@@ -113,6 +134,27 @@ const EmailPasswordSignUpForm: React.FCC<{
               onBlur={passwordControl.onBlur}
               onChange={passwordControl.onChange}
               name={passwordControl.name}
+            />
+
+            <TextField.Hint>
+              <Trans i18nKey={'auth:passwordHint'} />
+            </TextField.Hint>
+          </TextField.Label>
+        </TextField>
+
+        <TextField>
+          <TextField.Label>
+            <Trans i18nKey={'auth:repeatPassword'} />
+
+            <TextField.Input
+              data-cy={'repeat-password-input'}
+              required
+              type="password"
+              placeholder={''}
+              innerRef={repeatPasswordControl.ref}
+              onBlur={repeatPasswordControl.onBlur}
+              onChange={repeatPasswordControl.onChange}
+              name={repeatPasswordControl.name}
             />
           </TextField.Label>
         </TextField>

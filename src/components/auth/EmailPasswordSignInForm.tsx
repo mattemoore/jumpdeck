@@ -67,7 +67,7 @@ const EmailPasswordSignInForm: React.FCC<{
 
   return (
     <form className={'w-full'} onSubmit={handleSubmit(signInWithCredentials)}>
-      <div className={'flex-col space-y-4'}>
+      <div className={'flex-col space-y-2.5'}>
         <TextField>
           <TextField.Label>
             <Trans i18nKey={'common:emailAddress'} />

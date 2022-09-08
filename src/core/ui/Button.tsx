@@ -142,7 +142,7 @@ function InnerButtonContainerElement({
   if (href) {
     return (
       <Link href={href} passHref>
-        <a className={`${className} w-full`}>{children}</a>
+        <a className={`${className} flex w-full items-center`}>{children}</a>
       </Link>
     );
   }

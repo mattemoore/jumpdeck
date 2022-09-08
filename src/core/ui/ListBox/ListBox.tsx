@@ -3,6 +3,7 @@ import { Trans } from 'next-i18next';
 
 import { Listbox, Transition } from '@headlessui/react';
 import SelectorIcon from '~/core/ui/SelectorIcon';
+import If from '~/core/ui/If';
 
 export interface ListBoxOptionModel<Value = unknown> {
   label: string;
@@ -18,7 +19,7 @@ function ListBox<Value>({
   children,
 }: PropsWithChildren<{
   cy?: string;
-  value: ListBoxOptionModel<Value>;
+  value: ListBoxOptionModel<Value> | undefined;
   setValue: (value: ListBoxOptionModel<Value>) => void;
 }>) {
   return (
@@ -30,9 +31,15 @@ function ListBox<Value>({
             return `ListBoxButton ${open ? `ListBoxButtonOpen` : ''}`;
           }}
         >
-          <span className="block truncate">
-            <Trans i18nKey={value.label} />
-          </span>
+          <If condition={value}>
+            {({ label }) => {
+              return (
+                <span className="block truncate">
+                  <Trans i18nKey={label} />
+                </span>
+              );
+            }}
+          </If>
 
           <span className="ListBoxButtonIcon">
             <SelectorIcon aria-hidden="true" />

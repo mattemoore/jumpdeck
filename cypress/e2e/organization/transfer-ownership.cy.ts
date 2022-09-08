@@ -1,5 +1,6 @@
 import organizationPo from '../../support/organization.po';
 import authPo from '../../support/auth.po';
+import organizationPageObject from '../../support/organization.po';
 
 describe(`Transfer Ownership`, () => {
   const targetMemberEmail = `test-transfer-ownership@makerkit.dev`;
@@ -7,8 +8,6 @@ describe(`Transfer Ownership`, () => {
 
   function signIn() {
     cy.signIn(`/settings/organization/members`);
-
-    organizationPo.switchToOrganization('Test');
   }
 
   function transferOwnership(email: string) {
@@ -17,6 +16,7 @@ describe(`Transfer Ownership`, () => {
   }
 
   before(() => {
+    organizationPageObject.useDefaultOrganization();
     signIn();
   });
 

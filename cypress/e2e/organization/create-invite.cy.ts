@@ -5,8 +5,8 @@ describe(`Create Invite`, () => {
   const email = `invited-member@makerkit.dev`;
 
   before(() => {
+    organizationPageObject.useDefaultOrganization();
     cy.signIn(`/settings/organization/members/invite`);
-    organizationPageObject.switchToOrganization('Test');
   });
 
   describe(`Given a user invites a new member`, () => {

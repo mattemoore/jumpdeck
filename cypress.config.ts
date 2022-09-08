@@ -14,7 +14,7 @@ export default defineConfig({
   viewportHeight: 1080,
   pageLoadTimeout: 60000,
   retries: {
-    runMode: 1,
+    runMode: 2,
     openMode: 1,
   },
   env: getEnv(),
@@ -22,7 +22,7 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       return require('./cypress/plugins/index.ts').default(on, config);
     },
-    defaultCommandTimeout: 15000,
+    defaultCommandTimeout: 10000,
     slowTestThreshold: 5000,
     baseUrl: 'http://localhost:3000',
     specPattern: './cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',

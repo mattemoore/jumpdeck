@@ -65,7 +65,7 @@ export const PasswordReset: React.FCC = () => {
           }
         >
           <div className={'mb-2 sm:mb-4 lg:mb-8'}>
-            <Logo className={'w-[85px]'} />
+            <Logo />
           </div>
 
           <div className={'text-center'}>
@@ -110,7 +110,12 @@ export const PasswordReset: React.FCC = () => {
                     <AuthErrorMessage error={state.error as string} />
                   </If>
 
-                  <Button loading={state.loading} type="submit" block>
+                  <Button
+                    loading={state.loading}
+                    type="submit"
+                    size="large"
+                    block
+                  >
                     <Trans i18nKey={'auth:passwordResetLabel'} />
                   </Button>
                 </div>

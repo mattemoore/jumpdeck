@@ -36,7 +36,7 @@ Cypress.Commands.add(
     // preserve the session cookie between tests
     // otherwise the user will get logged out
     Cypress.Cookies.defaults({
-      preserve: ['session', 'sessionExpiresAt'],
+      preserve: ['session', 'sessionExpiresAt', 'organizationId'],
     });
 
     cy.log('Signing in programmatically...');

@@ -16,11 +16,19 @@ const SUPPORTED_METHODS: HttpMethod[] = ['POST', 'GET'];
 
 async function membersHandler(req: NextApiRequest, res: NextApiResponse) {
   const { method, firebaseUser } = req;
-  const { id: organizationId } = getQueryParamsSchema().parse(req.query);
   const userId = firebaseUser.uid;
+
+  const { id: organizationId } = getQueryParamsSchema().parse(req.query);
 
   switch (method) {
     case 'GET': {
+      logger.info(
+        {
+          organizationId,
+        },
+        `Fetching organization members...`
+      );
+
       const payload = { organizationId, userId };
       const data = await getOrganizationMembers(payload);
 
@@ -30,14 +38,24 @@ async function membersHandler(req: NextApiRequest, res: NextApiResponse) {
     case 'POST': {
       const { code } = getBodySchema().parse(req.body);
 
+      logger.info(
+        {
+          code,
+          organizationId,
+          userId,
+        },
+        `Adding member to organization...`
+      );
+
       await acceptInviteToOrganization({ code, userId });
 
       logger.info(
         {
           code,
           organizationId,
+          userId,
         },
-        `Member added to organization`
+        `Member successfully added to organization`
       );
 
       return res.send({ success: true });

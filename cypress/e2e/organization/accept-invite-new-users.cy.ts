@@ -8,13 +8,13 @@ describe(`Accept Invite - New User`, () => {
 
   before(() => {
     Cypress.Cookies.defaults({
-      preserve: ['session', 'sessionExpiresAt'],
+      preserve: ['session', 'sessionExpiresAt', 'organizationId'],
     });
 
     visitInvitePage(nonExistingUserInviteCode);
 
     // and then, sign user up
-    authPo.signInWithEmailAndPassword(nonExistingUserEmail, 'anypass');
+    authPo.signUpWithEmailAndPassword(nonExistingUserEmail, 'anypass');
   });
 
   describe(`After accepting the invite`, () => {
