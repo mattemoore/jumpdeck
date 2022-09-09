@@ -12,12 +12,13 @@ const SECONDS_PER_DAY = 86400;
  */
 const config = {
   pageExtensions: ["ts", "tsx", "md", "mdx"],
-  // not working with Firebase yet, please do not change
-  swcMinify: false,
+  swcMinify: true,
   // please disable if too verbose while developing. No judgment
   reactStrictMode: true,
   images: {
-    domains: getConfiguredDomains()
+    domains: getConfiguredDomains(),
+    // enable this to opt-in image optimization (mind the Vercel limits)
+    unoptimized: true,
   },
   onDemandEntries: {
     // period (in ms) where the server will keep pages in the buffer

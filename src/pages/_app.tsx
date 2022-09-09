@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AppProps } from 'next/app';
 
 import type { User as AuthUser } from 'firebase/auth';
-import { appWithTranslation } from 'next-i18next';
+import { appWithTranslation, SSRConfig } from 'next-i18next';
 
 import configuration from '~/configuration';
 
@@ -23,7 +23,7 @@ import FirebaseAnalyticsProvider from '~/core/firebase/components/FirebaseAnalyt
 import { isBrowser } from '~/core/generic';
 import FirebaseAppCheckProvider from '~/core/firebase/components/FirebaseAppCheckProvider';
 
-interface DefaultPageProps {
+interface DefaultPageProps extends SSRConfig {
   session?: Maybe<AuthUser>;
   user?: Maybe<UserData>;
   organization?: Maybe<WithId<Organization>>;
@@ -55,13 +55,15 @@ function App(
     setOrganization(pageProps.organization);
   }, [pageProps.organization]);
 
+  const refreshClaims = props.pageProps.refreshClaims ?? false;
+
   useEffect(updateCurrentOrganization, [updateCurrentOrganization]);
 
   return (
     <FirebaseAppShell config={firebase}>
       <FirebaseAppCheckProvider>
         <FirebaseAuthProvider
-          refreshClaims={props.pageProps.refreshClaims}
+          refreshClaims={refreshClaims}
           userSession={userSession}
           setUserSession={setUserSession}
           useEmulator={emulator}

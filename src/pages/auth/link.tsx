@@ -128,8 +128,8 @@ const EmailLinkAuthPage: React.FC = () => {
             ' lg:w-4/12 xl:w-3/12'
           }
         >
-          <div className={'mb-2 sm:mb-4 lg:mb-6'}>
-            <Logo className={'w-[85px]'} />
+          <div className={'mb-2'}>
+            <Logo />
           </div>
 
           <If condition={loading}>

@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from 'next/future/image';
 import Collection from '~/core/blog/types/collection';
 
 function CollectionImage({

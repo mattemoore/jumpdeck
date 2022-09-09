@@ -65,12 +65,10 @@ const PostHeader = ({ post }: Props) => {
 
       <If condition={displayImage}>
         {coverImage ? (
-          <div className="mx-auto justify-center">
+          <div className="relative mx-auto h-[378px] w-full justify-center">
             <CoverImage
               preloadImage={preloadImage}
-              className="rounded-md shadow-xl"
-              width="100%"
-              height="auto"
+              className="rounded-md"
               title={title}
               src={coverImage}
             />

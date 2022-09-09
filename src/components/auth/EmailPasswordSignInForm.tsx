@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import Link from 'next/link';
 import type { User } from 'firebase/auth';
 import { Trans } from 'next-i18next';
@@ -21,6 +21,7 @@ const EmailPasswordSignInForm: React.FCC<{
   const createCsrfToken = useCsrfToken();
   const [sessionRequest, sessionState] = useCreateSession();
   const [signIn, status] = useSignInWithEmailAndPassword();
+  const redirecting = useRef(false);
 
   const { register, handleSubmit } = useForm({
     defaultValues: {
@@ -32,7 +33,8 @@ const EmailPasswordSignInForm: React.FCC<{
   const emailControl = register('email', { required: true });
   const passwordControl = register('password', { required: true });
 
-  const isLoading = sessionState.loading || status.loading;
+  const isLoading =
+    sessionState.loading || status.loading || redirecting.current;
 
   const createSession = useCallback(
     async (user: User) => {
@@ -56,6 +58,8 @@ const EmailPasswordSignInForm: React.FCC<{
         // using the ID token, we will make a request to initiate the session
         // to make SSR possible via session cookie
         await createSession(credential.user);
+
+        redirecting.current = true;
 
         // we notify the parent component that
         // the user signed in successfully, so they can be redirected

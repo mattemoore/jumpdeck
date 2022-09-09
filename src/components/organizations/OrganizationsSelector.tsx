@@ -1,5 +1,5 @@
 import { useCallback, useContext, useState } from 'react';
-import Image from 'next/image';
+import Image from 'next/future/image';
 import { useAuth } from 'reactfire';
 import { SpringSpinner } from 'react-epic-spinners';
 
@@ -123,6 +123,8 @@ const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
 
 function OrganizationItem({ organization }: { organization: Organization }) {
   const { logoURL, name } = organization;
+  const imageSize = 22;
+
   return (
     <span
       data-cy={'organization-selector-item'}
@@ -131,9 +133,8 @@ function OrganizationItem({ organization }: { organization: Organization }) {
       <If condition={logoURL}>
         <span className={'flex flex-1 items-center'}>
           <Image
-            layout={'fixed'}
-            width={'22px'}
-            height={'22px'}
+            width={imageSize}
+            height={imageSize}
             alt={`${name} Logo`}
             className={'object-contain'}
             src={logoURL as string}

@@ -1,7 +1,5 @@
-import Image from 'next/image';
+import Image from 'next/future/image';
 import cn from 'classnames';
-
-import If from '~/core/ui/If';
 
 type Props = {
   title: string;
@@ -14,25 +12,17 @@ type Props = {
 };
 
 const CoverImage = ({ title, src, slug, preloadImage, className }: Props) => {
-  const image = (
+  return (
     <Image
-      layout={'responsive'}
-      className={cn('block rounded-lg', {
+      className={cn('block rounded-lg object-cover', {
         'duration-250 transition-all hover:opacity-90': slug,
         [`${className ?? ''}`]: true,
       })}
       src={src}
       priority={preloadImage}
       alt={`Cover Image for ${title}`}
-      width={'16'}
-      height={'9'}
+      fill
     />
-  );
-
-  return (
-    <If condition={slug} fallback={image}>
-      {image}
-    </If>
   );
 };
 

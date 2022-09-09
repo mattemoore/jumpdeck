@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { FirebaseError } from 'firebase/app';
 import { User } from 'firebase/auth';
 
@@ -24,8 +24,9 @@ const EmailPasswordSignUpForm: React.FCC<{
   const [sessionRequest, sessionState] = useCreateSession();
   const [signUp, state] = useSignUpWithEmailAndPassword();
   const { t } = useTranslation();
+  const redirecting = useRef(false);
 
-  const loading = state.loading || sessionState.loading;
+  const loading = state.loading || sessionState.loading || redirecting.current;
 
   const { register, handleSubmit, watch } = useForm({
     shouldUseNativeValidation: true,
@@ -74,6 +75,8 @@ const EmailPasswordSignUpForm: React.FCC<{
         idToken,
         csrfToken,
       });
+
+      redirecting.current = true;
 
       // we notify the parent component that
       // the user signed up successfully, so they can be redirected

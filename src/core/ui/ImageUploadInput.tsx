@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react';
 
-import Image from 'next/image';
+import Image from 'next/future/image';
 
 import { CloudArrowUpIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
@@ -97,11 +97,11 @@ const ImageUploadInput: React.FCC<Props> = ({
 
           <If condition={value}>
             <Image
-              objectFit={'contain'}
+              className={'object-contain'}
               width={'18'}
               height={'18'}
               src={value as string}
-              alt={props.alt}
+              alt={props.alt ?? ''}
             />
           </If>
         </div>

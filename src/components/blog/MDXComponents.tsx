@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from 'next/future/image';
 
 import Alert from '~/core/ui/Alert';
 import configuration from '~/configuration';
@@ -11,21 +11,22 @@ import Badge from '~/core/ui/Badge';
 import ImageUploadInput from '~/core/ui/ImageUploadInput';
 import Heading from '~/core/ui/Heading';
 import TweetEmbed from './TweetEmbed';
+import classNames from 'classnames';
 
-type ImageLayout = 'fixed' | 'fill' | 'intrinsic' | 'responsive' | undefined;
-
-const NextImage: React.FCC<StringObject> = (props: StringObject) => {
-  const width = props.width ?? '4';
-  const height = props.height ?? '3';
+const NextImage: React.FCC<StringObject> = ({
+  width,
+  height,
+  ...props
+}: StringObject) => {
+  const className = classNames(props.class, `object-cover`);
 
   return (
     <Image
-      width={width}
-      height={height}
-      layout={(props.layout as ImageLayout) ?? 'responsive'}
-      className={props.class}
+      className={className}
       src={props.src}
       alt={props.alt}
+      width={width}
+      height={height}
       {...props}
     />
   );

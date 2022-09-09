@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from 'next/future/image';
 import AuthorType from '~/core/blog/types/author';
 
 const Author: React.FCC<{ author: AuthorType }> = ({ author }) => {
