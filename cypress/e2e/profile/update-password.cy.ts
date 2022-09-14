@@ -1,39 +1,75 @@
 import profilePo from '../../support/profile.po';
 import configuration from '~/configuration';
+import authPo from '../../support/auth.po';
 
 describe(`Update Password`, () => {
-  const existingEmailAddress = `new-email@makerkit.dev`;
-  const existingPassword = `testingpassword`;
+  const existingEmailAddress = `new-password@makerkit.dev`;
+  const currentPassword = authPo.getDefaultUserPassword();
   const newPassword = `newpassword`;
 
   before(() => {
     cy.signIn(`/settings/profile/password`, {
       email: existingEmailAddress,
-      password: existingPassword,
+      password: currentPassword,
     });
   });
 
+  function fillForm(params: {
+    currentPassword: string;
+    newPassword: string;
+    repeatPassword: string;
+  }) {
+    profilePo.$getCurrentPasswordInput().clear().type(params.currentPassword);
+    profilePo.$getNewPasswordInput().clear().type(params.newPassword);
+    profilePo.$getRepeatNewPasswordInput().clear().type(params.repeatPassword);
+
+    profilePo.$getUpdatePasswordForm().submit();
+  }
+
   describe(`When the passwords do not match`, () => {
     before(() => {
-      profilePo.$getCurrentPasswordInput().clear().type(existingPassword);
-      profilePo.$getNewPasswordInput().clear().type(newPassword);
-      profilePo.$getRepeatNewPasswordInput().clear().type('anotherpassword');
-
-      profilePo.$getUpdatePasswordForm().submit();
+      fillForm({
+        currentPassword,
+        newPassword,
+        repeatPassword: 'anotherpassword',
+      });
     });
 
-    it('should display an alert', () => {
-      profilePo.$getUpdatePasswordErrorAlert().should(`be.visible`);
+    it('should display an error on the repeat password input', () => {
+      profilePo
+        .$getRepeatNewPasswordInput()
+        .invoke('prop', 'validationMessage')
+        .should(
+          `equal`,
+          `Passwords do not match. Make sure you're using the correct password`
+        );
+    });
+  });
+
+  describe(`When the password is the same as the current password`, () => {
+    before(() => {
+      fillForm({
+        currentPassword,
+        newPassword: currentPassword,
+        repeatPassword: currentPassword,
+      });
+    });
+
+    it('should display an error on the new password input', () => {
+      profilePo
+        .$getNewPasswordInput()
+        .invoke('prop', 'validationMessage')
+        .should(`equal`, `Your password has not changed`);
     });
   });
 
   describe(`When the user enters the wrong password`, () => {
     before(() => {
-      profilePo.$getCurrentPasswordInput().clear().type('anotherpassword');
-      profilePo.$getNewPasswordInput().clear().type(newPassword);
-      profilePo.$getRepeatNewPasswordInput().clear().type(newPassword);
-
-      profilePo.$getUpdatePasswordForm().submit();
+      fillForm({
+        currentPassword: 'wrongpassword',
+        newPassword: newPassword,
+        repeatPassword: newPassword,
+      });
     });
 
     it('should display an alert', () => {
@@ -43,14 +79,21 @@ describe(`Update Password`, () => {
 
   describe(`When updating the password and the passwords do match`, () => {
     before(() => {
-      profilePo.$getCurrentPasswordInput().clear().type(existingPassword);
-      profilePo.$getNewPasswordInput().clear().type(newPassword);
-      profilePo.$getRepeatNewPasswordInput().clear().type(newPassword);
-      profilePo.$getUpdatePasswordForm().submit();
+      fillForm({
+        currentPassword,
+        newPassword: newPassword,
+        repeatPassword: newPassword,
+      });
     });
 
-    it('should remove the error alert', () => {
+    it('should remove the error alert and successfully execute the operation', () => {
       profilePo.$getUpdatePasswordErrorAlert().should('not.exist');
+    });
+
+    it('should reset the form values', () => {
+      profilePo.$getCurrentPasswordInput().invoke('val').should('be.empty');
+      profilePo.$getNewPasswordInput().invoke('val').should('be.empty');
+      profilePo.$getRepeatNewPasswordInput().invoke('val').should('be.empty');
     });
   });
 

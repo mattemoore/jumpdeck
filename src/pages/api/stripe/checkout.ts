@@ -13,6 +13,7 @@ import { getApiRefererPath } from '~/core/generic/get-api-referer-path';
 import { createStripeCheckout } from '~/lib/stripe/create-checkout';
 import { getUserRoleByOrganization } from '~/lib/server/organizations/get-user-role-by-organization';
 import { canChangeBilling } from '~/lib/organizations/permissions';
+import withCsrf from '~/core/middleware/with-csrf';
 
 const SUPPORTED_METHODS: HttpMethod[] = ['POST'];
 
@@ -78,6 +79,7 @@ async function checkoutsSessionHandler(
 }
 
 export default withPipe(
+  withCsrf((req) => req.body.csrfToken),
   withMethodsGuard(SUPPORTED_METHODS),
   withAuthedUser,
   checkoutsSessionHandler

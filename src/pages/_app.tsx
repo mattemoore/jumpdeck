@@ -2,6 +2,7 @@ import '../styles/index.css';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AppProps } from 'next/app';
+import Head from 'next/head';
 
 import type { User as AuthUser } from 'firebase/auth';
 import { appWithTranslation, SSRConfig } from 'next-i18next';
@@ -28,6 +29,7 @@ interface DefaultPageProps extends SSRConfig {
   user?: Maybe<UserData>;
   organization?: Maybe<WithId<Organization>>;
   refreshClaims?: boolean;
+  csrfToken?: string;
 }
 
 function App(
@@ -76,6 +78,7 @@ function App(
                 value={{ organization, setOrganization }}
               >
                 <AnalyticsTrackingEventsProvider>
+                  <CsrfTokenMetaAttribute csrfToken={pageProps.csrfToken} />
                   <Component {...pageProps} />
                 </AnalyticsTrackingEventsProvider>
               </OrganizationContext.Provider>
@@ -103,6 +106,18 @@ function AnalyticsTrackingEventsProvider({
   const shouldUseAnalytics = isBrowser() && !configuration.emulator;
 
   return shouldUseAnalytics ? <InnerAnalyticsProvider /> : <>{children}</>;
+}
+
+function CsrfTokenMetaAttribute({ csrfToken }: { csrfToken: Maybe<string> }) {
+  if (!csrfToken) {
+    return null;
+  }
+
+  return (
+    <Head>
+      <meta name={'csrf-token'} content={csrfToken} />
+    </Head>
+  );
 }
 
 /**

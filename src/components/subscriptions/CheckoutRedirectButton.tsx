@@ -3,6 +3,7 @@ import React from 'react';
 import Button from '~/core/ui/Button';
 import configuration from '~/configuration';
 import { isBrowser } from '~/core/generic';
+import { useGetCsrfToken } from '~/core/firebase/hooks/use-get-csrf-token';
 
 const CHECKOUT_SESSION_API_ENDPOINT = configuration.paths.api.checkout;
 
@@ -40,12 +41,20 @@ function CheckoutFormData(
     customerId: Maybe<string>;
   }>
 ) {
+  const getCsrfToken = useGetCsrfToken();
+
   return (
     <>
       <input
         type="hidden"
         name={'organizationId'}
         defaultValue={props.organizationId}
+      />
+
+      <input
+        type="hidden"
+        name={'csrfToken'}
+        defaultValue={getCsrfToken() ?? ''}
       />
 
       <input type="hidden" name={'returnUrl'} defaultValue={getReturnUrl()} />

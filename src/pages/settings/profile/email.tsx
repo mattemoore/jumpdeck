@@ -11,6 +11,9 @@ import ProfileSettingsTabs from '~/components/profile/ProfileSettingsTabs';
 import SettingsPageContainer from '~/components/settings/SettingsPageContainer';
 import SettingsContentContainer from '~/components/settings/SettingsContentContainer';
 import SettingsTile from '~/components/settings/SettingsTile';
+import { EmailAuthProvider } from 'firebase/auth';
+import If from '~/core/ui/If';
+import Alert from '~/core/ui/Alert';
 
 const ProfileEmailSettings = () => {
   const userSession = useUserSession();
@@ -20,6 +23,10 @@ const ProfileEmailSettings = () => {
     return null;
   }
 
+  const canUpdateEmail = user.providerData.find(
+    (item) => item.providerId === EmailAuthProvider.PROVIDER_ID
+  );
+
   return (
     <>
       <Head>
@@ -27,17 +34,30 @@ const ProfileEmailSettings = () => {
       </Head>
 
       <SettingsPageContainer title={'Settings'}>
-        <ProfileSettingsTabs user={user} />
+        <ProfileSettingsTabs />
 
         <SettingsContentContainer>
           <SettingsTile heading={<Trans i18nKey={'profile:emailTab'} />}>
-            <UpdateEmailForm user={user} />
+            <If
+              condition={canUpdateEmail}
+              fallback={<WarnCannotUpdateEmailAlert />}
+            >
+              <UpdateEmailForm user={user} />
+            </If>
           </SettingsTile>
         </SettingsContentContainer>
       </SettingsPageContainer>
     </>
   );
 };
+
+function WarnCannotUpdateEmailAlert() {
+  return (
+    <Alert type={'warn'}>
+      <Trans i18nKey={'profile:cannotUpdateEmail'} />
+    </Alert>
+  );
+}
 
 export default ProfileEmailSettings;
 

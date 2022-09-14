@@ -14,6 +14,7 @@ import { canChangeBilling } from '~/lib/organizations/permissions';
 import { withPipe } from '~/core/middleware/with-pipe';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
 import { getApiRefererPath } from '~/core/generic/get-api-referer-path';
+import withCsrf from '~/core/middleware/with-csrf';
 
 const SUPPORTED_HTTP_METHODS: HttpMethod[] = ['POST'];
 
@@ -72,6 +73,7 @@ export default function stripePortalHandler(
   res: NextApiResponse
 ) {
   return withPipe(
+    withCsrf((req) => req.body.csrfToken),
     withMethodsGuard(SUPPORTED_HTTP_METHODS),
     withAuthedUser,
     billingPortalRedirectHandler

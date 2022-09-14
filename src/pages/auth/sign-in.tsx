@@ -1,5 +1,6 @@
 import { GetServerSidePropsContext } from 'next';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useAuth } from 'reactfire';
 
 import { useRouter } from 'next/router';
 import Head from 'next/head';
@@ -7,11 +8,13 @@ import Head from 'next/head';
 import { Trans } from 'next-i18next';
 
 import configuration from '~/configuration';
+import { isBrowser } from '~/core/generic';
+import getClientQueryParams from '~/core/generic/get-client-query-params';
 import { getRedirectPathWithoutSearchParam } from '~/core/generic/get-redirect-url';
 
 import { withAuthProps } from '~/lib/props/with-auth-props';
 import OAuthProviders from '~/components/auth/OAuthProviders';
-import EmailPasswordSignInForm from '~/components/auth/EmailPasswordSignInForm';
+import EmailPasswordSignInContainer from '~/components/auth/EmailPasswordSignInContainer';
 
 import Layout from '~/core/ui/Layout';
 import Hero from '~/core/ui/Hero';
@@ -21,8 +24,21 @@ import Button from '~/core/ui/Button';
 const signUpPath = configuration.paths.signUp;
 const appHome = configuration.paths.appHome;
 
+const FORCE_SIGN_OUT_QUERY_PARAM = 'signOut';
+
 export const SignIn: React.FCC = () => {
   const router = useRouter();
+  const auth = useAuth();
+
+  const shouldForceSignOut = useMemo(() => {
+    if (!isBrowser()) {
+      return false;
+    }
+
+    const params = getClientQueryParams();
+
+    return params.has(FORCE_SIGN_OUT_QUERY_PARAM);
+  }, []);
 
   const onSignIn = useCallback(async () => {
     const path = getRedirectPathWithoutSearchParam(appHome);
@@ -35,6 +51,13 @@ export const SignIn: React.FCC = () => {
   useEffect(() => {
     void router.prefetch(appHome);
   }, [router]);
+
+  // force user signOut if the query parameter has been passed
+  useEffect(() => {
+    if (shouldForceSignOut) {
+      void auth.signOut();
+    }
+  }, [auth, shouldForceSignOut]);
 
   return (
     <Layout>
@@ -65,7 +88,7 @@ export const SignIn: React.FCC = () => {
             <Trans i18nKey={'auth:orContinueWithEmail'} />
           </div>
 
-          <EmailPasswordSignInForm onSignIn={onSignIn} />
+          <EmailPasswordSignInContainer onSignIn={onSignIn} />
 
           <div>
             <Button

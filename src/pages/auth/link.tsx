@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -6,7 +6,14 @@ import { Trans } from 'next-i18next';
 import { SpringSpinner } from 'react-epic-spinners';
 
 import { FirebaseError } from 'firebase/app';
-import { isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
+
+import {
+  isSignInWithEmailLink,
+  MultiFactorError,
+  signInWithEmailLink,
+  User,
+} from 'firebase/auth';
+
 import { useAuth } from 'reactfire';
 
 import { withAuthProps } from '~/lib/props/with-auth-props';
@@ -17,11 +24,12 @@ import Button from '~/core/ui/Button';
 
 import { isBrowser } from '~/core/generic';
 import { useRequestState } from '~/core/hooks/use-request-state';
-import { useCreateSession } from '~/core/hooks/use-create-session';
-import { useCsrfToken } from '~/core/firebase/hooks/use-csrf-token';
-import AuthErrorMessage from '~/components/auth/AuthErrorMessage';
+import useCreateServerSideSession from '~/core/hooks/use-create-server-side-session';
 
 import configuration from '~/configuration';
+import AuthErrorMessage from '~/components/auth/AuthErrorMessage';
+import MultiFactorAuthChallengeModal from '~/components/auth/MultiFactorAuthChallengeModal';
+import { isMultiFactorError } from '~/core/firebase/utils/is-multi-factor-error';
 
 // this is the key we use for storing the email locally
 // so we can verify it is the same
@@ -34,9 +42,11 @@ const EmailLinkAuthPage: React.FC = () => {
   const router = useRouter();
   const requestExecutedRef = useRef<boolean>();
 
+  const [multiFactorAuthError, setMultiFactorAuthError] =
+    useState<Maybe<MultiFactorError>>();
+
   const { state, setError } = useRequestState<void>();
-  const [sessionRequest, sessionRequestState] = useCreateSession();
-  const createCsrfToken = useCsrfToken();
+  const [sessionRequest, sessionRequestState] = useCreateServerSideSession();
 
   const loading = sessionRequestState.loading || sessionRequestState.loading;
 
@@ -44,10 +54,24 @@ const EmailLinkAuthPage: React.FC = () => {
     return router.push(appHome);
   }, [router]);
 
+  const onSignInSuccess = useCallback(
+    async (user: User) => {
+      // we can create the session and store a cookie to make SSR work
+      await sessionRequest(user);
+
+      // let's clear the email from the storage
+      clearEmailFromStorage();
+
+      // redirect user to the home page
+      await redirectToAppHome();
+    },
+    [redirectToAppHome, sessionRequest]
+  );
+
   // preload routes that may be used to redirect the user next
   useEffect(() => {
-    void router.push(onboarding);
-    void router.push(appHome);
+    void router.prefetch(onboarding);
+    void router.prefetch(appHome);
   }, [router]);
 
   // in this effect, we execute the functions to log the user in
@@ -87,29 +111,19 @@ const EmailLinkAuthPage: React.FC = () => {
         // sign in with link, and retrieve the ID Token
         const credential = await signInWithEmailLink(auth, email, href);
 
-        // we can create the session and store a cookie to make SSR work
-        // additionally, we also pass a CSRF token
-        const csrfToken = createCsrfToken();
-        const idToken = await credential.user.getIdToken();
-        await sessionRequest({ idToken, csrfToken });
-
-        // let's clear the email from the storage
-        clearEmailFromStorage();
-
-        // redirect user to the home page
-        await redirectToAppHome();
+        return onSignInSuccess(credential.user);
       } catch (e) {
-        if (e instanceof FirebaseError) {
-          setError(e.code);
+        if (isMultiFactorError(e)) {
+          setMultiFactorAuthError(e);
         } else {
-          setError('generic');
+          setError(e instanceof FirebaseError ? e.code : 'generic');
         }
       }
     })();
   }, [
     auth,
-    createCsrfToken,
     loading,
+    onSignInSuccess,
     redirectToAppHome,
     sessionRequest,
     setError,
@@ -147,6 +161,20 @@ const EmailLinkAuthPage: React.FC = () => {
           </If>
         </div>
       </div>
+
+      <If condition={multiFactorAuthError}>
+        {(error) => (
+          <MultiFactorAuthChallengeModal
+            cancelButton={false}
+            error={error}
+            isOpen={true}
+            setIsOpen={() => setMultiFactorAuthError(undefined)}
+            onSuccess={(credential) => {
+              return onSignInSuccess(credential.user);
+            }}
+          />
+        )}
+      </If>
     </Layout>
   );
 };

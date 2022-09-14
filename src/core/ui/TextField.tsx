@@ -37,7 +37,7 @@ const Input: React.FC<Props> = ({
   ...props
 }) => {
   const ref = innerRef ?? createRef<HTMLInputElement>();
-  const currentValue = props.value;
+  const currentValue = props.value ?? '';
   const [value, setValue] = useState(currentValue);
 
   const onReset = useCallback(() => {

@@ -28,9 +28,14 @@ const ProfileDropdown: React.FCC<{
 
   const items = [
     <Dropdown.Item className={'rounded-none py-0'} key={'signedInAs'}>
-      <div className={'flex flex-col justify-start text-left text-xs'}>
+      <div
+        className={'flex flex-col justify-start text-left text-xs ellipsify'}
+      >
         <div className={'text-gray-500'}>Signed in as</div>
-        <div>{user?.email}</div>
+
+        <div>
+          <span className={'block ellipsify'}>{user?.email}</span>
+        </div>
       </div>
     </Dropdown.Item>,
     <Dropdown.Divider key={'divider1'} />,

@@ -1,7 +1,12 @@
 import { useCallback, useContext, useRef } from 'react';
 import { AppCheckSdkContext } from 'reactfire';
 import { getToken } from 'firebase/app-check';
+
 import { useRequestState } from '~/core/hooks/use-request-state';
+import { useGetCsrfToken } from '~/core/firebase/hooks/use-get-csrf-token';
+
+const FIREBASE_APP_CHECK_HEADER = 'X-Firebase-AppCheck';
+const CSRF_TOKEN_HEADER = 'x-csrf-token';
 
 /**
  * @name useApiRequest
@@ -21,6 +26,7 @@ export function useApiRequest<Resp = unknown, Body = void>(
 
   const headersRef = useRef(headers);
   const getAppCheckToken = useGetAppCheckToken();
+  const getCsrfToken = useGetCsrfToken();
 
   const fn = useCallback(
     async (body: Body) => {
@@ -28,16 +34,21 @@ export function useApiRequest<Resp = unknown, Body = void>(
 
       try {
         const payload = JSON.stringify(body);
-        const token = await getAppCheckToken();
+        const appCheckToken = await getAppCheckToken();
+        const csrfToken = getCsrfToken();
+
+        if (!headersRef.current) {
+          headersRef.current = {};
+        }
 
         // if the app-check token was found
         // we add the header to the API request
-        if (token) {
-          if (!headersRef.current) {
-            headersRef.current = {};
-          }
+        if (appCheckToken) {
+          headersRef.current[FIREBASE_APP_CHECK_HEADER] = appCheckToken;
+        }
 
-          headersRef.current['X-Firebase-AppCheck'] = token;
+        if (csrfToken) {
+          headersRef.current[CSRF_TOKEN_HEADER] = csrfToken;
         }
 
         const data = await executeFetchRequest<Resp>(
@@ -59,7 +70,15 @@ export function useApiRequest<Resp = unknown, Body = void>(
         return Promise.reject(error);
       }
     },
-    [setLoading, getAppCheckToken, path, method, setData, setError]
+    [
+      setLoading,
+      getAppCheckToken,
+      getCsrfToken,
+      path,
+      method,
+      setData,
+      setError,
+    ]
   );
 
   return [fn, state] as [typeof fn, typeof state];

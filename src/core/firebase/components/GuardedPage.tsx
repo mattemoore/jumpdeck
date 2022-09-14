@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useAuth, useSigninCheck } from 'reactfire';
-import { parseCookies } from 'nookies';
+import { parseCookies, destroyCookie } from 'nookies';
 import { isBrowser } from '~/core/generic';
 
 const AuthRedirectListener: React.FCC<{
@@ -19,6 +19,7 @@ const AuthRedirectListener: React.FCC<{
     // the user will be redirected away in the next effect (because "user"
     // will become null)
     if (isSessionExpired()) {
+      clearAuthCookies();
       void auth.signOut();
     }
   }, [auth, isSignInCheckDone]);
@@ -93,6 +94,13 @@ function redirectUserAway(path: string) {
   // we then redirect the user to the page
   // specified in the props of the component
   if (isNotCurrentPage) {
-    window.location.assign(path);
+    setTimeout(() => {
+      clearAuthCookies();
+      window.location.assign(path);
+    });
   }
+}
+
+function clearAuthCookies() {
+  destroyCookie(null, 'sessionExpiresAt');
 }

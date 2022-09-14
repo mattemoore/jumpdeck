@@ -1,9 +1,13 @@
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { Trans } from 'next-i18next';
+import { EmailAuthProvider } from 'firebase/auth';
 
 import { withAppProps } from '~/lib/props/with-app-props';
 import { useUserSession } from '~/core/hooks/use-user-session';
+
+import Alert from '~/core/ui/Alert';
+import If from '~/core/ui/If';
 
 import UpdatePasswordForm from '~/components/profile/UpdatePasswordForm';
 import ProfileSettingsTabs from '~/components/profile/ProfileSettingsTabs';
@@ -19,6 +23,10 @@ const ProfilePasswordSettings = () => {
     return null;
   }
 
+  const canUpdatePassword = user.providerData.find(
+    (item) => item.providerId === EmailAuthProvider.PROVIDER_ID
+  );
+
   return (
     <>
       <Head>
@@ -26,19 +34,32 @@ const ProfilePasswordSettings = () => {
       </Head>
 
       <SettingsPageContainer title={'Settings'}>
-        <ProfileSettingsTabs user={user} />
+        <ProfileSettingsTabs />
 
         <SettingsContentContainer>
           <SettingsTile
             heading={<Trans i18nKey={'organization:passwordSettingsTab'} />}
           >
-            <UpdatePasswordForm user={user} />
+            <If
+              condition={canUpdatePassword}
+              fallback={<WarnCannotUpdatePasswordAlert />}
+            >
+              <UpdatePasswordForm user={user} />
+            </If>
           </SettingsTile>
         </SettingsContentContainer>
       </SettingsPageContainer>
     </>
   );
 };
+
+function WarnCannotUpdatePasswordAlert() {
+  return (
+    <Alert type={'warn'}>
+      <Trans i18nKey={'profile:cannotUpdatePassword'} />
+    </Alert>
+  );
+}
 
 export default ProfilePasswordSettings;
 

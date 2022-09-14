@@ -6,6 +6,7 @@ import { withPipe } from '~/core/middleware/with-pipe';
 import { withAuthedUser } from '~/core/middleware/with-authed-user';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
 import { withExceptionFilter } from '~/core/middleware/with-exception-filter';
+import withCsrf from '~/core/middleware/with-csrf';
 
 const Body = z.object({
   organization: z.string(),
@@ -32,6 +33,7 @@ export default function completeOnboardingHandler(
   res: NextApiResponse
 ) {
   const handler = withPipe(
+    withCsrf(),
     withMethodsGuard(SUPPORTED_HTTP_METHODS),
     withAuthedUser,
     onboardingHandler

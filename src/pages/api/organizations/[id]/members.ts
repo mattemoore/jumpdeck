@@ -11,6 +11,7 @@ import { withAuthedUser } from '~/core/middleware/with-authed-user';
 import { withPipe } from '~/core/middleware/with-pipe';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
 import { withExceptionFilter } from '~/core/middleware/with-exception-filter';
+import withCsrf from '~/core/middleware/with-csrf';
 
 const SUPPORTED_METHODS: HttpMethod[] = ['POST', 'GET'];
 
@@ -36,6 +37,8 @@ async function membersHandler(req: NextApiRequest, res: NextApiResponse) {
     }
 
     case 'POST': {
+      await withCsrf()(req);
+
       const { code } = getBodySchema().parse(req.body);
 
       logger.info(

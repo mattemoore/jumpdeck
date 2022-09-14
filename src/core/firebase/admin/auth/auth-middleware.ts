@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest } from 'next';
 import { getUserFromSessionCookie } from './get-user-from-session-cookie';
 import { throwForbiddenException } from '~/core/http-exceptions';
 
@@ -8,12 +8,8 @@ import { throwForbiddenException } from '~/core/http-exceptions';
  * {@link NextApiRequest} if available, otherwise will return an {@link HttpStatusCode.Forbidden} error.
  * Only use to protect an API endpoint for signed-in users
  * @param req
- * @param res
  */
-export async function authMiddleware(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export async function authMiddleware(req: NextApiRequest) {
   const session = req.cookies.session;
 
   if (!session) {

@@ -16,7 +16,7 @@ export default function AuthErrorMessage({ error }: { error: Maybe<string> }) {
   const DefaultError = <Trans i18nKey="auth:errors.default" />;
 
   return (
-    <Alert type={'error'}>
+    <Alert className={'w-full'} type={'error'}>
       <span className={'text-sm'} data-cy={'auth-error-message'}>
         <Trans
           i18nKey={`auth:errors.${error}`}

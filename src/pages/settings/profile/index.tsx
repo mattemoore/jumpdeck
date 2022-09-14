@@ -45,7 +45,7 @@ const Profile = () => {
   return (
     <FirebaseStorageProvider>
       <SettingsPageContainer title={'Settings'}>
-        <ProfileSettingsTabs user={userSession.auth} />
+        <ProfileSettingsTabs />
 
         <SettingsContentContainer>
           <SettingsTile heading={<Trans i18nKey={'profile:generalTab'} />}>

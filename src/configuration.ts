@@ -21,6 +21,11 @@ const configuration = {
     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
     measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
   },
+  auth: {
+    // Enable MFA. You must upgrade to GCP Identity Platform to use it.
+    // see: https://cloud.google.com/identity-platform/docs/product-comparison
+    enableMultiFactorAuth: false,
+  },
   emulatorHost: process.env.NEXT_PUBLIC_EMULATOR_HOST,
   emulator: process.env.NEXT_PUBLIC_EMULATOR === 'true',
   production: process.env.NODE_ENV === 'production',

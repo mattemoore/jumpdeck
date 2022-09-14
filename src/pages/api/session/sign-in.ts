@@ -18,6 +18,7 @@ import { withAdmin } from '~/core/middleware/with-admin';
 import { withPipe } from '~/core/middleware/with-pipe';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
 import { withExceptionFilter } from '~/core/middleware/with-exception-filter';
+import withCsrf from '~/core/middleware/with-csrf';
 
 const SUPPORTED_HTTP_METHODS: HttpMethod[] = ['POST'];
 
@@ -27,8 +28,6 @@ const SUPPORTED_HTTP_METHODS: HttpMethod[] = ['POST'];
  * the user server-side
  */
 async function signIn(req: NextApiRequest, res: NextApiResponse) {
-  const { cookies } = req;
-
   // we validate the body to have the correct values
   // and respond with an error if it does not
   const body = getBodySchema().safeParse(req.body);
@@ -40,13 +39,7 @@ async function signIn(req: NextApiRequest, res: NextApiResponse) {
   // this is the ID token that is retrieved
   // by the client side sign-in with Firebase
   // we will use it to create a session cookie
-  const { csrfToken, idToken } = body.data;
-
-  // we need to check that the CSRF token in the body
-  // matches the relative token in the cookies
-  if (csrfToken !== cookies.csrfToken) {
-    return throwUnauthorizedException();
-  }
+  const { idToken } = body.data;
 
   try {
     // save token as an HTTP-only cookie
@@ -68,6 +61,7 @@ export default function sessionSignInHandler(
   res: NextApiResponse
 ) {
   const handler = withPipe(
+    withCsrf(),
     withMethodsGuard(SUPPORTED_HTTP_METHODS),
     withAdmin,
     signIn
@@ -79,6 +73,5 @@ export default function sessionSignInHandler(
 function getBodySchema() {
   return z.object({
     idToken: z.string(),
-    csrfToken: z.string(),
   });
 }

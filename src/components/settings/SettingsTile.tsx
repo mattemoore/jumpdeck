@@ -5,7 +5,7 @@ const SettingsTile: React.FCC<{
   heading?: string | React.ReactNode;
 }> = ({ children, heading }) => {
   return (
-    <div className={'flex flex-col space-y-4 rounded-lg p-4 shadow-sm'}>
+    <div className={'flex flex-col space-y-4 rounded-lg p-5 shadow-sm'}>
       <If condition={heading}>
         <Heading type={3}>{heading}</Heading>
       </If>

@@ -1,6 +1,10 @@
 import type { FirebaseError } from 'firebase/app';
 
-export function getFirebaseErrorCode(error: unknown) {
+export function getFirebaseErrorCode(error: Maybe<unknown>) {
+  if (!error) {
+    return;
+  }
+
   return isFirebaseError(error) ? error.code : undefined;
 }
 

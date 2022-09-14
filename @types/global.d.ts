@@ -53,5 +53,7 @@ declare module 'next' {
 }
 
 declare module 'react' {
-  type FCC<Props = Record<string, unknown>> = React.FC<React.PropsWithChildren<Props>>;
+  type FCC<Props = Record<string, unknown>> = React.FC<
+    React.PropsWithChildren<Props>
+  >;
 }

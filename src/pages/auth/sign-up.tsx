@@ -8,12 +8,13 @@ import configuration from '~/configuration';
 
 import { withAuthProps } from '~/lib/props/with-auth-props';
 import OAuthProviders from '~/components/auth/OAuthProviders';
-import EmailPasswordSignUpForm from '~/components/auth/EmailPasswordSignUpForm';
 
 import Layout from '~/core/ui/Layout';
 import Hero from '~/core/ui/Hero';
 import Logo from '~/core/ui/Logo';
 import Button from '~/core/ui/Button';
+
+import EmailPasswordSignUpContainer from '~/components/auth/EmailPasswordSignUpContainer';
 
 const signInPath = configuration.paths.signIn;
 const onboarding = configuration.paths.onboarding;
@@ -61,7 +62,7 @@ const SignUp: React.FCC = () => {
               <Trans i18nKey={'auth:orContinueWithEmail'} />
             </div>
 
-            <EmailPasswordSignUpForm onSignUp={onSignUp} />
+            <EmailPasswordSignUpContainer onSignUp={onSignUp} />
 
             <div>
               <Button

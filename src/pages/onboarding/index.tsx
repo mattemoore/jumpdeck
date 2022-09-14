@@ -18,6 +18,7 @@ import {
   OrganizationInfoStep,
   OrganizationInfoStepData,
 } from '~/components/onboarding/OrganizationInfoStep';
+
 import Layout from '~/core/ui/Layout';
 
 interface Data {
@@ -68,7 +69,8 @@ const Onboarding = () => {
 
         <div
           className={
-            'flex w-11/12 rounded-xl bg-white p-10 shadow dark:bg-black-400 sm:w-8/12 md:w-6/12 xl:w-3/12'
+            'flex w-11/12 rounded-xl bg-white p-10 shadow dark:bg-black-400' +
+            ' sm:w-8/12 md:w-6/12 xl:w-4/12 2xl:w-3/12'
           }
         >
           <If condition={currentStep === 0}>

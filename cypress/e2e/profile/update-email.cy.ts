@@ -1,9 +1,10 @@
 import profilePo from '../../support/profile.po';
 import configuration from '~/configuration';
+import authPo from '../../support/auth.po';
 
 describe(`Update Email`, () => {
   const existingEmailAddress = `test-email@makerkit.dev`;
-  const password = `testingpassword`;
+  const password = authPo.getDefaultUserPassword();
   const newEmailAddress = `new-email@makerkit.dev`;
 
   before(() => {
@@ -17,7 +18,7 @@ describe(`Update Email`, () => {
     before(() => {
       profilePo.$getNewEmailInput().type(existingEmailAddress);
       profilePo.$getRepeatEmailInput().type(existingEmailAddress);
-      profilePo.$getPasswordInput().type('anypass');
+      profilePo.$getUpdateEmailPasswordInput().type('anypass');
     });
 
     it('should display an alert', () => {
@@ -31,7 +32,7 @@ describe(`Update Email`, () => {
       profilePo.$getNewEmailInput().clear().type(newEmailAddress);
       profilePo.$getRepeatEmailInput().clear().type(newEmailAddress);
 
-      profilePo.$getPasswordInput().clear().type(`wrong password`);
+      profilePo.$getUpdateEmailPasswordInput().clear().type(`wrong password`);
     });
 
     it('should display an alert', () => {
@@ -44,12 +45,18 @@ describe(`Update Email`, () => {
     before(() => {
       profilePo.$getNewEmailInput().clear().type(newEmailAddress);
       profilePo.$getRepeatEmailInput().clear().type(newEmailAddress);
-      profilePo.$getPasswordInput().clear().type(password);
+      profilePo.$getUpdateEmailPasswordInput().clear().type(password);
       profilePo.$getUpdateEmailForm().submit();
     });
 
     it('should remove the error alert', () => {
       profilePo.$getUpdateEmailErrorAlert().should('not.exist');
+    });
+
+    it('should reset the form values', () => {
+      profilePo.$getNewEmailInput().invoke('val').should('be.empty');
+      profilePo.$getRepeatEmailInput().invoke('val').should('be.empty');
+      profilePo.$getUpdateEmailPasswordInput().invoke('val').should('be.empty');
     });
   });
 

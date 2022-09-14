@@ -25,7 +25,11 @@ const Modal: React.FC<
         open={isOpen}
         as="div"
         className="fixed inset-0 z-10 h-screen bg-gray-500 bg-opacity-30 transition-all"
-        onClose={() => setIsOpen(false)}
+        onClose={() => {
+          if (useCloseButton) {
+            setIsOpen(false);
+          }
+        }}
       >
         <div className="h-full min-h-screen px-4 text-center">
           <Transition.Child
@@ -65,14 +69,16 @@ const Modal: React.FC<
                   {heading}
                 </Dialog.Title>
 
-                <div className={'justify-end'}>
-                  <IconButton
-                    label={'Close Modal'}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <XMarkIcon className={'h-6'} />
-                  </IconButton>
-                </div>
+                <If condition={useCloseButton}>
+                  <div className={'justify-end'}>
+                    <IconButton
+                      label={'Close Modal'}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <XMarkIcon className={'h-6'} />
+                    </IconButton>
+                  </div>
+                </If>
               </div>
 
               <div className="relative mt-4">{children}</div>

@@ -10,6 +10,7 @@ import { initializeFirebaseAdminApp } from '~/core/firebase/admin/initialize-fir
 import { getCurrentOrganization } from '~/lib/server/organizations/get-current-organization';
 import { getUser } from '~/lib/server/organizations/get-user';
 import { withTranslationProps } from '~/lib/props/with-translation-props';
+import createCsrfCookie from '~/core/generic/create-csrf-token';
 
 const ORGANIZATION_ID_COOKIE_NAME = 'organizationId';
 
@@ -116,6 +117,8 @@ export async function withAppProps(
       saveOrganizationInCookies(ctx, organization.id);
     }
 
+    const csrfToken = await createCsrfCookie(ctx);
+
     const { props: translationProps } = await withTranslationProps(
       mergedOptions
     );
@@ -126,6 +129,7 @@ export async function withAppProps(
         user,
         organization,
         refreshClaims,
+        csrfToken,
         ...translationProps,
       },
     };
@@ -147,10 +151,10 @@ export async function withAppProps(
  */
 function redirectToLogin(returnUrl: string, redirectPath: string) {
   // we build the sign in URL
-  // appending the returnUrl query parameter
-  // so that we can redirect the user
-  // straight to where they were headed
-  const destination = `${redirectPath}?returnUrl=${returnUrl}`;
+  // appending the "returnUrl" query parameter so that we can redirect the user
+  // straight to where they were headed and the "signOut" parameter
+  // to force the client to sign the user out from the client SDK
+  const destination = `${redirectPath}?returnUrl=${returnUrl}&signOut=true`;
 
   return {
     redirect: {
@@ -218,5 +222,4 @@ function setOrganizationIdCustomClaims(
 function clearAuthenticationCookies(ctx: GetServerSidePropsContext) {
   nookies.destroy(ctx, 'session');
   nookies.destroy(ctx, 'sessionExpiresAt');
-  nookies.destroy(ctx, 'csrfToken');
 }

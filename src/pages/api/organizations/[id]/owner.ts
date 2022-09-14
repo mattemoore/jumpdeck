@@ -17,6 +17,7 @@ import {
 import { getOrganizationById } from '~/lib/server/queries';
 import { MembershipRole } from '~/lib/organizations/types/membership-role';
 import { Organization } from '~/lib/organizations/types/organization';
+import withCsrf from '~/core/middleware/with-csrf';
 
 const SUPPORTED_METHODS: HttpMethod[] = ['PUT'];
 
@@ -93,6 +94,7 @@ async function updateOrganizationOwnerHandler(
 
 export default function owner(req: NextApiRequest, res: NextApiResponse) {
   const handler = withPipe(
+    withCsrf(),
     withMethodsGuard(SUPPORTED_METHODS),
     withAuthedUser,
     updateOrganizationOwnerHandler

@@ -33,13 +33,11 @@ Cypress.Commands.add('cyGet', (name: string) => {
 Cypress.Commands.add(
   'signIn',
   (redirectPath = '/', credentials = authPo.getDefaultUserCredentials()) => {
-    // preserve the session cookie between tests
-    // otherwise the user will get logged out
-    Cypress.Cookies.defaults({
-      preserve: ['session', 'sessionExpiresAt', 'organizationId'],
-    });
+    preserveCookies();
 
-    cy.log('Signing in programmatically...');
+    cy.log(
+      `Signing in programmatically and redirecting to ${redirectPath} ...`
+    );
 
     authPo.signInProgrammatically(credentials);
 
@@ -62,4 +60,18 @@ Cypress.Commands.add(`signOutSession`, () => {
 
 export function createCySelector(name: string) {
   return `[data-cy="${name}"]`;
+}
+
+function preserveCookies() {
+  // preserve the session cookie between tests
+  // otherwise the user will get logged out
+  Cypress.Cookies.defaults({
+    preserve: [
+      'session',
+      'sessionExpiresAt',
+      'organizationId',
+      'csrfToken',
+      'csrfSecret',
+    ],
+  });
 }

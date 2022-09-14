@@ -8,6 +8,8 @@ import {
   signInWithPopup,
   browserPopupRedirectResolver,
   UserCredential,
+  Auth,
+  reauthenticateWithPopup,
 } from 'firebase/auth';
 
 import { useRequestState } from '~/core/hooks/use-request-state';
@@ -25,15 +27,15 @@ export function useSignInWithProvider() {
       setLoading(true);
 
       try {
-        const credential = await signInWithPopup(
-          auth,
-          provider,
-          browserPopupRedirectResolver
-        );
+        const credential = await getCredential(auth, provider);
 
         setData(credential);
+
+        return credential;
       } catch (error) {
         setError(error as FirebaseError);
+
+        return Promise.reject(error);
       }
     },
     [auth, setData, setError, setLoading]
@@ -43,4 +45,18 @@ export function useSignInWithProvider() {
     typeof signInWithProvider,
     typeof state
   ];
+}
+
+async function getCredential(auth: Auth, provider: AuthProvider) {
+  const user = auth.currentUser;
+
+  if (user) {
+    return reauthenticateWithPopup(
+      user,
+      provider,
+      browserPopupRedirectResolver
+    );
+  }
+
+  return signInWithPopup(auth, provider, browserPopupRedirectResolver);
 }

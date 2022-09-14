@@ -1,7 +1,6 @@
 import { useApiRequest } from '~/core/hooks/use-api';
 
 interface Body {
-  csrfToken: string;
   idToken: string;
 }
 

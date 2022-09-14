@@ -28,6 +28,16 @@ export async function getUserInfoById(userId: string) {
       providerData: user.providerData.map((item) => {
         return JSON.parse(JSON.stringify(item.toJSON())) as UserInfo;
       }),
+      multiFactor: user.multiFactor
+        ? user.multiFactor.enrolledFactors.map((item) => {
+            return {
+              displayName: getValue(item.displayName),
+              uid: item.uid,
+              factorId: item.factorId,
+              enrollmentTime: getValue(item.enrollmentTime),
+            };
+          })
+        : null,
     };
   } catch (e) {
     logger.warn(

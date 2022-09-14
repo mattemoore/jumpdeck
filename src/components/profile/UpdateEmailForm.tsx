@@ -1,24 +1,64 @@
-import { User } from 'firebase/auth';
+import {
+  EmailAuthProvider,
+  MultiFactorError,
+  reauthenticateWithCredential,
+  updateEmail,
+  User,
+  UserCredential,
+} from 'firebase/auth';
+
 import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Trans, useTranslation } from 'next-i18next';
-
-import { useUpdateUserEmail } from '~/lib/profile/hooks/use-update-user-email';
+import { useForm } from 'react-hook-form';
 
 import Button from '~/core/ui/Button';
 import TextField from '~/core/ui/TextField';
 import Alert from '~/core/ui/Alert';
 import If from '~/core/ui/If';
-import { useForm } from 'react-hook-form';
+
+import MultiFactorAuthChallengeModal from '~/components/auth/MultiFactorAuthChallengeModal';
+import { isMultiFactorError } from '~/core/firebase/utils/is-multi-factor-error';
+import { useRequestState } from '~/core/hooks/use-request-state';
+import useCreateServerSideSession from '~/core/hooks/use-create-server-side-session';
 
 const UpdateEmailForm: React.FC<{ user: User }> = ({ user }) => {
   const [errorMessage, setErrorMessage] = useState<Maybe<string>>();
-  const [updateEmail, state] = useUpdateUserEmail();
   const { t } = useTranslation();
+  const [createServerSideSession] = useCreateServerSideSession();
+  const requestState = useRequestState<void>();
+
+  const [multiFactorAuthError, setMultiFactorAuthError] =
+    useState<Maybe<MultiFactorError>>();
+
+  const updateEmailWithCredential = useCallback(
+    (credential: UserCredential, email: string) => {
+      // then, we update the user's email address
+      const promise = updateEmail(credential.user, email)
+        .then(() => {
+          return createServerSideSession(credential.user);
+        })
+        .then(() => {
+          setErrorMessage(undefined);
+        })
+        .catch((e) => {
+          setErrorMessage(t(`profile:updateEmailError`));
+
+          return e;
+        });
+
+      return toast.promise(promise, {
+        success: t(`profile:updateEmailSuccess`),
+        loading: t(`profile:updateEmailLoading`),
+        error: t(`profile:updateEmailError`),
+      });
+    },
+    [createServerSideSession, setErrorMessage, t]
+  );
 
   const currentEmail = user?.email as string;
 
-  const { register, handleSubmit, reset } = useForm({
+  const { register, handleSubmit, getValues, reset } = useForm({
     defaultValues: {
       email: '',
       repeatEmail: '',
@@ -48,27 +88,43 @@ const UpdateEmailForm: React.FC<{ user: User }> = ({ user }) => {
         return;
       }
 
-      const promise = updateEmail({
-        oldEmail: currentEmail,
-        email,
-        password,
-      })
-        .then(() => {
-          setErrorMessage(undefined);
-        })
-        .catch((e) => {
+      requestState.setLoading(true);
+
+      // first, we need to verify that the password is correct
+      // by reauthenticating the user
+      const emailAuthCredential = EmailAuthProvider.credential(
+        currentEmail,
+        password
+      );
+
+      const promise = reauthenticateWithCredential(user, emailAuthCredential);
+
+      const credential = await promise.catch((e) => {
+        // if we hit a MFA error, it means we need to display an MFA modal
+        // and request the verification code sent by SMS
+        if (isMultiFactorError(e)) {
+          setMultiFactorAuthError(e);
+        } else {
+          // otherwise, it's a simple error, meaning the user wasn't able
+          // to authenticate
           setErrorMessage(t(`profile:updateEmailError`));
+        }
 
-          return e;
-        });
+        requestState.setError(e);
+      });
 
-      await toast.promise(promise, {
-        success: t(`profile:updateEmailSuccess`),
-        loading: t(`profile:updateEmailLoading`),
-        error: t(`profile:updateEmailError`),
+      // if no valid credential was returned, it's that likely we hit an error
+      // and therefore we cannot proceed
+      if (!credential) {
+        return;
+      }
+
+      // otherwise, go ahead and update the email
+      return await updateEmailWithCredential(credential, email).finally(() => {
+        requestState.setData();
       });
     },
-    [currentEmail, t, updateEmail]
+    [currentEmail, t, requestState, updateEmailWithCredential, user]
   );
 
   const emailControl = register('email', {
@@ -86,78 +142,101 @@ const UpdateEmailForm: React.FC<{ user: User }> = ({ user }) => {
     required: true,
   });
 
+  // reset the form on success
   useEffect(() => {
-    if (state.success) {
+    if (requestState.state.success) {
       reset();
+      requestState.resetState();
     }
-  }, [state.success, reset]);
+  }, [reset, requestState]);
 
   return (
-    <form data-cy={'update-email-form'} onSubmit={handleSubmit(onSubmit)}>
-      <div className={'flex flex-col space-y-4'}>
-        <If condition={errorMessage}>
-          <div data-cy={'update-email-error-alert'}>
-            <Alert type={'error'}>{errorMessage}</Alert>
+    <>
+      <form data-cy={'update-email-form'} onSubmit={handleSubmit(onSubmit)}>
+        <div className={'flex flex-col space-y-4'}>
+          <If condition={errorMessage}>
+            <div data-cy={'update-email-error-alert'}>
+              <Alert type={'error'}>{errorMessage}</Alert>
+            </div>
+          </If>
+
+          <TextField>
+            <TextField.Label>
+              <Trans i18nKey={'profile:newEmail'} />
+
+              <TextField.Input
+                data-cy={'profile-new-email-input'}
+                name={emailControl.name}
+                onChange={emailControl.onChange}
+                onBlur={emailControl.onBlur}
+                innerRef={emailControl.ref}
+                required
+                type={'email'}
+                placeholder={''}
+              />
+            </TextField.Label>
+          </TextField>
+
+          <TextField>
+            <TextField.Label>
+              <Trans i18nKey={'profile:repeatEmail'} />
+
+              <TextField.Input
+                data-cy={'profile-repeat-email-input'}
+                name={repeatEmailControl.name}
+                onChange={repeatEmailControl.onChange}
+                onBlur={repeatEmailControl.onBlur}
+                innerRef={repeatEmailControl.ref}
+                required
+                type={'email'}
+              />
+            </TextField.Label>
+          </TextField>
+
+          <TextField>
+            <TextField.Label>
+              <Trans i18nKey={'profile:yourPassword'} />
+
+              <TextField.Input
+                data-cy={'profile-password-input'}
+                required
+                type={'password'}
+                name={passwordControl.name}
+                onChange={passwordControl.onChange}
+                onBlur={passwordControl.onBlur}
+                innerRef={passwordControl.ref}
+                placeholder={''}
+              />
+            </TextField.Label>
+          </TextField>
+
+          <div>
+            <Button
+              className={'w-full md:w-auto'}
+              loading={requestState.state.loading}
+            >
+              <Trans i18nKey={'profile:updateEmailSubmitLabel'} />
+            </Button>
           </div>
-        </If>
-
-        <TextField>
-          <TextField.Label>
-            <Trans i18nKey={'profile:newEmail'} />
-
-            <TextField.Input
-              data-cy={'profile-new-email-input'}
-              name={emailControl.name}
-              onChange={emailControl.onChange}
-              onBlur={emailControl.onBlur}
-              innerRef={emailControl.ref}
-              required
-              type={'email'}
-              placeholder={''}
-            />
-          </TextField.Label>
-        </TextField>
-
-        <TextField>
-          <TextField.Label>
-            <Trans i18nKey={'profile:repeatEmail'} />
-
-            <TextField.Input
-              data-cy={'profile-repeat-email-input'}
-              name={repeatEmailControl.name}
-              onChange={repeatEmailControl.onChange}
-              onBlur={repeatEmailControl.onBlur}
-              innerRef={repeatEmailControl.ref}
-              required
-              type={'email'}
-            />
-          </TextField.Label>
-        </TextField>
-
-        <TextField>
-          <TextField.Label>
-            <Trans i18nKey={'profile:yourPassword'} />
-
-            <TextField.Input
-              data-cy={'profile-password-input'}
-              required
-              type={'password'}
-              name={passwordControl.name}
-              onChange={passwordControl.onChange}
-              onBlur={passwordControl.onBlur}
-              innerRef={passwordControl.ref}
-              placeholder={''}
-            />
-          </TextField.Label>
-        </TextField>
-
-        <div>
-          <Button className={'w-full md:w-auto'} loading={state.loading}>
-            <Trans i18nKey={'profile:updateEmailSubmitLabel'} />
-          </Button>
         </div>
-      </div>
-    </form>
+      </form>
+
+      <If condition={multiFactorAuthError}>
+        {(error) => (
+          <MultiFactorAuthChallengeModal
+            error={error}
+            isOpen={true}
+            setIsOpen={() => setMultiFactorAuthError(undefined)}
+            onSuccess={async (credential) => {
+              await updateEmailWithCredential(credential, getValues('email'));
+
+              setMultiFactorAuthError(undefined);
+              requestState.setData();
+            }}
+          />
+        )}
+      </If>
+    </>
   );
 };
 

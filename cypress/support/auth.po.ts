@@ -7,7 +7,6 @@ import {
   indexedDBLocalPersistence,
 } from 'firebase/auth';
 
-import { nanoid } from 'nanoid';
 import { FirebaseApp, initializeApp } from 'firebase/app';
 
 let firebaseApp: FirebaseApp;
@@ -69,17 +68,20 @@ const authPageObject = {
 
     cy.wrap(signIn).then((result) => {
       const { user } = result as UserCredential;
-      const csrfToken = nanoid(12);
 
       cy.wrap(user.getIdToken()).then((idToken) => {
-        cy.setCookie('csrfToken', csrfToken).request(
-          'POST',
-          `/api/session/sign-in`,
-          {
-            idToken: idToken,
-            csrfToken,
-          }
-        );
+        const body = {
+          idToken: idToken,
+        };
+
+        cy.request({
+          method: 'POST',
+          url: `/api/session/sign-in`,
+          body,
+          headers: {
+            'x-csrf-token': `MOCKCSRFTOKEN`,
+          },
+        });
       });
     });
   },

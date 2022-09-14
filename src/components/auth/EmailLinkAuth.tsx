@@ -43,7 +43,7 @@ const EmailLinkAuth: React.FC = () => {
         .catch((error) => {
           setError(error);
 
-          return error;
+          throw 'code' in error ? error.code : error;
         });
 
       await toast.promise(promise, {

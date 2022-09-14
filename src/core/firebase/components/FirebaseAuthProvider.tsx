@@ -1,4 +1,4 @@
-import React, { Dispatch, useCallback, useEffect } from 'react';
+import React, { Dispatch, useCallback, useEffect, useRef } from 'react';
 import { AuthProvider, useAuth, useFirebaseApp } from 'reactfire';
 
 import {
@@ -45,6 +45,7 @@ export default function FirebaseAuthProvider({
 }>) {
   const app = useFirebaseApp();
   const signOut = useDestroySession();
+  const userRef = useRef<Maybe<User>>();
 
   // make sure we're not using IndexedDB when SSR
   // as it is only supported on browser environments
@@ -69,6 +70,8 @@ export default function FirebaseAuthProvider({
           data: userSession?.data,
         };
 
+        userRef.current = user;
+
         if (refreshClaims) {
           await user.getIdToken(true);
         }
@@ -79,22 +82,17 @@ export default function FirebaseAuthProvider({
       // if the user is no longer defined and user was originally signed-in
       // (because userSession?.auth is defined) then we need to clear the
       // session cookie
-      if (userSession?.auth) {
+      if (userRef.current) {
         try {
           // we need to delete the session cookie used for SSR
           await signOut();
         } finally {
           setUserSession(undefined);
+          userRef.current = undefined;
         }
       }
     },
-    [
-      refreshClaims,
-      setUserSession,
-      signOut,
-      userSession?.auth,
-      userSession?.data,
-    ]
+    [refreshClaims, setUserSession, signOut, userSession?.data]
   );
 
   return (

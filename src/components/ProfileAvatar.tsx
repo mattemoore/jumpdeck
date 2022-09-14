@@ -4,12 +4,12 @@ import type { UserInfo } from 'firebase/auth';
 import FallbackUserAvatar from './FallbackUserAvatar';
 
 const ProfileAvatar: React.FCC<{ user: Maybe<UserInfo> }> = ({ user }) => {
-  const photoURL = user?.photoURL;
-  const size = 36;
-
   if (!user) {
     return null;
   }
+
+  const photoURL = user?.photoURL;
+  const size = 36;
 
   if (photoURL) {
     return (
@@ -32,7 +32,7 @@ const ProfileAvatar: React.FCC<{ user: Maybe<UserInfo> }> = ({ user }) => {
 function getUserInitials(user: UserInfo) {
   const displayName = getDisplayName(user);
 
-  return displayName[0];
+  return displayName[0] ?? '';
 }
 
 function getDisplayName(user: UserInfo) {

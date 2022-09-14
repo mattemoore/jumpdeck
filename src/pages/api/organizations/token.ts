@@ -12,6 +12,7 @@ import {
 } from '~/core/http-exceptions';
 
 import { withExceptionFilter } from '~/core/middleware/with-exception-filter';
+import withCsrf from '~/core/middleware/with-csrf';
 
 async function setCurrentOrganizationCustomClaims(
   req: NextApiRequest,
@@ -50,6 +51,7 @@ export default function organizationTokenHandler(
   res: NextApiResponse
 ) {
   const handler = withPipe(
+    withCsrf(),
     withMethodsGuard(['POST']),
     withAuthedUser,
     setCurrentOrganizationCustomClaims

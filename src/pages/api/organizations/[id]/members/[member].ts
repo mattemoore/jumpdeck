@@ -15,9 +15,11 @@ import {
   throwBadRequestException,
   throwUnauthorizedException,
 } from '~/core/http-exceptions';
+
 import { withPipe } from '~/core/middleware/with-pipe';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
 import { withExceptionFilter } from '~/core/middleware/with-exception-filter';
+import withCsrf from '~/core/middleware/with-csrf';
 
 const SUPPORTED_HTTP_METHODS: HttpMethod[] = ['DELETE', 'PUT'];
 
@@ -77,6 +79,7 @@ export default function membersHandler(
   res: NextApiResponse
 ) {
   const handler = withPipe(
+    withCsrf(),
     withMethodsGuard(SUPPORTED_HTTP_METHODS),
     withAuthedUser,
     organizationMemberHandler

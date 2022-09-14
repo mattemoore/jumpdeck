@@ -25,13 +25,14 @@ import logger from '~/core/logger';
 
 import { initializeFirebaseAdminApp } from '~/core/firebase/admin/initialize-firebase-admin-app';
 import OAuthProviders from '~/components/auth/OAuthProviders';
-import EmailPasswordSignUpForm from '~/components/auth/EmailPasswordSignUpForm';
 import GuardedPage from '~/core/firebase/components/GuardedPage';
-import EmailPasswordSignInForm from '~/components/auth/EmailPasswordSignInForm';
 import PageLoadingIndicator from '~/core/ui/PageLoadingIndicator';
 
 import { getInviteByCode } from '~/lib/server/organizations/get-invite-by-code';
 import { getUserRoleByOrganization } from '~/lib/server/organizations/get-user-role-by-organization';
+import createCsrfToken from '~/core/generic/create-csrf-token';
+import EmailPasswordSignUpContainer from '~/components/auth/EmailPasswordSignUpContainer';
+import EmailPasswordSignInContainer from '~/components/auth/EmailPasswordSignInContainer';
 
 enum Mode {
   SignUp,
@@ -213,7 +214,7 @@ const InvitePage = (
 
             <If condition={mode === Mode.SignUp}>
               <div className={'flex w-full flex-col items-center space-y-8'}>
-                <EmailPasswordSignUpForm onSignUp={onInviteAccepted} />
+                <EmailPasswordSignUpContainer onSignUp={onInviteAccepted} />
 
                 <Button
                   block
@@ -228,7 +229,7 @@ const InvitePage = (
 
             <If condition={mode === Mode.SignIn}>
               <div className={'flex w-full flex-col items-center space-y-8'}>
-                <EmailPasswordSignInForm onSignIn={onInviteAccepted} />
+                <EmailPasswordSignInContainer onSignIn={onInviteAccepted} />
 
                 <Button
                   block
@@ -296,10 +297,13 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
       }
     }
 
+    const csrfToken = await createCsrfToken(ctx);
+
     return {
       props: {
         ...props,
         invite,
+        csrfToken,
       },
     };
   } catch (e) {

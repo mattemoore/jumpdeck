@@ -6,12 +6,13 @@ import logger from '~/core/logger';
 
 import { withPipe } from '~/core/middleware/with-pipe';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
-import { withAuthedUser } from '~/core/middleware/with-authed-user';
 import { withExceptionFilter } from '~/core/middleware/with-exception-filter';
+import { withAdmin } from '~/core/middleware/with-admin';
 
 const SESSION_COOKIE_NAME = 'session';
-const CSRF_TOKEN_COOKIE_NAME = 'csrfToken';
 const SESSION_EXPIRES_AT_COOKIE_NAME = 'sessionExpiresAt';
+const SESSION_CSRF_SECRET_COOKIE = `csrfSecret`;
+
 const COOKIE_PATH = '/';
 const SUPPORTED_HTTP_METHODS: HttpMethod[] = ['POST'];
 
@@ -29,6 +30,8 @@ async function signOut(req: NextApiRequest, res: NextApiResponse) {
   // we cannot delete nor sign the user out
   // so, we end the request
   if (!sessionCookie) {
+    logger.warn(`No session cookie was provided`);
+
     return ok();
   }
 
@@ -38,7 +41,7 @@ async function signOut(req: NextApiRequest, res: NextApiResponse) {
 
     destroySessionCookies(res);
   } catch (e) {
-    logger.error(e, `Could not sign user out`);
+    logger.warn(e, `Could not destroy user's session`);
   }
 
   return ok();
@@ -50,7 +53,7 @@ export default function sessionSignOutHandler(
 ) {
   const handler = withPipe(
     withMethodsGuard(SUPPORTED_HTTP_METHODS),
-    withAuthedUser,
+    withAdmin,
     signOut
   );
 
@@ -72,6 +75,6 @@ function destroySessionCookies(res: NextApiResponse) {
   const options = { path: COOKIE_PATH };
 
   destroyCookie({ res }, SESSION_COOKIE_NAME, options);
-  destroyCookie({ res }, CSRF_TOKEN_COOKIE_NAME, options);
   destroyCookie({ res }, SESSION_EXPIRES_AT_COOKIE_NAME, options);
+  destroyCookie({ res }, SESSION_CSRF_SECRET_COOKIE, options);
 }

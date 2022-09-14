@@ -49,6 +49,7 @@ function setSessionCookie(
     httpOnly: true,
     secure,
     path: '/',
+    sameSite: 'Strict',
   };
 
   // when the session-cookie gets created
@@ -64,6 +65,7 @@ function setSessionExpiryCookie(res: NextApiResponse, expiresIn: number) {
     httpOnly: false,
     secure,
     path: '/',
+    sameSite: 'Strict',
   };
 
   const date = new Date();

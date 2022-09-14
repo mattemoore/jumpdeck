@@ -5,7 +5,6 @@ import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon';
 import NavigationMenuItem from '~/core/ui/Navigation/NavigationItem';
 import NavigationMenu from '~/core/ui/Navigation/NavigationMenu';
 import Dropdown from '~/core/ui/Dropdown';
-import DarkModeToggle from '~/components/DarkModeToggle';
 
 interface Link {
   label: string;
@@ -46,8 +45,6 @@ const SiteNavigation = () => {
           <NavigationMenuItem link={links.FAQ} />
           <NavigationMenuItem link={links.Contact} />
         </NavigationMenu>
-
-        <DarkModeToggle />
       </div>
 
       <div className={'ml-4 flex items-center md:hidden'}>
