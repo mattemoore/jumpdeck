@@ -41,7 +41,7 @@ const SiteHeader: React.FCC<{
             </div>
           </div>
 
-          <If condition={userSession?.auth} fallback={<SignInButton />}>
+          <If condition={userSession?.auth} fallback={<AuthButtons />}>
             {(user) => (
               <ProfileDropdown
                 user={user}
@@ -55,14 +55,16 @@ const SiteHeader: React.FCC<{
   );
 };
 
-function SignInButton() {
+function AuthButtons() {
   return (
     <div className={'flex space-x-2'}>
       <Button color={'transparent'} href={configuration.paths.signIn}>
-        Sign In
+        <span>Sign In</span>
       </Button>
 
-      <Button href={configuration.paths.signUp}>Sign Up</Button>
+      <Button href={configuration.paths.signUp}>
+        <span>Sign Up</span>
+      </Button>
     </div>
   );
 }

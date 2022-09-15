@@ -33,7 +33,8 @@ const EmailPasswordSignInContainer: React.FCC<{
   const [multiFactorAuthError, setMultiFactorAuthError] =
     useState<Maybe<MultiFactorError>>();
 
-  const isLoading = sessionState.loading || requestState.state.loading;
+  const isLoading =
+    sessionState.loading || requestState.state.loading || sessionState.success;
 
   const signInWithCredentials = useCallback(
     async (params: { email: string; password: string }) => {
@@ -84,7 +85,15 @@ const EmailPasswordSignInContainer: React.FCC<{
           <MultiFactorAuthChallengeModal
             error={error}
             isOpen={true}
-            setIsOpen={() => setMultiFactorAuthError(undefined)}
+            setIsOpen={(isOpen) => {
+              setMultiFactorAuthError(undefined);
+
+              // when the MFA modal gets closed without verification
+              // we reset the state
+              if (!isOpen) {
+                requestState.resetState();
+              }
+            }}
             onSuccess={async (credential) => {
               await sessionRequest(credential.user);
 

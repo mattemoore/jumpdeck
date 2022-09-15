@@ -25,13 +25,18 @@ import PageLoadingIndicator from '~/core/ui/PageLoadingIndicator';
 const OAuthProviders: React.FCC<{
   onSuccess: () => unknown;
 }> = ({ onSuccess }) => {
-  const [signInWithProvider, signInState] = useSignInWithProvider();
+  const {
+    signInWithProvider,
+    state: signInWithProviderState,
+    resetState,
+  } = useSignInWithProvider();
+
   const [sessionRequest, sessionRequestState] = useCreateServerSideSession();
 
   // we make the UI "busy" until the next page is fully loaded
   const loading =
-    signInState.success ||
-    signInState.loading ||
+    signInWithProviderState.success ||
+    signInWithProviderState.loading ||
     sessionRequestState.loading ||
     sessionRequestState.success;
 
@@ -91,7 +96,7 @@ const OAuthProviders: React.FCC<{
           />
         </div>
 
-        <If condition={signInState.error}>
+        <If condition={signInWithProviderState.error}>
           {(e) => {
             return <AuthErrorMessage error={getFirebaseErrorCode(e)} />;
           }}
@@ -107,7 +112,15 @@ const OAuthProviders: React.FCC<{
           <MultiFactorAuthChallengeModal
             error={error}
             isOpen={true}
-            setIsOpen={() => setMultiFactorAuthError(undefined)}
+            setIsOpen={(isOpen: boolean) => {
+              setMultiFactorAuthError(undefined);
+
+              // when the MFA modal gets closed without verification
+              // we reset the state
+              if (!isOpen) {
+                resetState();
+              }
+            }}
             onSuccess={async (credential) => {
               return createSession(credential.user);
             }}

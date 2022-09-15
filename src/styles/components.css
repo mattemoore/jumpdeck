@@ -239,7 +239,6 @@
         @apply hover:bg-gray-50 dark:hover:bg-black-300
         dark:active:bg-black-400 ring-primary-50 dark:ring-black-400
         text-gray-800 dark:text-gray-300
-        dark:outline-black-300;
     }
 
     .Button.GradientButton {
@@ -520,8 +519,7 @@
         hover:bg-gray-200 active:bg-gray-300 hover:border-gray-300
         dark:hover:border-black-300 dark:bg-black-300
         dark:hover:bg-black-300/80 dark:active:bg-black-400
-        dark:outline-black-300 transition-all relative
-        text-gray-600 dark:text-gray-200;
+        transition-all relative text-gray-600 dark:text-gray-200;
     }
 
     .Toggle {

@@ -17,7 +17,7 @@ import { useRequestState } from '~/core/hooks/use-request-state';
 export function useSignInWithProvider() {
   const auth = useAuth();
 
-  const { state, setLoading, setData, setError } = useRequestState<
+  const { state, setLoading, setData, setError, resetState } = useRequestState<
     UserCredential,
     FirebaseError
   >();
@@ -41,10 +41,7 @@ export function useSignInWithProvider() {
     [auth, setData, setError, setLoading]
   );
 
-  return [signInWithProvider, state] as [
-    typeof signInWithProvider,
-    typeof state
-  ];
+  return { signInWithProvider, state, resetState };
 }
 
 async function getCredential(auth: Auth, provider: AuthProvider) {

@@ -63,9 +63,10 @@ const ConnectedAccountsContainer = () => {
 
   const selectedUnlinkProvider = useRef<string>();
 
-  const providerData = useMemo(() => {
-    return user ? user.providerData : [];
-  }, [user]);
+  const providerData = useMemo(
+    () => user?.providerData ?? [],
+    [user?.providerData]
+  );
 
   const [providers, setProviders] = useState(providerData);
   const canUnlink = providers.length > 1;
