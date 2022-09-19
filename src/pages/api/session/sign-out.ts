@@ -1,5 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { getAuth } from 'firebase-admin/auth';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { destroyCookie } from 'nookies';
 
 import logger from '~/core/logger';
@@ -19,7 +18,8 @@ const SUPPORTED_HTTP_METHODS: HttpMethod[] = ['POST'];
 /**
  * @description
  * Revoke the session cookie when the user signs-out client-side
- * and redirect to the home page. If any error occurs, the user is redirected to the home page
+ * and redirect to the home page.
+ * If any error occurs, the user is redirected to the home page
  */
 async function signOut(req: NextApiRequest, res: NextApiResponse) {
   const sessionCookie = req.cookies[SESSION_COOKIE_NAME];
@@ -44,7 +44,7 @@ async function signOut(req: NextApiRequest, res: NextApiResponse) {
     logger.warn(e, `Could not destroy user's session`);
   }
 
-  return ok();
+  return res.redirect('/');
 }
 
 export default function sessionSignOutHandler(
@@ -61,10 +61,11 @@ export default function sessionSignOutHandler(
 }
 
 async function revokeCookie(sessionCookie: string) {
+  const { getAuth } = await import('firebase-admin/auth');
   const auth = getAuth();
   const { sub } = await auth.verifySessionCookie(sessionCookie);
 
-  await auth.revokeRefreshTokens(sub);
+  return auth.revokeRefreshTokens(sub);
 }
 
 /**

@@ -1,27 +1,22 @@
-import Image from 'next/future/image';
 import Button from '../ui/Button';
+import AuthProviderLogo from '~/core/ui/AuthProviderLogo';
 
 const AuthProviderButton: React.FCC<{
-  image: string;
+  providerId: string;
   onClick: () => unknown;
-}> = ({ children, image, onClick }) => {
+}> = ({ children, providerId, onClick }) => {
   return (
     <Button
-      data-cy={'oauth-sign-in-button'}
+      data-cy={'auth-provider-button'}
       block
       color={'custom'}
       size={'large'}
       className={`AuthProviderButton`}
       onClick={onClick}
+      data-provider={providerId}
     >
       <span className={'absolute left-3 flex items-center justify-start'}>
-        <Image
-          className={'flex h-full items-center rounded-full'}
-          src={image}
-          alt={'Auth Provider Logo'}
-          width={28}
-          height={28}
-        />
+        <AuthProviderLogo firebaseProviderId={providerId} />
       </span>
 
       <span className={'flex w-full flex-1 items-center'}>

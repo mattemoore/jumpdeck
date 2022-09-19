@@ -3,8 +3,8 @@ import configuration from '../../configuration';
 
 import { getLoggedInUser } from '~/core/firebase/admin/auth/get-logged-in-user';
 import { withTranslationProps } from '~/lib/props/with-translation-props';
-import createCsrfToken from '~/core/generic/create-csrf-token';
 import { initializeFirebaseAdminApp } from '~/core/firebase/admin/initialize-firebase-admin-app';
+import createCsrfToken from '~/core/generic/create-csrf-token';
 
 const DEFAULT_OPTIONS = {
   redirectPath: configuration.paths.appHome,
@@ -26,18 +26,26 @@ export async function withAuthProps(
   const { redirectPath } = options;
 
   try {
-    initializeFirebaseAdminApp();
+    await initializeFirebaseAdminApp();
 
-    await getLoggedInUser(ctx);
+    // test the user is logged in
+    const user = await getLoggedInUser(ctx);
 
-    // if the user is logged in, then redirect to {@link redirectPath}
+    console.log(new Date(user.auth_time * 1000));
+
+    // if yes, then redirect to "redirectPath"
+    const { props } = await withTranslationProps(options);
+    const csrfToken = await createCsrfToken(ctx);
+
     return {
-      redirect: {
-        permanent: false,
-        destination: redirectPath,
+      props: {
+        ...props,
+        csrfToken,
       },
     };
   } catch (e) {
+    // if the user is NOT logged in, we redirect to the authentication page
+    // as requested by the user
     const { props } = await withTranslationProps(options);
     const csrfToken = await createCsrfToken(ctx);
 

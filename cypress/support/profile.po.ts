@@ -13,7 +13,7 @@ export const profilePo = {
   $getRepeatNewPasswordInput: () => cy.cyGet(`repeat-new-password`),
   $getLinkProviderButton(providerId: string) {
     return cy.get(
-      `[data-cy="link-provider-button"][data-provider="${providerId}"]`
+      `[data-cy="auth-provider-button"][data-provider="${providerId}"]`
     );
   },
   $getUnlinkProviderButton(providerId: string) {

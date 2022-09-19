@@ -1,26 +1,27 @@
 import { useCallback, useEffect } from 'react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Trans } from 'next-i18next';
+import { Trans, useTranslation } from 'next-i18next';
 
 import configuration from '~/configuration';
 
 import { withAuthProps } from '~/lib/props/with-auth-props';
 import OAuthProviders from '~/components/auth/OAuthProviders';
-
-import Layout from '~/core/ui/Layout';
-import Hero from '~/core/ui/Hero';
-import Logo from '~/core/ui/Logo';
-import Button from '~/core/ui/Button';
+import If from '~/core/ui/If';
 
 import EmailPasswordSignUpContainer from '~/components/auth/EmailPasswordSignUpContainer';
+import AuthPageLayout from '~/components/auth/AuthPageLayout';
+import EmailLinkAuth from '~/components/auth/EmailLinkAuth';
+import PhoneNumberSignInContainer from '~/components/auth/PhoneNumberSignInContainer';
 
 const signInPath = configuration.paths.signIn;
 const onboarding = configuration.paths.onboarding;
 
 const SignUp: React.FCC = () => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const onSignUp = useCallback(() => {
     return router.push(onboarding);
@@ -33,53 +34,49 @@ const SignUp: React.FCC = () => {
   }, [router]);
 
   return (
-    <>
-      <Layout>
-        <Head>
-          <title key={'title'}>Sign Up</title>
-        </Head>
+    <AuthPageLayout heading={<Trans i18nKey={'auth:signUpHeading'} />}>
+      <Head>
+        <title key={'title'}>{t(`auth:signUp`)}</title>
+      </Head>
 
-        <div className={'flex h-screen flex-col items-center justify-center'}>
-          <div
-            className={
-              'flex w-11/12 flex-col items-center space-y-4 md:w-8/12' +
-              ' lg:w-4/12 xl:w-3/12'
-            }
-          >
-            <div className={'mb-2'}>
-              <Logo />
-            </div>
+      <OAuthProviders onSignIn={onSignUp} />
 
-            <div>
-              <Hero>
-                <Trans i18nKey={'auth:signUp'} />
-              </Hero>
-            </div>
-
-            <OAuthProviders onSuccess={onSignUp} />
-
-            <div className={'text-xs text-gray-400'}>
-              <Trans i18nKey={'auth:orContinueWithEmail'} />
-            </div>
-
-            <EmailPasswordSignUpContainer onSignUp={onSignUp} />
-
-            <div>
-              <Button
-                type={'button'}
-                href={signInPath}
-                block
-                size={'small'}
-                color={'transparent'}
-                className={'text-sm'}
-              >
-                <Trans i18nKey={'auth:alreadyHaveAnAccount'} />
-              </Button>
-            </div>
-          </div>
+      <If condition={configuration.auth.providers.emailPassword}>
+        <div>
+          <span className={'text-xs text-gray-400'}>
+            <Trans i18nKey={'auth:orContinueWithEmail'} />
+          </span>
         </div>
-      </Layout>
-    </>
+
+        <EmailPasswordSignUpContainer onSignUp={onSignUp} />
+      </If>
+
+      <If condition={configuration.auth.providers.phoneNumber}>
+        <PhoneNumberSignInContainer onSignIn={onSignUp} />
+      </If>
+
+      <If condition={configuration.auth.providers.emailLink}>
+        <EmailLinkAuth />
+      </If>
+
+      <div className={'flex justify-center text-xs'}>
+        <p className={'flex space-x-1'}>
+          <span>
+            <Trans i18nKey={'auth:alreadyHaveAnAccount'} />
+          </span>
+
+          <Link href={signInPath}>
+            <a
+              className={
+                'text-primary-800 hover:underline dark:text-primary-500'
+              }
+            >
+              <Trans i18nKey={'auth:signIn'} />
+            </a>
+          </Link>
+        </p>
+      </div>
+    </AuthPageLayout>
   );
 };
 

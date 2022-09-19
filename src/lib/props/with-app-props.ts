@@ -1,8 +1,8 @@
 import { GetServerSidePropsContext } from 'next';
-import nookies from 'nookies';
-import configuration from '~/configuration';
+import { setCookie, destroyCookie } from 'nookies';
 import { getAuth } from 'firebase-admin/auth';
 
+import configuration from '~/configuration';
 import { getUserInfoById } from '~/core/firebase/admin/auth/get-user-info-by-id';
 import { getLoggedInUser } from '~/core/firebase/admin/auth/get-logged-in-user';
 import { initializeFirebaseAdminApp } from '~/core/firebase/admin/initialize-firebase-admin-app';
@@ -34,7 +34,7 @@ export async function withAppProps(
   const { redirectPath, requirePlans } = mergedOptions;
 
   try {
-    initializeFirebaseAdminApp();
+    await initializeFirebaseAdminApp();
 
     const metadata = await getUserAuthMetadata(ctx);
 
@@ -87,6 +87,8 @@ export async function withAppProps(
     // if the organization also wasn't found, redirect to the onboarding
     // so that the user can re-start its flow and create a new organization
     if (!user) {
+      console.log(user);
+
       return redirectToOnboarding();
     }
 
@@ -174,7 +176,7 @@ function saveOrganizationInCookies(
   ctx: GetServerSidePropsContext,
   organizationId: string
 ) {
-  nookies.set(ctx, ORGANIZATION_ID_COOKIE_NAME, organizationId, { path: '/' });
+  setCookie(ctx, ORGANIZATION_ID_COOKIE_NAME, organizationId, { path: '/' });
 }
 
 /**
@@ -220,6 +222,6 @@ function setOrganizationIdCustomClaims(
  * @param ctx
  */
 function clearAuthenticationCookies(ctx: GetServerSidePropsContext) {
-  nookies.destroy(ctx, 'session');
-  nookies.destroy(ctx, 'sessionExpiresAt');
+  destroyCookie(ctx, 'session');
+  destroyCookie(ctx, 'sessionExpiresAt');
 }

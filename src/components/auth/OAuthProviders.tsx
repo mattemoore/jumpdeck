@@ -1,13 +1,7 @@
-import { PropsWithChildren, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Trans } from 'next-i18next';
 
-import {
-  GoogleAuthProvider,
-  FacebookAuthProvider,
-  MultiFactorError,
-  UserCredential,
-  User,
-} from 'firebase/auth';
+import { MultiFactorError, UserCredential, User } from 'firebase/auth';
 
 import AuthProviderButton from '~/core/ui/AuthProviderButton';
 import { useSignInWithProvider } from '~/core/firebase/hooks';
@@ -21,10 +15,13 @@ import { isMultiFactorError } from '~/core/firebase/utils/is-multi-factor-error'
 
 import useCreateServerSideSession from '~/core/hooks/use-create-server-side-session';
 import PageLoadingIndicator from '~/core/ui/PageLoadingIndicator';
+import configuration from '~/configuration';
+
+const OAUTH_PROVIDERS = configuration.auth.providers.oAuth;
 
 const OAuthProviders: React.FCC<{
-  onSuccess: () => unknown;
-}> = ({ onSuccess }) => {
+  onSignIn: () => unknown;
+}> = ({ onSignIn }) => {
   const {
     signInWithProvider,
     state: signInWithProviderState,
@@ -35,7 +32,6 @@ const OAuthProviders: React.FCC<{
 
   // we make the UI "busy" until the next page is fully loaded
   const loading =
-    signInWithProviderState.success ||
     signInWithProviderState.loading ||
     sessionRequestState.loading ||
     sessionRequestState.success;
@@ -47,9 +43,9 @@ const OAuthProviders: React.FCC<{
     async (user: User) => {
       await sessionRequest(user);
 
-      onSuccess();
+      onSignIn();
     },
-    [sessionRequest, onSuccess]
+    [sessionRequest, onSignIn]
   );
 
   const onSignInWithProvider = useCallback(
@@ -58,18 +54,24 @@ const OAuthProviders: React.FCC<{
         const credential = await signInRequest();
 
         if (!credential) {
-          return;
+          return Promise.reject();
         }
 
         await createSession(credential.user);
       } catch (error) {
         if (isMultiFactorError(error)) {
           setMultiFactorAuthError(error as MultiFactorError);
+        } else {
+          throw getFirebaseErrorCode(error);
         }
       }
     },
     [setMultiFactorAuthError, createSession]
   );
+
+  if (!OAUTH_PROVIDERS || !OAUTH_PROVIDERS.length) {
+    return null;
+  }
 
   return (
     <>
@@ -79,31 +81,34 @@ const OAuthProviders: React.FCC<{
 
       <div className={'flex w-full flex-1 flex-col space-y-3'}>
         <div className={'flex-col space-y-2'}>
-          <SignInWithGoogleButton
-            onSignIn={() =>
-              onSignInWithProvider(() =>
-                signInWithProvider(new GoogleAuthProvider())
-              )
-            }
-          />
+          {OAUTH_PROVIDERS.map((OAuthProviderClass) => {
+            const providerId = OAuthProviderClass.PROVIDER_ID;
 
-          <SignInWithFacebookButton
-            onSignIn={() =>
-              onSignInWithProvider(() =>
-                signInWithProvider(new FacebookAuthProvider())
-              )
-            }
-          />
+            return (
+              <AuthProviderButton
+                key={providerId}
+                providerId={providerId}
+                onClick={() => {
+                  return onSignInWithProvider(() =>
+                    signInWithProvider(new OAuthProviderClass())
+                  );
+                }}
+              >
+                <Trans
+                  i18nKey={'auth:signInWithProvider'}
+                  values={{
+                    provider: getProviderName(providerId),
+                  }}
+                />
+              </AuthProviderButton>
+            );
+          })}
         </div>
 
-        <If condition={signInWithProviderState.error}>
-          {(e) => {
-            return <AuthErrorMessage error={getFirebaseErrorCode(e)} />;
-          }}
-        </If>
-
-        <If condition={sessionRequestState.error}>
-          <AuthErrorMessage error={sessionRequestState.error} />
+        <If
+          condition={signInWithProviderState.error || sessionRequestState.error}
+        >
+          {(error) => <AuthErrorMessage error={getFirebaseErrorCode(error)} />}
         </If>
       </div>
 
@@ -131,30 +136,15 @@ const OAuthProviders: React.FCC<{
   );
 };
 
-function SignInWithGoogleButton({
-  onSignIn,
-}: PropsWithChildren<{ onSignIn: () => Promise<unknown> }>) {
-  return (
-    <AuthProviderButton image={'/assets/images/google.png'} onClick={onSignIn}>
-      <Trans
-        i18nKey={'auth:signInWithProvider'}
-        values={{ provider: 'Google' }}
-      />
-    </AuthProviderButton>
-  );
-}
+function getProviderName(providerId: string) {
+  const capitalize = (value: string) =>
+    value.slice(0, 1).toUpperCase() + value.slice(1);
 
-function SignInWithFacebookButton({
-  onSignIn,
-}: PropsWithChildren<{ onSignIn: () => Promise<unknown> }>) {
-  return (
-    <AuthProviderButton image={'/assets/images/fb.png'} onClick={onSignIn}>
-      <Trans
-        i18nKey={'auth:signInWithProvider'}
-        values={{ provider: 'Facebook' }}
-      />
-    </AuthProviderButton>
-  );
+  if (providerId.endsWith('.com')) {
+    return capitalize(providerId.split('.com')[0]);
+  }
+
+  return capitalize(providerId);
 }
 
 export default OAuthProviders;

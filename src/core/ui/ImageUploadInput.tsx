@@ -87,7 +87,7 @@ const ImageUploadInput: React.FCC<Props> = ({
         accept="image/*"
       />
 
-      <div className={'flex items-center space-x-2'}>
+      <div className={'flex items-center space-x-4'}>
         <div className={'flex'}>
           <If condition={!value}>
             <CloudArrowUpIcon
@@ -98,8 +98,8 @@ const ImageUploadInput: React.FCC<Props> = ({
           <If condition={value}>
             <Image
               className={'object-contain'}
-              width={'18'}
-              height={'18'}
+              width={'32'}
+              height={'32'}
               src={value as string}
               alt={props.alt ?? ''}
             />

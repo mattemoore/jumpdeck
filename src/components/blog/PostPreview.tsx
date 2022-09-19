@@ -1,9 +1,6 @@
 import Link from 'next/link';
 import Post from '~/core/blog/types/post';
-
-import configuration from '~/configuration';
 import If from '~/core/ui/If';
-import BlogPostSvgBanner from '~/components/blog/BlogPostSvgBanner';
 
 import DateFormatter from './DateFormatter';
 import CoverImage from './CoverImage';
@@ -32,20 +29,6 @@ const PostPreview = ({ post, preloadImage }: Props) => {
                 slug={slug}
                 title={title}
                 src={coverImage}
-              />
-            </a>
-          </Link>
-        </If>
-
-        <If condition={!coverImage && configuration.autoBanners}>
-          <Link as={hrefAs} href={href} passHref>
-            <a>
-              <BlogPostSvgBanner
-                imageUrl={collection.logo ?? ''}
-                title={post.title}
-                height={'300px'}
-                width={'100%'}
-                emoji={collection.emoji}
               />
             </a>
           </Link>

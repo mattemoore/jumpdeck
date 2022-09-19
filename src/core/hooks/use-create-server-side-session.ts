@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { User } from 'firebase/auth';
+import type { User } from 'firebase/auth';
 
 import { useCreateSession } from '~/core/hooks/use-create-session';
 

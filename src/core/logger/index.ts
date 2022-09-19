@@ -1,31 +1,28 @@
 import pino from 'pino';
 import configuration from '~/configuration';
 
-const logger = pino({
-  browser: {},
-  level: 'debug',
-  transport: getTransport(),
-  base: {
-    env: process.env.NODE_ENV,
-    revision: process.env.VERCEL_GITHUB_COMMIT_SHA,
-  },
-});
+function getPino() {
+  const isDev = !configuration.production;
 
-function getTransport() {
-  if (configuration.production) {
-    return undefined;
+  if (isDev) {
+    const pretty = require('pino-pretty');
+
+    return pino(
+      {},
+      pretty({
+        colorize: true,
+      })
+    );
   }
 
-  return getPinoPrettyConfig();
-}
-
-function getPinoPrettyConfig() {
-  return {
-    target: 'pino-pretty',
-    options: {
-      colorize: true,
+  return pino({
+    browser: {},
+    level: 'debug',
+    base: {
+      env: process.env.NODE_ENV,
+      revision: process.env.VERCEL_GITHUB_COMMIT_SHA,
     },
-  };
+  });
 }
 
-export default logger;
+export default getPino();

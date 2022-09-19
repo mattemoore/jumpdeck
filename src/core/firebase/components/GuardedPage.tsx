@@ -94,10 +94,8 @@ function redirectUserAway(path: string) {
   // we then redirect the user to the page
   // specified in the props of the component
   if (isNotCurrentPage) {
-    setTimeout(() => {
-      clearAuthCookies();
-      window.location.assign(path);
-    });
+    clearAuthCookies();
+    window.location.assign(path);
   }
 }
 

@@ -3,8 +3,7 @@ import Link from 'next/link';
 import Head from 'next/head';
 
 import { FormEvent, useCallback } from 'react';
-import { Trans } from 'next-i18next';
-
+import { Trans, useTranslation } from 'next-i18next';
 import { useAuth } from 'reactfire';
 import { sendPasswordResetEmail } from 'firebase/auth';
 
@@ -15,18 +14,17 @@ import configuration from '~/configuration';
 
 import { withAuthProps } from '~/lib/props/with-auth-props';
 import AuthErrorMessage from '~/components/auth/AuthErrorMessage';
+import AuthPageLayout from '~/components/auth/AuthPageLayout';
 
-import Layout from '~/core/ui/Layout';
 import Button from '~/core/ui/Button';
 import TextField from '~/core/ui/TextField';
 import If from '~/core/ui/If';
 import Alert from '~/core/ui/Alert';
-import Logo from '~/core/ui/Logo';
-import Hero from '~/core/ui/Hero';
 
 export const PasswordReset: React.FCC = () => {
   const auth = useAuth();
   const { state, setError, setData, setLoading } = useRequestState();
+  const { t } = useTranslation();
 
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
@@ -53,92 +51,73 @@ export const PasswordReset: React.FCC = () => {
   );
 
   return (
-    <Layout>
+    <AuthPageLayout heading={<Trans i18nKey={'auth:passwordResetLabel'} />}>
       <Head>
-        <title key={'title'}>Password Reset</title>
+        <title key={'title'}>{t(`auth:passwordResetLabel`)}</title>
       </Head>
 
-      <div className={'flex h-screen items-center justify-center'}>
-        <div
-          className={
-            'flex w-11/12 flex-col items-center space-y-8 md:w-8/12 lg:w-4/12 xl:w-3/12'
-          }
-        >
-          <div className={'mb-2'}>
-            <Logo />
-          </div>
+      <If condition={state.success}>
+        <Alert type={'success'}>
+          <Trans i18nKey={'auth:passwordResetSuccessMessage'} />
+        </Alert>
+      </If>
 
-          <div className={'text-center'}>
-            <Hero>
-              <Trans i18nKey={'auth:passwordResetLabel'} />
-            </Hero>
-          </div>
-
-          <If condition={state.success}>
-            <Alert type={'success'}>
-              <Trans i18nKey={'auth:passwordResetSuccessMessage'} />
-            </Alert>
-          </If>
-
-          <If condition={!state.data}>
-            <>
-              <form
-                onSubmit={(e) => void onSubmit(e)}
-                className={'container mx-auto flex justify-center'}
-              >
-                <div className={'flex-col space-y-4'}>
-                  <div>
-                    <p className={'text-sm text-gray-700 dark:text-gray-400'}>
-                      <Trans i18nKey={'auth:passwordResetSubheading'} />
-                    </p>
-                  </div>
-
-                  <div>
-                    <TextField.Label>
-                      <Trans i18nKey={'common:emailAddress'} />
-
-                      <TextField.Input
-                        name="email"
-                        required
-                        type="email"
-                        placeholder={'your@email.com'}
-                      />
-                    </TextField.Label>
-                  </div>
-
-                  <If condition={state.error}>
-                    <AuthErrorMessage error={state.error as string} />
-                  </If>
-
-                  <Button
-                    loading={state.loading}
-                    type="submit"
-                    size="large"
-                    block
-                  >
-                    <Trans i18nKey={'auth:passwordResetLabel'} />
-                  </Button>
-                </div>
-              </form>
-            </>
-          </If>
-
-          <Button
-            type={'button'}
-            block
-            size={'small'}
-            color={'transparent'}
-            className={'text-sm'}
+      <If condition={!state.data}>
+        <>
+          <form
+            onSubmit={(e) => void onSubmit(e)}
+            className={'container mx-auto flex justify-center'}
           >
-            <Link href={configuration.paths.signIn} passHref>
-              <a>
-                <Trans i18nKey={'auth:passwordResetSignInLink'} />
-              </a>
-            </Link>
-          </Button>
-        </div>
+            <div className={'flex-col space-y-4'}>
+              <div>
+                <p className={'text-sm text-gray-700 dark:text-gray-400'}>
+                  <Trans i18nKey={'auth:passwordResetSubheading'} />
+                </p>
+              </div>
+
+              <div>
+                <TextField.Label>
+                  <Trans i18nKey={'common:emailAddress'} />
+
+                  <TextField.Input
+                    name="email"
+                    required
+                    type="email"
+                    placeholder={'your@email.com'}
+                  />
+                </TextField.Label>
+              </div>
+
+              <If condition={state.error}>
+                <AuthErrorMessage error={state.error as string} />
+              </If>
+
+              <Button loading={state.loading} type="submit" size="large" block>
+                <Trans i18nKey={'auth:passwordResetLabel'} />
+              </Button>
+            </div>
+          </form>
+        </>
+      </If>
+
+      <div className={'flex justify-center text-xs'}>
+        <p className={'flex space-x-1'}>
+          <span>
+            <Trans i18nKey={'auth:passwordRecoveredQuestion'} />
+          </span>
+
+          <Link href={configuration.paths.signIn}>
+            <a
+              className={
+                'text-primary-800 hover:underline dark:text-primary-500'
+              }
+            >
+              <Trans i18nKey={'auth:signIn'} />
+            </a>
+          </Link>
+        </p>
       </div>
-    </Layout>
+    </AuthPageLayout>
   );
 };
 

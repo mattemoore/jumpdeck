@@ -1,8 +1,8 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useStorage } from 'reactfire';
 import type { User } from 'firebase/auth';
 import { Trans, useTranslation } from 'next-i18next';
-import toast from 'react-hot-toast';
+import toaster from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 
 import {
@@ -13,15 +13,26 @@ import {
   FirebaseStorage,
 } from 'firebase/storage';
 
+import { PhoneAuthProvider, unlink } from 'firebase/auth';
+
+import configuration from '~/configuration';
+import { getFirebaseErrorCode } from '~/core/firebase/utils/get-firebase-error-code';
+import { useRequestState } from '~/core/hooks/use-request-state';
+
 import { useUpdateProfile } from '~/lib/profile/hooks/use-update-profile';
+import LinkPhoneNumberModal from '~/components/profile/accounts/LinkPhoneNumberModal';
+import AuthErrorMessage from '~/components/auth/AuthErrorMessage';
 
 import Button from '~/core/ui/Button';
 import TextField from '~/core/ui/TextField';
 import ImageUploadInput from '~/core/ui/ImageUploadInput';
+import If from '~/core/ui/If';
+import Modal from '~/core/ui/Modal';
 
 interface ProfileData {
-  photoURL: string | null;
-  displayName: string | null;
+  photoURL?: string | null;
+  displayName?: string | null;
+  phoneNumber?: string | null;
 }
 
 function UpdateProfileForm({
@@ -33,13 +44,17 @@ function UpdateProfileForm({
 }) {
   const [updateProfile, { loading }] = useUpdateProfile();
 
+  const [displayUpdatePhoneNumber, setDisplayUpdatePhoneNumber] =
+    useState(false);
+
   const storage = useStorage();
   const { t } = useTranslation();
 
   const currentPhotoURL = user?.photoURL ?? '';
   const currentDisplayName = user?.displayName ?? '';
+  const currentPhoneNumber = user?.phoneNumber ?? '';
 
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, reset } = useForm({
     defaultValues: {
       displayName: currentDisplayName,
       photoURL: '',
@@ -79,7 +94,7 @@ function UpdateProfileForm({
       onUpdate(info);
     });
 
-    return toast.promise(promise, {
+    return toaster.promise(promise, {
       success: t(`profile:updateProfileSuccess`),
       error: t(`profile:updateProfileError`),
       loading: t(`profile:updateProfileLoading`),
@@ -92,67 +107,160 @@ function UpdateProfileForm({
 
   const photoURLControl = register('photoURL');
 
+  useEffect(() => {
+    reset({
+      displayName: currentDisplayName ?? '',
+      photoURL: currentPhotoURL ?? '',
+    });
+  }, [currentDisplayName, currentPhotoURL, reset]);
+
   return (
-    <form
-      data-cy={'update-profile-form'}
-      onSubmit={handleSubmit((value) => {
-        const photoFileList = value.photoURL as unknown as FileList;
-        const photoFile = photoFileList ? photoFileList.item(0) : undefined;
+    <>
+      <form
+        data-cy={'update-profile-form'}
+        onSubmit={handleSubmit((value) => {
+          return onSubmit(value.displayName, getPhotoFile(value.photoURL));
+        })}
+      >
+        <div className={'flex flex-col space-y-4'}>
+          <TextField>
+            <TextField.Label>
+              <Trans i18nKey={'profile:displayNameLabel'} />
 
-        return onSubmit(value.displayName, photoFile ?? undefined);
-      })}
-    >
-      <div className={'flex flex-col space-y-4'}>
-        <TextField>
-          <TextField.Label>
-            <Trans i18nKey={'profile:displayNameLabel'} />
+              <TextField.Input
+                innerRef={displayNameControl.ref}
+                onChange={displayNameControl.onChange}
+                onBlur={displayNameControl.onBlur}
+                name={displayNameControl.name}
+                data-cy={'profile-display-name'}
+                minLength={2}
+                placeholder={''}
+              />
+            </TextField.Label>
+          </TextField>
 
-            <TextField.Input
-              innerRef={displayNameControl.ref}
-              onChange={displayNameControl.onChange}
-              onBlur={displayNameControl.onBlur}
-              name={displayNameControl.name}
-              data-cy={'profile-display-name'}
-              minLength={2}
-              placeholder={''}
-            />
-          </TextField.Label>
-        </TextField>
+          <TextField>
+            <TextField.Label>
+              <Trans i18nKey={'profile:profilePictureLabel'} />
 
-        <TextField>
-          <TextField.Label>
-            <Trans i18nKey={'profile:emailLabel'} />
+              <ImageUploadInput
+                multiple={false}
+                onClear={onAvatarCleared}
+                name={photoURLControl.name}
+                image={currentPhotoURL}
+                onChange={photoURLControl.onChange}
+                onBlur={photoURLControl.onBlur}
+                innerRef={photoURLControl.ref}
+              >
+                <Trans i18nKey={'common:imageInputLabel'} />
+              </ImageUploadInput>
+            </TextField.Label>
+          </TextField>
 
-            <TextField.Input disabled value={user.email ?? ''} />
-          </TextField.Label>
-        </TextField>
+          <TextField>
+            <TextField.Label>
+              <Trans i18nKey={'profile:emailLabel'} />
 
-        <TextField>
-          <TextField.Label>
-            <Trans i18nKey={'profile:profilePictureLabel'} />
+              <TextField.Input disabled value={user.email ?? ''} />
+            </TextField.Label>
 
-            <ImageUploadInput
-              multiple={false}
-              onClear={onAvatarCleared}
-              name={photoURLControl.name}
-              image={currentPhotoURL}
-              onChange={photoURLControl.onChange}
-              onBlur={photoURLControl.onBlur}
-              innerRef={photoURLControl.ref}
-            >
-              <Trans i18nKey={'common:imageInputLabel'} />
-            </ImageUploadInput>
-          </TextField.Label>
-        </TextField>
+            <If condition={user.email}>
+              <div>
+                <Button
+                  type={'button'}
+                  color={'transparent'}
+                  size={'small'}
+                  href={configuration.paths.settings.email}
+                >
+                  <span className={'text-xs font-normal'}>
+                    <Trans i18nKey={'profile:updateEmailSubmitLabel'} />
+                  </span>
+                </Button>
+              </div>
+            </If>
 
-        <div>
-          <Button className={'w-full md:w-auto'} loading={loading}>
-            <Trans i18nKey={'profile:updateProfileSubmitLabel'} />
-          </Button>
+            <If condition={!user.email}>
+              <div>
+                <Button
+                  type={'button'}
+                  color={'transparent'}
+                  size={'small'}
+                  href={configuration.paths.settings.authentication}
+                >
+                  <span className={'text-xs font-normal'}>
+                    <Trans i18nKey={'profile:addEmailAddress'} />
+                  </span>
+                </Button>
+              </div>
+            </If>
+          </TextField>
+
+          <TextField>
+            <TextField.Label>
+              <Trans i18nKey={'profile:phoneNumberLabel'} />
+
+              <TextField.Input disabled value={currentPhoneNumber} />
+            </TextField.Label>
+
+            {/* Only show this if phone number is enabled */}
+            <If condition={configuration.auth.providers.phoneNumber}>
+              <div>
+                <If
+                  condition={!currentPhoneNumber}
+                  fallback={
+                    <RemovePhoneNumberButton
+                      user={user}
+                      onSuccess={() => {
+                        onUpdate({
+                          phoneNumber: null,
+                        });
+                      }}
+                    />
+                  }
+                >
+                  <AddPhoneNumberButton
+                    onClick={() => setDisplayUpdatePhoneNumber(true)}
+                  />
+                </If>
+              </div>
+            </If>
+          </TextField>
+
+          <div>
+            <Button className={'w-full md:w-auto'} loading={loading}>
+              <Trans i18nKey={'profile:updateProfileSubmitLabel'} />
+            </Button>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+
+      <If condition={displayUpdatePhoneNumber}>
+        <LinkPhoneNumberModal
+          isOpen={true}
+          setIsOpen={setDisplayUpdatePhoneNumber}
+          onSuccess={(phoneNumber) => {
+            onUpdate({
+              phoneNumber,
+            });
+          }}
+        />
+      </If>
+    </>
   );
+}
+
+/**
+ * @name getPhotoFile
+ * @param value
+ * @description Returns the file of the photo when submitted
+ * It returns undefined when the user hasn't selected a file
+ */
+function getPhotoFile(value: string | null | FileList) {
+  if (!value || typeof value === 'string') {
+    return;
+  }
+
+  return value.item(0) ?? undefined;
 }
 
 async function uploadUserProfilePhoto(
@@ -167,6 +275,102 @@ async function uploadUserProfilePhoto(
   await uploadBytes(fileRef, bytes);
 
   return await getDownloadURL(fileRef);
+}
+
+function RemovePhoneNumberButton({
+  user,
+  onSuccess,
+}: React.PropsWithChildren<{
+  user: User;
+  onSuccess: () => void;
+}>) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const requestState = useRequestState();
+  const { t } = useTranslation();
+
+  const onUnlinkPhoneNumber = useCallback(() => {
+    const promise = unlink(user, PhoneAuthProvider.PROVIDER_ID)
+      .then(() => {
+        setIsModalOpen(false);
+        onSuccess();
+      })
+      .catch((error) => {
+        requestState.setError(error);
+
+        throw getFirebaseErrorCode(error);
+      });
+
+    requestState.setLoading(true);
+
+    return toaster.promise(promise, {
+      loading: t(`profile:unlinkActionLoading`),
+      success: t(`profile:unlinkActionSuccess`),
+      error: t(`profile:unlinkActionError`),
+    });
+  }, [user, requestState, t, onSuccess]);
+
+  return (
+    <>
+      <Button
+        type={'button'}
+        color={'transparent'}
+        size={'small'}
+        onClick={() => setIsModalOpen(true)}
+      >
+        <span className={'text-xs font-normal'}>
+          <Trans i18nKey={'profile:removePhoneNumber'} />
+        </span>
+      </Button>
+
+      <Modal
+        heading={<Trans i18nKey={'profile:removePhoneNumber'} />}
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
+      >
+        <div className={'flex flex-col space-y-3'}>
+          <div>
+            <Trans i18nKey={'profile:confirmRemovePhoneNumberDescription'} />
+          </div>
+
+          <div>
+            <Trans i18nKey={'common:modalConfirmationQuestion'} />
+          </div>
+
+          <If condition={requestState.state.error}>
+            {(error) => <AuthErrorMessage error={error as string} />}
+          </If>
+
+          <Button
+            block
+            loading={requestState.state.loading}
+            color={'danger'}
+            onClick={onUnlinkPhoneNumber}
+          >
+            <Trans i18nKey={'profile:confirmRemovePhoneNumber'} />
+          </Button>
+        </div>
+      </Modal>
+    </>
+  );
+}
+
+function AddPhoneNumberButton(
+  props: React.PropsWithChildren<{
+    onClick: EmptyCallback;
+  }>
+) {
+  return (
+    <Button
+      type={'button'}
+      color={'transparent'}
+      size={'small'}
+      onClick={props.onClick}
+    >
+      <span className={'text-xs font-normal'}>
+        <Trans i18nKey={'profile:addPhoneNumber'} />
+      </span>
+    </Button>
+  );
 }
 
 export default UpdateProfileForm;

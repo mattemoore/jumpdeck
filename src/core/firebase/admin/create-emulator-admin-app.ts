@@ -1,20 +1,18 @@
-import admin, { AppOptions } from 'firebase-admin';
+import type { AppOptions } from 'firebase-admin/app';
 
 /**
  * @name createEmulatorAdminApp
- * @param name
+ * @param appName
  */
-export function createEmulatorAdminApp(name?: string) {
+export async function createEmulatorAdminApp(appName?: string) {
   const projectId = process.env.GCLOUD_PROJECT;
   const options: AppOptions = { projectId };
 
-  return getOrCreateApp(name, options);
-}
+  const { getApps, getApp, initializeApp } = await import('firebase-admin/app');
 
-function getOrCreateApp(appName: string | undefined, options: AppOptions) {
-  if (admin.apps.length) {
-    return admin.app(appName);
+  if (getApps().length) {
+    return getApp(appName);
   }
 
-  return admin.initializeApp(options, appName);
+  return initializeApp(options, appName);
 }

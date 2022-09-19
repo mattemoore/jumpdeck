@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import { useAuth } from 'reactfire';
 import { FirebaseError } from 'firebase/app';
-import { createUserWithEmailAndPassword, UserCredential } from 'firebase/auth';
+import type { UserCredential } from 'firebase/auth';
 
 import { useRequestState } from '../../hooks/use-request-state';
 
@@ -19,6 +19,10 @@ export function useSignUpWithEmailAndPassword() {
       setLoading(true);
 
       try {
+        const { createUserWithEmailAndPassword } = await import(
+          'firebase/auth'
+        );
+
         const credential = await createUserWithEmailAndPassword(
           auth,
           email,

@@ -10,7 +10,7 @@ import SettingsPageContainer from '~/components/settings/SettingsPageContainer';
 import ProfileSettingsTabs from '~/components/profile/ProfileSettingsTabs';
 import SettingsContentContainer from '~/components/settings/SettingsContentContainer';
 import SettingsTile from '~/components/settings/SettingsTile';
-import ConnectedAccountsContainer from '~/components/profile/ConnectedAccountsContainer';
+import ConnectedAccountsContainer from '~/components/profile/accounts/ConnectedAccountsContainer';
 import MultiFactorAuthSetupContainer from '~/components/profile/mfa/MultiFactorAuthSetupContainer';
 import DisableMultiFactorButton from '~/components/profile/mfa/DisableMultiFactorButton';
 import ReauthenticationModal from '~/components/auth/ReauthenticationModal';

@@ -34,7 +34,7 @@ describe(`Transfer Ownership`, () => {
     });
 
     it('should mark the current user as "Admin"', () => {
-      organizationPo.$getMemberByEmail(currentMemberEmail).within(() => {
+      organizationPo.$getMemberByEmail(`You`).within(() => {
         organizationPo.$getRoleBadge().should(`contain`, `Admin`);
       });
     });

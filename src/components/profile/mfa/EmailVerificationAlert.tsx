@@ -8,6 +8,8 @@ import { useRequestState } from '~/core/hooks/use-request-state';
 import Alert from '~/core/ui/Alert';
 import If from '~/core/ui/If';
 import Button from '~/core/ui/Button';
+import { getFirebaseErrorCode } from '~/core/firebase/utils/get-firebase-error-code';
+import AuthErrorMessage from '~/components/auth/AuthErrorMessage';
 
 function EmailVerificationAlert(
   props: React.PropsWithChildren<{
@@ -20,15 +22,21 @@ function EmailVerificationAlert(
   const onLinkRequested = useCallback(async () => {
     requestState.setLoading(true);
 
-    const promise = sendEmailVerification(props.user);
+    const promise = sendEmailVerification(props.user)
+      .then(() => {
+        requestState.setData();
+      })
+      .catch((error) => {
+        requestState.setError(error);
+
+        throw getFirebaseErrorCode(error);
+      });
 
     await toaster.promise(promise, {
       loading: t(`profile:sendingEmailVerificationLink`),
       success: t(`profile:sendEmailVerificationLinkSuccess`),
       error: t(`profile:sendEmailVerificationLinkError`),
     });
-
-    requestState.setData();
   }, [props, requestState, t]);
 
   return (
@@ -42,6 +50,14 @@ function EmailVerificationAlert(
           </div>
         </Alert>
       </div>
+
+      <If condition={requestState.state.error}>
+        <div>
+          <AuthErrorMessage
+            error={getFirebaseErrorCode(requestState.state.error)}
+          />
+        </div>
+      </If>
 
       <div>
         <If

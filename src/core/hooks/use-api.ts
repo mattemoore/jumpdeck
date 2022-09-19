@@ -1,6 +1,5 @@
 import { useCallback, useContext, useRef } from 'react';
 import { AppCheckSdkContext } from 'reactfire';
-import { getToken } from 'firebase/app-check';
 
 import { useRequestState } from '~/core/hooks/use-request-state';
 import { useGetCsrfToken } from '~/core/firebase/hooks/use-get-csrf-token';
@@ -133,6 +132,7 @@ function useGetAppCheckToken() {
       }
 
       const forceRefresh = false;
+      const { getToken } = await import('firebase/app-check');
       const { token } = await getToken(sdk, forceRefresh);
 
       return token;

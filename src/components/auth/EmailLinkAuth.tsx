@@ -5,6 +5,7 @@ import { sendSignInLinkToEmail } from 'firebase/auth';
 import toast from 'react-hot-toast';
 
 import { useRequestState } from '~/core/hooks/use-request-state';
+import { getFirebaseErrorCode } from '~/core/firebase/utils/get-firebase-error-code';
 
 import TextField from '~/core/ui/TextField';
 import Button from '~/core/ui/Button';
@@ -43,7 +44,7 @@ const EmailLinkAuth: React.FC = () => {
         .catch((error) => {
           setError(error);
 
-          throw 'code' in error ? error.code : error;
+          throw getFirebaseErrorCode(error);
         });
 
       await toast.promise(promise, {
@@ -65,7 +66,7 @@ const EmailLinkAuth: React.FC = () => {
 
   return (
     <form className={'w-full'} onSubmit={onSubmit}>
-      <div className={'flex flex-col space-y-2'}>
+      <div className={'flex flex-col space-y-4'}>
         <TextField>
           <TextField.Label>
             <Trans i18nKey={'common:emailAddress'} />
@@ -80,7 +81,7 @@ const EmailLinkAuth: React.FC = () => {
           </TextField.Label>
         </TextField>
 
-        <Button loading={state.loading}>
+        <Button size={'large'} loading={state.loading}>
           <If
             condition={state.loading}
             fallback={<Trans i18nKey={'auth:sendEmailLink'} />}

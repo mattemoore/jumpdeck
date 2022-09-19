@@ -1,10 +1,7 @@
 import Link from 'next/link';
 
-import configuration from '~/configuration';
-
 import Post from '~/core/blog/types/post';
 import If from '~/core/ui/If';
-import BlogPostSvgBanner from '~/components/blog/BlogPostSvgBanner';
 import Author from '~/components/blog/Author';
 
 import DateFormatter from './DateFormatter';
@@ -63,27 +60,15 @@ const PostHeader = ({ post }: Props) => {
         </div>
       </div>
 
-      <If condition={displayImage}>
-        {coverImage ? (
-          <div className="relative mx-auto h-[378px] w-full justify-center">
-            <CoverImage
-              preloadImage={preloadImage}
-              className="rounded-md"
-              title={title}
-              src={coverImage}
-            />
-          </div>
-        ) : (
-          <If condition={configuration.autoBanners}>
-            <BlogPostSvgBanner
-              className="mx-auto rounded-md shadow-xl"
-              width={'800px'}
-              imageUrl={collection.logo ?? ''}
-              title={post.title}
-              emoji={collection.emoji}
-            />
-          </If>
-        )}
+      <If condition={displayImage && coverImage}>
+        <div className="relative mx-auto h-[378px] w-full justify-center">
+          <CoverImage
+            preloadImage={preloadImage}
+            className="rounded-md"
+            title={title}
+            src={coverImage}
+          />
+        </div>
       </If>
     </>
   );

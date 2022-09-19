@@ -2,15 +2,7 @@ import { useCallback } from 'react';
 
 import { useAuth } from 'reactfire';
 import { FirebaseError } from 'firebase/app';
-
-import {
-  AuthProvider,
-  signInWithPopup,
-  browserPopupRedirectResolver,
-  UserCredential,
-  Auth,
-  reauthenticateWithPopup,
-} from 'firebase/auth';
+import { UserCredential, AuthProvider, Auth } from 'firebase/auth';
 
 import { useRequestState } from '~/core/hooks/use-request-state';
 
@@ -46,6 +38,12 @@ export function useSignInWithProvider() {
 
 async function getCredential(auth: Auth, provider: AuthProvider) {
   const user = auth.currentUser;
+
+  const {
+    signInWithPopup,
+    browserPopupRedirectResolver,
+    reauthenticateWithPopup,
+  } = await import('firebase/auth');
 
   if (user) {
     return reauthenticateWithPopup(

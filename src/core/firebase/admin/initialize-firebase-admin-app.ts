@@ -1,16 +1,17 @@
 import configuration from '~/configuration';
 
-import { createEmulatorAdminApp } from './create-emulator-admin-app';
-import { createFirebaseAdminApp } from './create-admin-app';
-
 /**
  * @description Initializes the firebase Admin app.
  * If emulator=true, will start the emulator admin
  */
-export function initializeFirebaseAdminApp() {
+export async function initializeFirebaseAdminApp() {
   const emulator = configuration.emulator;
 
   if (emulator) {
+    const { createEmulatorAdminApp } = await import(
+      './create-emulator-admin-app'
+    );
+
     return createEmulatorAdminApp();
   }
 
@@ -26,6 +27,8 @@ export function initializeFirebaseAdminApp() {
       `Cannot create Firebase Admin App. Please provide all the required parameters`
     );
   }
+
+  const { createFirebaseAdminApp } = await import('./create-admin-app');
 
   return createFirebaseAdminApp({
     projectId,

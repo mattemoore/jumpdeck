@@ -1,6 +1,8 @@
 import { useCallback, useContext } from 'react';
 import { GetServerSidePropsContext } from 'next';
 import { Trans } from 'next-i18next';
+import { UserInfo } from 'firebase/auth';
+import { useUser } from 'reactfire';
 
 import FirebaseStorageProvider from '~/core/firebase/components/FirebaseStorageProvider';
 
@@ -13,13 +15,11 @@ import SettingsPageContainer from '~/components/settings/SettingsPageContainer';
 import SettingsContentContainer from '~/components/settings/SettingsContentContainer';
 import SettingsTile from '~/components/settings/SettingsTile';
 
-type ProfileData = {
-  photoURL: string | null;
-  displayName: string | null;
-};
+type ProfileData = Partial<UserInfo>;
 
 const Profile = () => {
   const { userSession, setUserSession } = useContext(UserSessionContext);
+  const { data: user } = useUser();
 
   const onUpdate = useCallback(
     (data: ProfileData) => {
@@ -38,7 +38,7 @@ const Profile = () => {
     [setUserSession, userSession]
   );
 
-  if (!userSession?.auth) {
+  if (!user) {
     return null;
   }
 
@@ -49,7 +49,7 @@ const Profile = () => {
 
         <SettingsContentContainer>
           <SettingsTile heading={<Trans i18nKey={'profile:generalTab'} />}>
-            <UpdateProfileForm user={userSession.auth} onUpdate={onUpdate} />
+            <UpdateProfileForm user={user} onUpdate={onUpdate} />
           </SettingsTile>
         </SettingsContentContainer>
       </SettingsPageContainer>

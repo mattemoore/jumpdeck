@@ -23,7 +23,7 @@ const EmailPasswordSignInForm: React.FCC<{
 
   return (
     <form className={'w-full'} onSubmit={handleSubmit(onSubmit)}>
-      <div className={'flex-col space-y-2.5'}>
+      <div className={'flex-col space-y-4'}>
         <TextField>
           <TextField.Label>
             <Trans i18nKey={'common:emailAddress'} />
@@ -68,8 +68,8 @@ const EmailPasswordSignInForm: React.FCC<{
 
         <div>
           <Button
-            className={'w-full'}
             size={'large'}
+            className={'w-full'}
             color={'primary'}
             data-cy="auth-submit-button"
             type="submit"

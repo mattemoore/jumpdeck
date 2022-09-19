@@ -17,7 +17,6 @@ import If from '~/core/ui/If';
 import { PopoverDropdown, PopoverDropdownItem } from '~/core/ui/Popover';
 
 import CreateOrganizationModal from './CreateOrganizationModal';
-import ErrorBoundary from '~/core/ui/ErrorBoundary';
 
 const PopoverButton: React.FCC<{
   organization: Maybe<WithId<Organization>>;
@@ -69,7 +68,7 @@ const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
   }
 
   return (
-    <ErrorBoundary fallback={''}>
+    <>
       <div data-cy={'organization-selector'}>
         <PopoverDropdown button={<PopoverButton organization={organization} />}>
           {(organizations ?? []).map((item) => {
@@ -118,7 +117,7 @@ const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
         isOpen={isOrganizationModalOpen}
         onCreate={organizationSelected}
       />
-    </ErrorBoundary>
+    </>
   );
 };
 

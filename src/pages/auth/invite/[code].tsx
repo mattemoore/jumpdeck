@@ -14,9 +14,6 @@ import configuration from '~/configuration';
 import { isBrowser } from '~/core/generic';
 
 import { withUserProps } from '~/lib/props/with-user-props';
-import Logo from '~/core/ui/Logo';
-import Hero from '~/core/ui/Hero';
-import Layout from '~/core/ui/Layout';
 import If from '~/core/ui/If';
 import Button from '~/core/ui/Button';
 
@@ -33,6 +30,7 @@ import { getUserRoleByOrganization } from '~/lib/server/organizations/get-user-r
 import createCsrfToken from '~/core/generic/create-csrf-token';
 import EmailPasswordSignUpContainer from '~/components/auth/EmailPasswordSignUpContainer';
 import EmailPasswordSignInContainer from '~/components/auth/EmailPasswordSignInContainer';
+import AuthPageLayout from '~/components/auth/AuthPageLayout';
 
 enum Mode {
   SignUp,
@@ -58,7 +56,7 @@ const InvitePage = (
   const router = useRouter();
   const [currentSession, setCurrentSession] = useState(props.session);
   const signInCheck = useSigninCheck();
-  const { t } = useTranslation('organization');
+  const { t } = useTranslation();
   const invite = props.invite;
 
   const organization = invite.organization;
@@ -111,140 +109,124 @@ const InvitePage = (
   }
 
   return (
-    <Layout>
+    <AuthPageLayout
+      heading={
+        <Trans
+          i18nKey={'auth:joinOrganizationHeading'}
+          values={{
+            organization: invite.organization.name,
+          }}
+        />
+      }
+    >
       <Head>
-        <title key={'title'}>
-          {`You have been invited to join ${organization.name}`}
-        </title>
+        <title key="title">{t(`auth:acceptInvite`)}</title>
       </Head>
 
-      <div className={'flex h-screen flex-col items-center justify-center'}>
-        <div
-          className={
-            'flex w-11/12 flex-col items-center space-y-8 md:w-8/12 lg:w-4/12 xl:w-3/12'
-          }
-        >
-          <div>
-            <Logo />
-          </div>
+      <div>
+        <p className={'text-center'}>
+          <Trans
+            i18nKey={'auth:joinOrganizationSubHeading'}
+            values={{
+              organization: invite.organization.name,
+            }}
+            components={{ b: <b /> }}
+          />
+        </p>
 
-          <Hero>
-            <span className={'flex text-center'}>
-              <Trans
-                i18nKey={'auth:joinOrganizationHeading'}
-                values={{
-                  organization: invite.organization.name,
-                }}
-              />
-            </span>
-          </Hero>
+        <p className={'text-center'}>
+          <If condition={!currentSession}>
+            <Trans i18nKey={'auth:signUpToAcceptInvite'} />
+          </If>
+        </p>
+      </div>
 
-          <div>
-            <p className={'text-center'}>
+      {/* FLOW FOR AUTHENTICATED USERS */}
+      <If condition={currentSession}>
+        <GuardedPage whenSignedOut={redirectOnSignOut}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              return onInviteAccepted();
+            }}
+            className={'flex flex-col space-y-8'}
+          >
+            <p className={'text-center text-sm'}>
               <Trans
-                i18nKey={'auth:joinOrganizationSubHeading'}
-                values={{
-                  organization: invite.organization.name,
-                }}
+                i18nKey={'auth:clickToAcceptAs'}
+                values={{ email: currentSession?.email }}
                 components={{ b: <b /> }}
               />
             </p>
 
-            <p className={'text-center'}>
-              <If condition={!currentSession}>
-                <Trans i18nKey={'auth:signUpToAcceptInvite'} />
-              </If>
-            </p>
-          </div>
+            <Button data-cy={'accept-invite-submit-button'} type={'submit'}>
+              <Trans i18nKey={'auth:acceptInvite'} />
+            </Button>
 
-          {/* FLOW FOR AUTHENTICATED USERS */}
-          <If condition={currentSession}>
-            <GuardedPage whenSignedOut={redirectOnSignOut}>
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  return onInviteAccepted();
-                }}
-                className={'flex flex-col space-y-8'}
+            <div>
+              <p
+                className={
+                  'text-center text-sm text-gray-700 dark:text-gray-300'
+                }
               >
-                <p className={'text-center text-sm'}>
-                  <Trans
-                    i18nKey={'auth:clickToAcceptAs'}
-                    values={{ email: currentSession?.email }}
-                    components={{ b: <b /> }}
-                  />
-                </p>
+                <Trans i18nKey={'auth:acceptInviteWithDifferentAccount'} />
 
-                <Button data-cy={'accept-invite-submit-button'} type={'submit'}>
-                  <Trans i18nKey={'auth:acceptInvite'} />
+                <Button
+                  block
+                  color={'transparent'}
+                  className="underline"
+                  size={'small'}
+                  disabled={requestState.loading}
+                  onClick={() => auth.signOut()}
+                  type={'button'}
+                >
+                  <Trans i18nKey={'auth:signOut'} />
                 </Button>
-
-                <div>
-                  <p
-                    className={
-                      'text-center text-sm text-gray-700 dark:text-gray-300'
-                    }
-                  >
-                    <Trans i18nKey={'auth:acceptInviteWithDifferentAccount'} />
-
-                    <Button
-                      block
-                      color={'transparent'}
-                      className="underline"
-                      size={'small'}
-                      disabled={requestState.loading}
-                      onClick={() => auth.signOut()}
-                      type={'button'}
-                    >
-                      <Trans i18nKey={'auth:signOut'} />
-                    </Button>
-                  </p>
-                </div>
-              </form>
-            </GuardedPage>
-          </If>
-
-          {/* FLOW FOR NEW USERS */}
-          <If condition={!currentSession}>
-            <OAuthProviders onSuccess={onInviteAccepted} />
-
-            <div className={'text-sm text-gray-400'}>
-              <Trans i18nKey={'auth:orContinueWithEmail'} />
+              </p>
             </div>
+          </form>
+        </GuardedPage>
+      </If>
 
-            <If condition={mode === Mode.SignUp}>
-              <div className={'flex w-full flex-col items-center space-y-8'}>
-                <EmailPasswordSignUpContainer onSignUp={onInviteAccepted} />
+      {/* FLOW FOR NEW USERS */}
+      <If condition={!currentSession}>
+        <OAuthProviders onSignIn={onInviteAccepted} />
 
-                <Button
-                  block
-                  color={'transparent'}
-                  size={'small'}
-                  onClick={() => setMode(Mode.SignIn)}
-                >
-                  <Trans i18nKey={'auth:alreadyHaveAccountStatement'} />
-                </Button>
-              </div>
-            </If>
-
-            <If condition={mode === Mode.SignIn}>
-              <div className={'flex w-full flex-col items-center space-y-8'}>
-                <EmailPasswordSignInContainer onSignIn={onInviteAccepted} />
-
-                <Button
-                  block
-                  color={'transparent'}
-                  size={'small'}
-                  onClick={() => setMode(Mode.SignUp)}
-                >
-                  <Trans i18nKey={'auth:doNotHaveAccountStatement'} />
-                </Button>
-              </div>
-            </If>
-          </If>
+        <div className={'text-sm text-gray-400'}>
+          <Trans i18nKey={'auth:orContinueWithEmail'} />
         </div>
-      </div>
-    </Layout>
+
+        <If condition={mode === Mode.SignUp}>
+          <div className={'flex w-full flex-col items-center space-y-8'}>
+            <EmailPasswordSignUpContainer onSignUp={onInviteAccepted} />
+
+            <Button
+              block
+              color={'transparent'}
+              size={'small'}
+              onClick={() => setMode(Mode.SignIn)}
+            >
+              <Trans i18nKey={'auth:alreadyHaveAccountStatement'} />
+            </Button>
+          </div>
+        </If>
+
+        <If condition={mode === Mode.SignIn}>
+          <div className={'flex w-full flex-col items-center space-y-8'}>
+            <EmailPasswordSignInContainer onSignIn={onInviteAccepted} />
+
+            <Button
+              block
+              color={'transparent'}
+              size={'small'}
+              onClick={() => setMode(Mode.SignUp)}
+            >
+              <Trans i18nKey={'auth:doNotHaveAccountStatement'} />
+            </Button>
+          </div>
+        </If>
+      </If>
+    </AuthPageLayout>
   );
 };
 
@@ -253,7 +235,7 @@ export default InvitePage;
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   // we need to create the admin app before
   // we can use Firestore on the server-side
-  initializeFirebaseAdminApp();
+  await initializeFirebaseAdminApp();
 
   const { props } = await withUserProps(ctx);
   const userId = props.session?.uid;

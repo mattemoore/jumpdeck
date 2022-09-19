@@ -57,7 +57,7 @@ const MultiFactorAuthVerificationCodeForm: React.FC<{
 
       return await toaster.promise(promise, {
         success: t(`profile:mfaEnabledSuccessTitle`),
-        error: t(`profile:mfaActivationError`),
+        error: t(`profile:verificationCodeError`),
         loading: t(`profile:mfaActivationLoading`),
       });
     },

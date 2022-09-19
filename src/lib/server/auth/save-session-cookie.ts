@@ -1,11 +1,11 @@
-import { NextApiResponse } from 'next';
+import type { NextApiResponse } from 'next';
 import { setCookie } from 'nookies';
-import { getAuth } from 'firebase-admin/auth';
 
 const SESSION_COOKIE_NAME = `session`;
 const SESSION_EXPIRES_AT_COOKIE_NAME = `sessionExpiresAt`;
 
-export function createSessionCookie(idToken: string, expiresIn: number) {
+export async function createSessionCookie(idToken: string, expiresIn: number) {
+  const { getAuth } = await import('firebase-admin/auth');
   const auth = getAuth();
 
   // create a session cookie using Firebase Auth by passing

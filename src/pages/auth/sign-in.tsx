@@ -1,11 +1,12 @@
 import { GetServerSidePropsContext } from 'next';
+import Head from 'next/head';
+import Link from 'next/link';
+
 import { useCallback, useEffect, useMemo } from 'react';
 import { useAuth } from 'reactfire';
-
 import { useRouter } from 'next/router';
-import Head from 'next/head';
-
-import { Trans } from 'next-i18next';
+import { Trans, useTranslation } from 'next-i18next';
+import If from '~/core/ui/If';
 
 import configuration from '~/configuration';
 import { isBrowser } from '~/core/generic';
@@ -15,11 +16,9 @@ import { getRedirectPathWithoutSearchParam } from '~/core/generic/get-redirect-u
 import { withAuthProps } from '~/lib/props/with-auth-props';
 import OAuthProviders from '~/components/auth/OAuthProviders';
 import EmailPasswordSignInContainer from '~/components/auth/EmailPasswordSignInContainer';
-
-import Layout from '~/core/ui/Layout';
-import Hero from '~/core/ui/Hero';
-import Logo from '~/core/ui/Logo';
-import Button from '~/core/ui/Button';
+import PhoneNumberSignInContainer from '~/components/auth/PhoneNumberSignInContainer';
+import EmailLinkAuth from '~/components/auth/EmailLinkAuth';
+import AuthPageLayout from '~/components/auth/AuthPageLayout';
 
 const signUpPath = configuration.paths.signUp;
 const appHome = configuration.paths.appHome;
@@ -29,6 +28,7 @@ const FORCE_SIGN_OUT_QUERY_PARAM = 'signOut';
 export const SignIn: React.FCC = () => {
   const router = useRouter();
   const auth = useAuth();
+  const { t } = useTranslation();
 
   const shouldForceSignOut = useMemo(() => {
     if (!isBrowser()) {
@@ -60,51 +60,49 @@ export const SignIn: React.FCC = () => {
   }, [auth, shouldForceSignOut]);
 
   return (
-    <Layout>
+    <AuthPageLayout heading={<Trans i18nKey={'auth:signInHeading'} />}>
       <Head>
-        <title key={'title'}>Sign In</title>
+        <title key={'title'}>{t(`auth:signIn`)}</title>
       </Head>
 
-      <div className={'flex h-screen flex-col items-center justify-center'}>
-        <div
-          className={
-            'flex w-11/12 flex-col items-center space-y-4 md:w-8/12' +
-            ' lg:w-4/12 xl:w-3/12'
-          }
-        >
-          <div className={'mb-2'}>
-            <Logo />
-          </div>
+      <OAuthProviders onSignIn={onSignIn} />
 
-          <div>
-            <Hero>
-              <Trans i18nKey={'auth:signIn'} />
-            </Hero>
-          </div>
-
-          <OAuthProviders onSuccess={onSignIn} />
-
-          <div className={'text-xs text-gray-400'}>
+      <If condition={configuration.auth.providers.emailPassword}>
+        <div>
+          <span className={'text-xs text-gray-400'}>
             <Trans i18nKey={'auth:orContinueWithEmail'} />
-          </div>
-
-          <EmailPasswordSignInContainer onSignIn={onSignIn} />
-
-          <div>
-            <Button
-              type={'button'}
-              href={signUpPath}
-              block
-              size={'small'}
-              color={'transparent'}
-              className={'text-sm'}
-            >
-              <Trans i18nKey={'auth:doNotHaveAccountYet'} />
-            </Button>
-          </div>
+          </span>
         </div>
+
+        <EmailPasswordSignInContainer onSignIn={onSignIn} />
+      </If>
+
+      <If condition={configuration.auth.providers.phoneNumber}>
+        <PhoneNumberSignInContainer onSignIn={onSignIn} />
+      </If>
+
+      <If condition={configuration.auth.providers.emailLink}>
+        <EmailLinkAuth />
+      </If>
+
+      <div className={'flex justify-center text-xs'}>
+        <p className={'flex space-x-1'}>
+          <span>
+            <Trans i18nKey={'auth:doNotHaveAccountYet'} />
+          </span>
+
+          <Link href={signUpPath}>
+            <a
+              className={
+                'text-primary-800 hover:underline dark:text-primary-500'
+              }
+            >
+              <Trans i18nKey={'auth:signUp'} />
+            </a>
+          </Link>
+        </p>
       </div>
-    </Layout>
+    </AuthPageLayout>
   );
 };
 

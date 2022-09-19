@@ -44,7 +44,7 @@ const MultiFactorAuthPhoneNumberForm: React.FC<{
       };
 
       const phoneAuthProvider = new PhoneAuthProvider(auth);
-      const recaptchaVerifier = getRecaptchaVerifier();
+      const recaptchaVerifier = await getRecaptchaVerifier();
 
       const promise = phoneAuthProvider
         .verifyPhoneNumber(phoneInfoOptions, recaptchaVerifier)

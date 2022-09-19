@@ -1,21 +1,20 @@
 import { GetServerSidePropsContext } from 'next';
-import nookies from 'nookies';
+import { parseCookies } from 'nookies';
 
 /**
- * @description Get the logged in user object {@link DecodedIdToken}
- * using the session cookie
+ * @description Get the logged in user object using the session cookie
  * @param ctx
  */
 export async function getLoggedInUser(ctx: GetServerSidePropsContext) {
+  const { session } = parseCookies(ctx);
+
+  if (!session) {
+    return Promise.reject(`Session ID not found`);
+  }
+
   const { getUserFromSessionCookie } = await import(
     './get-user-from-session-cookie'
   );
-
-  const { session } = nookies.get(ctx);
-
-  if (!session) {
-    return Promise.reject(`Session not found`);
-  }
 
   return getUserFromSessionCookie(session);
 }

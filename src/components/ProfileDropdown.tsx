@@ -11,6 +11,7 @@ import {
 
 import Dropdown from '~/core/ui/Dropdown';
 import ProfileAvatar from './ProfileAvatar';
+import { useMemo } from 'react';
 
 const ProfileDropdown: React.FCC<{
   user: Maybe<UserInfo>;
@@ -26,6 +27,13 @@ const ProfileDropdown: React.FCC<{
     </Menu.Button>
   );
 
+  const signedInAsLabel = useMemo(() => {
+    return (
+      user?.email ??
+      user?.phoneNumber ?? <Trans i18nKey={'common:anonymousUser'} />
+    );
+  }, [user]);
+
   const items = [
     <Dropdown.Item className={'rounded-none py-0'} key={'signedInAs'}>
       <div
@@ -34,7 +42,7 @@ const ProfileDropdown: React.FCC<{
         <div className={'text-gray-500'}>Signed in as</div>
 
         <div>
-          <span className={'block ellipsify'}>{user?.email}</span>
+          <span className={'block ellipsify'}>{signedInAsLabel}</span>
         </div>
       </div>
     </Dropdown.Item>,

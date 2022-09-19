@@ -1,4 +1,3 @@
-import { getAnalytics, setUserId } from 'firebase/analytics';
 import { useEffect } from 'react';
 
 import { isBrowser } from '~/core/generic';
@@ -17,10 +16,12 @@ export function useTrackSignedInUser() {
       return;
     }
 
-    const analytics = getAnalytics();
+    void (async () => {
+      const { getAnalytics, setUserId } = await import('firebase/analytics');
 
-    if (userId) {
-      setUserId(analytics, userId);
-    }
+      if (userId) {
+        setUserId(getAnalytics(), userId);
+      }
+    })();
   }, [userId]);
 }

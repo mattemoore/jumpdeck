@@ -91,7 +91,7 @@ const MultiFactorAuthChallengeModal: React.FC<{
 
     void (async () => {
       try {
-        const recaptchaVerifier = getRecaptchaVerifier();
+        const recaptchaVerifier = await getRecaptchaVerifier();
 
         const verificationId = await phoneAuthProvider.verifyPhoneNumber(
           phoneInfoOptions,

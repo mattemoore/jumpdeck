@@ -1,7 +1,7 @@
 import '../styles/index.css';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { AppProps } from 'next/app';
+import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
 import type { User as AuthUser } from 'firebase/auth';
@@ -57,9 +57,14 @@ function App(
     setOrganization(pageProps.organization);
   }, [pageProps.organization]);
 
+  const updateCurrentUser = useCallback(() => {
+    setUserSession(userSessionContext);
+  }, [userSessionContext]);
+
   const refreshClaims = props.pageProps.refreshClaims ?? false;
 
   useEffect(updateCurrentOrganization, [updateCurrentOrganization]);
+  useEffect(updateCurrentUser, [updateCurrentUser]);
 
   return (
     <FirebaseAppShell config={firebase}>

@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { GetServerSidePropsContext } from 'next';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { useAuth } from 'reactfire';
+
 import { Trans } from 'next-i18next';
 import { SpringSpinner } from 'react-epic-spinners';
-
-import { FirebaseError } from 'firebase/app';
 
 import {
   isSignInWithEmailLink,
@@ -14,22 +13,20 @@ import {
   User,
 } from 'firebase/auth';
 
-import { useAuth } from 'reactfire';
-
 import { withAuthProps } from '~/lib/props/with-auth-props';
-import Logo from '~/core/ui/Logo';
-import Layout from '~/core/ui/Layout';
 import If from '~/core/ui/If';
 import Button from '~/core/ui/Button';
 
 import { isBrowser } from '~/core/generic';
 import { useRequestState } from '~/core/hooks/use-request-state';
 import useCreateServerSideSession from '~/core/hooks/use-create-server-side-session';
-
-import configuration from '~/configuration';
 import AuthErrorMessage from '~/components/auth/AuthErrorMessage';
 import MultiFactorAuthChallengeModal from '~/components/auth/MultiFactorAuthChallengeModal';
 import { isMultiFactorError } from '~/core/firebase/utils/is-multi-factor-error';
+import AuthPageLayout from '~/components/auth/AuthPageLayout';
+
+import configuration from '~/configuration';
+import { getFirebaseErrorCode } from '~/core/firebase/utils/get-firebase-error-code';
 
 // this is the key we use for storing the email locally
 // so we can verify it is the same
@@ -112,11 +109,11 @@ const EmailLinkAuthPage: React.FC = () => {
         const credential = await signInWithEmailLink(auth, email, href);
 
         return onSignInSuccess(credential.user);
-      } catch (e) {
-        if (isMultiFactorError(e)) {
-          setMultiFactorAuthError(e);
+      } catch (error) {
+        if (isMultiFactorError(error)) {
+          setMultiFactorAuthError(error);
         } else {
-          setError(e instanceof FirebaseError ? e.code : 'generic');
+          setError(getFirebaseErrorCode(error));
         }
       }
     })();
@@ -130,37 +127,20 @@ const EmailLinkAuthPage: React.FC = () => {
   ]);
 
   return (
-    <Layout>
-      <Head>
-        <title key={'title'}>Email Link Authentication</title>
-      </Head>
+    <AuthPageLayout heading={``}>
+      <If condition={loading}>
+        <LoadingState />
+      </If>
 
-      <div className={'flex h-screen flex-col items-center justify-center'}>
-        <div
-          className={
-            'flex w-11/12 flex-col items-center space-y-8 md:w-8/12' +
-            ' lg:w-4/12 xl:w-3/12'
-          }
-        >
-          <div className={'mb-2'}>
-            <Logo />
-          </div>
+      <If condition={state.error}>
+        <div className={'flex flex-col space-y-2'}>
+          <AuthErrorMessage error={state.error as string} />
 
-          <If condition={loading}>
-            <LoadingState />
-          </If>
-
-          <If condition={state.error}>
-            <div className={'flex flex-col space-y-2'}>
-              <AuthErrorMessage error={state.error as string} />
-
-              <Button color={'transparent'} href={configuration.paths.signIn}>
-                <Trans i18nKey={'auth:getNewLink'} />
-              </Button>
-            </div>
-          </If>
+          <Button color={'transparent'} href={configuration.paths.signIn}>
+            <Trans i18nKey={'auth:getNewLink'} />
+          </Button>
         </div>
-      </div>
+      </If>
 
       <If condition={multiFactorAuthError}>
         {(error) => (
@@ -175,7 +155,7 @@ const EmailLinkAuthPage: React.FC = () => {
           />
         )}
       </If>
-    </Layout>
+    </AuthPageLayout>
   );
 };
 

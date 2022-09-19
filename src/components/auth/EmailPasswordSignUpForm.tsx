@@ -47,7 +47,7 @@ const EmailPasswordSignUpForm: React.FCC<{
 
   return (
     <form className={'w-full'} onSubmit={handleSubmit(onSubmit)}>
-      <div className={'flex-col space-y-2.5'}>
+      <div className={'flex-col space-y-4'}>
         <TextField>
           <TextField.Label>
             <Trans i18nKey={'common:emailAddress'} />
@@ -100,6 +100,10 @@ const EmailPasswordSignUpForm: React.FCC<{
               onChange={repeatPasswordControl.onChange}
               name={repeatPasswordControl.name}
             />
+
+            <TextField.Hint>
+              <Trans i18nKey={'auth:repeatPasswordHint'} />
+            </TextField.Hint>
           </TextField.Label>
         </TextField>
 
@@ -114,7 +118,7 @@ const EmailPasswordSignUpForm: React.FCC<{
           >
             <If
               condition={loading}
-              fallback={<Trans i18nKey={'auth:signUp'} />}
+              fallback={<Trans i18nKey={'auth:getStarted'} />}
             >
               <Trans i18nKey={'auth:signingUp'} />
             </If>

@@ -13,6 +13,7 @@
   "pageNotFound": "Oooops. Page not Found.",
   "pageNotFoundSubHeading": "Apologies, the page you were looking for was not found",
   "genericError": "Oooops. An error occurred",
+  "anonymousUser": "Anonymous",
   "roles": {
     "owner": {
       "label": "Owner",

@@ -5,6 +5,21 @@ CSS.
 
 ## Quick Start
 
+### Requirements
+
+- Node.js LTS (Please do not upgrade yet to Node 18)
+- Firebase Tools
+- Git
+
+Assuming that yu have likely installed Node.js and Git, please also install 
+the `firebase-tools` package using `npm`:
+
+```
+npm i -g firebase-tools
+```
+
+### Cloning the Repository
+
 Clone this repository and name it according to your preferences:
 
 ```

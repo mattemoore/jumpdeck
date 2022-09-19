@@ -1,4 +1,5 @@
 import { LayoutStyle } from '~/core/layout-style';
+import { GoogleAuthProvider } from 'firebase/auth';
 
 const configuration = {
   site: {
@@ -25,17 +26,30 @@ const configuration = {
     // Enable MFA. You must upgrade to GCP Identity Platform to use it.
     // see: https://cloud.google.com/identity-platform/docs/product-comparison
     enableMultiFactorAuth: false,
+    // NB: Enable the providers below in the Firebase Console
+    // in your production project
+    providers: {
+      emailPassword: true,
+      phoneNumber: false,
+      emailLink: false,
+      oAuth: [GoogleAuthProvider],
+    },
   },
   emulatorHost: process.env.NEXT_PUBLIC_EMULATOR_HOST,
   emulator: process.env.NEXT_PUBLIC_EMULATOR === 'true',
   production: process.env.NODE_ENV === 'production',
-  autoBanners: true,
   paths: {
     signIn: '/auth/sign-in',
     signUp: '/auth/sign-up',
     emailLinkSignIn: '/auth/link',
     onboarding: `/onboarding`,
     appHome: '/dashboard',
+    settings: {
+      profile: '/settings/profile',
+      authentication: '/settings/profile/authentication',
+      email: '/settings/profile/email',
+      password: '/settings/profile/password',
+    },
     api: {
       checkout: `/api/stripe/checkout`,
       billingPortal: `/api/stripe/portal`,
