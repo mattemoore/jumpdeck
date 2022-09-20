@@ -3,14 +3,12 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-import { getCurrentOrganization } from '~/lib/server/organizations/get-current-organization';
-import { getUserById } from '~/lib/server/queries';
-
 import configuration from '~/configuration';
-
 import { withUserProps } from '~/lib/props/with-user-props';
+
 import Logo from '~/core/ui/Logo';
 import If from '~/core/ui/If';
+import Layout from '~/core/ui/Layout';
 
 import { CompleteOnboardingStep } from '~/components/onboarding/CompleteOnboardingStep';
 
@@ -18,8 +16,6 @@ import {
   OrganizationInfoStep,
   OrganizationInfoStepData,
 } from '~/components/onboarding/OrganizationInfoStep';
-
-import Layout from '~/core/ui/Layout';
 
 interface Data {
   organization: string;
@@ -109,6 +105,10 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     };
   }
 
+  const { getCurrentOrganization } = await import(
+    '~/lib/server/organizations/get-current-organization'
+  );
+
   const organization = await getCurrentOrganization(user.uid);
   const { onboarded } = user.customClaims;
 
@@ -151,6 +151,8 @@ function redirectToAppHome() {
  * @param userId
  */
 async function getUserData(userId: string) {
+  const { getUserById } = await import('~/lib/server/queries');
+
   const ref = await getUserById(userId);
   const data = ref.data();
 
