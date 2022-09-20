@@ -2,6 +2,7 @@ import { doc, DocumentReference } from 'firebase/firestore';
 import { useFirestore, useFirestoreDocData } from 'reactfire';
 import { UserData } from '~/core/session/types/user-data';
 import { useUserId } from '~/core/hooks/use-user-id';
+import { USERS_COLLECTION } from '~/lib/firestore-collections';
 
 /**
  * @name useFetchUser
@@ -19,7 +20,12 @@ import { useUserId } from '~/core/hooks/use-user-id';
 function useFetchUser() {
   const firestore = useFirestore();
   const userId = useUserId() as string;
-  const ref = doc(firestore, `/users`, userId) as DocumentReference<UserData>;
+
+  const ref = doc(
+    firestore,
+    USERS_COLLECTION,
+    userId
+  ) as DocumentReference<UserData>;
 
   return useFirestoreDocData(ref, { idField: 'id' });
 }

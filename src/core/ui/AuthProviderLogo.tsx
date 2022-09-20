@@ -36,6 +36,8 @@ function getOAuthProviderLogos(): Record<string, string | JSX.Element> {
     ['facebook.com']: '/assets/images/facebook.webp',
     ['twitter.com']: '/assets/images/twitter.webp',
     ['github.com']: '/assets/images/github.webp',
+    ['microsoft.com']: '/assets/images/microsoft.webp',
+    ['apple.com']: '/assets/images/apple.webp',
   };
 }
 

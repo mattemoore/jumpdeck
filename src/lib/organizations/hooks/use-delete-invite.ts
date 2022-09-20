@@ -2,6 +2,11 @@ import { useFirestore } from 'reactfire';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { useCallback } from 'react';
 
+import {
+  INVITES_COLLECTION,
+  ORGANIZATIONS_COLLECTION,
+} from '~/lib/firestore-collections';
+
 export function useDeleteInvite() {
   const firestore = useFirestore();
 
@@ -24,5 +29,10 @@ export function useDeleteInvite() {
  * an invite: /api/organizations/{ORGANIZATION_ID}/invites/{INVITE_ID}
  */
 function getDeleteInvitePath(organizationId: string, inviteId: string) {
-  return ['organizations', organizationId, 'invites', inviteId].join('/');
+  return [
+    ORGANIZATIONS_COLLECTION,
+    organizationId,
+    INVITES_COLLECTION,
+    inviteId,
+  ].join('/');
 }

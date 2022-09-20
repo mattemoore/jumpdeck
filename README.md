@@ -18,6 +18,9 @@ the `firebase-tools` package using `npm`:
 npm i -g firebase-tools
 ```
 
+If you have already installed it, please ensure that you are running the 
+latest version.
+
 ### Cloning the Repository
 
 Clone this repository and name it according to your preferences:
@@ -72,6 +75,10 @@ firebase:emulators:start
 ```
 
 The application should be running at [http://localhost:3000](http://localhost:3000).
+
+Additionally, the [Firebase Emulators UI](https://firebase.google.
+com/docs/emulator-suite) should be running at 
+[http://localhost:4000](http://localhost:4000).
 
 If you're testing Stripe, also run the Stripe server:
 

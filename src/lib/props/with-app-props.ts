@@ -87,8 +87,6 @@ export async function withAppProps(
     // if the organization also wasn't found, redirect to the onboarding
     // so that the user can re-start its flow and create a new organization
     if (!user) {
-      console.log(user);
-
       return redirectToOnboarding();
     }
 

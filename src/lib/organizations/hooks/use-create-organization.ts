@@ -16,6 +16,11 @@ import { MembershipRole } from '~/lib/organizations/types/membership-role';
 import { Organization } from '~/lib/organizations/types/organization';
 import { UserData } from '~/core/session/types/user-data';
 
+import {
+  ORGANIZATIONS_COLLECTION,
+  USERS_COLLECTION,
+} from '~/lib/firestore-collections';
+
 /**
  * @name useCreateOrganization
  * @description Hook to create a new organization
@@ -35,11 +40,11 @@ export function useCreateOrganization() {
       try {
         setLoading(true);
 
-        const organizations = collection(firestore, 'organizations');
+        const organizations = collection(firestore, ORGANIZATIONS_COLLECTION);
 
         const userDoc = doc(
           firestore,
-          `users`,
+          USERS_COLLECTION,
           userId
         ) as DocumentReference<UserData>;
 

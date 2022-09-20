@@ -16,6 +16,7 @@ import { Trans } from 'next-i18next';
 
 import { useUserSession } from '~/core/hooks/use-user-session';
 import { isRouteActive } from '~/core/is-route-active';
+import configuration from '~/configuration';
 
 const OrganizationsSelector = dynamic(
   () => import('../../organizations/OrganizationsSelector'),
@@ -44,7 +45,7 @@ const AppSidebar = () => {
 function AppSidebarHeader({
   user,
 }: React.PropsWithChildren<{ user: Maybe<User> }>) {
-  const logoHref = '/dashboard';
+  const logoHref = configuration.paths.appHome;
 
   return (
     <div className={'flex w-full flex-col space-y-6 px-4'}>

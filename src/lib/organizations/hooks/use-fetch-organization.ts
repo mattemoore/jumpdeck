@@ -1,6 +1,7 @@
 import { useFirestore, useFirestoreDocData } from 'reactfire';
 import { doc, DocumentReference } from 'firebase/firestore';
 import { Organization } from '~/lib/organizations/types/organization';
+import { ORGANIZATIONS_COLLECTION } from '~/lib/firestore-collections';
 
 type Response = WithId<Organization>;
 
@@ -14,7 +15,7 @@ export function useFetchOrganization(organizationId: string) {
 
   const ref = doc(
     firestore,
-    `/organizations`,
+    ORGANIZATIONS_COLLECTION,
     organizationId
   ) as DocumentReference<Response>;
 

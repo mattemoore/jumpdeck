@@ -44,7 +44,7 @@ async function signOut(req: NextApiRequest, res: NextApiResponse) {
     logger.warn(e, `Could not destroy user's session`);
   }
 
-  return res.redirect('/');
+  return res.send({ success: true });
 }
 
 export default function sessionSignOutHandler(

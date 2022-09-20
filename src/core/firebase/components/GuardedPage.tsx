@@ -1,13 +1,18 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useAuth, useSigninCheck } from 'reactfire';
 import { parseCookies, destroyCookie } from 'nookies';
+import { useRouter } from 'next/router';
+
 import { isBrowser } from '~/core/generic';
+import useClearFirestoreCache from '~/core/hooks/use-clear-firestore-cache';
 
 const AuthRedirectListener: React.FCC<{
   whenSignedOut?: string;
 }> = ({ children, whenSignedOut }) => {
   const auth = useAuth();
-  const { status } = useSigninCheck();
+  const { status, data: isSignedIn } = useSigninCheck();
+  const redirectUserAway = useRedirectUserAway();
+  const clearCache = useClearFirestoreCache();
   const isSignInCheckDone = status === 'success';
 
   useEffect(() => {
@@ -20,9 +25,11 @@ const AuthRedirectListener: React.FCC<{
     // will become null)
     if (isSessionExpired()) {
       clearAuthCookies();
+      clearCache();
+
       void auth.signOut();
     }
-  }, [auth, isSignInCheckDone]);
+  }, [auth, clearCache, isSignInCheckDone]);
 
   useEffect(() => {
     // this should run once and only on success
@@ -37,14 +44,25 @@ const AuthRedirectListener: React.FCC<{
       // and if the consumer provided a route to redirect the user
       const shouldLogOut = !user && whenSignedOut;
 
+      if (!user) {
+        clearCache();
+      }
+
       if (shouldLogOut) {
-        redirectUserAway(whenSignedOut);
+        return redirectUserAway(whenSignedOut);
       }
     });
 
     // destroy listener on un-mounts
     return () => listener();
-  }, [auth, isSignInCheckDone, status, whenSignedOut]);
+  }, [
+    auth,
+    clearCache,
+    isSignInCheckDone,
+    redirectUserAway,
+    status,
+    whenSignedOut,
+  ]);
 
   return <>{children}</>;
 };
@@ -87,16 +105,23 @@ function getExpiresAtCookie() {
   }
 }
 
-function redirectUserAway(path: string) {
-  const currentPath = window.location.pathname;
-  const isNotCurrentPage = currentPath !== path;
+function useRedirectUserAway() {
+  const router = useRouter();
 
-  // we then redirect the user to the page
-  // specified in the props of the component
-  if (isNotCurrentPage) {
-    clearAuthCookies();
-    window.location.assign(path);
-  }
+  return useCallback(
+    (path: string) => {
+      const currentPath = window.location.pathname;
+      const isNotCurrentPage = currentPath !== path;
+
+      // we then redirect the user to the page
+      // specified in the props of the component
+      if (isNotCurrentPage) {
+        clearAuthCookies();
+        return router.push(path);
+      }
+    },
+    [router]
+  );
 }
 
 function clearAuthCookies() {

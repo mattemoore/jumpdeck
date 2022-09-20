@@ -23,24 +23,17 @@ export async function withAuthProps(
   ctx: GetServerSidePropsContext,
   options = DEFAULT_OPTIONS
 ) {
-  const { redirectPath } = options;
-
   try {
     await initializeFirebaseAdminApp();
 
     // test the user is logged in
-    const user = await getLoggedInUser(ctx);
-
-    console.log(new Date(user.auth_time * 1000));
+    await getLoggedInUser(ctx);
 
     // if yes, then redirect to "redirectPath"
-    const { props } = await withTranslationProps(options);
-    const csrfToken = await createCsrfToken(ctx);
-
     return {
-      props: {
-        ...props,
-        csrfToken,
+      redirect: {
+        permanent: false,
+        destination: options.redirectPath,
       },
     };
   } catch (e) {

@@ -5,6 +5,7 @@ import { useCallback } from 'react';
 
 import { useRequestState } from '~/core/hooks/use-request-state';
 import { Organization } from '~/lib/organizations/types/organization';
+import { ORGANIZATIONS_COLLECTION } from '~/lib/firestore-collections';
 
 /**
  * @name useUpdateOrganization
@@ -21,7 +22,7 @@ export function useUpdateOrganization() {
       setLoading(true);
 
       try {
-        const ref = doc(firestore, 'organizations', organization.id);
+        const ref = doc(firestore, ORGANIZATIONS_COLLECTION, organization.id);
 
         await updateDoc(ref, organization);
 

@@ -31,6 +31,8 @@ import createCsrfToken from '~/core/generic/create-csrf-token';
 import EmailPasswordSignUpContainer from '~/components/auth/EmailPasswordSignUpContainer';
 import EmailPasswordSignInContainer from '~/components/auth/EmailPasswordSignInContainer';
 import AuthPageLayout from '~/components/auth/AuthPageLayout';
+import PhoneNumberSignInContainer from '~/components/auth/PhoneNumberSignInContainer';
+import EmailLinkAuth from '~/components/auth/EmailLinkAuth';
 
 enum Mode {
   SignUp,
@@ -164,17 +166,20 @@ const InvitePage = (
             </Button>
 
             <div>
-              <p
-                className={
-                  'text-center text-sm text-gray-700 dark:text-gray-300'
-                }
-              >
-                <Trans i18nKey={'auth:acceptInviteWithDifferentAccount'} />
+              <div className={'flex flex-col space-y-2'}>
+                <p className={'text-center'}>
+                  <span
+                    className={
+                      'text-center text-sm text-gray-700 dark:text-gray-300'
+                    }
+                  >
+                    <Trans i18nKey={'auth:acceptInviteWithDifferentAccount'} />
+                  </span>
+                </p>
 
                 <Button
                   block
                   color={'transparent'}
-                  className="underline"
                   size={'small'}
                   disabled={requestState.loading}
                   onClick={() => auth.signOut()}
@@ -182,7 +187,7 @@ const InvitePage = (
                 >
                   <Trans i18nKey={'auth:signOut'} />
                 </Button>
-              </p>
+              </div>
             </div>
           </form>
         </GuardedPage>
@@ -192,38 +197,44 @@ const InvitePage = (
       <If condition={!currentSession}>
         <OAuthProviders onSignIn={onInviteAccepted} />
 
-        <div className={'text-sm text-gray-400'}>
-          <Trans i18nKey={'auth:orContinueWithEmail'} />
-        </div>
+        <If condition={configuration.auth.providers.emailPassword}>
+          <If condition={mode === Mode.SignUp}>
+            <div className={'flex w-full flex-col items-center space-y-4'}>
+              <EmailPasswordSignUpContainer onSignUp={onInviteAccepted} />
 
-        <If condition={mode === Mode.SignUp}>
-          <div className={'flex w-full flex-col items-center space-y-8'}>
-            <EmailPasswordSignUpContainer onSignUp={onInviteAccepted} />
+              <Button
+                block
+                color={'transparent'}
+                size={'small'}
+                onClick={() => setMode(Mode.SignIn)}
+              >
+                <Trans i18nKey={'auth:alreadyHaveAccountStatement'} />
+              </Button>
+            </div>
+          </If>
 
-            <Button
-              block
-              color={'transparent'}
-              size={'small'}
-              onClick={() => setMode(Mode.SignIn)}
-            >
-              <Trans i18nKey={'auth:alreadyHaveAccountStatement'} />
-            </Button>
-          </div>
+          <If condition={mode === Mode.SignIn}>
+            <div className={'flex w-full flex-col items-center space-y-4'}>
+              <EmailPasswordSignInContainer onSignIn={onInviteAccepted} />
+
+              <Button
+                block
+                color={'transparent'}
+                size={'small'}
+                onClick={() => setMode(Mode.SignUp)}
+              >
+                <Trans i18nKey={'auth:doNotHaveAccountStatement'} />
+              </Button>
+            </div>
+          </If>
         </If>
 
-        <If condition={mode === Mode.SignIn}>
-          <div className={'flex w-full flex-col items-center space-y-8'}>
-            <EmailPasswordSignInContainer onSignIn={onInviteAccepted} />
+        <If condition={configuration.auth.providers.phoneNumber}>
+          <PhoneNumberSignInContainer onSignIn={onInviteAccepted} />
+        </If>
 
-            <Button
-              block
-              color={'transparent'}
-              size={'small'}
-              onClick={() => setMode(Mode.SignUp)}
-            >
-              <Trans i18nKey={'auth:doNotHaveAccountStatement'} />
-            </Button>
-          </div>
+        <If condition={configuration.auth.providers.emailLink}>
+          <EmailLinkAuth />
         </If>
       </If>
     </AuthPageLayout>

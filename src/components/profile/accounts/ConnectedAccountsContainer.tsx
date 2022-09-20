@@ -22,7 +22,9 @@ import {
 } from 'firebase/auth';
 
 import { Trans, useTranslation } from 'next-i18next';
-import { CheckCircleIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon } from '@heroicons/react/24/outline';
+
+import FirebaseAuthProviderClass from '~/core/firebase/types/auth-provider-class';
 
 import Button from '~/core/ui/Button';
 import If from '~/core/ui/If';
@@ -34,22 +36,12 @@ import { isMultiFactorError } from '~/core/firebase/utils/is-multi-factor-error'
 
 import LinkPhoneNumberModal from '~/components/profile/accounts/LinkPhoneNumberModal';
 import LinkEmailPasswordModal from '~/components/profile/accounts/LinkEmailPasswordModal';
-import configuration from '~/configuration';
 import AuthProviderButton from '~/core/ui/AuthProviderButton';
 import AuthProviderLogo from '~/core/ui/AuthProviderLogo';
+import getFirebaseAuthProviderId from '~/core/firebase/utils/get-firebase-auth-provider-id';
+import configuration from '~/configuration';
 
-type CallableOAuthProviderClass = {
-  new (): AuthProvider;
-  PROVIDER_ID: string;
-} & typeof OAuthProvider;
-
-/**
- * @name FirebaseAuthProvider
- */
-type FirebaseAuthProvider =
-  | CallableOAuthProviderClass
-  | typeof EmailAuthProvider
-  | typeof PhoneAuthProvider;
+type GenericOAuthProvider = { new (): AuthProvider } & typeof OAuthProvider;
 
 const ConnectedAccountsContainer = () => {
   const { data: user } = useUser();
@@ -108,7 +100,8 @@ const ConnectedAccountsContainer = () => {
     return supportedProviders.filter((supportedProvider) => {
       return providers.some(
         (connectedProvider) =>
-          connectedProvider.providerId === supportedProvider.PROVIDER_ID
+          connectedProvider.providerId ===
+          getFirebaseAuthProviderId(supportedProvider)
       );
     });
   }, [providers, supportedProviders]);
@@ -120,7 +113,7 @@ const ConnectedAccountsContainer = () => {
   }, [connectedProviders, supportedProviders]);
 
   const linkPopupAuthProvider = useCallback(
-    async (provider: CallableOAuthProviderClass) => {
+    async (AuthProviderClass: GenericOAuthProvider) => {
       if (!user) {
         return null;
       }
@@ -128,11 +121,12 @@ const ConnectedAccountsContainer = () => {
       try {
         const authCredential = await linkWithPopup(
           user,
-          new provider(),
+          new AuthProviderClass(),
           browserPopupRedirectResolver
         );
 
-        const oAuthCredential = provider.credentialFromResult(authCredential);
+        const oAuthCredential =
+          AuthProviderClass.credentialFromResult(authCredential);
 
         return oAuthCredential ? onLinkSuccess() : onLinkError();
       } catch (error) {
@@ -147,12 +141,14 @@ const ConnectedAccountsContainer = () => {
   );
 
   const onLinkRequested = useCallback(
-    async (provider: FirebaseAuthProvider) => {
+    async (provider: FirebaseAuthProviderClass) => {
       if (!user) {
         return null;
       }
 
-      switch (provider.PROVIDER_ID) {
+      const providerId = getFirebaseAuthProviderId(provider);
+
+      switch (providerId) {
         case EmailAuthProvider.PROVIDER_ID:
           return setLinkWithPassword(true);
 
@@ -160,7 +156,7 @@ const ConnectedAccountsContainer = () => {
           return setLinkWithPhoneNumber(true);
 
         default:
-          return linkPopupAuthProvider(provider as CallableOAuthProviderClass);
+          return linkPopupAuthProvider(provider as GenericOAuthProvider);
       }
     },
     [linkPopupAuthProvider, user]
@@ -190,13 +186,12 @@ const ConnectedAccountsContainer = () => {
             'flex flex-col divide-y divide-gray-50 dark:divide-black-400'
           }
         >
-          {connectedProviders.map((provider) => {
-            const providerId = provider.PROVIDER_ID;
+          {connectedProviders.map((provider, index) => {
+            const providerId = getFirebaseAuthProviderId(provider);
 
             return (
-              <Fragment key={providerId}>
+              <Fragment key={index}>
                 <UnlinkAuthProviderButton
-                  key={providerId}
                   canUnlink={canUnlink}
                   providerId={providerId}
                   onUnlink={() => {
@@ -229,16 +224,12 @@ const ConnectedAccountsContainer = () => {
           </div>
 
           <div className={'flex flex-col space-y-1.5'}>
-            {notConnectedProviders.map((provider) => {
-              const providerId = provider.PROVIDER_ID;
-
+            {notConnectedProviders.map((provider, index) => {
               return (
-                <div key={providerId}>
+                <div key={index}>
                   <ConnectAuthProviderButton
-                    providerId={providerId}
-                    onLink={() =>
-                      onLinkRequested(provider as FirebaseAuthProvider)
-                    }
+                    provider={provider}
+                    onLink={() => onLinkRequested(provider)}
                   />
                 </div>
               );
@@ -296,12 +287,13 @@ const ConnectedAccountsContainer = () => {
 
 function ConnectAuthProviderButton({
   onLink,
-  providerId,
+  provider,
 }: React.PropsWithChildren<{
-  providerId: string;
+  provider: FirebaseAuthProviderClass;
   onLink: EmptyCallback;
 }>) {
-  const provider = capitalize(providerId);
+  const providerId = getFirebaseAuthProviderId(provider);
+  const providerName = capitalize(providerId);
 
   return (
     <div className={'max-w-md'}>
@@ -311,7 +303,10 @@ function ConnectAuthProviderButton({
         providerId={providerId}
         onClick={onLink}
       >
-        <Trans i18nKey={`profile:connectWithProvider`} values={{ provider }} />
+        <Trans
+          i18nKey={`profile:connectWithProvider`}
+          values={{ provider: providerName }}
+        />
       </AuthProviderButton>
     </div>
   );

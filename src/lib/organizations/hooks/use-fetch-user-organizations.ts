@@ -7,6 +7,7 @@ import {
 
 import { useFirestore, useFirestoreCollectionData } from 'reactfire';
 import { Organization } from '~/lib/organizations/types/organization';
+import { ORGANIZATIONS_COLLECTION } from '~/lib/firestore-collections';
 
 /**
  * @description Hook to fetch the user's organizations
@@ -14,11 +15,10 @@ import { Organization } from '~/lib/organizations/types/organization';
  */
 export function useFetchUserOrganizations(userId: string) {
   const firestore = useFirestore();
-  const path = `organizations`;
 
   const organizationsCollection = collection(
     firestore,
-    path
+    ORGANIZATIONS_COLLECTION
   ) as CollectionReference<WithId<Organization>>;
 
   const userPath = `members.${userId}`;

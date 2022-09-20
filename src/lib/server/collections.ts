@@ -8,34 +8,32 @@ import { Organization } from '~/lib/organizations/types/organization';
 import { UserData } from '~/core/session/types/user-data';
 import { MembershipInvite } from '~/lib/organizations/types/membership-invite';
 
-enum FirestoreCollections {
-  Users = 'users',
-  Organizations = 'organizations',
-  Invites = 'invites',
-}
+import {
+  ORGANIZATIONS_COLLECTION,
+  USERS_COLLECTION,
+  INVITES_COLLECTION,
+} from '~/lib/firestore-collections';
 
 export function getUsersCollection() {
-  return getCollectionByName(
-    FirestoreCollections.Users
-  ) as CollectionReference<UserData>;
+  return getCollectionByName(USERS_COLLECTION) as CollectionReference<UserData>;
 }
 
 export function getOrganizationsCollection() {
   return getCollectionByName(
-    FirestoreCollections.Organizations
+    ORGANIZATIONS_COLLECTION
   ) as CollectionReference<Organization>;
 }
 
 export function getInvitesCollection() {
   return getCollectionGroupByName(
-    FirestoreCollections.Invites
+    INVITES_COLLECTION
   ) as CollectionGroup<MembershipInvite>;
 }
 
-function getCollectionByName(collection: FirestoreCollections) {
+function getCollectionByName(collection: string) {
   return getFirestore().collection(collection);
 }
 
-function getCollectionGroupByName(collection: FirestoreCollections) {
+function getCollectionGroupByName(collection: string) {
   return getFirestore().collectionGroup(collection);
 }

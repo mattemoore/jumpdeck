@@ -82,7 +82,8 @@ const OAuthProviders: React.FCC<{
       <div className={'flex w-full flex-1 flex-col space-y-3'}>
         <div className={'flex-col space-y-2'}>
           {OAUTH_PROVIDERS.map((OAuthProviderClass) => {
-            const providerId = OAuthProviderClass.PROVIDER_ID;
+            const providerInstance = new OAuthProviderClass();
+            const providerId = providerInstance.providerId;
 
             return (
               <AuthProviderButton
@@ -90,7 +91,7 @@ const OAuthProviders: React.FCC<{
                 providerId={providerId}
                 onClick={() => {
                   return onSignInWithProvider(() =>
-                    signInWithProvider(new OAuthProviderClass())
+                    signInWithProvider(providerInstance)
                   );
                 }}
               >
