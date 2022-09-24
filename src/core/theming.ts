@@ -1,8 +1,9 @@
 import { isBrowser } from '~/core/generic/is-browser';
+import configuration from '~/configuration';
 
 const THEME_LOCAL_STORAGE_KEY = `theme`;
-const DARK_THEME_META_COLOR = `#0a0a0a`;
-const LIGHT_THEME_META_COLOR = `#fff`;
+const LIGHT_THEME_META_COLOR = configuration.site.themeColor;
+const DARK_THEME_META_COLOR = configuration.site.themeColorDark;
 
 export const DARK_THEME_CLASSNAME = `dark`;
 

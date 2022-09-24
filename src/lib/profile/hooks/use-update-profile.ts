@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useUser } from 'reactfire';
-import { updateProfile, linkWithPhoneNumber } from 'firebase/auth';
+import { updateProfile } from 'firebase/auth';
 import { useRequestState } from '~/core/hooks/use-request-state';
 
 type ProfileInfo = {

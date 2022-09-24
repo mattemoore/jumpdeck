@@ -14,7 +14,7 @@ const FirebaseAppCheckProvider: React.FCC = ({ children }) => {
   /**
    * When running in a dev environment using a real Firebase project, we need to
    * make sure to attach the Firebase Debug Token generated from the console
-   * so to disable real requests to Google Recapctha v3
+   * so to disable real requests to Google Recaptcha v3
    */
   if (!configuration.production) {
     attachAppCheckDebugToken();

@@ -5,7 +5,8 @@ const configuration = {
   site: {
     name: 'Your SaaS Name',
     description: 'Your SaaS Description',
-    themeColor: '#efee00',
+    themeColor: '#ffffff',
+    themeColorDark: '#0a0a0a',
     siteUrl: process.env.NEXT_PUBLIC_SITE_URL as string,
     siteName: 'Awesomely',
     twitterHandle: '',

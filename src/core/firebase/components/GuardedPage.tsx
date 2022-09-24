@@ -10,7 +10,7 @@ const AuthRedirectListener: React.FCC<{
   whenSignedOut?: string;
 }> = ({ children, whenSignedOut }) => {
   const auth = useAuth();
-  const { status, data: isSignedIn } = useSigninCheck();
+  const { status } = useSigninCheck({ suspense: true });
   const redirectUserAway = useRedirectUserAway();
   const clearCache = useClearFirestoreCache();
   const isSignInCheckDone = status === 'success';

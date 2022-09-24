@@ -26,8 +26,7 @@ describe(`Accept Invite - Existing User`, () => {
 
   describe(`when the user visits the members page`, () => {
     before(() => {
-      organizationPageObject.switchToOrganization('Test');
-
+      organizationPageObject.useDefaultOrganization();
       cy.visit(`/settings/organization/members`);
     });
 

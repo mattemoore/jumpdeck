@@ -1,29 +1,30 @@
 import React from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
-import { Toaster } from 'react-hot-toast';
 
 import configuration from '~/configuration';
-
-import FirebaseFirestoreProvider from '~/core/firebase/components/FirebaseFirestoreProvider';
-
-import GuardedPage from '~/core/firebase/components/GuardedPage';
 import { LayoutStyle } from '~/core/layout-style';
 import Layout from '~/core/ui/Layout';
 
-const redirectPathWhenSignedOut = '/';
+const ReactHotToast = dynamic(async () => {
+  const { Toaster } = await import('react-hot-toast');
+
+  return Toaster;
+});
+
+const FirebaseFirestoreProvider = dynamic(
+  () => import('~/core/firebase/components/FirebaseFirestoreProvider')
+);
 
 const SentryProvider = dynamic(() => import('~/components/SentryProvider'), {
   ssr: false,
 });
 
-const RouteShellWithTopNavigation = dynamic(
-  () => import('./layouts/header/RouteShellWithTopNavigation')
+const GuardedPage = dynamic(
+  () => import('~/core/firebase/components/GuardedPage')
 );
 
-const RouteShellWithSidebar = dynamic(
-  () => import('./layouts/sidebar/RouteShellWithSidebar')
-);
+const redirectPathWhenSignedOut = '/';
 
 const RouteShell: React.FCC<{
   title: string;
@@ -40,7 +41,7 @@ const RouteShell: React.FCC<{
       <GuardedPage whenSignedOut={redirectPathWhenSignedOut}>
         <SentryProvider>
           <Layout>
-            <Toaster />
+            <ReactHotToast />
 
             <LayoutRenderer style={layout} title={title}>
               {children}
@@ -59,19 +60,29 @@ function LayoutRenderer(
   }>
 ) {
   switch (props.style) {
-    case LayoutStyle.Sidebar:
+    case LayoutStyle.Sidebar: {
+      const RouteShellWithSidebar = dynamic(
+        () => import('./layouts/sidebar/RouteShellWithSidebar')
+      );
+
       return (
         <RouteShellWithSidebar title={props.title}>
           {props.children}
         </RouteShellWithSidebar>
       );
+    }
 
-    case LayoutStyle.TopHeader:
+    case LayoutStyle.TopHeader: {
+      const RouteShellWithTopNavigation = dynamic(
+        () => import('./layouts/header/RouteShellWithTopNavigation')
+      );
+
       return (
         <RouteShellWithTopNavigation title={props.title}>
           {props.children}
         </RouteShellWithTopNavigation>
       );
+    }
 
     case LayoutStyle.Custom:
       return <>{props.children}</>;

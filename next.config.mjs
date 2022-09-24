@@ -31,6 +31,12 @@ const config = {
       config.resolve.fallback.fs = false;
     }
 
+    // we remove unnecessary Firebase packages
+    // only in production due to tree shaking
+    if (isProduction) {
+      decorateConfigWithFirebaseExternals(config);
+    }
+
     return config;
   },
   i18n: i18nConfig.i18n
@@ -54,4 +60,26 @@ function getConfiguredDomains() {
   return [
     isProduction ? firebaseStorageBucket : "localhost"
   ].filter(Boolean);
+}
+
+/**
+ * @description We work around a bug in Reactfire that cause the bundle to
+ * be mich bigger that it needs to be.
+ *
+ * If you need any of the below Firebase packages, please remove it from the
+ * list.
+ *
+ * Bug: https://github.com/FirebaseExtended/reactfire/issues/489
+ * @param config
+ */
+function decorateConfigWithFirebaseExternals(config) {
+  config.externals = [
+    ...(config.externals ?? []),
+    {
+      'firebase/functions': 'root Math',
+      'firebase/database': 'root Math',
+      'firebase/performance': 'root Math',
+      'firebase/remote-config': 'root Math'
+    },
+  ];
 }

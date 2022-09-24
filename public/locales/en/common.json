@@ -14,6 +14,8 @@
   "pageNotFoundSubHeading": "Apologies, the page you were looking for was not found",
   "genericError": "Oooops. An error occurred",
   "anonymousUser": "Anonymous",
+  "switchToLightTheme": "Switch to Light theme",
+  "switchToDarkTheme": "Switch to Dark theme",
   "roles": {
     "owner": {
       "label": "Owner",

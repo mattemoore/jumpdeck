@@ -1,5 +1,7 @@
-import { useCallback, useRef } from 'react';
-import { MoonIcon } from '@heroicons/react/24/outline';
+import { useCallback, useEffect, useState } from 'react';
+import { Trans } from 'next-i18next';
+import MoonIcon from '@heroicons/react/24/outline/MoonIcon';
+import SunIcon from '@heroicons/react/24/outline/SunIcon';
 
 import {
   loadThemeFromLocalStorage,
@@ -11,24 +13,47 @@ import Tooltip from '~/core/ui/Tooltip';
 import IconButton from '~/core/ui/IconButton';
 
 const DarkModeToggle = () => {
-  const theme = useRef<string | null>(loadThemeFromLocalStorage());
+  const [currentTheme, setCurrentTheme] = useState<string | null>(
+    loadThemeFromLocalStorage()
+  );
 
   const toggleMode = useCallback(() => {
-    const themeClass = theme.current ? null : DARK_THEME_CLASSNAME;
-
-    theme.current = themeClass;
-    setTheme(themeClass);
+    setCurrentTheme((currentTheme) => {
+      return currentTheme ? null : DARK_THEME_CLASSNAME;
+    });
   }, []);
 
-  const tooltip = `Toggle dark theme`;
+  useEffect(() => {
+    setTheme(currentTheme);
+  }, [currentTheme]);
+
+  const isDarkTheme = currentTheme === DARK_THEME_CLASSNAME;
+
+  const TooltipText = useCallback(
+    () =>
+      isDarkTheme ? (
+        <Trans i18nKey={'common:switchToLightTheme'} />
+      ) : (
+        <Trans i18nKey={'common:switchToDarkTheme'} />
+      ),
+    [isDarkTheme]
+  );
+
+  const Icon = useCallback(() => {
+    return isDarkTheme ? (
+      <SunIcon className={'h-5'} />
+    ) : (
+      <MoonIcon className={'h-5'} />
+    );
+  }, [isDarkTheme]);
 
   return (
-    <Tooltip content={tooltip}>
+    <Tooltip content={<TooltipText />}>
       <IconButton
         className={'flex items-center bg-transparent p-1'}
         onClick={toggleMode}
       >
-        <MoonIcon className={'h-5'} />
+        <Icon />
       </IconButton>
     </Tooltip>
   );

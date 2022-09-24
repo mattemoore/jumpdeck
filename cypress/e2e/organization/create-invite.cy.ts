@@ -1,8 +1,10 @@
 import organizationPageObject from '../../support/organization.po';
 import { MembershipRole } from '~/lib/organizations/types/membership-role';
+import authPo from '../../support/auth.po';
 
 describe(`Create Invite`, () => {
   const email = `invited-member@makerkit.dev`;
+  const defaultEmailAddress = authPo.getDefaultUserEmail();
 
   before(() => {
     organizationPageObject.useDefaultOrganization();
@@ -12,8 +14,10 @@ describe(`Create Invite`, () => {
   describe(`Given a user invites a new member`, () => {
     describe(`When entering current user's email address`, () => {
       before(() => {
-        const emailAddress = `test@makerkit.dev`;
-        organizationPageObject.$getInvitationEmailInput().type(emailAddress);
+        organizationPageObject
+          .$getInvitationEmailInput()
+          .type(defaultEmailAddress);
+
         organizationPageObject.$getInviteMembersForm().submit();
       });
 
@@ -47,17 +51,20 @@ describe(`Create Invite`, () => {
     describe(`When the user is invited successfully`, () => {
       before(() => {
         cy.reload();
-        organizationPageObject.inviteMember(email, MembershipRole.Member);
       });
 
       it('should be added to the list', () => {
+        organizationPageObject.inviteMember(email, MembershipRole.Member);
         organizationPageObject.$getInvitedMemberByEmail(email).should('exist');
       });
     });
 
     describe(`When the same user is invited again`, () => {
-      it('should update the existing invite', () => {
+      before(() => {
         organizationPageObject.navigateToInviteForm();
+      });
+
+      it('should update the existing invite', () => {
         organizationPageObject.inviteMember(email, MembershipRole.Admin);
 
         organizationPageObject.$getInvitedMemberByEmail(email).within(() => {
