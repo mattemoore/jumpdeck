@@ -1,8 +1,8 @@
 import Head from 'next/head';
+import Link from 'next/link';
 
 import { withTranslationProps } from '~/lib/props/with-translation-props';
 
-import CollectionName from '~/components/blog/CollectionName';
 import PostTitle from '~/components/blog/PostTitle';
 import PostsList from '~/components/blog/PostsList';
 import SiteHeader from '~/components/SiteHeader';
@@ -36,18 +36,19 @@ const CollectionPosts = ({ posts, collection }: Props) => {
       <SiteHeader />
 
       <Container>
-        <div className="flex justify-center">
-          <PostTitle>
-            <CollectionName logoSize="90px" collection={collection} />
-          </PostTitle>
-        </div>
+        <PostTitle>
+          <span className={'flex space-x-2'}>
+            <Link href={'/blog'}>
+              <a className={'hover:underline'}>Blog</a>
+            </Link>
+            <span>/</span>
+            <span>{collection.name}</span>
+          </span>
+        </PostTitle>
 
         <div className="mt-8 flex flex-col space-y-8 md:mt-12">
           <If condition={posts.length}>
-            <div className="flex flex-col space-y-4">
-              <h2 className="text-xl font-bold">Latest Posts</h2>
-              <PostsList posts={posts} />
-            </div>
+            <PostsList posts={posts} />
           </If>
         </div>
       </Container>

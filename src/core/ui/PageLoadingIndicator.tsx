@@ -19,7 +19,7 @@ export default function PageLoadingIndicator({
     <div
       className={`flex flex-col items-center justify-center space-y-6 ${
         useFullPage
-          ? 'fixed top-0 left-0 z-[100] h-screen w-screen bg-white opacity-90' +
+          ? 'fixed top-0 left-0 z-[100] h-screen w-screen bg-white' +
             ' dark:bg-black-500'
           : ''
       }`}
@@ -30,7 +30,7 @@ export default function PageLoadingIndicator({
         </div>
       </If>
 
-      <FulfillingBouncingCircleSpinner size={48} color={`rgb(86, 89, 243)`} />
+      <FulfillingBouncingCircleSpinner size={48} color={`currentColor`} />
 
       <div className={'text-sm font-medium'}>{children}</div>
     </div>

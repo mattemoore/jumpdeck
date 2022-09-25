@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import Router from 'next/router';
+import { Transition } from '@headlessui/react';
 
-import If from '~/core/ui/If';
 import PageLoadingIndicator from '~/core/ui/PageLoadingIndicator';
 
 function AppRouteLoadingIndicator({ children }: React.PropsWithChildren) {
@@ -26,11 +26,20 @@ function AppRouteLoadingIndicator({ children }: React.PropsWithChildren) {
   }, [onRouteChangeCompleteCallback, onRouteChangeStartCallback]);
 
   return (
-    <If condition={loading}>
+    <Transition
+      appear={loading}
+      show={loading}
+      enter="transition-opacity duration-150"
+      enterFrom="opacity-40"
+      enterTo="opacity-100"
+      leave="transition-opacity duration-300"
+      leaveFrom="opacity-100"
+      leaveTo="opacity-0"
+    >
       <PageLoadingIndicator fullPage={true}>
         <>{children}</>
       </PageLoadingIndicator>
-    </If>
+    </Transition>
   );
 }
 

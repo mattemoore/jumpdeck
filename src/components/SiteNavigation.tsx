@@ -28,10 +28,6 @@ const links: Record<string, Link> = {
     label: 'FAQ',
     path: '/faq',
   },
-  Contact: {
-    label: 'Contact',
-    path: '/contact',
-  },
 };
 
 const SiteNavigation = () => {
@@ -43,7 +39,6 @@ const SiteNavigation = () => {
           <NavigationMenuItem link={links.Docs} />
           <NavigationMenuItem link={links.Pricing} />
           <NavigationMenuItem link={links.FAQ} />
-          <NavigationMenuItem link={links.Contact} />
         </NavigationMenu>
       </div>
 

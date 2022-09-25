@@ -9,20 +9,24 @@ import CollectionName from './CollectionName';
 type Props = {
   post: Post;
   preloadImage?: boolean;
+  imageHeight?: string | number;
 };
 
-const PostPreview = ({ post, preloadImage }: Props) => {
+const DEFAULT_IMAGE_HEIGHT = 350;
+
+const PostPreview = ({ post, preloadImage, imageHeight }: Props) => {
   const { title, slug, coverImage, collection, date, readingTime, excerpt } =
     post;
 
+  const height = imageHeight ?? DEFAULT_IMAGE_HEIGHT;
   const hrefAs = `/blog/${collection.name.toLowerCase()}/${slug}`;
   const href = `/blog/[collection]/[slug]`;
 
   return (
     <div className="rounded-lg transition-shadow duration-500 dark:text-gray-800">
-      <div className="relative mb-2 h-[350px] w-full">
-        <If condition={coverImage}>
-          <Link as={hrefAs} href={href} passHref>
+      <If condition={coverImage}>
+        <div className="relative mb-2 w-full" style={{ height }}>
+          <Link as={hrefAs} href={href}>
             <a>
               <CoverImage
                 preloadImage={preloadImage}
@@ -32,8 +36,8 @@ const PostPreview = ({ post, preloadImage }: Props) => {
               />
             </a>
           </Link>
-        </If>
-      </div>
+        </div>
+      </If>
 
       <div className={'px-1'}>
         <div className="flex flex-col space-y-1 px-1 py-2">
@@ -50,10 +54,13 @@ const PostPreview = ({ post, preloadImage }: Props) => {
           </div>
 
           <span className="text-gray-600 dark:text-gray-300">·</span>
+
           <span className="text-gray-600 dark:text-gray-300">
             {readingTime}
           </span>
+
           <span className="text-gray-600 dark:text-gray-300">·</span>
+
           <span>
             <CollectionName collection={collection} />
           </span>

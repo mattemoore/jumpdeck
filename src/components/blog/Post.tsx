@@ -69,7 +69,7 @@ function MorePostsList({
         </Badge>
       </h3>
 
-      <PostsList posts={posts} />
+      <PostsList small posts={posts} />
     </div>
   );
 }
