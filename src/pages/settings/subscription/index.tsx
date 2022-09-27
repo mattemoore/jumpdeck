@@ -23,29 +23,27 @@ const Subscription = () => {
   const status = useSubscriptionStatus();
 
   return (
-    <>
+    <SettingsPageContainer title={'Settings'}>
       <Head>
         <title key="title">Subscription Settings</title>
       </Head>
 
-      <SettingsPageContainer title={'Settings'}>
-        <div className={'w-full'}>
-          <SettingsTile
-            heading={<Trans i18nKey={'common:subscriptionSettingsTabLabel'} />}
-          >
-            <div className={'flex flex-col space-y-4 px-2'}>
-              <If condition={status !== undefined}>
-                <PlansStatusAlert
-                  status={status as SubscriptionStatusQueryParams}
-                />
-              </If>
+      <div className={'w-full'}>
+        <SettingsTile
+          heading={<Trans i18nKey={'common:subscriptionSettingsTabLabel'} />}
+        >
+          <div className={'flex flex-col space-y-4 px-2'}>
+            <If condition={status !== undefined}>
+              <PlansStatusAlert
+                status={status as SubscriptionStatusQueryParams}
+              />
+            </If>
 
-              <Plans />
-            </div>
-          </SettingsTile>
-        </div>
-      </SettingsPageContainer>
-    </>
+            <Plans />
+          </div>
+        </SettingsTile>
+      </div>
+    </SettingsPageContainer>
   );
 };
 

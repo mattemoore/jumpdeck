@@ -30,7 +30,7 @@ const SettingsPageContainer: React.FCC<{
       </NavigationMenu>
 
       <div
-        className={`flex flex-col space-y-4 md:mt-8 md:flex-row md:justify-between md:space-x-2 md:space-y-0`}
+        className={`flex flex-col space-y-4 md:mt-8 md:flex-row md:space-x-8 md:space-y-0 lg:space-x-16 xl:space-x-24`}
       >
         {children}
       </div>

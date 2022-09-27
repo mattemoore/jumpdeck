@@ -16,20 +16,16 @@ import SettingsTile from '~/components/settings/SettingsTile';
 
 const OrganizationMembersInvitePage: React.FCC = () => {
   return (
-    <>
+    <SettingsPageContainer title={'Settings'}>
       <Head>
         <title key="title">Invite Members</title>
       </Head>
 
-      <SettingsPageContainer title={'Organization'}>
-        <OrganizationSettingsTabs />
+      <OrganizationSettingsTabs />
 
-        <SettingsContentContainer>
-          <SettingsTile>
-            <div>
-              <GoBackToMembersButton />
-            </div>
-
+      <SettingsContentContainer>
+        <SettingsTile>
+          <div className={'flex flex-col space-y-4'}>
             <div className={'flex space-x-4'}>
               <Heading type={3}>
                 <Trans i18nKey={'organization:inviteMembersPageHeading'} />
@@ -37,10 +33,14 @@ const OrganizationMembersInvitePage: React.FCC = () => {
             </div>
 
             <InviteMembersForm />
-          </SettingsTile>
-        </SettingsContentContainer>
-      </SettingsPageContainer>
-    </>
+          </div>
+        </SettingsTile>
+
+        <div className={'mt-4'}>
+          <GoBackToMembersButton />
+        </div>
+      </SettingsContentContainer>
+    </SettingsPageContainer>
   );
 };
 

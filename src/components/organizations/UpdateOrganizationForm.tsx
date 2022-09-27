@@ -118,10 +118,7 @@ const UpdateOrganizationForm = () => {
   return (
     <form
       onSubmit={handleSubmit((value) => {
-        const logoFileList = value.logoURL as unknown as FileList;
-        const logoFile = logoFileList ? logoFileList.item(0) : undefined;
-
-        return onSubmit(value.name, logoFile ?? undefined);
+        return onSubmit(value.name, getLogoFile(value.logoURL));
       })}
       className={'space-y-4'}
     >
@@ -208,6 +205,14 @@ async function uploadLogo({
  */
 function getLogoStoragePath(organizationId: string, fileName: string) {
   return [`/organizations`, organizationId, fileName].join('/');
+}
+
+function getLogoFile(value: string | null | FileList) {
+  if (!value || typeof value === 'string') {
+    return;
+  }
+
+  return value.item(0) ?? undefined;
 }
 
 export default UpdateOrganizationForm;

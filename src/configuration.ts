@@ -58,7 +58,7 @@ const configuration = {
     searchIndex: `/public/search-index`,
   },
   navigation: {
-    style: LayoutStyle.TopHeader,
+    style: LayoutStyle.Sidebar,
   },
   appCheckSiteKey: process.env.NEXT_PUBLIC_APPCHECK_KEY,
   email: {

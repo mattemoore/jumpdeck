@@ -13,23 +13,23 @@ import SettingsTile from '~/components/settings/SettingsTile';
 
 const Organization = () => {
   return (
-    <FirebaseStorageProvider>
+    <SettingsPageContainer title={'Settings'}>
       <Head>
         <title key="title">Organization Settings</title>
       </Head>
 
-      <SettingsPageContainer title={'Settings'}>
-        <OrganizationSettingsTabs />
+      <OrganizationSettingsTabs />
 
-        <SettingsContentContainer>
-          <SettingsTile
-            heading={<Trans i18nKey={'organization:settingsPageLabel'} />}
-          >
+      <SettingsContentContainer>
+        <SettingsTile
+          heading={<Trans i18nKey={'organization:settingsPageLabel'} />}
+        >
+          <FirebaseStorageProvider>
             <UpdateOrganizationForm />
-          </SettingsTile>
-        </SettingsContentContainer>
-      </SettingsPageContainer>
-    </FirebaseStorageProvider>
+          </FirebaseStorageProvider>
+        </SettingsTile>
+      </SettingsContentContainer>
+    </SettingsPageContainer>
   );
 };
 

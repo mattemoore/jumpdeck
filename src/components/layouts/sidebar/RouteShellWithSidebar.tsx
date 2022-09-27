@@ -1,6 +1,5 @@
 import AppSidebar from './AppSidebar';
 import AppHeaderNoMenu from './AppHeaderNoMenu';
-import Container from '~/core/ui/Container';
 
 const RouteShellWithSidebar: React.FCC<{
   title: string;
@@ -9,16 +8,10 @@ const RouteShellWithSidebar: React.FCC<{
     <div className={'flex h-full flex-1 overflow-hidden'}>
       <AppSidebar />
 
-      <div
-        className={
-          'relative mx-auto w-full overflow-y-auto sm:w-10/12 xl:w-8/12'
-        }
-      >
+      <div className={'relative mx-auto w-full overflow-y-auto py-2'}>
         <AppHeaderNoMenu>{title}</AppHeaderNoMenu>
 
-        <div className={'relative w-full py-2 lg:absolute'}>
-          <Container>{children}</Container>
-        </div>
+        <div className={'relative p-4'}>{children}</div>
       </div>
     </div>
   );

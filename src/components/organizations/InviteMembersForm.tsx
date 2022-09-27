@@ -20,6 +20,7 @@ import IconButton from '~/core/ui/IconButton';
 import MembershipRoleSelector from './MembershipRoleSelector';
 import { useUserSession } from '~/core/hooks/use-user-session';
 import Tooltip from '~/core/ui/Tooltip';
+import ArrowLeftIcon from '@heroicons/react/24/outline/ArrowLeftIcon';
 
 type InviteModel = ReturnType<typeof memberFactory>;
 

@@ -51,7 +51,7 @@ const ProfileAuthenticationPage: React.FC<{
   }, [props]);
 
   return (
-    <SettingsPageContainer title={'Authentication'}>
+    <SettingsPageContainer title={'Settings'}>
       <Head>
         <title key={'title'}>Authentication</title>
       </Head>

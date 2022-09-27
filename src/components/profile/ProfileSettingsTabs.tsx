@@ -44,27 +44,29 @@ const ProfileSettingsTabs = () => {
   const itemClassName = `flex justify-center md:justify-start items-center flex-auto md:flex-initial`;
 
   return (
-    <NavigationMenu vertical secondary>
-      <NavigationItem
-        className={itemClassName}
-        link={links.General}
-        depth={0}
-      />
+    <div>
+      <NavigationMenu vertical secondary>
+        <NavigationItem
+          className={itemClassName}
+          link={links.General}
+          depth={0}
+        />
 
-      <NavigationItem className={itemClassName} link={links.Authentication} />
+        <NavigationItem className={itemClassName} link={links.Authentication} />
 
-      <NavigationItem
-        className={itemClassName}
-        disabled={!canEditEmailAndPassword}
-        link={links.Email}
-      />
+        <NavigationItem
+          className={itemClassName}
+          disabled={!canEditEmailAndPassword}
+          link={links.Email}
+        />
 
-      <NavigationItem
-        className={itemClassName}
-        disabled={!canEditEmailAndPassword}
-        link={links.Password}
-      />
-    </NavigationMenu>
+        <NavigationItem
+          className={itemClassName}
+          disabled={!canEditEmailAndPassword}
+          link={links.Password}
+        />
+      </NavigationMenu>
+    </div>
   );
 };
 

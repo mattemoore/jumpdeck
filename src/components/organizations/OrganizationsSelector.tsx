@@ -128,11 +128,15 @@ function OrganizationItem({ organization }: { organization: Organization }) {
   return (
     <span
       data-cy={'organization-selector-item'}
-      className={`flex min-w-[6rem] max-w-[12rem] items-center space-x-2`}
+      className={`flex min-w-[8rem] max-w-[12rem] items-center space-x-4`}
     >
       <If condition={logoURL}>
-        <span className={'flex flex-1 items-center'}>
+        <span className={'flex items-center'}>
           <Image
+            style={{
+              width: imageSize,
+              height: imageSize,
+            }}
             width={imageSize}
             height={imageSize}
             alt={`${name} Logo`}

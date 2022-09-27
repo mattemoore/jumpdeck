@@ -30,8 +30,8 @@ const AuthProviderLogo: React.FC<{
 
 function getOAuthProviderLogos(): Record<string, string | JSX.Element> {
   return {
-    ['password']: <AtSymbolIcon className={'h-8'} />,
-    ['phone']: <DevicePhoneMobileIcon className={'h-8'} />,
+    ['password']: <AtSymbolIcon className={'h-7'} />,
+    ['phone']: <DevicePhoneMobileIcon className={'h-7'} />,
     ['google.com']: '/assets/images/google.webp',
     ['facebook.com']: '/assets/images/facebook.webp',
     ['twitter.com']: '/assets/images/twitter.webp',

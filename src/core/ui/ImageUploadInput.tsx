@@ -21,6 +21,8 @@ type Props = Omit<React.InputHTMLAttributes<unknown>, 'value'> & {
   onClear?: () => void;
 };
 
+const IMAGE_SIZE = 22;
+
 const ImageUploadInput: React.FCC<Props> = ({
   children,
   image,
@@ -97,9 +99,13 @@ const ImageUploadInput: React.FCC<Props> = ({
 
           <If condition={value}>
             <Image
+              style={{
+                width: IMAGE_SIZE,
+                height: IMAGE_SIZE,
+              }}
               className={'object-contain'}
-              width={'32'}
-              height={'32'}
+              width={IMAGE_SIZE}
+              height={IMAGE_SIZE}
               src={value as string}
               alt={props.alt ?? ''}
             />

@@ -40,10 +40,10 @@ const AppHeaderWithMenu: React.FCC = ({ children }) => {
 
   return (
     <>
-      <Container>
-        <div className="AppHeader">
-          <div className={'flex flex-1 flex-col space-y-8'}>
-            <div className={'flex items-center justify-between'}>
+      <div className="AppHeader">
+        <div className={'w-full'}>
+          <Container>
+            <div className={'flex w-full flex-1 items-center justify-between'}>
               <div
                 className={'flex flex-1 items-center space-x-4 md:space-x-8'}
               >
@@ -59,9 +59,9 @@ const AppHeaderWithMenu: React.FCC = ({ children }) => {
                 />
               </div>
             </div>
-          </div>
+          </Container>
         </div>
-      </Container>
+      </div>
 
       <div>
         <AppNavigation />

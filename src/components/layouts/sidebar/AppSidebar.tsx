@@ -28,14 +28,8 @@ const OrganizationsSelector = dynamic(
 const AppSidebar = () => {
   const userSession = useUserSession();
 
-  const style = {
-    maxWidth: '240px',
-    minWidth: '180px',
-    width: '20%',
-  };
-
   return (
-    <div style={style} className={'AppSidebar'}>
+    <div className={'AppSidebar w-2/12 max-w-xs'}>
       <AppSidebarHeader user={userSession?.auth} />
       <AppSidebarFooterMenu />
     </div>
@@ -49,7 +43,7 @@ function AppSidebarHeader({
 
   return (
     <div className={'flex w-full flex-col space-y-6 px-4'}>
-      <div className={'px-3 py-0'}>
+      <div className={'flex justify-center px-3 py-0.5'}>
         <Logo href={logoHref} />
       </div>
 
@@ -67,7 +61,7 @@ function AppSidebarHeader({
 function AppSidebarMenu() {
   return (
     <div className={'flex flex-col space-y-2'}>
-      <AppSidebarItem href={'/dashboard'}>
+      <AppSidebarItem href={configuration.paths.appHome}>
         <Squares2X2Icon className={'h-6'} />
 
         <span>
@@ -106,7 +100,7 @@ function AppSidebarItem({
   href: string;
 }>) {
   const router = useRouter();
-  const depth = 2;
+  const depth = 3;
   const active = isRouteActive(href, router.pathname, depth);
 
   return (

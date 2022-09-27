@@ -18,6 +18,7 @@ import SettingsContentContainer from '~/components/settings/SettingsContentConta
 import SettingsTile from '~/components/settings/SettingsTile';
 
 import { useCurrentOrganization } from '~/lib/organizations/hooks/use-current-organization';
+import ArrowLeftIcon from '@heroicons/react/24/outline/ArrowLeftIcon';
 
 const OrganizationMembersList = dynamic(
   () => import('~/components/organizations/OrganizationMembersList'),
@@ -43,41 +44,43 @@ const OrganizationMembersPage: React.FCC = () => {
   }
 
   return (
-    <>
+    <SettingsPageContainer title={'Settings'}>
       <Head>
         <title key="title">Organization Members</title>
       </Head>
 
-      <SettingsPageContainer title={'Organization'}>
-        <OrganizationSettingsTabs />
+      <OrganizationSettingsTabs />
 
-        <SettingsContentContainer>
-          <div className="flex flex-1 flex-col space-y-4">
-            <SettingsTile>
-              <div className="flex items-center justify-between space-x-8">
-                <Heading type={3}>
-                  <Trans i18nKey={'organization:membersPageHeading'} />
-                </Heading>
-
-                <If condition={canInviteUsers}>
-                  <InviteMembersButton />
-                </If>
-              </div>
-
-              <OrganizationMembersList organizationId={id} />
-            </SettingsTile>
-
-            <SettingsTile>
+      <SettingsContentContainer>
+        <div className="flex flex-1 flex-col space-y-4">
+          <SettingsTile>
+            <div className="flex items-center justify-between space-x-8">
               <Heading type={3}>
-                <Trans i18nKey={'organization:pendingInvitesHeading'} />
+                <Trans i18nKey={'organization:membersPageHeading'} />
               </Heading>
 
+              <If condition={canInviteUsers}>
+                <InviteMembersButton />
+              </If>
+            </div>
+
+            <div className={'mt-4'}>
+              <OrganizationMembersList organizationId={id} />
+            </div>
+          </SettingsTile>
+
+          <SettingsTile>
+            <Heading type={3}>
+              <Trans i18nKey={'organization:pendingInvitesHeading'} />
+            </Heading>
+
+            <div className={'mt-4'}>
               <OrganizationInvitedMembersList organizationId={id} />
-            </SettingsTile>
-          </div>
-        </SettingsContentContainer>
-      </SettingsPageContainer>
-    </>
+            </div>
+          </SettingsTile>
+        </div>
+      </SettingsContentContainer>
+    </SettingsPageContainer>
   );
 };
 

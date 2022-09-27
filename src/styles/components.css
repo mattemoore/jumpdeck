@@ -14,8 +14,7 @@
 
     /* NavigationContainer.tsx */
     .NavigationContainer {
-        @apply border-y dark:border-black-400 pt-1
-        dark:border-black-400 border-gray-100;
+        @apply border-b dark:border-black-400 pt-1 dark:border-black-400 border-gray-50;
     }
 
     /* NavigationMenu.tsx */
@@ -45,7 +44,7 @@
     }
 
     .SecondaryNavigationMenu .NavigationItemActive a {
-        @apply bg-transparent border-primary-800 border;
+        @apply bg-transparent font-semibold;
     }
 
     .BorderedNavigationMenu .NavigationItemActive a {
@@ -161,8 +160,7 @@
     }
 
     .TextFieldInputContainerDisabled {
-        @apply bg-gray-100 hover:bg-gray-100 dark:bg-black-200
-        hover:dark:bg-black-200 cursor-not-allowed;
+        @apply bg-gray-100 hover:bg-gray-100 dark:bg-black-400 cursor-not-allowed;
     }
 
     .TextFieldInputContainer input {
@@ -302,11 +300,11 @@
     /* ImageUploadInput.tsx */
     .ImageUploadInput {
         @apply TextFieldInput cursor-pointer relative
-        border-dashed bg-white dark:bg-black-400
-        hover:bg-gray-50 dark:hover:bg-black-300
+        border-dashed bg-white dark:bg-black-500
+        hover:bg-gray-50 dark:hover:border-black-300
         transition-colors duration-300 border
         border-gray-200 dark:border-black-200
-        p-2.5 rounded-lg;
+        p-2.5 rounded-lg dark:hover:border-black-100;
     }
 
     /* Footer.tsx */
@@ -317,8 +315,8 @@
     /* Popover.tsx */
     button.PopoverButton {
         @apply flex flex-row py-2 px-3
-        dark:hover:bg-black-300 dark:active:bg-black-200
-        items-center w-full dark:bg-black-400 rounded-md
+        dark:hover:bg-black-200 dark:active:bg-black-100
+        items-center w-full dark:bg-black-300 rounded-md
         bg-gray-100 hover:bg-gray-200 active:bg-gray-300 border
         dark:border-black-300 text-sm dark:focus:bg-black-300
         transition-colors outline-none dark:text-gray-400 border-transparent;
@@ -340,15 +338,15 @@
     }
 
     .PopoverPanelItem {
-        @apply flex bg-transparent
-        hover:bg-gray-50 dark:hover:bg-black-400 active:bg-gray-100
-        dark:active:bg-black-300
+        @apply flex bg-transparent dark:hover:bg-black-300
+        active:bg-gray-100 dark:active:bg-black-300
         items-center cursor-pointer transition
         duration-150 ease-in-out focus:outline-none;
     }
 
     .PopoverItemLabel {
         @apply text-sm font-semibold text-gray-700
+        hover:text-black-500 dark:hover:text-white
         dark:text-gray-300 py-3 px-4 ellipsify;
     }
 

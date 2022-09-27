@@ -16,15 +16,17 @@ const OrganizationSettingsTabs = () => {
   const itemClassName = `flex justify-center md:justify-start items-center flex-auto md:flex-initial`;
 
   return (
-    <NavigationMenu secondary vertical>
-      <NavigationItem
-        className={itemClassName}
-        link={links.General}
-        depth={0}
-      />
+    <div>
+      <NavigationMenu secondary vertical>
+        <NavigationItem
+          className={itemClassName}
+          link={links.General}
+          depth={0}
+        />
 
-      <NavigationItem className={itemClassName} link={links.Members} />
-    </NavigationMenu>
+        <NavigationItem className={itemClassName} link={links.Members} />
+      </NavigationMenu>
+    </div>
   );
 };
 

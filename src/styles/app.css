@@ -2,7 +2,7 @@
 
 @layer components {
     .AppHeader {
-        @apply py-2 flex flex-row items-center justify-between flex-1;
+        @apply py-2 flex items-center justify-between flex-1 border-b border-gray-50 dark:border-black-400;
     }
 
     .AppSidebar {
@@ -12,20 +12,20 @@
     }
 
     .AppSidebarItem {
-        @apply rounded-md hover:text-current text-sm
+        @apply rounded text-sm
         items-center transition-colors border-transparent
-        dark:bg-black-400 px-3 w-full pr-12 w-full py-3 font-medium
-        flex space-x-3 dark:hover:bg-black-300
-        transition;
+        w-full pr-12 w-full py-2.5 px-5 font-medium text-sm
+        flex space-x-2 transition;
     }
 
     .AppSidebarItemActive {
-        @apply bg-gray-200 text-current
-        dark:bg-black-300 font-bold;
+        @apply bg-primary-500 text-white font-bold;
     }
 
     .AppSidebarItemNotActive {
-        @apply dark:text-gray-300 hover:bg-gray-100 text-gray-600;
+        @apply dark:text-gray-300 dark:hover:text-white text-gray-600 ring-transparent
+            active:bg-gray-200 dark:active:bg-black-300 dark:active:bg-black-300
+            hover:bg-gray-100 dark:hover:bg-black-300 dark:bg-black-400;
     }
 
     .AppSidebarFooterItem {

@@ -11,25 +11,17 @@ const AppHeaderNoMenu: React.FCC = ({ children }) => {
   const userSession = useUserSession();
   const auth = useAuth();
 
-  const signOutRequested = useCallback(() => {
-    void (async () => {
-      return auth.signOut();
-    })();
-  }, [auth]);
-
   return (
-    <Container>
-      <div className="AppHeader py-4">
-        <Heading type={2}>{children}</Heading>
+    <div className="AppHeader py-2.5 px-4">
+      <Heading type={2}>{children}</Heading>
 
-        <div className={'items-center justify-end'}>
-          <ProfileDropdown
-            user={userSession?.auth}
-            signOutRequested={signOutRequested}
-          />
-        </div>
+      <div className={'items-center justify-end'}>
+        <ProfileDropdown
+          user={userSession?.auth}
+          signOutRequested={() => auth.signOut()}
+        />
       </div>
-    </Container>
+    </div>
   );
 };
 

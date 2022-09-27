@@ -6,8 +6,6 @@ type Props = {
   src: string;
   preloadImage?: boolean;
   className?: string;
-  width?: string;
-  height?: string;
   slug?: string;
 };
 

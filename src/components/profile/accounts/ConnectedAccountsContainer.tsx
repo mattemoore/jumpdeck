@@ -169,21 +169,21 @@ const ConnectedAccountsContainer = () => {
   return (
     <div className={'flex flex-col space-y-6'}>
       <div>
-        <div className={'my-2'}>
+        <div className={'mb-2'}>
           <Heading type={4}>
             <Trans i18nKey={'profile:connectedAccounts'} />
           </Heading>
 
-          <p>
+          <div>
             <span className={'text-gray-500 dark:text-gray-400'}>
               <Trans i18nKey={'profile:connectedAccountsSubheading'} />
             </span>
-          </p>
+          </div>
         </div>
 
         <div
           className={
-            'flex flex-col divide-y divide-gray-50 dark:divide-black-400'
+            'mt-4 flex flex-col divide-y divide-gray-50 dark:divide-black-400'
           }
         >
           {connectedProviders.map((provider, index) => {

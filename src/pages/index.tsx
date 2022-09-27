@@ -259,7 +259,7 @@ export async function getStaticProps() {
 
 function NewsletterSignup() {
   return (
-    <div className={'flex flex-col justify-center space-y-2 py-12'}>
+    <div className={'flex flex-col justify-center space-y-4 py-12'}>
       <ConvertkitSignupForm formId={''}>Subscribe</ConvertkitSignupForm>
 
       <p className={'text-center text-xs'}>
