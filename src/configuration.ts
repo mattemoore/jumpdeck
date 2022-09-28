@@ -3,7 +3,7 @@ import { GoogleAuthProvider } from 'firebase/auth';
 
 const configuration = {
   site: {
-    name: 'Your SaaS Name',
+    name: 'Awesomely - Your SaaS Title',
     description: 'Your SaaS Description',
     themeColor: '#ffffff',
     themeColorDark: '#0a0a0a',

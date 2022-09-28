@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
+import { Trans } from 'next-i18next';
 
 import type { User } from 'firebase/auth';
 
@@ -12,7 +13,6 @@ import {
 
 import Logo from '~/core/ui/Logo';
 import If from '~/core/ui/If';
-import { Trans } from 'next-i18next';
 
 import { useUserSession } from '~/core/hooks/use-user-session';
 import { isRouteActive } from '~/core/is-route-active';
@@ -29,7 +29,7 @@ const AppSidebar = () => {
   const userSession = useUserSession();
 
   return (
-    <div className={'AppSidebar w-2/12 max-w-xs'}>
+    <div className={'AppSidebar w-2/12 max-w-xs sm:min-w-[13rem]'}>
       <AppSidebarHeader user={userSession?.auth} />
       <AppSidebarFooterMenu />
     </div>

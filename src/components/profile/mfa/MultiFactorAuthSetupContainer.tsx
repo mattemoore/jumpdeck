@@ -41,21 +41,21 @@ const MultiFactorAuthSetupContainer: React.FC<{
             <EnableMFAButton onClick={() => setEnableMFAVisible(true)} />
           </div>
         </If>
-      </div>
 
-      <If
-        condition={isEmailVerified}
-        fallback={<EmailVerificationAlert user={user} />}
-      >
-        <If condition={enableMFAVisible}>
-          <EnrolMultiFactorAuthContainer
-            onComplete={(success) => {
-              onComplete(success);
-              setEnableMFAVisible(false);
-            }}
-          />
+        <If
+          condition={isEmailVerified}
+          fallback={<EmailVerificationAlert user={user} />}
+        >
+          <If condition={enableMFAVisible}>
+            <EnrolMultiFactorAuthContainer
+              onComplete={(success) => {
+                onComplete(success);
+                setEnableMFAVisible(false);
+              }}
+            />
+          </If>
         </If>
-      </If>
+      </div>
     </>
   );
 };

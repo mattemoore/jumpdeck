@@ -187,10 +187,6 @@
         @apply h-8;
     }
 
-    .TextFieldInput:invalid {
-        @apply text-red-500;
-    }
-
     .TextFieldInput[type='file'] {
         @apply w-full text-sm dark:text-white
         file:mr-4 file:py-2 file:px-4 items-center flex
@@ -232,8 +228,7 @@
     }
 
     .Button.ButtonDanger {
-        @apply bg-red-400 dark:hover:bg-red-500/10 dark:active:bg-red-500/20
-            hover:bg-red-500 active:bg-red-600 text-white ring-red-300;
+        @apply bg-red-400 active:bg-red-600 hover:bg-red-500 text-white ring-red-300;
     }
 
     .Button.ButtonSecondary {
@@ -244,7 +239,7 @@
     .Button.ButtonTransparent {
         @apply hover:bg-gray-50 dark:hover:bg-black-300
         dark:active:bg-black-400 ring-primary-50 dark:ring-black-400
-        text-gray-800 dark:text-gray-300
+        text-gray-800 dark:text-gray-300;
     }
 
     .Button.GradientButton {
@@ -276,8 +271,9 @@
         border-2 border-red-400 hover:text-white;
     }
 
-    .Button.ButtonPrimaryFlat {
-        @apply bg-transparent text-primary-500 hover:bg-primary-50;
+    .Button.ButtonDangerFlat {
+        @apply bg-transparent text-red-500 hover:bg-red-50 ring-0
+        active:bg-red-100 dark:hover:bg-red-500/10 dark:active:bg-red-500/20;
     }
 
     .Button.ButtonDangerFlat {
@@ -319,7 +315,7 @@
         items-center w-full dark:bg-black-300 rounded-md
         bg-gray-100 hover:bg-gray-200 active:bg-gray-300 border
         dark:border-black-300 text-sm dark:focus:bg-black-300
-        transition-colors outline-none dark:text-gray-400 border-transparent;
+        transition-colors outline-none dark:text-white border-transparent;
     }
 
     button.PopoverButtonActive {

@@ -63,7 +63,7 @@ const ProfileAuthenticationPage: React.FC<{
       <ProfileSettingsTabs />
 
       <SettingsContentContainer>
-        <div className={'flex flex-col space-y-4'}>
+        <div className={'flex flex-col space-y-8'}>
           <SettingsTile
             heading={<Trans i18nKey={'profile:manageConnectedAccounts'} />}
           >

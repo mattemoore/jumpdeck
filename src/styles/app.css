@@ -36,10 +36,10 @@
     }
 
     .FixedHeader {
-        position: fixed;
+        position: sticky;
         top: 0;
 
-        @apply dark:bg-black-500/90 bg-white/90 z-10;
+        @apply dark:bg-black-500/90 bg-white/90 z-10 w-full;
     }
 
     .FixedHeader ~ .Container {
