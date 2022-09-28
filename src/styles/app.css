@@ -12,14 +12,12 @@
     }
 
     .AppSidebarItem {
-        @apply rounded text-sm
-        items-center transition-colors border-transparent
-        w-full pr-12 w-full py-2.5 px-5 font-medium text-sm
-        flex space-x-2 transition;
+        @apply rounded-md items-center transition-colors border-transparent text-sm
+        w-full pr-12 w-full py-2.5 px-4 font-medium flex space-x-4 transition;
     }
 
     .AppSidebarItemActive {
-        @apply bg-primary-500 text-white font-bold;
+        @apply bg-primary-500 text-white font-semibold;
     }
 
     .AppSidebarItemNotActive {

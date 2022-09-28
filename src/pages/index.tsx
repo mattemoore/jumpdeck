@@ -11,6 +11,7 @@ import SubHeading from '~/core/ui/SubHeading';
 import Button from '~/core/ui/Button';
 import Heading from '~/core/ui/Heading';
 import Hero from '~/core/ui/Hero';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
 const Index = () => {
   return (
@@ -45,7 +46,10 @@ const Index = () => {
             </div>
 
             <Button size={'large'} href={'/auth/sign-up'}>
-              Get Started for free
+              <span className={'flex items-center space-x-2'}>
+                <span>Get Started</span>
+                <ArrowRightIcon className={'h-4'} />
+              </span>
             </Button>
           </div>
         </div>

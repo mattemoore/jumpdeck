@@ -40,6 +40,7 @@ import AuthProviderButton from '~/core/ui/AuthProviderButton';
 import AuthProviderLogo from '~/core/ui/AuthProviderLogo';
 import getFirebaseAuthProviderId from '~/core/firebase/utils/get-firebase-auth-provider-id';
 import configuration from '~/configuration';
+import { getFirebaseErrorCode } from '~/core/firebase/utils/get-firebase-error-code';
 
 type GenericOAuthProvider = { new (): AuthProvider } & typeof OAuthProvider;
 
@@ -92,9 +93,16 @@ const ConnectedAccountsContainer = () => {
     return toaster.success(t(`profile:linkActionSuccess`));
   }, [t]);
 
-  const onLinkError = useCallback(() => {
-    toaster.error(t(`profile:linkActionError`));
-  }, [t]);
+  const onLinkError = useCallback(
+    (error?: Maybe<string>) => {
+      const message = error
+        ? t(`auth:errors.${error}`)
+        : t(`profile:linkActionError`);
+
+      toaster.error(message);
+    },
+    [t]
+  );
 
   const connectedProviders = useMemo(() => {
     return supportedProviders.filter((supportedProvider) => {
@@ -133,7 +141,7 @@ const ConnectedAccountsContainer = () => {
         if (isMultiFactorError(error)) {
           setMultiFactorAuthError(error);
         } else {
-          onLinkError();
+          onLinkError(getFirebaseErrorCode(error));
         }
       }
     },

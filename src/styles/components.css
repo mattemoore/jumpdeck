@@ -36,11 +36,11 @@
     }
 
     .NavigationItem a {
-        @apply py-2 px-3 block flex font-medium items-center justify-center rounded-md text-sm w-full;
+        @apply py-2 px-3 block flex font-medium items-center justify-center rounded-md w-full text-sm;
     }
 
     .NavigationItemActive a {
-        @apply bg-primary-50 text-primary-900 dark:text-white dark:bg-black-300;
+        @apply bg-primary-50 text-primary-900 dark:text-white dark:bg-black-300 font-semibold;
     }
 
     .SecondaryNavigationMenu .NavigationItemActive a {
@@ -53,7 +53,7 @@
     }
 
     .NavigationItemNotActive {
-        @apply active:text-primary-700 text-gray-500 dark:text-gray-400
+        @apply active:text-primary-700 text-gray-600 dark:text-gray-400
         dark:hover:text-white hover:text-current hover:text-primary-900;
     }
 
@@ -217,7 +217,7 @@
 
     /* Button.tsx */
     .Button {
-        @apply rounded-md font-bold transition-colors
+        @apply rounded-md font-semibold transition-colors
         flex items-center justify-center outline-none focus:ring-2;
     }
 
@@ -237,9 +237,10 @@
     }
 
     .Button.ButtonTransparent {
-        @apply hover:bg-gray-50 dark:hover:bg-black-300
-        dark:active:bg-black-400 ring-primary-50 dark:ring-black-400
-        text-gray-800 dark:text-gray-300;
+        @apply hover:bg-gray-50 active:bg-gray-100
+        dark:hover:bg-black-400 dark:active:bg-black-300
+        ring-primary-50 dark:ring-black-400
+        text-gray-800 dark:text-gray-300 font-medium;
     }
 
     .Button.GradientButton {
