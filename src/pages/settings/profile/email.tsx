@@ -28,26 +28,24 @@ const ProfileEmailSettings = () => {
   );
 
   return (
-    <>
+    <SettingsPageContainer title={'Settings'}>
       <Head>
         <title key={'title'}>Update Email</title>
       </Head>
 
-      <SettingsPageContainer title={'Settings'}>
-        <ProfileSettingsTabs />
+      <ProfileSettingsTabs />
 
-        <SettingsContentContainer>
-          <SettingsTile heading={<Trans i18nKey={'profile:emailTab'} />}>
-            <If
-              condition={canUpdateEmail}
-              fallback={<WarnCannotUpdateEmailAlert />}
-            >
-              <UpdateEmailForm user={user} />
-            </If>
-          </SettingsTile>
-        </SettingsContentContainer>
-      </SettingsPageContainer>
-    </>
+      <SettingsContentContainer>
+        <SettingsTile heading={<Trans i18nKey={'profile:emailTab'} />}>
+          <If
+            condition={canUpdateEmail}
+            fallback={<WarnCannotUpdateEmailAlert />}
+          >
+            <UpdateEmailForm user={user} />
+          </If>
+        </SettingsTile>
+      </SettingsContentContainer>
+    </SettingsPageContainer>
   );
 };
 

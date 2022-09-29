@@ -24,7 +24,7 @@ const Meta = () => {
 
   return (
     <Head>
-      <title>{configuration.site.name}</title>
+      <title key={'title'}>{configuration.site.name}</title>
 
       <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" />
 

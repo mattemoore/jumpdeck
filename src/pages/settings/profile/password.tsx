@@ -28,28 +28,26 @@ const ProfilePasswordSettings = () => {
   );
 
   return (
-    <>
+    <SettingsPageContainer title={'Settings'}>
       <Head>
         <title key={'title'}>Update Password</title>
       </Head>
 
-      <SettingsPageContainer title={'Settings'}>
-        <ProfileSettingsTabs />
+      <ProfileSettingsTabs />
 
-        <SettingsContentContainer>
-          <SettingsTile
-            heading={<Trans i18nKey={'organization:passwordSettingsTab'} />}
+      <SettingsContentContainer>
+        <SettingsTile
+          heading={<Trans i18nKey={'organization:passwordSettingsTab'} />}
+        >
+          <If
+            condition={canUpdatePassword}
+            fallback={<WarnCannotUpdatePasswordAlert />}
           >
-            <If
-              condition={canUpdatePassword}
-              fallback={<WarnCannotUpdatePasswordAlert />}
-            >
-              <UpdatePasswordForm user={user} />
-            </If>
-          </SettingsTile>
-        </SettingsContentContainer>
-      </SettingsPageContainer>
-    </>
+            <UpdatePasswordForm user={user} />
+          </If>
+        </SettingsTile>
+      </SettingsContentContainer>
+    </SettingsPageContainer>
   );
 };
 

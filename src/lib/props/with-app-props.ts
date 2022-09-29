@@ -1,6 +1,5 @@
 import { GetServerSidePropsContext } from 'next';
 import { setCookie, destroyCookie } from 'nookies';
-import { getAuth } from 'firebase-admin/auth';
 
 import configuration from '~/configuration';
 import { getUserInfoById } from '~/core/firebase/admin/auth/get-user-info-by-id';
@@ -30,6 +29,11 @@ export async function withAppProps(
   ctx: GetServerSidePropsContext,
   options: Partial<typeof DEFAULT_OPTIONS> = DEFAULT_OPTIONS
 ) {
+  ctx.res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=10, stale-while-revalidate=59'
+  );
+
   const mergedOptions = { ...DEFAULT_OPTIONS, ...options };
   const { redirectPath, requirePlans } = mergedOptions;
 
@@ -38,12 +42,16 @@ export async function withAppProps(
 
     const metadata = await getUserAuthMetadata(ctx);
 
+    // if for any reason we're not able to fetch the user's data, we redirect
+    // back to the login page
     if (!metadata) {
       return redirectToLogin(ctx.resolvedUrl, redirectPath);
     }
 
     const isOnboarded = Boolean(metadata?.customClaims?.onboarded);
 
+    // when the user is not yet onboarded,
+    // we simply redirect them back to the onboarding flow
     if (!isOnboarded) {
       return redirectToOnboarding();
     }
@@ -95,25 +103,6 @@ export async function withAppProps(
     // if the organization is found, save the ID in a cookie
     // so that we can fetch it on the next request
     if (organization) {
-      const customClaims = metadata?.customClaims ?? {};
-      const authOrganizationId = customClaims.organizationId;
-
-      const userDidChangeOrganization =
-        authOrganizationId !== currentOrganizationId;
-
-      const shouldUpdateTokenClaims =
-        !authOrganizationId || userDidChangeOrganization;
-
-      if (shouldUpdateTokenClaims) {
-        refreshClaims = true;
-
-        await setOrganizationIdCustomClaims(
-          user.id,
-          organization.id,
-          customClaims
-        );
-      }
-
       saveOrganizationInCookies(ctx, organization.id);
     }
 
@@ -189,28 +178,6 @@ function redirectToOnboarding() {
       destination,
     },
   };
-}
-
-/**
- * @name setOrganizationIdCustomClaims
- * @param userId
- * @param organizationId
- * @param existingClaims
- * @description Updates the user's custom claims with the current
- * organization ID so that we can use the metadata to write Firebase Storage
- * Security Rules for users belonging to the organization with ID {@link organizationId}
- */
-function setOrganizationIdCustomClaims(
-  userId: string,
-  organizationId: string,
-  existingClaims: UnknownObject
-) {
-  const auth = getAuth();
-
-  return auth.setCustomUserClaims(userId, {
-    ...existingClaims,
-    organizationId,
-  });
 }
 
 /**

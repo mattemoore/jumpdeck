@@ -27,7 +27,6 @@ interface DefaultPageProps extends SSRConfig {
   session?: Maybe<AuthUser>;
   user?: Maybe<UserData>;
   organization?: Maybe<WithId<Organization>>;
-  refreshClaims?: boolean;
   csrfToken?: string;
 }
 
@@ -60,8 +59,6 @@ function App(
     setUserSession(userSessionContext);
   }, [userSessionContext]);
 
-  const refreshClaims = props.pageProps.refreshClaims ?? false;
-
   useEffect(updateCurrentOrganization, [updateCurrentOrganization]);
   useEffect(updateCurrentUser, [updateCurrentUser]);
 
@@ -69,7 +66,6 @@ function App(
     <FirebaseAppShell config={firebase}>
       <FirebaseAppCheckProvider>
         <FirebaseAuthProvider
-          refreshClaims={refreshClaims}
           userSession={userSession}
           setUserSession={setUserSession}
           useEmulator={emulator}

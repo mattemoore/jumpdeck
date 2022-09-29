@@ -32,13 +32,11 @@ export const FirebaseAuthStateListener: React.FCC<{
 };
 
 export default function FirebaseAuthProvider({
-  refreshClaims,
   userSession,
   setUserSession,
   children,
   useEmulator,
 }: React.PropsWithChildren<{
-  refreshClaims: boolean;
   useEmulator: boolean;
   userSession: Maybe<UserSession>;
   setUserSession: Dispatch<Maybe<UserSession>>;
@@ -72,10 +70,6 @@ export default function FirebaseAuthProvider({
 
         userRef.current = user;
 
-        if (refreshClaims) {
-          await user.getIdToken(true);
-        }
-
         return setUserSession(session);
       }
 
@@ -92,7 +86,7 @@ export default function FirebaseAuthProvider({
         }
       }
     },
-    [refreshClaims, setUserSession, signOut, userSession?.data]
+    [setUserSession, signOut, userSession?.data]
   );
 
   return (

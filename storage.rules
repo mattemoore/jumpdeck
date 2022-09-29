@@ -1,9 +1,16 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
+    function userId() {
+        return request.auth.uid;
+    }
+
+    function getOrganization(uid) {
+        return firestore.get(/databases/(default)/documents/organizations/$(uid));
+    }
+
     match /organizations/{organizationId}/{fileName=**} {
-      allow read: if resource.metadata.organizationId == request.auth.token.organizationId;
-      allow write: if request.auth.token.organizationId == organizationId;
+      allow read, write: if userId() in getOrganization(organizationId).data.members;
     }
 
     match /profiles/{userId}/{fileName=**} {

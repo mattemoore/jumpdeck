@@ -14,6 +14,7 @@ import ProfileSettingsTabs from '~/components/profile/ProfileSettingsTabs';
 import SettingsPageContainer from '~/components/settings/SettingsPageContainer';
 import SettingsContentContainer from '~/components/settings/SettingsContentContainer';
 import SettingsTile from '~/components/settings/SettingsTile';
+import Head from 'next/head';
 
 type ProfileData = Partial<UserInfo>;
 
@@ -43,17 +44,21 @@ const Profile = () => {
   }
 
   return (
-    <FirebaseStorageProvider>
-      <SettingsPageContainer title={'Settings'}>
-        <ProfileSettingsTabs />
+    <SettingsPageContainer title={'Settings'}>
+      <Head>
+        <title key={'title'}>My Details</title>
+      </Head>
 
-        <SettingsContentContainer>
-          <SettingsTile heading={<Trans i18nKey={'profile:generalTab'} />}>
+      <ProfileSettingsTabs />
+
+      <SettingsContentContainer>
+        <SettingsTile heading={<Trans i18nKey={'profile:generalTab'} />}>
+          <FirebaseStorageProvider>
             <UpdateProfileForm user={user} onUpdate={onUpdate} />
-          </SettingsTile>
-        </SettingsContentContainer>
-      </SettingsPageContainer>
-    </FirebaseStorageProvider>
+          </FirebaseStorageProvider>
+        </SettingsTile>
+      </SettingsContentContainer>
+    </SettingsPageContainer>
   );
 };
 

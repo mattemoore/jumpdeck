@@ -1,6 +1,5 @@
 import { useCallback, useContext, useState } from 'react';
 import Image from 'next/future/image';
-import { useAuth } from 'reactfire';
 import { SpringSpinner } from 'react-epic-spinners';
 
 import PlusIcon from '@heroicons/react/24/outline/PlusIcon';
@@ -10,7 +9,6 @@ import { Trans } from 'next-i18next';
 
 import { Organization } from '~/lib/organizations/types/organization';
 import { useFetchUserOrganizations } from '~/lib/organizations/hooks/use-fetch-user-organizations';
-import { useUpdateOrganizationIdToken } from '~/lib/organizations/hooks/use-update-organization-id-token';
 import { OrganizationContext } from '~/lib/contexts/organization';
 
 import If from '~/core/ui/If';
@@ -29,20 +27,10 @@ const PopoverButton: React.FCC<{
 };
 
 const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
-  const auth = useAuth();
-
   const [isOrganizationModalOpen, setIsOrganizationModalOpen] = useState(false);
   const { organization, setOrganization } = useContext(OrganizationContext);
   const { data: organizations, status } = useFetchUserOrganizations(userId);
   const isLoadingOrganizations = status === `loading`;
-
-  const [updateOrganizationIdToken] = useUpdateOrganizationIdToken();
-
-  // this is called by your component when the organization ID changes
-  const updateOrganizationTokenId = useCallback(async () => {
-    await updateOrganizationIdToken();
-    await auth.currentUser?.getIdTokenResult(true);
-  }, [auth.currentUser, updateOrganizationIdToken]);
 
   const organizationSelected = useCallback(
     async (item: WithId<Organization>) => {
@@ -54,13 +42,8 @@ const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
       // a cookie so that we can return to it when
       // the user refreshes or navigates elsewhere
       saveOrganizationIdInCookie(item.id);
-
-      // update organization ID
-      // by updating the user's current auth claims
-      // needed for Firebase Storage's rules
-      await updateOrganizationTokenId();
     },
-    [setOrganization, updateOrganizationTokenId]
+    [setOrganization]
   );
 
   if (isLoadingOrganizations) {
