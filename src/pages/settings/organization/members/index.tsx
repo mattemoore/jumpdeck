@@ -18,7 +18,6 @@ import SettingsContentContainer from '~/components/settings/SettingsContentConta
 import SettingsTile from '~/components/settings/SettingsTile';
 
 import { useCurrentOrganization } from '~/lib/organizations/hooks/use-current-organization';
-import ArrowLeftIcon from '@heroicons/react/24/outline/ArrowLeftIcon';
 
 const OrganizationMembersList = dynamic(
   () => import('~/components/organizations/OrganizationMembersList'),

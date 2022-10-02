@@ -1,5 +1,4 @@
 import { useAuth } from 'reactfire';
-import dynamic from 'next/dynamic';
 
 import { useUserSession } from '~/core/hooks/use-user-session';
 
@@ -10,13 +9,10 @@ import If from '~/core/ui/If';
 import SiteNavigation from './SiteNavigation';
 import ProfileDropdown from './ProfileDropdown';
 import Button from '~/core/ui/Button';
+import DarkModeToggle from '~/components/DarkModeToggle';
 
 import configuration from '~/configuration';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
-
-const DarkModeToggle = dynamic(() => import('~/components/DarkModeToggle'), {
-  ssr: false,
-});
 
 const fixedClassName = `FixedHeader`;
 

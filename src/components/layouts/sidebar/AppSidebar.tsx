@@ -29,7 +29,9 @@ const AppSidebar = () => {
   const userSession = useUserSession();
 
   return (
-    <div className={'AppSidebar w-2/12 max-w-xs sm:min-w-[13rem]'}>
+    <div
+      className={'AppSidebar w-2/12 max-w-xs sm:min-w-[12rem] lg:min-w-[16rem]'}
+    >
       <AppSidebarHeader user={userSession?.auth} />
       <AppSidebarFooterMenu />
     </div>

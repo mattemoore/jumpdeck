@@ -1,8 +1,15 @@
 import { GetServerSidePropsContext } from 'next';
-import { withAppProps } from '~/lib/props/with-app-props';
+import dynamic from 'next/dynamic';
 
+import { withAppProps } from '~/lib/props/with-app-props';
 import RouteShell from '~/components/RouteShell';
-import DashboardDemo from '~/components/dashboard/DashboardDemo';
+
+const DashboardDemo = dynamic(
+  () => import('~/components/dashboard/DashboardDemo'),
+  {
+    ssr: false,
+  }
+);
 
 const Dashboard = () => {
   return (

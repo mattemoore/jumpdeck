@@ -42,9 +42,22 @@ function getThemeMetaTag() {
 }
 
 function setMetaTag(value: string) {
-  const tag = getThemeMetaTag();
+  const callback = () => {
+    let tag = getThemeMetaTag();
 
-  if (tag) {
-    tag.setAttribute('content', value);
+    if (tag) {
+      tag.setAttribute('content', value);
+    } else {
+      tag = document.createElement('meta');
+      tag.setAttribute('name', 'theme-color');
+      tag.setAttribute('content', value);
+      document.head.appendChild(tag);
+    }
+  };
+
+  if (document.readyState === 'complete') {
+    callback();
+  } else {
+    document.addEventListener('DOMContentLoaded', callback);
   }
 }

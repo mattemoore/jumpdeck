@@ -660,5 +660,26 @@
         @apply text-sm font-bold dark:text-white;
     }
 
+    .Table {
+        @apply bg-white dark:bg-black-500 p-1 w-full border-collapse rounded-lg;
+    }
+
+    .Table th {
+        @apply text-right py-4 uppercase font-bold text-gray-500
+            dark:text-gray-400 text-xs border-b border-gray-100 dark:border-black-300;
+    }
+
+    .Table th:first-child,
+    .Table td:first-child {
+        @apply text-left;
+    }
+
+    .Table tr {
+        @apply border-b border-gray-50 dark:border-black-400;
+    }
+
+    .Table td {
+        @apply text-right py-2.5 text-sm;
+    }
 }
 /* Stop purging. */

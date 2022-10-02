@@ -7,8 +7,9 @@
 
     .AppSidebar {
         @apply flex flex-row py-6 justify-center
-        relative shadow-sm bg-gray-50 dark:bg-black-400
-        h-screen hidden lg:flex;
+        relative bg-gray-50 dark:bg-black-500
+        h-screen hidden lg:flex border-r
+        border-gray-100 dark:border-black-300;
     }
 
     .AppSidebarItem {
@@ -23,7 +24,7 @@
     .AppSidebarItemNotActive {
         @apply dark:text-gray-300 dark:hover:text-white text-gray-600 ring-transparent
             active:bg-gray-200 dark:active:bg-black-300 dark:active:bg-black-300
-            hover:bg-gray-100 dark:hover:bg-black-300 dark:bg-black-400;
+            hover:bg-gray-100 dark:hover:bg-black-400 dark:bg-black-500;
     }
 
     .AppSidebarFooterItem {

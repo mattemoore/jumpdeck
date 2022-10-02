@@ -1,7 +1,7 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
-    function userId() {
+    function getUserId() {
         return request.auth.uid;
     }
 
@@ -10,12 +10,12 @@ service firebase.storage {
     }
 
     match /organizations/{organizationId}/{fileName=**} {
-      allow read, write: if userId() in getOrganization(organizationId).data.members;
+      allow read, write: if getUserId() in getOrganization(organizationId).data.members;
     }
 
     match /profiles/{userId}/{fileName=**} {
       allow read: if request.auth != null;
-      allow write: if request.auth.uid == userId;
+      allow write: if getUserId() == userId;
     }
   }
 }

@@ -98,8 +98,6 @@ export async function withAppProps(
       return redirectToOnboarding();
     }
 
-    let refreshClaims = false;
-
     // if the organization is found, save the ID in a cookie
     // so that we can fetch it on the next request
     if (organization) {
@@ -117,14 +115,11 @@ export async function withAppProps(
         session: metadata,
         user,
         organization,
-        refreshClaims,
         csrfToken,
         ...translationProps,
       },
     };
   } catch (e) {
-    console.debug(e);
-
     clearAuthenticationCookies(ctx);
 
     // if the user is signed out, we save the requested URL
