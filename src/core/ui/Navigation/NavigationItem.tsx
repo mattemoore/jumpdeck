@@ -23,8 +23,9 @@ const NavigationMenuItem: React.FCC<{
   link: Link;
   depth?: number;
   disabled?: boolean;
+  shallow?: boolean;
   className?: string;
-}> = ({ link, className, disabled, depth }) => {
+}> = ({ link, className, disabled, shallow, depth }) => {
   const router = useRouter();
   const active = isRouteActive(link.path, router.pathname, depth ?? 1);
 
@@ -38,7 +39,7 @@ const NavigationMenuItem: React.FCC<{
         [`NavigationItemNotActive`]: !active,
       })}
     >
-      <Link href={disabled ? '' : link.path} passHref>
+      <Link href={disabled ? '' : link.path} passHref shallow={shallow ?? true}>
         <a aria-disabled={disabled}>
           {isTranslation ? <Trans i18nKey={link.i18n} /> : null}
           {isLabel ? link.label : null}

@@ -98,15 +98,17 @@ function AppSidebarFooterMenu() {
 function AppSidebarItem({
   children,
   href,
+  shallow,
 }: React.PropsWithChildren<{
   href: string;
+  shallow?: boolean;
 }>) {
   const router = useRouter();
   const depth = 3;
   const active = isRouteActive(href, router.pathname, depth);
 
   return (
-    <Link href={href} passHref>
+    <Link href={href} passHref shallow={shallow ?? true}>
       <a
         className={`AppSidebarItem ${
           active ? `AppSidebarItemActive` : 'AppSidebarItemNotActive'

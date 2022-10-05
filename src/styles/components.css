@@ -47,9 +47,12 @@
         @apply bg-transparent font-semibold;
     }
 
+    .BorderedNavigationMenu .NavigationItem a {
+        @apply py-3 border-b-[0.2rem] relative border-transparent top-[1px];
+    }
+
     .BorderedNavigationMenu .NavigationItemActive a {
-        @apply border-b-[0.2rem] border-primary-500 text-current
-        relative top-[1px] bg-transparent rounded-none;
+        @apply border-primary-500 text-current bg-transparent rounded-none font-medium;
     }
 
     .NavigationItemNotActive {
@@ -245,9 +248,9 @@
 
     .Button.GradientButton {
         @apply flex !bg-gradient-to-r md:w-auto
-        from-indigo-600 text-center text-white md:h-auto
-        justify-center to-red-500 hover:from-indigo-800
-        transition-all hover:to-red-600 hover:shadow-xl;
+        from-primary-400 text-center text-white md:h-auto
+        justify-center to-primary-600
+        transition-all hover:to-primary-700 hover:shadow-xl;
     }
 
     .ButtonNormal {
@@ -255,7 +258,7 @@
     }
 
     .ButtonLarge {
-        @apply py-3 px-5 h-12;
+        @apply py-3 px-5 h-12 text-lg;
     }
 
     .ButtonSmall {
@@ -436,8 +439,7 @@
     .FallbackUserAvatar {
         @apply h-9 w-9 text-lg flex items-center
         transition-all justify-center
-        bg-primary-500 hover:bg-primary-600
-        rounded-full uppercase font-extrabold
+        bg-primary-500 rounded-full uppercase font-extrabold
         text-black-500 text-primary-contrast;
     }
 
@@ -520,7 +522,7 @@
     .AuthProviderButton {
         @apply border border-gray-200 dark:border-black-300
         hover:bg-gray-100 active:bg-gray-200 hover:border-gray-300
-        dark:hover:border-black-400 dark:bg-black-400
+        dark:hover:border-black-100 dark:bg-black-400 ring-primary-500
         dark:hover:bg-black-400/80 dark:active:bg-black-400
         transition-all relative text-gray-600 dark:text-gray-200;
     }
@@ -661,25 +663,28 @@
     }
 
     .Table {
-        @apply bg-white dark:bg-black-500 p-1 w-full border-collapse rounded-lg;
+        @apply bg-white dark:bg-black-500 p-1 w-full border-collapse rounded-lg table-fixed border-spacing-0;
+    }
+
+    .Table thead {
+        @apply sticky top-0 m-0 bg-white dark:bg-black-500;
     }
 
     .Table th {
-        @apply text-right py-4 uppercase font-bold text-gray-500
-            dark:text-gray-400 text-xs border-b border-gray-100 dark:border-black-300;
-    }
-
-    .Table th:first-child,
-    .Table td:first-child {
-        @apply text-left;
+        @apply text-left py-4 uppercase font-bold text-gray-600
+        dark:text-gray-400 text-xs border-b border-gray-200 dark:border-black-300;
     }
 
     .Table tr {
-        @apply border-b border-gray-50 dark:border-black-400;
+        @apply border-b border-gray-100 dark:border-black-400;
+    }
+
+    .Table tr:last-child {
+        @apply border-transparent;
     }
 
     .Table td {
-        @apply text-right py-2.5 text-sm;
+        @apply py-2.5 text-sm;
     }
 }
 /* Stop purging. */

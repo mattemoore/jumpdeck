@@ -29,11 +29,6 @@ export async function withAppProps(
   ctx: GetServerSidePropsContext,
   options: Partial<typeof DEFAULT_OPTIONS> = DEFAULT_OPTIONS
 ) {
-  ctx.res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=10, stale-while-revalidate=59'
-  );
-
   const mergedOptions = { ...DEFAULT_OPTIONS, ...options };
   const { redirectPath, requirePlans } = mergedOptions;
 

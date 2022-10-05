@@ -1,4 +1,5 @@
 import Image from 'next/future/image';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
 import { withTranslationProps } from '~/lib/props/with-translation-props';
 import ConvertkitSignupForm from '~/components/newsletter/ConvertkitSignupForm';
@@ -11,7 +12,6 @@ import SubHeading from '~/core/ui/SubHeading';
 import Button from '~/core/ui/Button';
 import Heading from '~/core/ui/Heading';
 import Hero from '~/core/ui/Hero';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
 const Index = () => {
   return (
@@ -45,12 +45,20 @@ const Index = () => {
               <SubHeading>Just like this.</SubHeading>
             </div>
 
-            <Button size={'large'} href={'/auth/sign-up'}>
-              <span className={'flex items-center space-x-2'}>
-                <span>Get Started</span>
-                <ArrowRightIcon className={'h-4'} />
-              </span>
-            </Button>
+            <div className={'flex flex-col items-center space-y-2.5'}>
+              <Button
+                className={'GradientButton p-2'}
+                size={'large'}
+                href={'/auth/sign-up'}
+              >
+                <span className={'flex items-center space-x-2 text-xl'}>
+                  <span>Get Started for free</span>
+                  <ArrowRightIcon className={'h-6'} />
+                </span>
+              </Button>
+
+              <span className={'text-xs'}>No credit-card required</span>
+            </div>
           </div>
         </div>
 
@@ -216,27 +224,32 @@ const Index = () => {
           <div
             className={
               'flex flex-col justify-between rounded-lg md:flex-row' +
-              ' space-y-2 bg-primary-50 p-8 dark:bg-primary-200 md:space-y-0'
+              ' space-y-2 bg-primary-50 p-8' +
+              ' dark:bg-primary-500/10 md:space-y-0'
             }
           >
             <div className={'flex items-center justify-between'}>
               <Heading type={2}>
-                <p className={'text-gray-800'}>
-                  The tasks application you were dreaming.
+                <p className={'text-gray-800 dark:text-current'}>
+                  The application you were dreaming.
                 </p>
 
                 <p className={'text-primary-500'}>Get Started for free</p>
               </Heading>
             </div>
 
-            <div className={'flex justify-end'}>
-              <Button
-                className={'w-full md:w-auto'}
-                size={'large'}
-                href={'/auth/sign-up'}
-              >
-                Get Started
-              </Button>
+            <div className={'flex items-center justify-end'}>
+              <div className={'flex flex-col items-center space-y-2'}>
+                <Button
+                  className={'w-full md:w-auto'}
+                  size={'large'}
+                  href={'/auth/sign-up'}
+                >
+                  Create an account for free
+                </Button>
+
+                <div className={'text-xs'}>No credit card required</div>
+              </div>
             </div>
           </div>
         </div>

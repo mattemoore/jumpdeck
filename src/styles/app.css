@@ -13,7 +13,7 @@
     }
 
     .AppSidebarItem {
-        @apply rounded-md items-center transition-colors border-transparent text-sm
+        @apply rounded-md items-center transition-colors border-transparent
         w-full pr-12 w-full py-2.5 px-4 font-medium flex space-x-4 transition;
     }
 
