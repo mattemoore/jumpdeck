@@ -10,7 +10,7 @@ import createCsrfToken from '~/core/generic/create-csrf-token';
  * @param ctx
  */
 export async function withUserProps(ctx: GetServerSidePropsContext) {
-  const { props } = await withTranslationProps();
+  const { props } = await withTranslationProps({ locale: ctx.locale });
 
   try {
     const { uid } = await getLoggedInUser(ctx);

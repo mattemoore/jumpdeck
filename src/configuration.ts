@@ -13,6 +13,7 @@ const configuration = {
     githubHandle: '',
     language: 'en',
     convertKitFormId: '',
+    locale: process.env.DEFAULT_LOCALE,
   },
   firebase: {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -63,10 +64,10 @@ const configuration = {
   appCheckSiteKey: process.env.NEXT_PUBLIC_APPCHECK_KEY,
   email: {
     host: '',
-    port: 0,
+    port: 587,
     user: '',
     password: '',
-    senderAddress: '',
+    senderAddress: 'MakerKit Team <info@makerkit.dev>',
   },
   emailEtherealTestAccount: {
     email: process.env.ETHEREAL_EMAIL,

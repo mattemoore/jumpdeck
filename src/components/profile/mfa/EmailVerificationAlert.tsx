@@ -2,12 +2,12 @@ import { sendEmailVerification, User } from 'firebase/auth';
 import { Trans, useTranslation } from 'next-i18next';
 import { useCallback } from 'react';
 import toaster from 'react-hot-toast';
-import { CheckCircleIcon } from '@heroicons/react/24/outline';
 
 import { useRequestState } from '~/core/hooks/use-request-state';
 import Alert from '~/core/ui/Alert';
 import If from '~/core/ui/If';
 import Button from '~/core/ui/Button';
+
 import { getFirebaseErrorCode } from '~/core/firebase/utils/get-firebase-error-code';
 import AuthErrorMessage from '~/components/auth/AuthErrorMessage';
 
@@ -43,6 +43,10 @@ function EmailVerificationAlert(
     <div className={'flex flex-col space-y-3'}>
       <div>
         <Alert type={'warn'}>
+          <Alert.Heading>
+            <Trans i18nKey={'profile:verifyEmailAlertHeading'} />
+          </Alert.Heading>
+
           <div>
             <p>
               <Trans i18nKey={'profile:verificationLinkAlertDescription'} />
@@ -71,15 +75,20 @@ function EmailVerificationAlert(
             </Button>
           }
         >
-          <span className={'flex space-x-2'}>
-            <CheckCircleIcon className={'h-6 text-green-500'} />
-            <span>
-              <Trans i18nKey={'profile:sendVerificationLinkSuccessLabel'} />
-            </span>
-          </span>
+          <EmailSentSuccessAlert />
         </If>
       </div>
     </div>
+  );
+}
+
+function EmailSentSuccessAlert() {
+  return (
+    <Alert type={'success'}>
+      <span>
+        <Trans i18nKey={'profile:sendVerificationLinkSuccessLabel'} />
+      </span>
+    </Alert>
   );
 }
 

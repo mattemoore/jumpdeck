@@ -15,7 +15,7 @@ const ORGANIZATION_ID_COOKIE_NAME = 'organizationId';
 
 const DEFAULT_OPTIONS = {
   redirectPath: configuration.paths.signIn,
-  locale: 'en',
+  locale: configuration.site.locale ?? 'en',
   localeNamespaces: <string[]>[],
   requirePlans: <string[]>[],
 };
@@ -29,7 +29,7 @@ export async function withAppProps(
   ctx: GetServerSidePropsContext,
   options: Partial<typeof DEFAULT_OPTIONS> = DEFAULT_OPTIONS
 ) {
-  const mergedOptions = { ...DEFAULT_OPTIONS, ...options };
+  const mergedOptions = getAppPropsOptions(ctx.locale, options);
   const { redirectPath, requirePlans } = mergedOptions;
 
   try {
@@ -179,4 +179,16 @@ function redirectToOnboarding() {
 function clearAuthenticationCookies(ctx: GetServerSidePropsContext) {
   destroyCookie(ctx, 'session');
   destroyCookie(ctx, 'sessionExpiresAt');
+}
+
+function getAppPropsOptions(
+  locale: string | undefined,
+  options: Partial<typeof DEFAULT_OPTIONS>
+) {
+  const mergedOptions = { ...DEFAULT_OPTIONS, ...options };
+
+  return {
+    ...mergedOptions,
+    locale: locale ?? mergedOptions.locale,
+  };
 }

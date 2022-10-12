@@ -99,6 +99,8 @@ export async function inviteMembers(params: Params) {
       );
 
       logger.debug(error);
+
+      return Promise.reject(error);
     };
 
     // if an invitation to the email {invite.email} already exists,
@@ -114,7 +116,7 @@ export async function inviteMembers(params: Params) {
           // send email
           await sendEmailRequest();
         } catch (e) {
-          catchCallback(e);
+          return catchCallback(e);
         }
       };
 
@@ -140,7 +142,7 @@ export async function inviteMembers(params: Params) {
           // send email to user
           await sendEmailRequest();
         } catch (e) {
-          catchCallback(e);
+          return catchCallback(e);
         }
       };
 

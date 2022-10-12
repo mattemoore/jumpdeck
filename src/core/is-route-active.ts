@@ -1,3 +1,5 @@
+const ROOT_PATH = '/';
+
 /**
  * @name isRouteActive
  * @description Check if the current route is active
@@ -10,23 +12,24 @@ export function isRouteActive(
   currentRoute: string,
   depth: number
 ) {
-  const isHomePage = currentRoute === '/';
+  // we remove any eventual query param from the route's URL
+  let currentRoutePath = currentRoute.split('?')[0];
 
-  if (isHomePage) {
+  if (!isRoot(currentRoutePath) && isRoot(targetLink)) {
     return false;
   }
 
-  if (!currentRoute.includes(targetLink)) {
+  if (!currentRoutePath.includes(targetLink)) {
     return false;
   }
 
-  const isSameRoute = targetLink === currentRoute;
+  const isSameRoute = targetLink === currentRoutePath;
 
   if (isSameRoute) {
     return true;
   }
 
-  return hasMatchingSegments(targetLink, currentRoute, depth);
+  return hasMatchingSegments(targetLink, currentRoutePath, depth);
 }
 
 function splitIntoSegments(href: string) {
@@ -60,4 +63,8 @@ function numberOfMatchingSegments(href: string, segments: string[]) {
   }
 
   return count;
+}
+
+function isRoot(path: string) {
+  return path === ROOT_PATH;
 }

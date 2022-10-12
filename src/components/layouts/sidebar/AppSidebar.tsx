@@ -105,7 +105,7 @@ function AppSidebarItem({
 }>) {
   const router = useRouter();
   const depth = 3;
-  const active = isRouteActive(href, router.pathname, depth);
+  const active = isRouteActive(href, router.asPath, depth);
 
   return (
     <Link href={href} passHref shallow={shallow ?? true}>

@@ -5,8 +5,12 @@
   "choosePlan": "Choose Plan",
   "currentPlan": "Current Plan",
   "subscriptionWillEndOn": "The subscription will end on {{ endDate }}",
+  "unknownErrorAlertHeading": "Sorry, something went wrong",
   "unknownErrorAlert": "We encountered an unknown error while processing your payment. Please try again or contact support.",
-  "checkOutCanceledAlert": "The checkout was canceled",
-  "checkOutCompletedAlert": "Well done! The checkout was successfully completed",
-  "awaitingPaymentAlert": "We are awaiting for the payment to go through."
+  "checkOutCanceledAlertHeading": "The checkout was canceled",
+  "checkOutCanceledAlert": "The checkout was canceled. Please contact us if you're experiencing any issues.",
+  "checkOutCompletedAlertHeading": "Checkout successfully completed",
+  "checkOutCompletedAlert": "Yay, your payment went through!",
+  "awaitingPaymentAlertHeading": "Waiting for payment",
+  "awaitingPaymentAlert": "Please bear with us while we wait for the payment to go through."
 }

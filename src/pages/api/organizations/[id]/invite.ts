@@ -55,18 +55,16 @@ async function inviteMembersToOrganizationHandler(
     );
 
     return res.send({ success: true });
-  } catch (e) {
+  } catch (error) {
     logger.error(
       {
         organizationId,
         inviterId,
       },
-      `Error occurred when inviting user to organization`
+      `Error occurred when inviting user to organization: ${error}`
     );
 
-    logger.debug(e);
-
-    return throwInternalServerErrorException();
+    return throwInternalServerErrorException(error?.toString());
   }
 }
 

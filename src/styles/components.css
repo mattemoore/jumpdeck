@@ -111,39 +111,46 @@
 
     /** Alert.tsx */
     .Alert {
-        @apply p-4 rounded-lg font-medium flex text-base items-center justify-between text-black-300;
+        @apply p-6 rounded relative flex text-base font-medium
+        items-center justify-between text-black-300 border-l-4;
+    }
+
+    .Alert .AlertIcon {
+        @apply absolute top-[-0.25rem] left-[-0.75rem]
+        p-[0.1rem] h-[2rem] w-[2rem] rounded-full
+        bg-white dark:bg-black-500;
     }
 
     .Alert.AlertSuccess {
-        @apply bg-green-50 dark:bg-green-200;
+        @apply bg-green-50 dark:bg-green-500/10 dark:text-green-500 border-green-500 text-green-900;
     }
 
     .Alert.AlertSuccess .AlertIcon {
-        @apply text-green-900;
+        @apply text-green-600;
     }
 
     .Alert.AlertError {
-        @apply bg-red-50 dark:bg-red-100;
+        @apply bg-red-50 dark:bg-red-500/10 dark:text-red-500 border-red-500 text-red-900;
     }
 
     .Alert.AlertError .AlertIcon {
-        @apply text-red-900;
+        @apply text-red-600;
     }
 
     .Alert.AlertWarn {
-        @apply bg-orange-50 dark:bg-orange-100;
+        @apply bg-orange-50 dark:bg-orange-500/10 dark:text-orange-500 text-orange-900 border-orange-500;
     }
 
     .Alert.AlertWarn .AlertIcon {
-        @apply text-orange-900;
+        @apply text-orange-600 p-[0.3rem];
     }
 
     .Alert.AlertInfo {
-        @apply bg-blue-50 dark:bg-blue-200;
+        @apply bg-blue-50 dark:bg-blue-500/10 dark:text-blue-500 text-blue-900 border-blue-500;
     }
 
     .Alert.AlertInfo .AlertIcon {
-        @apply text-blue-900;
+        @apply text-blue-600;
     }
 
     /* TextField.tsx */

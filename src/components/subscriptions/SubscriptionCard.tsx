@@ -67,6 +67,10 @@ const SubscriptionCard: React.FCC<{
 function AwaitingPaymentAlert() {
   return (
     <Alert type={'warn'}>
+      <Alert.Heading>
+        <Trans i18nKey={'subscription:awaitingPaymentAlertHeading'} />
+      </Alert.Heading>
+
       <span data-cy={'awaiting-payment-alert'}>
         <Trans i18nKey={'subscription:awaitingPaymentAlert'} />
       </span>

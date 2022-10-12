@@ -33,13 +33,16 @@ function getTransporter() {
 async function getSMTPTransporter() {
   const nodemailer = await import('nodemailer');
 
+  const { host, port, user, password: pass } = configuration.email;
+  const secure = port === 465 && !configuration.emulator;
+
   return nodemailer.createTransport({
-    host: configuration.email.host,
-    port: configuration.email.port,
-    secure: true,
+    host,
+    port,
+    secure,
     auth: {
-      user: configuration.email.user,
-      pass: configuration.email.password,
+      user,
+      pass,
     },
   });
 }

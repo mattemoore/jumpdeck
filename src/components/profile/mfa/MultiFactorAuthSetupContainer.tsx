@@ -3,7 +3,6 @@ import { ShieldCheckIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 import { useUser } from 'reactfire';
 
-import Heading from '~/core/ui/Heading';
 import Alert from '~/core/ui/Alert';
 import Button from '~/core/ui/Button';
 import If from '~/core/ui/If';
@@ -25,11 +24,11 @@ const MultiFactorAuthSetupContainer: React.FC<{
 
   return (
     <>
-      <div className={'flex flex-col space-y-3'}>
-        <Alert type={'info'} className={'flex flex-col space-y-2'}>
-          <Heading type={4}>
+      <div className={'flex flex-col space-y-6'}>
+        <Alert type={'info'}>
+          <Alert.Heading>
             <Trans i18nKey={'profile:multiFactorAuthHeading'} />
-          </Heading>
+          </Alert.Heading>
 
           <p>
             <Trans i18nKey={'profile:multiFactorAuthDescription'} />

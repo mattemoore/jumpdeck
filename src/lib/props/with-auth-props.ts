@@ -8,7 +8,7 @@ import createCsrfToken from '~/core/generic/create-csrf-token';
 
 const DEFAULT_OPTIONS = {
   redirectPath: configuration.paths.appHome,
-  locale: 'en',
+  locale: configuration.site.locale ?? 'en',
   localeNamespaces: [],
 };
 
@@ -39,7 +39,11 @@ export async function withAuthProps(
   } catch (e) {
     // if the user is NOT logged in, we redirect to the authentication page
     // as requested by the user
-    const { props } = await withTranslationProps(options);
+    const { props } = await withTranslationProps({
+      ...options,
+      locale: ctx.locale ?? options.locale,
+    });
+
     const csrfToken = await createCsrfToken(ctx);
 
     return {

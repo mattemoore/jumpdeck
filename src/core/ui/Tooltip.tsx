@@ -1,11 +1,8 @@
-import Tippy from '@tippyjs/react';
+import Tippy, { TippyProps } from '@tippyjs/react';
 
-const Tooltip: React.FCC<{
-  content: string | undefined | JSX.Element;
-  className?: string;
-}> = ({ children, content, className }) => {
+const Tooltip: React.FCC<TippyProps> = ({ children, className, ...props }) => {
   return (
-    <Tippy disabled={!content} theme={'makerkit'} content={content}>
+    <Tippy {...props} disabled={!props.content} theme={'makerkit'}>
       <div className={className}>{children}</div>
     </Tippy>
   );

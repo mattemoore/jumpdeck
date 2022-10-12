@@ -27,7 +27,7 @@ const NavigationMenuItem: React.FCC<{
   className?: string;
 }> = ({ link, className, disabled, shallow, depth }) => {
   const router = useRouter();
-  const active = isRouteActive(link.path, router.pathname, depth ?? 1);
+  const active = isRouteActive(link.path, router.asPath, depth ?? 1);
 
   const isTranslation = isLinkWithTranslation(link);
   const isLabel = isLinkWithLabel(link);

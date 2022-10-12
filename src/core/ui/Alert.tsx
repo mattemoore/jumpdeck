@@ -4,9 +4,13 @@ import {
   XMarkIcon,
   CheckCircleIcon,
   ExclamationCircleIcon,
-  ExclamationTriangleIcon,
+  ShieldExclamationIcon,
   InformationCircleIcon,
 } from '@heroicons/react/24/outline';
+
+import IconButton from '~/core/ui/IconButton';
+import If from '~/core/ui/If';
+import Heading from '~/core/ui/Heading';
 
 const colorClassNames = {
   success: `AlertSuccess`,
@@ -18,18 +22,17 @@ const colorClassNames = {
 const icons = {
   success: () => <CheckCircleIcon className={'AlertIcon h-6'} />,
   error: () => <ExclamationCircleIcon className={'AlertIcon h-6'} />,
-  warn: () => <ExclamationTriangleIcon className={'AlertIcon h-6'} />,
+  warn: () => <ShieldExclamationIcon className={'AlertIcon h-6'} />,
   info: () => <InformationCircleIcon className={'AlertIcon h-6'} />,
 };
-
-import IconButton from '~/core/ui/IconButton';
-import If from '~/core/ui/If';
 
 const Alert: React.FCC<{
   type: 'success' | 'error' | 'warn' | 'info';
   useCloseButton?: boolean;
   className?: string;
-}> = ({ children, type, useCloseButton, className }) => {
+}> & {
+  Heading: typeof AlertHeading;
+} = ({ children, type, useCloseButton, className }) => {
   const [visible, setVisible] = useState(true);
   const Icon = useMemo(() => icons[type](), [type]);
 
@@ -55,5 +58,17 @@ const Alert: React.FCC<{
     </div>
   );
 };
+
+function AlertHeading({ children }: React.PropsWithChildren) {
+  return (
+    <div className={'mb-2'}>
+      <Heading type={4}>
+        <span className={'font-bold'}>{children}</span>
+      </Heading>
+    </div>
+  );
+}
+
+Alert.Heading = AlertHeading;
 
 export default Alert;

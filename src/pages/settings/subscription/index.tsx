@@ -62,21 +62,39 @@ function PlansStatusAlert({
     case SubscriptionStatusQueryParams.Cancel:
       return (
         <Alert type={'warn'} useCloseButton={true}>
-          <Trans i18nKey={'subscription:checkOutCanceledAlert'} />
+          <Alert.Heading>
+            <Trans i18nKey={'subscription:checkOutCanceledAlertHeading'} />
+          </Alert.Heading>
+
+          <p>
+            <Trans i18nKey={'subscription:checkOutCanceledAlert'} />
+          </p>
         </Alert>
       );
 
     case SubscriptionStatusQueryParams.Error:
       return (
         <Alert type={'error'} useCloseButton={true}>
-          <Trans i18nKey={'subscription:unknownErrorAlert'} />
+          <Alert.Heading>
+            <Trans i18nKey={'subscription:unknownErrorAlertHeading'} />
+          </Alert.Heading>
+
+          <p>
+            <Trans i18nKey={'subscription:unknownErrorAlert'} />
+          </p>
         </Alert>
       );
 
     case SubscriptionStatusQueryParams.Success:
       return (
         <Alert type={'success'} useCloseButton={true}>
-          <Trans i18nKey={'subscription:checkOutCompletedAlert'} />
+          <Alert.Heading>
+            <Trans i18nKey={'subscription:checkOutCompletedAlertHeading'} />
+          </Alert.Heading>
+
+          <p>
+            <Trans i18nKey={'subscription:checkOutCompletedAlert'} />
+          </p>
         </Alert>
       );
   }

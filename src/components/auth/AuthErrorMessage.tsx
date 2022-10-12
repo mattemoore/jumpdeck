@@ -17,13 +17,13 @@ export default function AuthErrorMessage({ error }: { error: Maybe<string> }) {
 
   return (
     <Alert className={'w-full'} type={'error'}>
-      <span className={'text-sm'} data-cy={'auth-error-message'}>
+      <p className={'text-sm font-semibold'} data-cy={'auth-error-message'}>
         <Trans
           i18nKey={`auth:errors.${error}`}
           defaults={'<DefaultError />'}
           components={{ DefaultError }}
         />
-      </span>
+      </p>
     </Alert>
   );
 }
