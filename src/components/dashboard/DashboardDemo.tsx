@@ -165,7 +165,7 @@ function UserGreetings() {
 
   return (
     <div>
-      <Heading type={3}>Welcome Back, {userDisplayName}</Heading>
+      <Heading type={4}>Welcome Back, {userDisplayName}</Heading>
 
       <p className={'text-gray-500 dark:text-gray-400'}>
         <span>Here&apos;s what is happening in your SaaS</span>

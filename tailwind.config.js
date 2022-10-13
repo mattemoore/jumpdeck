@@ -4,17 +4,7 @@ const colors = require('tailwindcss/colors');
 module.exports = {
   content: ['./src/**/*.tsx'],
   darkMode: 'class',
-  corePlugins: {
-    container: false,
-  },
   theme: {
-    container: {
-      center: true,
-      padding: {
-        DEFAULT: '1rem',
-        sm: '2rem',
-      },
-    },
     fontFamily: {
       serif: ['Bitter', 'serif'],
       sans: [
@@ -47,7 +37,7 @@ module.exports = {
       },
     },
   },
-  plugins: [customContainerPlugin, plugin(ellipisfyPlugin)],
+  plugins: [plugin(ellipisfyPlugin)],
 };
 
 function ellipisfyPlugin({ addUtilities }) {
@@ -60,17 +50,4 @@ function ellipisfyPlugin({ addUtilities }) {
   };
 
   addUtilities(styles);
-}
-
-function customContainerPlugin({ addComponents }) {
-  addComponents({
-    '.container': {
-      '@screen lg': {
-        maxWidth: '1024px',
-      },
-      '@screen xl': {
-        maxWidth: '1166px',
-      },
-    },
-  });
 }

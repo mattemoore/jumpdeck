@@ -1,4 +1,3 @@
-import Container from '~/core/ui/Container';
 import classNames from 'classnames';
 
 const NavigationContainer: React.FCC<{
@@ -6,7 +5,7 @@ const NavigationContainer: React.FCC<{
 }> = ({ children, className }) => {
   return (
     <div className={classNames(`NavigationContainer`, className)}>
-      <Container>{children}</Container>
+      {children}
     </div>
   );
 };

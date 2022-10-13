@@ -41,34 +41,34 @@ const AppHeaderWithMenu: React.FCC = ({ children }) => {
   return (
     <>
       <div className="AppHeader">
-        <div className={'w-full'}>
-          <Container>
-            <div className={'flex w-full flex-1 items-center justify-between'}>
-              <div
-                className={'flex flex-1 items-center space-x-4 md:space-x-8'}
-              >
-                <Logo href={configuration.paths.appHome} />
+        <div className={'w-full px-6'}>
+          <div className={'flex w-full flex-1 items-center justify-between'}>
+            <div className={'flex flex-1 items-center space-x-4 md:space-x-6'}>
+              <Logo href={configuration.paths.appHome} />
 
-                <div>{OrganizationsDropdown}</div>
-              </div>
-
-              <div className={'flex flex-1 justify-end'}>
-                <ProfileDropdown
-                  user={userSession?.auth}
-                  signOutRequested={signOutRequested}
-                />
-              </div>
+              <div>{OrganizationsDropdown}</div>
             </div>
-          </Container>
+
+            <div className={'flex flex-1 justify-end'}>
+              <ProfileDropdown
+                user={userSession?.auth}
+                signOutRequested={signOutRequested}
+              />
+            </div>
+          </div>
         </div>
       </div>
 
       <div>
-        <AppNavigation />
+        <div className={'px-4'}>
+          <AppNavigation />
+        </div>
 
-        <div className={'border-b border-gray-100 py-4 dark:border-black-400'}>
+        <div className={'border-y border-gray-100 py-6 dark:border-black-300'}>
           <Container>
-            <Heading type={2}>{children}</Heading>
+            <Heading type={2}>
+              <span className={'font-medium dark:text-white'}>{children}</span>
+            </Heading>
           </Container>
         </div>
       </div>

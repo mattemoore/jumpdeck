@@ -1,4 +1,5 @@
 import { useAuth } from 'reactfire';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
 import { useUserSession } from '~/core/hooks/use-user-session';
 
@@ -12,7 +13,6 @@ import Button from '~/core/ui/Button';
 import DarkModeToggle from '~/components/DarkModeToggle';
 
 import configuration from '~/configuration';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
 const fixedClassName = `FixedHeader`;
 
@@ -25,32 +25,34 @@ const SiteHeader: React.FCC<{
   const signOutRequested = () => auth.signOut();
 
   return (
-    <div className={`w-full py-4 ${fixed ? fixedClassName : ''}`}>
+    <div className={`w-full py-4 px-1 lg:px-6 ${fixed ? fixedClassName : ''}`}>
       <Container>
-        <div className="flex flex-row items-center justify-between">
+        <div className="flex flex-row items-center">
           <div className={'flex items-center space-x-4'}>
             <Logo />
 
             <DarkModeToggle />
           </div>
 
-          <div className={'flex items-center space-x-8'}>
-            {
-              // ON MOBILE WE DISPLAY THE HAMBURGER MENU AT THE END
-            }
-            <div className={'order-1 md:order-none md:ml-0'}>
+          <div className={'flex flex-1 justify-end space-x-2'}>
+            <div
+              className={
+                'order-1 flex items-center space-x-4 lg:space-x-8' +
+                ' md:order-none md:ml-0'
+              }
+            >
               <SiteNavigation />
             </div>
-          </div>
 
-          <If condition={userSession?.auth} fallback={<AuthButtons />}>
-            {(user) => (
-              <ProfileDropdown
-                user={user}
-                signOutRequested={signOutRequested}
-              />
-            )}
-          </If>
+            <If condition={userSession?.auth} fallback={<AuthButtons />}>
+              {(user) => (
+                <ProfileDropdown
+                  user={user}
+                  signOutRequested={signOutRequested}
+                />
+              )}
+            </If>
+          </div>
         </div>
       </Container>
     </div>

@@ -16,6 +16,9 @@
   "anonymousUser": "Anonymous",
   "switchToLightTheme": "Switch to Light theme",
   "switchToDarkTheme": "Switch to Dark theme",
+  "expandSidebar": "Expand Sidebar",
+  "collapseSidebar": "Collapse Sidebar",
+  "documentation": "Documentation",
   "roles": {
     "owner": {
       "label": "Owner",

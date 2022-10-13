@@ -6,15 +6,24 @@
     }
 
     .AppSidebar {
-        @apply flex flex-row py-6 justify-center
+        @apply flex flex-row py-4 justify-center
         relative bg-gray-50 dark:bg-black-500
-        h-screen hidden lg:flex border-r
+        h-screen hidden lg:flex border-r transition-all duration-100
         border-gray-100 dark:border-black-300;
     }
 
     .AppSidebarItem {
         @apply rounded-md items-center transition-colors border-transparent
-        w-full pr-12 w-full py-2.5 px-4 font-medium flex space-x-4 transition;
+        w-full pr-12 w-full py-2.5 px-4 font-medium flex space-x-3 transition-colors;
+    }
+
+    .AppSidebarCollapsed .AppSidebarItem {
+        @apply px-0.5 py-2 flex justify-center space-x-0;
+    }
+
+    .AppSidebarCollapsed .AppSidebarItem span,
+    .AppSidebarCollapsed .AppSidebarFooterItem span {
+        @apply hidden;
     }
 
     .AppSidebarItemActive {
@@ -28,10 +37,13 @@
     }
 
     .AppSidebarFooterItem {
-        @apply flex text-xs space-x-2
+        @apply flex text-sm space-x-2
         items-center text-gray-500
-        dark:text-gray-300
-        dark:hover:text-primary-500;
+        dark:text-gray-300 dark:hover:text-primary-500;
+    }
+
+    .AppSidebarCollapsed .AppSidebarFooterItem {
+        @apply justify-center;
     }
 
     .FixedHeader {

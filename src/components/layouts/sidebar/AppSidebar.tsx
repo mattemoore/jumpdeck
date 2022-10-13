@@ -1,70 +1,82 @@
+import { useContext } from 'react';
+
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
 import { Trans } from 'next-i18next';
-
-import type { User } from 'firebase/auth';
+import classNames from 'classnames';
 
 import {
   Squares2X2Icon,
   DocumentIcon,
   Cog8ToothIcon,
+  ArrowRightCircleIcon,
+  ArrowLeftCircleIcon,
 } from '@heroicons/react/24/outline';
 
 import Logo from '~/core/ui/Logo';
-import If from '~/core/ui/If';
+import LogoMini from '~/core/ui/Logo/LogoMini';
+import IconButton from '~/core/ui/IconButton';
+import Tooltip from '~/core/ui/Tooltip';
 
-import { useUserSession } from '~/core/hooks/use-user-session';
 import { isRouteActive } from '~/core/is-route-active';
 import configuration from '~/configuration';
+import { SidebarContext } from '~/lib/contexts/sidebar';
 
-const OrganizationsSelector = dynamic(
-  () => import('../../organizations/OrganizationsSelector'),
-  {
-    ssr: false,
-  }
-);
-
-const AppSidebar = () => {
-  const userSession = useUserSession();
+const AppSidebar: React.FC = () => {
+  const { collapsed, setCollapsed } = useContext(SidebarContext);
 
   return (
     <div
-      className={'AppSidebar w-2/12 max-w-xs sm:min-w-[12rem] lg:min-w-[16rem]'}
+      className={classNames('AppSidebar', {
+        ['AppSidebarCollapsed w-[5rem]']: collapsed,
+        [`w-2/12 max-w-xs sm:min-w-[12rem] lg:min-w-[16rem]`]: !collapsed,
+      })}
     >
-      <AppSidebarHeader user={userSession?.auth} />
-      <AppSidebarFooterMenu />
+      <div
+        className={classNames('flex w-full flex-col space-y-6', {
+          ['px-3']: collapsed,
+          ['px-4']: !collapsed,
+        })}
+      >
+        <AppSidebarHeader collapsed={collapsed} />
+        <AppSidebarMenu collapsed={collapsed} />
+      </div>
+
+      <AppSidebarFooterMenu collapsed={collapsed} setCollapsed={setCollapsed} />
     </div>
   );
 };
 
 function AppSidebarHeader({
-  user,
-}: React.PropsWithChildren<{ user: Maybe<User> }>) {
+  collapsed,
+}: React.PropsWithChildren<{ collapsed: boolean }>) {
   const logoHref = configuration.paths.appHome;
 
   return (
-    <div className={'flex w-full flex-col space-y-6 px-4'}>
-      <div className={'flex justify-center px-3 py-0.5'}>
-        <Logo href={logoHref} />
-      </div>
-
-      <div className={'w-full'}>
-        <If condition={user}>
-          {({ uid: userId }) => <OrganizationsSelector userId={userId} />}
-        </If>
-      </div>
-
-      <AppSidebarMenu />
+    <div className={'flex justify-center px-2.5 py-1'}>
+      {collapsed ? <LogoMini href={logoHref} /> : <Logo href={logoHref} />}
     </div>
   );
 }
 
-function AppSidebarMenu() {
+function AppSidebarMenu(
+  props: React.PropsWithChildren<{
+    collapsed: boolean;
+  }>
+) {
   return (
     <div className={'flex flex-col space-y-2'}>
       <AppSidebarItem href={configuration.paths.appHome}>
-        <Squares2X2Icon className={'h-6'} />
+        <Tooltip
+          placement={'right'}
+          content={
+            props.collapsed ? (
+              <Trans i18nKey={'common:dashboardTabLabel'} />
+            ) : null
+          }
+        >
+          <Squares2X2Icon className={'h-7'} />
+        </Tooltip>
 
         <span>
           <Trans i18nKey={'common:dashboardTabLabel'} />
@@ -72,7 +84,16 @@ function AppSidebarMenu() {
       </AppSidebarItem>
 
       <AppSidebarItem href={'/settings'}>
-        <Cog8ToothIcon className={'h-6'} />
+        <Tooltip
+          placement={'right'}
+          content={
+            props.collapsed ? (
+              <Trans i18nKey={'common:settingsTabLabel'} />
+            ) : null
+          }
+        >
+          <Cog8ToothIcon className={'h-7'} />
+        </Tooltip>
 
         <span>
           <Trans i18nKey={'common:settingsTabLabel'} />
@@ -82,14 +103,34 @@ function AppSidebarMenu() {
   );
 }
 
-function AppSidebarFooterMenu() {
+function AppSidebarFooterMenu(
+  props: React.PropsWithChildren<{
+    collapsed: boolean;
+    setCollapsed: (collapsed: boolean) => void;
+  }>
+) {
   return (
-    <div className={'absolute bottom-8 w-full px-6'}>
-      <div className={'flex flex-col space-y-4'}>
-        <FooterItem href={'/docs'}>
-          <DocumentIcon className={'h-4'} />
-          <span>Documentation</span>
-        </FooterItem>
+    <div
+      className={classNames(`absolute bottom-8 w-full`, {
+        ['px-6']: !props.collapsed,
+        ['flex justify-center px-2']: props.collapsed,
+      })}
+    >
+      <div className={'flex flex-col space-y-6'}>
+        <FooterLinkItem href={'/docs'}>
+          <DocumentIcon className={'h-5'} />
+
+          <span>
+            <Trans i18nKey={'common:documentation'} />
+          </span>
+        </FooterLinkItem>
+
+        <div className={'AppSidebarFooterItem'}>
+          <CollapsibleButton
+            collapsed={props.collapsed}
+            onClick={props.setCollapsed}
+          />
+        </div>
       </div>
     </div>
   );
@@ -120,7 +161,7 @@ function AppSidebarItem({
   );
 }
 
-function FooterItem({
+function FooterLinkItem({
   children,
   href,
 }: React.PropsWithChildren<{ href: string }>) {
@@ -128,6 +169,38 @@ function FooterItem({
     <Link href={href} passHref>
       <a className={'AppSidebarFooterItem'}>{children}</a>
     </Link>
+  );
+}
+
+function CollapsibleButton(
+  props: React.PropsWithChildren<{
+    collapsed: boolean;
+    onClick: (collapsed: boolean) => void;
+  }>
+) {
+  if (props.collapsed) {
+    return (
+      <Tooltip content={<Trans i18nKey={'common:expandSidebar'} />}>
+        <IconButton onClick={() => props.onClick(!props.collapsed)}>
+          <ArrowRightCircleIcon className={'h-6'} />
+        </IconButton>
+      </Tooltip>
+    );
+  }
+
+  return (
+    <div className={'AppFooterItem'}>
+      <button
+        className={'flex items-center space-x-2 bg-transparent'}
+        onClick={() => props.onClick(!props.collapsed)}
+      >
+        <ArrowLeftCircleIcon className={'h-6'} />
+
+        <span>
+          <Trans i18nKey={'common:collapseSidebar'} />
+        </span>
+      </button>
+    </div>
   );
 }
 

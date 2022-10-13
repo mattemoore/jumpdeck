@@ -1,7 +1,7 @@
 import React, { createContext, Fragment, useContext } from 'react';
 
 import { Popover, Transition } from '@headlessui/react';
-import ChevronDownIcon from '@heroicons/react/24/outline/ChevronDownIcon';
+import ChevronDownIcon from '@heroicons/react/20/solid/ChevronDownIcon';
 
 const PopoverItem = createContext({
   close() {
@@ -41,7 +41,7 @@ const PopoverDropdown: PopoverDropdownComponent<{
             leaveTo="opacity-0 translate-y-1"
           >
             <Popover.Panel className="PopoverPanel">
-              <div className="overflow-hidden rounded-bl-md rounded-br-md">
+              <div className="overflow-hidden rounded-md">
                 <div className="relative flex flex-col bg-white dark:bg-black-300">
                   <PopoverItem.Provider value={{ close }}>
                     {children}

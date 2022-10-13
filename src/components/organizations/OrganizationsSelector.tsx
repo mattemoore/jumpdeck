@@ -2,10 +2,9 @@ import { useCallback, useContext, useState } from 'react';
 import Image from 'next/future/image';
 import { SpringSpinner } from 'react-epic-spinners';
 
-import PlusIcon from '@heroicons/react/24/outline/PlusIcon';
-
 import { setCookie } from 'nookies';
 import { Trans } from 'next-i18next';
+import { PlusCircleIcon } from '@heroicons/react/24/outline';
 
 import { Organization } from '~/lib/organizations/types/organization';
 import { useFetchUserOrganizations } from '~/lib/organizations/hooks/use-fetch-user-organizations';
@@ -82,7 +81,7 @@ const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
                 data-cy={'create-organization-button'}
                 className={'flex flex-row items-center space-x-2 ellipsify'}
               >
-                <PlusIcon className={'h-4 font-bold'} />
+                <PlusCircleIcon className={'h-5'} />
 
                 <span>
                   <Trans
@@ -106,12 +105,12 @@ const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
 
 function OrganizationItem({ organization }: { organization: Organization }) {
   const { logoURL, name } = organization;
-  const imageSize = 22;
+  const imageSize = 18;
 
   return (
     <span
       data-cy={'organization-selector-item'}
-      className={`flex min-w-[8rem] max-w-[12rem] items-center space-x-4`}
+      className={`flex max-w-[12rem] items-center space-x-2`}
     >
       <If condition={logoURL}>
         <span className={'flex items-center'}>
@@ -129,7 +128,7 @@ function OrganizationItem({ organization }: { organization: Organization }) {
         </span>
       </If>
 
-      <span className={'w-auto text-left font-semibold ellipsify'}>{name}</span>
+      <span className={'w-auto text-left font-medium ellipsify'}>{name}</span>
     </span>
   );
 }

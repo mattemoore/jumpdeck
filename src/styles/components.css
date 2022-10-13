@@ -14,7 +14,7 @@
 
     /* NavigationContainer.tsx */
     .NavigationContainer {
-        @apply border-b dark:border-black-400 pt-1 dark:border-black-400 border-gray-50;
+        @apply border-b dark:border-black-400 dark:border-black-400 border-gray-50;
     }
 
     /* NavigationMenu.tsx */
@@ -321,27 +321,27 @@
 
     /* Popover.tsx */
     button.PopoverButton {
-        @apply flex flex-row py-2 px-3
-        dark:hover:bg-black-200 dark:active:bg-black-100
-        items-center w-full dark:bg-black-300 rounded-md
-        bg-gray-100 hover:bg-gray-200 active:bg-gray-300 border
-        dark:border-black-300 text-sm dark:focus:bg-black-300
-        transition-colors outline-none dark:text-white border-transparent;
+        @apply flex flex-row py-1 px-2.5
+        dark:hover:bg-black-400 dark:active:bg-black-100
+        items-center w-full dark:bg-black-500 rounded-md
+        bg-white hover:bg-gray-100 active:bg-gray-200 border border-gray-100
+        dark:border-black-300 text-lg dark:focus:bg-black-300
+        transition-colors outline-none;
     }
 
     button.PopoverButtonActive {
-        @apply rounded-bl-none rounded-br-none border-b-transparent;
+        @apply border-b-transparent;
     }
 
     .PopoverChevronDownIcon {
-        @apply ml-2 h-4 w-4 group-hover:text-opacity-80
+        @apply ml-1 h-5 group-hover:text-opacity-80
         transition ease-in-out duration-150;
     }
 
     .PopoverPanel {
-        @apply absolute rounded-bl-md rounded-br-md shadow-lg
-        z-10 px-2 transform sm:px-0
-        w-full bg-white dark:bg-black-300;
+        @apply absolute rounded-md shadow-lg
+        z-10 px-2 transform sm:px-0 min-w-[12rem]
+        w-full bg-white dark:bg-black-400 mt-0.5;
     }
 
     .PopoverPanelItem {
@@ -352,7 +352,7 @@
     }
 
     .PopoverItemLabel {
-        @apply text-sm font-semibold text-gray-700
+        @apply text-sm font-medium text-gray-700
         hover:text-black-500 dark:hover:text-white
         dark:text-gray-300 py-3 px-4 ellipsify;
     }
@@ -457,7 +457,7 @@
 
     .DropdownMenuItemsContainer {
         @apply z-10 absolute right-0 w-full lg:w-60 mt-2
-        lg:mt-2 origin-top-right bg-white dark:bg-black-400
+        lg:mt-2 origin-top-right bg-white dark:bg-black-300
         lg:rounded-md shadow-xl focus:outline-none
         border-t border-gray-50 dark:border-black-300 py-1;
 
@@ -484,12 +484,11 @@
     }
 
     .DropdownButtonContainer button {
-        @apply dark:active:bg-black-300 active:bg-gray-50
-        dark:outline-black-400 h-full;
+        @apply dark:active:bg-black-200 active:bg-gray-50 dark:outline-black-400 h-full;
     }
 
     .DropdownActiveItem .Button:not(.static) {
-        @apply bg-gray-50 dark:bg-black-300 rounded-none text-black-500 dark:text-current;
+        @apply bg-gray-50 dark:bg-black-200 rounded-none text-black-500 dark:text-current;
     }
 
     .DropdownActiveItem .Button.static {
@@ -497,7 +496,7 @@
     }
 
     .DropdownDivider {
-        @apply bg-gray-200 dark:bg-black-300 border-none h-[1px];
+        @apply bg-gray-200 dark:bg-black-200 border-none h-[1px];
     }
 
     /* Documentation */
