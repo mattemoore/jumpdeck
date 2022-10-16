@@ -12,6 +12,7 @@ import { withAppProps } from '~/lib/props/with-app-props';
 import If from '~/core/ui/If';
 import Alert from '~/core/ui/Alert';
 import SettingsTile from '~/components/settings/SettingsTile';
+import PricingTable from '~/components/PricingTable';
 
 enum SubscriptionStatusQueryParams {
   Success = 'success',
@@ -25,12 +26,15 @@ const Subscription = () => {
   return (
     <SettingsPageContainer title={'Settings'}>
       <Head>
-        <title key="title">Subscription Settings</title>
+        <title key="title">Subscription</title>
       </Head>
 
       <div className={'w-full'}>
         <SettingsTile
           heading={<Trans i18nKey={'common:subscriptionSettingsTabLabel'} />}
+          subHeading={
+            <Trans i18nKey={'subscription:subscriptionTabSubheading'} />
+          }
         >
           <div className={'flex flex-col space-y-4 px-2'}>
             <If condition={status !== undefined}>

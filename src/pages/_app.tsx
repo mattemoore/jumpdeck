@@ -56,7 +56,9 @@ function App(
   }, [pageProps.organization]);
 
   const updateCurrentUser = useCallback(() => {
-    setUserSession(userSessionContext);
+    if (userSessionContext.auth) {
+      setUserSession(userSessionContext);
+    }
   }, [userSessionContext]);
 
   useEffect(updateCurrentOrganization, [updateCurrentOrganization]);

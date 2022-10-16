@@ -5,20 +5,17 @@ import organizationPageObject from '../../support/organization.po';
 
 describe(`Create Subscription`, () => {
   before(() => {
-    Cypress.Cookies.defaults({
-      preserve: ['session', 'sessionExpiresAt'],
-    });
+    // switch to the organization that is mapped to the Stripe mocks
+    organizationPageObject.useDefaultOrganization();
 
     cy.signIn(`/settings/subscription`);
   });
 
   describe('Using the UI', () => {
-    describe('When the session creation succeeds', () => {
-      before(() => {
-        stripePo.selectPlan(0);
-      });
-
+    describe('The session should be created successfully', () => {
       it('should redirect to the success page', () => {
+        stripePo.selectPlan(0);
+
         cy.url().should('include', 'success=true');
         cy.get('.AlertSuccess').should('exist');
       });
@@ -26,11 +23,6 @@ describe(`Create Subscription`, () => {
   });
 
   describe('Using Webhooks', () => {
-    beforeEach(() => {
-      // switch to the organization that is mapped to the Stripe mocks
-      organizationPageObject.switchToOrganization('Test');
-    });
-
     describe(`When the user creates a subscription with status = PAID`, () => {
       before(() => {
         cy.fixture('session').then((session) => {

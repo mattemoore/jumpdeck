@@ -15,10 +15,12 @@ import { canChangeBilling } from '~/lib/organizations/permissions';
 
 import If from '~/core/ui/If';
 
+const stripePlans = configuration.stripe.plans;
+
 const PlanSelectionForm: React.FCC<{
   organization: WithId<Organization>;
 }> = ({ organization }) => {
-  const initialPlan = configuration.plans.find((item) => {
+  const initialPlan = stripePlans.find((item) => {
     return item.stripePriceId === organization?.subscription?.priceId;
   });
 
@@ -30,38 +32,30 @@ const PlanSelectionForm: React.FCC<{
   const customerId = organization.customerId;
 
   return (
-    <>
-      <div>
-        <p>
-          <Trans i18nKey={'subscription:notSubscribedToAnyPlan'} />
-        </p>
-      </div>
+    <div className={'flex flex-col space-y-6'}>
+      <IfHasPermissions condition={canChangeBilling}>
+        <div className={'w-full'}>
+          <PlanSelector plan={selectedPlan} setPlan={setSelectedPlan} />
+        </div>
 
-      <div className={'flex flex-col space-y-4'}>
-        <IfHasPermissions condition={canChangeBilling}>
-          <div className={'w-full lg:w-8/12 xl:w-6/12'}>
-            <PlanSelector plan={selectedPlan} setPlan={setSelectedPlan} />
-          </div>
+        <div className={'flex flex-col space-y-4 lg:flex-row lg:space-x-4'}>
+          <CheckoutRedirectButton
+            organizationId={organization.id}
+            priceId={selectedPlan?.stripePriceId}
+            customerId={customerId}
+            disabled={isCheckoutDisabled}
+          >
+            <Trans i18nKey={'subscription:goToCheckout'} />
+          </CheckoutRedirectButton>
 
-          <div className={'flex flex-row space-x-4'}>
-            <CheckoutRedirectButton
-              organizationId={organization.id}
-              priceId={selectedPlan?.stripePriceId}
-              customerId={customerId}
-              disabled={isCheckoutDisabled}
-            >
-              <Trans i18nKey={'subscription:goToCheckout'} />
-            </CheckoutRedirectButton>
-
-            <If condition={customerId}>
-              <BillingPortalRedirectButton customerId={customerId as string}>
-                <Trans i18nKey={'subscription:manageBilling'} />
-              </BillingPortalRedirectButton>
-            </If>
-          </div>
-        </IfHasPermissions>
-      </div>
-    </>
+          <If condition={customerId}>
+            <BillingPortalRedirectButton customerId={customerId as string}>
+              <Trans i18nKey={'subscription:manageBilling'} />
+            </BillingPortalRedirectButton>
+          </If>
+        </div>
+      </IfHasPermissions>
+    </div>
   );
 };
 

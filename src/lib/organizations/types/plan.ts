@@ -3,4 +3,6 @@ export interface Plan {
   description: string;
   stripePriceId: string;
   price: string;
+
+  features: string[];
 }

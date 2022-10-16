@@ -1,6 +1,6 @@
 {
   "name": "next-firebase-saas-kit",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "",
   "private": true,
   "sideEffects": false,
@@ -65,7 +65,7 @@
     "react-hook-form": "^7.37.0",
     "react-hot-toast": "^2.4.0",
     "reactfire": "^4.2.2",
-    "stripe": "^10.13.0",
+    "stripe": "^10.14.0",
     "zod": "^3.19.1"
   },
   "devDependencies": {

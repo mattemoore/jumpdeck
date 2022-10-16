@@ -1,4 +1,6 @@
 import React from 'react';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
+
 import Button from '~/core/ui/Button';
 import configuration from '~/configuration';
 import { useGetCsrfToken } from '~/core/firebase/hooks/use-get-csrf-token';
@@ -21,8 +23,12 @@ const BillingPortalRedirectButton: React.FCC<{
         defaultValue={getCsrfToken() ?? ''}
       />
 
-      <Button color={'secondary'} className={className}>
-        {children}
+      <Button size={'large'} color={'secondary'} className={className}>
+        <span className={'flex items-center space-x-2'}>
+          <span>{children}</span>
+
+          <ArrowRightIcon className={'h-6'} />
+        </span>
       </Button>
     </form>
   );

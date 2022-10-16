@@ -10,23 +10,25 @@ import { useTranslation, Trans } from 'next-i18next';
 import type { User } from 'firebase/auth';
 import { useAuth, useSigninCheck } from 'reactfire';
 
-import configuration from '~/configuration';
-import { isBrowser } from '~/core/generic';
-
 import { withUserProps } from '~/lib/props/with-user-props';
-import If from '~/core/ui/If';
-import Button from '~/core/ui/Button';
+
+import {
+  getInviteByCode,
+  getUserRoleByOrganization,
+} from '~/lib/server/organizations/memberships';
 
 import { useApiRequest } from '~/core/hooks/use-api';
 import logger from '~/core/logger';
-
-import { initializeFirebaseAdminApp } from '~/core/firebase/admin/initialize-firebase-admin-app';
+import If from '~/core/ui/If';
+import Button from '~/core/ui/Button';
+import configuration from '~/configuration';
+import { isBrowser } from '~/core/generic';
 import OAuthProviders from '~/components/auth/OAuthProviders';
-import GuardedPage from '~/core/firebase/components/GuardedPage';
 import PageLoadingIndicator from '~/core/ui/PageLoadingIndicator';
 
-import { getInviteByCode } from '~/lib/server/organizations/get-invite-by-code';
-import { getUserRoleByOrganization } from '~/lib/server/organizations/get-user-role-by-organization';
+import { initializeFirebaseAdminApp } from '~/core/firebase/admin/initialize-firebase-admin-app';
+import GuardedPage from '~/core/firebase/components/GuardedPage';
+
 import createCsrfToken from '~/core/generic/create-csrf-token';
 import EmailPasswordSignUpContainer from '~/components/auth/EmailPasswordSignUpContainer';
 import EmailPasswordSignInContainer from '~/components/auth/EmailPasswordSignInContainer';
@@ -259,7 +261,8 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   }
 
   try {
-    const invite = await getInviteByCode(code);
+    const inviteRef = await getInviteByCode(code);
+    const invite = inviteRef?.data();
 
     // if the invite wasn't found, it's 404
     if (!invite) {

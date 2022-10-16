@@ -1,8 +1,9 @@
-type Color = `normal` | 'custom';
+type Color = `normal` | 'success' | 'custom';
 type Size = `normal` | `small`;
 
 const colorClasses = {
   normal: `ColorNormal`,
+  success: `ColorSuccess`,
   custom: '',
 };
 

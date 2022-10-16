@@ -22,7 +22,10 @@ const Organization = () => {
 
       <SettingsContentContainer>
         <SettingsTile
-          heading={<Trans i18nKey={'organization:settingsPageLabel'} />}
+          heading={<Trans i18nKey={'organization:generalTabLabel'} />}
+          subHeading={
+            <Trans i18nKey={'organization:generalTabLabelSubheading'} />
+          }
         >
           <FirebaseStorageProvider>
             <UpdateOrganizationForm />

@@ -1,9 +1,10 @@
 {
+  "subscriptionTabSubheading": "Manage your Subscription and Billing",
   "goToCheckout": "Go to Checkout",
   "manageBilling": "Manage Billing",
   "notSubscribedToAnyPlan": "You are not currently subscribed to any plan",
-  "choosePlan": "Choose Plan",
-  "currentPlan": "Current Plan",
+  "choosePlan": "Select a plan below",
+  "currentPlan": "Your Plan",
   "subscriptionWillEndOn": "The subscription will end on {{ endDate }}",
   "unknownErrorAlertHeading": "Sorry, something went wrong",
   "unknownErrorAlert": "We encountered an unknown error while processing your payment. Please try again or contact support.",
@@ -12,5 +13,6 @@
   "checkOutCompletedAlertHeading": "Checkout successfully completed",
   "checkOutCompletedAlert": "Yay, your payment went through!",
   "awaitingPaymentAlertHeading": "Waiting for payment",
-  "awaitingPaymentAlert": "Please bear with us while we wait for the payment to go through."
+  "awaitingPaymentAlert": "Please bear with us while we wait for the payment to go through.",
+  "subscriptionActiveBadge": "Subscription Active"
 }

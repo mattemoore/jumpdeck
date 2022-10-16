@@ -1,4 +1,5 @@
 import React from 'react';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
 import Button from '~/core/ui/Button';
 import configuration from '~/configuration';
@@ -25,8 +26,17 @@ const CheckoutRedirectButton: React.FCC<{
         priceId={props.priceId}
       />
 
-      <Button color={'primary'} type="submit" disabled={props.disabled}>
-        {children}
+      <Button
+        size={'large'}
+        color={'primary'}
+        type="submit"
+        disabled={props.disabled}
+      >
+        <span className={'flex items-center space-x-2'}>
+          <span>{children}</span>
+
+          <ArrowRightIcon className={'h-6'} />
+        </span>
       </Button>
     </form>
   );

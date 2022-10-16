@@ -173,7 +173,7 @@ function sendInviteEmail(props: {
   const productName = configuration.site.siteName;
 
   const subject = 'You have been invited to join an organization!';
-  const link = getInviteLink(inviteCode);
+  const link = getInvitePageFullUrl(inviteCode);
 
   const { html, errors } = renderInviteEmail({
     productName,
@@ -202,7 +202,13 @@ function sendInviteEmail(props: {
   });
 }
 
-function getInviteLink(inviteCode: string) {
+/**
+ * @name getInvitePageFullUrl
+ * @description Return the full URL to the invite page link. For example,
+ * makerkit.dev/auth/invite/{INVITE_CODE}
+ * @param inviteCode
+ */
+function getInvitePageFullUrl(inviteCode: string) {
   let siteUrl = configuration.site.siteUrl;
 
   if (configuration.emulator) {

@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import type { UserInfo } from 'firebase/auth';
 import { Trans } from 'next-i18next';
 import { Menu } from '@headlessui/react';
@@ -11,7 +13,6 @@ import {
 
 import Dropdown from '~/core/ui/Dropdown';
 import ProfileAvatar from './ProfileAvatar';
-import { useMemo } from 'react';
 
 const ProfileDropdown: React.FCC<{
   user: Maybe<UserInfo>;

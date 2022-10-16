@@ -7,8 +7,9 @@ import { getLoggedInUser } from '~/core/firebase/admin/auth/get-logged-in-user';
 import { initializeFirebaseAdminApp } from '~/core/firebase/admin/initialize-firebase-admin-app';
 
 import { getCurrentOrganization } from '~/lib/server/organizations/get-current-organization';
-import { getUser } from '~/lib/server/organizations/get-user';
 import { withTranslationProps } from '~/lib/props/with-translation-props';
+import { getUserData } from '~/lib/server/queries';
+
 import createCsrfCookie from '~/core/generic/create-csrf-token';
 
 const ORGANIZATION_ID_COOKIE_NAME = 'organizationId';
@@ -53,7 +54,7 @@ export async function withAppProps(
 
     // we fetch the user record from Firestore
     // which is a separate object from the auth metadata
-    const user = await getUser(metadata.uid);
+    const user = await getUserData(metadata.uid);
     const currentOrganizationId = ctx.req.cookies[ORGANIZATION_ID_COOKIE_NAME];
 
     // if the user wasn't found, redirect to the onboarding

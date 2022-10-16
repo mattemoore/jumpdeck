@@ -12,6 +12,7 @@ interface AddSubscriptionProps {
 }
 
 /**
+ * @name setOrganizationSubscription
  * @description Adds or updates a subscription to an Organization
  */
 export function setOrganizationSubscription(props: AddSubscriptionProps) {
@@ -25,6 +26,7 @@ export function setOrganizationSubscription(props: AddSubscriptionProps) {
 }
 
 /**
+ * @name deleteOrganizationSubscription
  * @description Removes a subscription from an organization by
  * Stripe subscription ID
  * @param subscriptionId
@@ -38,6 +40,7 @@ export async function deleteOrganizationSubscription(subscriptionId: string) {
 }
 
 /**
+ * @name activatePendingSubscription
  * @description Activates a pending subscription once an async payment goes
  * through
  */
@@ -49,6 +52,13 @@ export async function activatePendingSubscription(organizationId: string) {
   } as UpdateData<Organization>);
 }
 
+/**
+ * @name updateSubscriptionById
+ * @default Update subscription with ID {@link subscriptionId} with data
+ * object {@link subscription}
+ * @param subscriptionId
+ * @param subscription
+ */
 export async function updateSubscriptionById(
   subscriptionId: string,
   subscription: OrganizationSubscription
@@ -60,6 +70,12 @@ export async function updateSubscriptionById(
   });
 }
 
+/**
+ * @name getOrganizationBySubscriptionId
+ * @description Retrieve a Firestore Organization given its
+ * subscription ID {@link subscriptionId}. Throws an error when not found.
+ * @param subscriptionId
+ */
 async function getOrganizationBySubscriptionId(subscriptionId: string) {
   const path = 'subscription.id';
   const op = '==';
@@ -76,4 +92,19 @@ async function getOrganizationBySubscriptionId(subscriptionId: string) {
   }
 
   return docs[0].ref;
+}
+
+/**
+ * @description Retrieve an organization using the customer ID assigned by
+ * Stripe after the first checkout, e,g. when the customer record is created
+ * @param customerId
+ */
+export async function getOrganizationByCustomerId(customerId: string) {
+  const organizations = getOrganizationsCollection();
+  const path = `customerId`;
+  const op = '==';
+
+  const result = await organizations.where(path, op, customerId).get();
+
+  return result.docs[0];
 }

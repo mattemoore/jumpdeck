@@ -47,7 +47,7 @@ const Index = () => {
 
             <div className={'flex flex-col items-center space-y-2.5'}>
               <Button
-                className={'GradientButton p-2'}
+                className={'GradientButton rounded-full p-1'}
                 size={'large'}
                 href={'/auth/sign-up'}
               >

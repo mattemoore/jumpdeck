@@ -19,6 +19,7 @@
   "expandSidebar": "Expand Sidebar",
   "collapseSidebar": "Collapse Sidebar",
   "documentation": "Documentation",
+  "getStarted": "Get Started",
   "roles": {
     "owner": {
       "label": "Owner",

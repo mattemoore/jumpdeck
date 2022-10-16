@@ -66,6 +66,9 @@ const ProfileAuthenticationPage: React.FC<{
         <div className={'flex flex-col space-y-8'}>
           <SettingsTile
             heading={<Trans i18nKey={'profile:manageConnectedAccounts'} />}
+            subHeading={
+              <Trans i18nKey={'profile:manageConnectedAccountsSubheading'} />
+            }
           >
             <ConnectedAccountsContainer />
           </SettingsTile>
@@ -74,6 +77,9 @@ const ProfileAuthenticationPage: React.FC<{
           <If condition={configuration.auth.enableMultiFactorAuth}>
             <SettingsTile
               heading={<Trans i18nKey={'profile:multiFactorAuth'} />}
+              subHeading={
+                <Trans i18nKey={'profile:multiFactorAuthSubheading'} />
+              }
             >
               {/* MFA DISABLED BY USER: SHOW SETUP CONTAINER */}
               <If condition={!multiFactor}>

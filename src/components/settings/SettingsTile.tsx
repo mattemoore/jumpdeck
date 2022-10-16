@@ -1,18 +1,28 @@
 import Heading from '~/core/ui/Heading';
 import If from '~/core/ui/If';
+import SubHeading from '~/core/ui/SubHeading';
 
 const SettingsTile: React.FCC<{
   heading?: string | React.ReactNode;
-}> = ({ children, heading }) => {
+  subHeading?: string | React.ReactNode;
+}> = ({ children, heading, subHeading }) => {
   return (
-    <div className={'flex flex-col space-y-5'}>
-      <If condition={heading}>
-        <Heading type={3}>{heading}</Heading>
-      </If>
+    <div className={'flex flex-col space-y-6'}>
+      <div className={'flex flex-col space-y-1.5'}>
+        <If condition={heading}>
+          <Heading type={3}>{heading}</Heading>
+        </If>
+
+        <If condition={subHeading}>
+          <p className={'text-xl font-medium text-gray-500 dark:text-gray-400'}>
+            {subHeading}
+          </p>
+        </If>
+      </div>
 
       <div
         className={
-          'rounded-lg border border-gray-100 p-6' + ' dark:border-black-300'
+          'rounded-lg border border-gray-100 p-6 dark:border-black-300'
         }
       >
         {children}

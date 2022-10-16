@@ -1,10 +1,14 @@
 import { PropsWithChildren } from 'react';
 import { RadioGroup } from '@headlessui/react';
-import { Trans } from 'next-i18next';
+import classNames from 'classnames';
 
 import configuration from '~/configuration';
 import If from '~/core/ui/If';
 import { Plan } from '~/lib/organizations/types/plan';
+import PricingTable from '~/components/PricingTable';
+import Heading from '~/core/ui/Heading';
+
+const STRIPE_PLANS = configuration.stripe.plans;
 
 export default function PlanSelector(
   props: PropsWithChildren<{
@@ -12,64 +16,83 @@ export default function PlanSelector(
     setPlan: React.Dispatch<React.SetStateAction<Maybe<Plan>>>;
   }>
 ) {
-  const plans = configuration.plans;
-
   return (
-    <RadioGroup value={props.plan} onChange={props.setPlan}>
-      <RadioGroup.Label>
-        <span className={'text-sm font-semibold'}>
-          <Trans i18nKey={'subscription:choosePlan'} />
-        </span>
-      </RadioGroup.Label>
-
-      <div className="mt-2 w-full space-y-2.5">
-        {plans.map((plan) => (
-          <RadioGroup.Option
-            key={plan.name}
-            value={plan}
-            data-cy={`subscription-plan`}
-            className={({ active, checked }) =>
-              `PlanSelectorRadioItem ${
-                active ? '' : 'PlanSelectorRadioItemNonActive'
+    <div
+      className={
+        'mt-2 flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-14'
+      }
+    >
+      <RadioGroup
+        className={'w-full lg:w-6/12 2xl:w-4/12'}
+        value={props.plan}
+        onChange={props.setPlan}
+      >
+        <div className="w-full space-y-4">
+          {STRIPE_PLANS.map((plan) => (
+            <RadioGroup.Option
+              key={plan.name}
+              value={plan}
+              data-cy={`subscription-plan`}
+              className={({ active, checked }) =>
+                classNames(`PlanSelectorRadioItem`, {
+                  ['PlanSelectorRadioItemNonActive']: !active,
+                  ['PlanSelectorRadioItemChecked']: checked,
+                })
               }
-                  ${checked ? 'PlanSelectorRadioItemChecked' : ''}
-                    `
-            }
-          >
-            {({ checked }) => (
-              <>
-                <div className="flex w-full items-center justify-between">
-                  <div className="flex w-full items-center space-x-4">
-                    <div className="flex-shrink-0">
-                      <If condition={checked} fallback={<UncheckIcon />}>
-                        <CheckIcon className="PlanSelectorCheckIcon" />
-                      </If>
+            >
+              {({ checked }) => (
+                <>
+                  <div className="flex w-full items-center justify-between">
+                    <div className="flex w-full items-center space-x-6">
+                      <div className="flex-shrink-0">
+                        <If condition={checked} fallback={<UncheckIcon />}>
+                          <CheckIcon className="PlanSelectorCheckIcon" />
+                        </If>
+                      </div>
+
+                      <div className="flex-auto text-sm">
+                        <RadioGroup.Label as="p" className={`PlanSelectorName`}>
+                          {plan.name}
+                        </RadioGroup.Label>
+
+                        <RadioGroup.Description
+                          as="span"
+                          className={classNames(`inline text-base`, {
+                            ['dark:text-gray-300']: checked,
+                            ['text-gray-500 dark:text-gray-400']: !checked,
+                          })}
+                        >
+                          {plan.description}
+                        </RadioGroup.Description>
+                      </div>
+
+                      <span className={'PlanSelectorPrice'}>{plan.price}</span>
                     </div>
-
-                    <div className="flex-auto text-sm">
-                      <RadioGroup.Label as="p" className={`PlanSelectorName`}>
-                        {plan.name}
-                      </RadioGroup.Label>
-
-                      <RadioGroup.Description
-                        as="span"
-                        className={`inline ${
-                          checked ? 'dark:text-gray-300' : 'dark:text-gray-400'
-                        }`}
-                      >
-                        <span>{plan.description}</span>{' '}
-                      </RadioGroup.Description>
-                    </div>
-
-                    <span className={'PlanSelectorPrice'}>{plan.price}</span>
                   </div>
-                </div>
-              </>
-            )}
-          </RadioGroup.Option>
-        ))}
-      </div>
-    </RadioGroup>
+                </>
+              )}
+            </RadioGroup.Option>
+          ))}
+        </div>
+      </RadioGroup>
+
+      <If condition={props.plan}>
+        {(plan) => {
+          return (
+            <div className={'flex w-full flex-1 flex-col space-y-6'}>
+              <div className={'flex flex-col space-y-2'}>
+                <Heading type={2}>{plan.name}</Heading>
+                <Heading type={4}>{plan.description}</Heading>
+              </div>
+
+              <PricingTable.Price>{plan.price}</PricingTable.Price>
+
+              <PricingTable.FeaturesList features={plan.features} />
+            </div>
+          );
+        }}
+      </If>
+    </div>
   );
 }
 

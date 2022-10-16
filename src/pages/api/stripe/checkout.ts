@@ -11,9 +11,9 @@ import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
 import { getApiRefererPath } from '~/core/generic/get-api-referer-path';
 
 import { createStripeCheckout } from '~/lib/stripe/create-checkout';
-import { getUserRoleByOrganization } from '~/lib/server/organizations/get-user-role-by-organization';
 import { canChangeBilling } from '~/lib/organizations/permissions';
 import withCsrf from '~/core/middleware/with-csrf';
+import { getUserRoleByOrganization } from '~/lib/server/organizations/memberships';
 
 const SUPPORTED_METHODS: HttpMethod[] = ['POST'];
 
@@ -39,6 +39,7 @@ async function checkoutsSessionHandler(
 
   const { organizationId, priceId, customerId, returnUrl } = bodyResult.data;
 
+  // check the user's role has access to the checkout
   const canChangeBilling = await getUserCanAccessCheckout({
     organizationId,
     userId,

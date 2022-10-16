@@ -15,6 +15,7 @@ const stripePo = {
   $plans: () => $get('subscription-plan'),
   $checkoutForm: () => $get('checkout-form'),
   $subscriptionName: () => $get('subscription-name'),
+  $subscriptionPeriodEnd: () => $get('subscription-period-end'),
   $awaitingPaymentAlert: () => $get('awaiting-payment-alert'),
   createWebhookPayload,
   sendWebhook(params: { type: StripeWebhooks; body: UnknownObject }) {

@@ -5,16 +5,16 @@ import { join } from 'path';
 import logger from '~/core/logger';
 import configuration from '~/configuration';
 import { HttpStatusCode } from '~/core/generic';
+import withCsrf from '~/core/middleware/with-csrf';
 
 import { createBillingPortalSession } from '~/lib/stripe/create-billing-portal-session';
 import { withAuthedUser } from '~/core/middleware/with-authed-user';
-import { getOrganizationByCustomerId } from '~/lib/server/organizations/get-organization-by-customer-id';
-import { getUserRoleByOrganization } from '~/lib/server/organizations/get-user-role-by-organization';
 import { canChangeBilling } from '~/lib/organizations/permissions';
 import { withPipe } from '~/core/middleware/with-pipe';
 import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
 import { getApiRefererPath } from '~/core/generic/get-api-referer-path';
-import withCsrf from '~/core/middleware/with-csrf';
+import { getUserRoleByOrganization } from '~/lib/server/organizations/memberships';
+import { getOrganizationByCustomerId } from '~/lib/server/organizations/subscriptions';
 
 const SUPPORTED_HTTP_METHODS: HttpMethod[] = ['POST'];
 
@@ -80,6 +80,11 @@ export default function stripePortalHandler(
   )(req, res);
 }
 
+/**
+ * @name getUserCanAccessCustomerPortal
+ * @description Returns whether a user {@link userId} has access to the
+ * Stripe portal of an organization with customer ID {@link customerId}
+ */
 async function getUserCanAccessCustomerPortal(params: {
   customerId: string;
   userId: string;

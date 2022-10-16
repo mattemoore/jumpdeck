@@ -1,6 +1,6 @@
-import { getOrganizationsByUserId } from '~/lib/server/organizations/get-organizations-by-user-id';
 import { getOrganizationById } from '../queries';
 import { Organization } from '~/lib/organizations/types/organization';
+import { getOrganizationsCollection } from '~/lib/server/collections';
 
 /**
  * @name getCurrentOrganization
@@ -13,6 +13,18 @@ export async function getCurrentOrganization(
   return getOrganizationByIdOrFirst(organizationId, userId);
 }
 
+/**
+ * @name getOrganizationByIdOrFirst
+ * @description Given a user ID {@link userId}, this function will return
+ * either:
+ *
+ * 1. The organizationId passed as first parameter, if passed
+ * 2. Or, in case of errors, the first organization found the user belongs to as
+ * fallback
+ *
+ * @param organizationId
+ * @param userId
+ */
 async function getOrganizationByIdOrFirst(
   organizationId: Maybe<string>,
   userId: string
@@ -83,4 +95,16 @@ function serializeOrganizationData(organization: Organization, id: string) {
     members,
     id,
   };
+}
+
+/**
+ * @name getOrganizationsByUserId
+ * @description Get all the organizations where the user {@link userId} is a member
+ * @param userId
+ */
+function getOrganizationsByUserId(userId: string) {
+  const organizations = getOrganizationsCollection();
+  const path = `members.${userId}`;
+
+  return organizations.where(path, '!=', null);
 }

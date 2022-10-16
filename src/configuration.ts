@@ -76,28 +76,47 @@ const configuration = {
   sentry: {
     dsn: process.env.SENTRY_DSN,
   },
-  plans: [
-    {
-      name: 'Basic',
-      description: 'Description of your Basic plan',
-      price: '$249/year',
-      stripePriceId: 'basic-plan',
-    },
-    {
-      name: 'Pro',
-      description: 'Description of your Pro plan',
-      price: '$999/year',
-      stripePriceId: '',
-    },
-  ],
-  testingPlans: [
-    {
-      name: 'Testing Plan',
-      description: 'Description of your Testing plan',
-      price: '$999/year',
-      stripePriceId: 'price_1LFibmKr5l4rxPx3wWcSO8UY',
-    },
-  ],
+  stripe: {
+    plans: [
+      {
+        name: 'Basic',
+        description: 'Description of your Basic plan',
+        price: '$9/month',
+        stripePriceId: 'basic-plan',
+        trialPeriodDays: 0,
+        features: [
+          'Basic Reporting',
+          'Up to 20 users',
+          '1GB for each user',
+          'Chat Support',
+        ],
+      },
+      {
+        name: 'Pro',
+        description: 'Description of your Pro plan',
+        price: '29/month',
+        stripePriceId: 'pro-plan',
+        features: [
+          'Advanced Reporting',
+          'Up to 50 users',
+          '5GB for each user',
+          'Chat and Phone Support',
+        ],
+      },
+      {
+        name: 'Premium',
+        description: 'Description of your Premium plan',
+        price: '$79/year',
+        stripePriceId: 'premium-plan',
+        features: [
+          'Advanced Reporting',
+          'Unlimited users',
+          '50GB for each user',
+          'Account Manager',
+        ],
+      },
+    ],
+  },
 };
 
 export default configuration;

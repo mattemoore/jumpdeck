@@ -37,8 +37,14 @@ export default RouteShellWithSidebar;
 
 function useDisableBodyScrolling() {
   useEffect(() => {
-    if (isBrowser()) {
-      document.body.style.setProperty('overflow', 'hidden');
+    if (!isBrowser()) {
+      return;
     }
+
+    document.body.style.setProperty('overflow', 'hidden');
+
+    return () => {
+      document.body.style.removeProperty('overflow');
+    };
   }, []);
 }

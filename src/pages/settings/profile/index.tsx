@@ -52,7 +52,10 @@ const Profile = () => {
       <ProfileSettingsTabs />
 
       <SettingsContentContainer>
-        <SettingsTile heading={<Trans i18nKey={'profile:generalTab'} />}>
+        <SettingsTile
+          heading={<Trans i18nKey={'profile:generalTab'} />}
+          subHeading={<Trans i18nKey={'profile:generalTabSubheading'} />}
+        >
           <FirebaseStorageProvider>
             <UpdateProfileForm user={user} onUpdate={onUpdate} />
           </FirebaseStorageProvider>

@@ -36,7 +36,10 @@ const ProfileEmailSettings = () => {
       <ProfileSettingsTabs />
 
       <SettingsContentContainer>
-        <SettingsTile heading={<Trans i18nKey={'profile:emailTab'} />}>
+        <SettingsTile
+          heading={<Trans i18nKey={'profile:emailTab'} />}
+          subHeading={<Trans i18nKey={'profile:emailTabTabSubheading'} />}
+        >
           <If
             condition={canUpdateEmail}
             fallback={<WarnCannotUpdateEmailAlert />}

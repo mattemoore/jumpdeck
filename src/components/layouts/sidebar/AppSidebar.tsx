@@ -149,7 +149,7 @@ function AppSidebarItem({
   const active = isRouteActive(href, router.asPath, depth);
 
   return (
-    <Link href={href} passHref shallow={shallow ?? true}>
+    <Link href={href} passHref shallow={shallow ?? active}>
       <a
         className={`AppSidebarItem ${
           active ? `AppSidebarItemActive` : 'AppSidebarItemNotActive'

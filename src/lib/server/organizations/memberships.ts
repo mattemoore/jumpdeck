@@ -1,4 +1,4 @@
-import { getFirestore, FieldValue } from 'firebase-admin/firestore';
+import { FieldValue, getFirestore } from 'firebase-admin/firestore';
 import { getAuth } from 'firebase-admin/auth';
 import { ApiError } from 'next/dist/server/api-utils';
 
@@ -6,13 +6,19 @@ import { HttpStatusCode } from '~/core/generic';
 import { MembershipRole } from '~/lib/organizations/types/membership-role';
 import { Organization } from '~/lib/organizations/types/organization';
 
-import { getInviteByCode, getOrganizationById, getUserById } from '../queries';
+import { getOrganizationById, getUserRefById } from '../queries';
+
 import {
   throwNotFoundException,
   throwUnauthorizedException,
 } from '~/core/http-exceptions';
 
+import { getInvitesCollection } from '~/lib/server/collections';
+import { MembershipInvite } from '~/lib/organizations/types/membership-invite';
+import { OrganizationPlanStatus } from '~/lib/organizations/types/organization-subscription';
+
 /**
+ * @name getOrganizationMembers
  * @description Returns the {@link UserInfo} object from the members of an organization
  */
 export async function getOrganizationMembers(params: {
@@ -37,6 +43,7 @@ export async function getOrganizationMembers(params: {
 }
 
 /**
+ * @name removeMemberFromOrganization
  * @description Remove a member with ID userId from an Organization
  * @param params
  */
@@ -67,6 +74,7 @@ export async function removeMemberFromOrganization(params: {
 }
 
 /**
+ * @name updateMemberRole
  * @description Update the role of a member within an organization
  * @param params
  */
@@ -90,7 +98,7 @@ export async function updateMemberRole(params: {
     targetUserId,
   });
 
-  const user = await getUserById(targetUserId);
+  const user = await getUserRefById(targetUserId);
   const memberPath = getMemberPath(targetUserId);
 
   await doc.ref.update({
@@ -102,6 +110,7 @@ export async function updateMemberRole(params: {
 }
 
 /**
+ * @name acceptInviteToOrganization
  * @description Add a member to an organization by using the invite code
  */
 export async function acceptInviteToOrganization({
@@ -169,6 +178,8 @@ function getMemberPath(userId: string) {
 
 /**
  * @name assertUserCanUpdateMember
+ * @description Return an error when the current user cannot alter data of
+ * the target user
  * @param params
  */
 function assertUserCanUpdateMember(params: {
@@ -193,4 +204,60 @@ function assertUserCanUpdateMember(params: {
       `Current member does not have a greater role than target member`
     );
   }
+}
+
+/**
+ * @name getInviteByCode
+ * @description Fetch an invite by its ID, without having to know the
+ * organization it belongs to
+ * @param code
+ */
+export async function getInviteByCode(code: string) {
+  const collection = getInvitesCollection();
+  const path: keyof MembershipInvite = 'code';
+  const op = '==';
+
+  const query = collection.where(path, op, code);
+  const ref = await query.get();
+
+  if (ref.size) {
+    return ref.docs[0];
+  }
+}
+
+/**
+ * @description Get the role of a user given an organization ID
+ * @param params
+ */
+export async function getUserRoleByOrganization(params: {
+  userId: string;
+  organizationId: string;
+}) {
+  const ref = await getOrganizationById(params.organizationId);
+  const data = ref.data();
+
+  return data?.members[params.userId]?.role;
+}
+
+/**
+ * @name getOrganizationSubscription
+ * @description Returns the organization's subscription
+ * @param organizationId
+ */
+export async function getOrganizationSubscription(organizationId: string) {
+  const organization = await getOrganizationById(organizationId);
+
+  return organization.data()?.subscription;
+}
+
+/**
+ * @name isOrganizationSubscriptionActive
+ * @description Returns whether the organization is on any paid
+ * subscription, regardless of plan.
+ * @param organizationId
+ */
+export async function isOrganizationSubscriptionActive(organizationId: string) {
+  const subscription = await getOrganizationSubscription(organizationId);
+
+  return subscription?.status === OrganizationPlanStatus.Paid;
 }

@@ -11,6 +11,14 @@ interface Params {
   userId: string;
 }
 
+/**
+ * @name completeOnboarding
+ * @description Handles the submission of the onboarding flow. By default,
+ * we use the submission to create the Organization and the user record
+ * associated with the User who signed up using its ID
+ * @param userId
+ * @param organizationName
+ */
 export async function completeOnboarding({ userId, organizationName }: Params) {
   const firestore = getFirestore();
   const auth = getAuth();

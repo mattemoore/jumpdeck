@@ -4,6 +4,14 @@ import { setCookie } from 'nookies';
 const SESSION_COOKIE_NAME = `session`;
 const SESSION_EXPIRES_AT_COOKIE_NAME = `sessionExpiresAt`;
 
+/**
+ * @name createSessionCookie
+ * @description Given an ID Token sent by the Client SDK, create and return
+ * a session cookie using Firebase Auth. The session cookie gets stored and
+ * will be used for authenticating users server-side for SSR and API functions.
+ * @param idToken
+ * @param expiresIn
+ */
 export async function createSessionCookie(idToken: string, expiresIn: number) {
   const { getAuth } = await import('firebase-admin/auth');
   const auth = getAuth();
@@ -81,7 +89,10 @@ function setSessionExpiryCookie(res: NextApiResponse, expiresIn: number) {
   );
 }
 
-// only save cookie with secure flag if we're not in dev mode
+/**
+ * @name shouldUseSecureCookies
+ * @description Only save cookie with secure flag if we're not in dev mode
+ */
 function shouldUseSecureCookies() {
   return process.env.NEXT_PUBLIC_EMULATOR !== 'true';
 }

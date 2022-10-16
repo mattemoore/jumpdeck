@@ -39,7 +39,11 @@ const NavigationMenuItem: React.FCC<{
         [`NavigationItemNotActive`]: !active,
       })}
     >
-      <Link href={disabled ? '' : link.path} passHref shallow={shallow ?? true}>
+      <Link
+        passHref
+        href={disabled ? '' : link.path}
+        shallow={shallow ?? active}
+      >
         <a aria-disabled={disabled}>
           {isTranslation ? <Trans i18nKey={link.i18n} /> : null}
           {isLabel ? link.label : null}

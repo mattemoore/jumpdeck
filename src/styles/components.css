@@ -75,7 +75,7 @@
 
     /* SubHeading.tsx */
     .SubHeading {
-        @apply text-2xl leading-[2.2rem] text-gray-500
+        @apply text-xl leading-[2.2rem] text-gray-500
         dark:text-gray-400 font-normal;
     }
 
@@ -249,15 +249,15 @@
     .Button.ButtonTransparent {
         @apply hover:bg-gray-50 active:bg-gray-100
         dark:hover:bg-black-400 dark:active:bg-black-300
-        ring-primary-50 dark:ring-black-400
+        ring-primary-50 dark:ring-black-400 dark:hover:text-white
         text-gray-800 dark:text-gray-300 font-medium;
     }
 
     .Button.GradientButton {
-        @apply flex !bg-gradient-to-r md:w-auto
+        @apply flex !bg-gradient-to-r md:w-auto hover:shadow-primary-600
         from-primary-400 text-center text-white md:h-auto
-        justify-center to-primary-600
-        transition-all hover:to-primary-700 hover:shadow-xl;
+        justify-center to-primary-600 hover:shadow-primary-500/40
+        transition-all hover:to-primary-700 active:from-primary-500 hover:shadow-lg;
     }
 
     .ButtonNormal {
@@ -641,31 +641,31 @@
 
     /* PlanSelector.tsx */
     .PlanSelectorRadioItem {
-        @apply relative flex cursor-pointer rounded-lg border border-gray-50
-        px-5 py-4 shadow focus:outline-none dark:border-black-400
-        transition-colors;
+        @apply relative flex cursor-pointer rounded-lg border border-gray-200
+        px-5 py-4 shadow-sm focus:outline-none hover:border-gray-300 dark:border-black-400
+        dark:hover:border-black-300 transition-all duration-100;
     }
 
     .PlanSelectorRadioItemNonActive {
-        @apply hover:bg-gray-50 dark:bg-black-300
-        dark:hover:bg-black-400 dark:active:bg-black-500
+        @apply hover:bg-gray-50 dark:bg-black-200
+        dark:hover:bg-black-300 dark:active:bg-black-100
         active:bg-gray-200;
     }
 
     .PlanSelectorRadioItemChecked {
-        @apply bg-gray-100 ring-2 dark:bg-black-400 ring-primary-400;
+        @apply bg-gray-100 ring dark:bg-black-300 ring-primary-500;
     }
 
     .PlanSelectorCheckIcon {
-        @apply h-6 w-6 rounded-full bg-primary-400 fill-transparent;
+        @apply h-6 w-6 rounded-full bg-primary-500 fill-transparent;
     }
 
     .PlanSelectorName {
-        @apply text-sm font-bold text-current dark:text-white;
+        @apply text-lg font-bold text-current dark:text-white;
     }
 
     .PlanSelectorPrice {
-        @apply text-sm font-bold dark:text-white;
+        @apply text-base font-bold dark:text-white;
     }
 
     .Table {

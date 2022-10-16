@@ -37,7 +37,8 @@ const ProfilePasswordSettings = () => {
 
       <SettingsContentContainer>
         <SettingsTile
-          heading={<Trans i18nKey={'organization:passwordSettingsTab'} />}
+          heading={<Trans i18nKey={'profile:passwordTab'} />}
+          subHeading={<Trans i18nKey={'profile:passwordTabSubheading'} />}
         >
           <If
             condition={canUpdatePassword}

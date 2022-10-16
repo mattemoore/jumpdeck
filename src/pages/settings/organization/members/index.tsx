@@ -51,31 +51,27 @@ const OrganizationMembersPage: React.FCC = () => {
       <OrganizationSettingsTabs />
 
       <SettingsContentContainer>
-        <div className="flex flex-1 flex-col space-y-4">
-          <SettingsTile>
-            <div className="flex items-center justify-between space-x-8">
-              <Heading type={3}>
-                <Trans i18nKey={'organization:membersPageHeading'} />
-              </Heading>
+        <div className={'mb-4 flex justify-end'}>
+          <If condition={canInviteUsers}>
+            <InviteMembersButton />
+          </If>
+        </div>
 
-              <If condition={canInviteUsers}>
-                <InviteMembersButton />
-              </If>
-            </div>
-
-            <div className={'mt-4'}>
-              <OrganizationMembersList organizationId={id} />
-            </div>
+        <div className="flex flex-1 flex-col space-y-6">
+          <SettingsTile
+            heading={<Trans i18nKey={'organization:membersTabLabel'} />}
+            subHeading={<Trans i18nKey={'organization:membersTabSubheading'} />}
+          >
+            <OrganizationMembersList organizationId={id} />
           </SettingsTile>
 
-          <SettingsTile>
-            <Heading type={3}>
-              <Trans i18nKey={'organization:pendingInvitesHeading'} />
-            </Heading>
-
-            <div className={'mt-4'}>
-              <OrganizationInvitedMembersList organizationId={id} />
-            </div>
+          <SettingsTile
+            heading={<Trans i18nKey={'organization:pendingInvitesHeading'} />}
+            subHeading={
+              <Trans i18nKey={'organization:pendingInvitesSubheading'} />
+            }
+          >
+            <OrganizationInvitedMembersList organizationId={id} />
           </SettingsTile>
         </div>
       </SettingsContentContainer>

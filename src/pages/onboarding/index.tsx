@@ -151,9 +151,9 @@ function redirectToAppHome() {
  * @param userId
  */
 async function getUserData(userId: string) {
-  const { getUserById } = await import('~/lib/server/queries');
+  const { getUserRefById } = await import('~/lib/server/queries');
 
-  const ref = await getUserById(userId);
+  const ref = await getUserRefById(userId);
   const data = ref.data();
 
   if (data) {

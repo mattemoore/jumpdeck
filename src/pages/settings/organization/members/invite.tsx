@@ -24,16 +24,13 @@ const OrganizationMembersInvitePage: React.FCC = () => {
       <OrganizationSettingsTabs />
 
       <SettingsContentContainer>
-        <SettingsTile>
-          <div className={'flex flex-col space-y-4'}>
-            <div className={'flex space-x-4'}>
-              <Heading type={3}>
-                <Trans i18nKey={'organization:inviteMembersPageHeading'} />
-              </Heading>
-            </div>
-
-            <InviteMembersForm />
-          </div>
+        <SettingsTile
+          heading={<Trans i18nKey={'organization:inviteMembersPageHeading'} />}
+          subHeading={
+            <Trans i18nKey={'organization:inviteMembersPageSubheading'} />
+          }
+        >
+          <InviteMembersForm />
         </SettingsTile>
 
         <div className={'mt-4'}>

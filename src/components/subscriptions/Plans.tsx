@@ -8,11 +8,13 @@ import BillingPortalRedirectButton from '~/components/subscriptions/BillingRedir
 
 import If from '~/core/ui/If';
 import SubscriptionCard from './SubscriptionCard';
+import Alert from '~/core/ui/Alert';
 
 import { canChangeBilling } from '~/lib/organizations/permissions';
 import { IfHasPermissions } from '~/components/IfHasPermissions';
+import { OrganizationPlanStatus } from '~/lib/organizations/types/organization-subscription';
 
-const Plans: React.FCC = () => {
+const Plans: React.FC = () => {
   const organization = useCurrentOrganization();
 
   if (!organization) {
@@ -20,27 +22,46 @@ const Plans: React.FCC = () => {
   }
 
   const customerId = organization.customerId;
+  const subscription = organization.subscription;
+
+  if (!subscription) {
+    return <PlanSelectionForm organization={organization} />;
+  }
+
+  const isAwaitingPayment =
+    subscription.status === OrganizationPlanStatus.AwaitingPayment;
 
   return (
-    <If
-      condition={organization.subscription}
-      fallback={<PlanSelectionForm organization={organization} />}
-    >
-      {(subscription) => (
-        <div className={'flex flex-col space-y-4'}>
-          <SubscriptionCard subscription={subscription} />
+    <div className={'flex flex-col space-y-4'}>
+      <If condition={isAwaitingPayment}>
+        <AwaitingPaymentAlert />
+      </If>
 
-          <IfHasPermissions condition={canChangeBilling}>
-            <If condition={customerId}>
-              <BillingPortalRedirectButton customerId={customerId as string}>
-                <Trans i18nKey={'subscription:manageBilling'} />
-              </BillingPortalRedirectButton>
-            </If>
-          </IfHasPermissions>
-        </div>
-      )}
-    </If>
+      <SubscriptionCard subscription={subscription} />
+
+      <IfHasPermissions condition={canChangeBilling}>
+        <If condition={customerId}>
+          <BillingPortalRedirectButton customerId={customerId as string}>
+            <Trans i18nKey={'subscription:manageBilling'} />
+          </BillingPortalRedirectButton>
+        </If>
+      </IfHasPermissions>
+    </div>
   );
 };
+
+function AwaitingPaymentAlert() {
+  return (
+    <Alert type={'warn'}>
+      <Alert.Heading>
+        <Trans i18nKey={'subscription:awaitingPaymentAlertHeading'} />
+      </Alert.Heading>
+
+      <span data-cy={'awaiting-payment-alert'}>
+        <Trans i18nKey={'subscription:awaitingPaymentAlert'} />
+      </span>
+    </Alert>
+  );
+}
 
 export default Plans;
