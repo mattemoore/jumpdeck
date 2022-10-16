@@ -6,31 +6,62 @@ const LIGHT_THEME_META_COLOR = configuration.site.themeColor;
 const DARK_THEME_META_COLOR = configuration.site.themeColorDark;
 
 export const DARK_THEME_CLASSNAME = `dark`;
+export const LIGHT_THEME_CLASSNAME = `light`;
 
-export function loadThemeFromLocalStorage() {
+function getThemeFromLocalStorage() {
   if (isBrowser()) {
     return localStorage.getItem(THEME_LOCAL_STORAGE_KEY);
   }
 
-  return '';
+  return null;
+}
+
+export function getStoredTheme() {
+  return getThemeFromLocalStorage();
+}
+
+export function getDefaultTheme() {
+  return getThemeFromHTML();
 }
 
 export function setTheme(theme: string | null) {
   const root = getHtml();
 
-  if (theme) {
-    localStorage.setItem(THEME_LOCAL_STORAGE_KEY, theme);
-    root.classList.add(theme);
+  if (getDefaultTheme() === theme) {
+    return;
+  }
+
+  if (theme === DARK_THEME_CLASSNAME) {
+    localStorage.setItem(THEME_LOCAL_STORAGE_KEY, DARK_THEME_CLASSNAME);
+    root.classList.add(DARK_THEME_CLASSNAME);
     setMetaTag(DARK_THEME_META_COLOR);
   } else {
-    localStorage.removeItem(THEME_LOCAL_STORAGE_KEY);
+    localStorage.setItem(THEME_LOCAL_STORAGE_KEY, 'light');
     root.classList.remove(DARK_THEME_CLASSNAME);
     setMetaTag(LIGHT_THEME_META_COLOR);
   }
 }
 
 export function loadSelectedTheme() {
-  setTheme(loadThemeFromLocalStorage());
+  const storedTheme = getStoredTheme();
+
+  if (storedTheme === null) {
+    return;
+  }
+
+  setTheme(storedTheme);
+}
+
+function getThemeFromHTML() {
+  if (!isBrowser()) {
+    return null;
+  }
+
+  const root = getHtml();
+
+  return root.classList.contains(DARK_THEME_CLASSNAME)
+    ? DARK_THEME_CLASSNAME
+    : LIGHT_THEME_CLASSNAME;
 }
 
 function getHtml() {

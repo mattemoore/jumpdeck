@@ -1,16 +1,20 @@
+import dynamic from 'next/dynamic';
+
 import { useAuth } from 'reactfire';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
-
 import { useUserSession } from '~/core/hooks/use-user-session';
 
 import Logo from '~/core/ui/Logo';
 import Container from '~/core/ui/Container';
 import If from '~/core/ui/If';
+import Button from '~/core/ui/Button';
 
 import SiteNavigation from './SiteNavigation';
 import ProfileDropdown from './ProfileDropdown';
-import Button from '~/core/ui/Button';
-import DarkModeToggle from '~/components/DarkModeToggle';
+
+const DarkModeToggle = dynamic(() => import('~/components/DarkModeToggle'), {
+  ssr: false,
+});
 
 import configuration from '~/configuration';
 
