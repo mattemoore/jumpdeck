@@ -48,7 +48,9 @@ const OrganizationInvitedMembersList: React.FCC<{
             key={id}
             data-cy={'invited-member'}
             data-code={code}
-            className={'flex items-center space-x-2 py-2'}
+            className={
+              'flex flex-col py-2 lg:flex-row lg:items-center lg:space-x-2'
+            }
           >
             <div className={'flex flex-auto items-center space-x-4'}>
               <FallbackUserAvatar text={email} />

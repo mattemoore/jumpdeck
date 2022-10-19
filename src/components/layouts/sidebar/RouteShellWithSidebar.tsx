@@ -1,11 +1,14 @@
 import { useEffect } from 'react';
+import dynamic from 'next/dynamic';
+
 import { isBrowser } from '~/core/generic';
 import { SidebarContext } from '~/lib/contexts/sidebar';
 
-import AppSidebar from './AppSidebar';
 import AppHeaderNoMenu from './AppHeaderNoMenu';
 import Heading from '~/core/ui/Heading';
 import useCollapsible from '~/core/hooks/use-sidebar-state';
+
+const AppSidebar = dynamic(() => import('./AppSidebar'));
 
 const RouteShellWithSidebar: React.FCC<{
   title: string;
@@ -17,16 +20,18 @@ const RouteShellWithSidebar: React.FCC<{
   return (
     <div className={'flex h-full flex-1 overflow-hidden'}>
       <SidebarContext.Provider value={{ collapsed, setCollapsed }}>
-        <AppSidebar />
+        <div className={'hidden lg:block'}>
+          <AppSidebar />
+        </div>
 
         <div className={'relative mx-auto h-screen w-full overflow-y-auto'}>
           <AppHeaderNoMenu>
             <Heading type={4}>
-              <span className={'font-medium dark:text-white'}>{title}</span>
+              <span className={'font-semibold dark:text-white'}>{title}</span>
             </Heading>
           </AppHeaderNoMenu>
 
-          <div className={'p-4'}>{children}</div>
+          <div className={'p-3'}>{children}</div>
         </div>
       </SidebarContext.Provider>
     </div>

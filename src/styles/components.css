@@ -9,7 +9,7 @@
 
     /* Container.tsx */
     .Container {
-        @apply container mx-auto px-5 xl:px-0;
+        @apply container mx-auto;
     }
 
     /* NavigationContainer.tsx */
@@ -19,28 +19,28 @@
 
     /* NavigationMenu.tsx */
     .NavigationMenu {
-        @apply flex-1 space-x-2 dark:text-gray-300
-        items-center flex-row hidden md:flex;
+        @apply flex-1 space-x-1 lg:space-x-2 dark:text-gray-300
+        items-center flex-row flex-wrap hidden lg:flex;
     }
 
     .NavigationMenu.VerticalNavigationMenu {
-        @apply flex flex-row justify-between space-x-2 md:justify-start
-        md:flex-col md:space-x-0 md:space-y-2 items-start;
+        @apply flex flex-row justify-between space-x-2 lg:justify-start
+        lg:flex-col lg:space-x-0 lg:space-y-2 items-start;
     }
 
     /* NavigationItem.tsx */
     .NavigationItem {
         @apply leading-loose rounded-md justify-center
         transition-colors dark:text-gray-300
-        text-gray-800 flex items-center;
+        text-gray-700 flex items-center;
     }
 
     .NavigationItem a {
-        @apply py-2 px-3 block flex font-medium items-center justify-center rounded-md w-full text-sm;
+        @apply py-2 px-1 lg:px-3 block flex font-medium items-center justify-center rounded-md w-full text-sm;
     }
 
     .NavigationItemActive a {
-        @apply bg-primary-50 text-primary-900 dark:text-white dark:bg-black-300 font-semibold;
+        @apply bg-gray-100 dark:text-white dark:bg-black-300 font-semibold;
     }
 
     .SecondaryNavigationMenu .NavigationItemActive a {
@@ -56,8 +56,8 @@
     }
 
     .NavigationItemNotActive {
-        @apply active:text-primary-700 text-gray-600 dark:text-gray-400
-        dark:hover:text-white hover:text-current hover:text-primary-900;
+        @apply active:text-current text-gray-500 dark:text-gray-400
+        dark:hover:text-white hover:text-current;
     }
 
     .NavigationItemActive {
@@ -324,7 +324,7 @@
         @apply flex flex-row py-1 px-2.5
         dark:hover:bg-black-400 dark:active:bg-black-100
         items-center w-full dark:bg-black-500 rounded-md
-        bg-white hover:bg-gray-100 active:bg-gray-200 border border-gray-100
+        bg-white hover:bg-gray-100 active:bg-gray-200 border border-gray-200
         dark:border-black-300 text-lg dark:focus:bg-black-300
         transition-colors outline-none;
     }
@@ -599,13 +599,13 @@
     }
 
     .StepperStepCircle {
-        @apply rounded-full w-[35px] h-[35px] shadow duration-75
-        font-bold flex justify-center items-center
+        @apply rounded-full w-[35px] h-[35px] shadow duration-150
+        font-bold flex justify-center items-center shadow-none
         bg-gray-200 dark:bg-black-200 transition-colors;
     }
 
     .StepperStep.StepperStepSelected {
-        @apply dark:text-white;
+        @apply dark:text-white text-gray-600;
     }
 
     .StepperStepSelected .StepperStepCircle {
@@ -613,20 +613,21 @@
     }
 
     .StepperStep {
-        @apply flex items-center space-x-4 dark:text-gray-400
-        text-current transition-colors p-2;
+        @apply flex items-center space-x-4 dark:text-gray-400 text-gray-600
+        transition-colors p-2 cursor-default outline-none;
     }
 
-    .StepperStep:not(.StepperStepSelected):not([disabled]).hover .StepperStepCircle {
+    .StepperStep.StepperStepActionable.StepperStepClickable:not(.StepperStepSelected):not([disabled]):hover {
+        @apply dark:text-primary-contrast text-gray-600 cursor-pointer;
+    }
+
+    .StepperStep.StepperStepActionable.StepperStepClickable:not(.StepperStepSelected):not([disabled]):hover .StepperStepCircle {
         @apply bg-primary-500 text-primary-contrast;
     }
 
-    .StepperStep:not(.StepperStepSelected):hover {
-        @apply dark:text-gray-50;
-    }
-
-    .StepperStep:disabled {
-        opacity: 90%;
+    .StepperStep:not(.StepperStepSelected):disabled,
+    .StepperStep:not(.Actionable):not(.StepperStepSelected) {
+        @apply dark:text-gray-500 text-gray-400;
     }
 
     /*

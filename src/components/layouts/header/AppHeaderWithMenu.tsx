@@ -19,6 +19,8 @@ const OrganizationsSelector = dynamic(
   }
 );
 
+const MobileNavigation = dynamic(() => import('~/components/MobileNavigation'));
+
 const AppHeaderWithMenu: React.FCC = ({ children }) => {
   const userSession = useUserSession();
   const auth = useAuth();
@@ -41,10 +43,16 @@ const AppHeaderWithMenu: React.FCC = ({ children }) => {
   return (
     <>
       <div className="AppHeader">
-        <div className={'w-full px-6'}>
+        <div className={'w-full px-3 lg:px-6'}>
           <div className={'flex w-full flex-1 items-center justify-between'}>
-            <div className={'flex flex-1 items-center space-x-4 md:space-x-6'}>
-              <Logo href={configuration.paths.appHome} />
+            <div className={'lg:hidden'}>
+              <MobileNavigation />
+            </div>
+
+            <div className={'flex flex-1 items-center space-x-4'}>
+              <div className={'hidden lg:flex'}>
+                <Logo href={configuration.paths.appHome} />
+              </div>
 
               <div>{OrganizationsDropdown}</div>
             </div>
@@ -60,15 +68,19 @@ const AppHeaderWithMenu: React.FCC = ({ children }) => {
       </div>
 
       <div>
-        <div className={'px-4'}>
+        <div className={'px-3'}>
           <AppNavigation />
         </div>
 
         <div className={'border-y border-gray-100 py-6 dark:border-black-300'}>
           <Container>
-            <Heading type={2}>
-              <span className={'font-medium dark:text-white'}>{children}</span>
-            </Heading>
+            <div className={'px-3 lg:px-1.5'}>
+              <Heading type={2}>
+                <span className={'font-medium dark:text-white'}>
+                  {children}
+                </span>
+              </Heading>
+            </div>
           </Container>
         </div>
       </div>

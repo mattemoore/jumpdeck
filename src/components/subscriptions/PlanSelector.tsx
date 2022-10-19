@@ -19,7 +19,7 @@ export default function PlanSelector(
   return (
     <div
       className={
-        'mt-2 flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-14'
+        'flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12'
       }
     >
       <RadioGroup
@@ -27,7 +27,7 @@ export default function PlanSelector(
         value={props.plan}
         onChange={props.setPlan}
       >
-        <div className="w-full space-y-4">
+        <div className="w-full space-y-2.5">
           {STRIPE_PLANS.map((plan) => (
             <RadioGroup.Option
               key={plan.name}

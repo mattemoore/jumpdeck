@@ -13,7 +13,7 @@ const links = {
 };
 
 const OrganizationSettingsTabs = () => {
-  const itemClassName = `flex justify-center md:justify-start items-center flex-auto md:flex-initial`;
+  const itemClassName = `flex justify-center lg:justify-start items-center flex-auto lg:flex-initial`;
 
   return (
     <div>

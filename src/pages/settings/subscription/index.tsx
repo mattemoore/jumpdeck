@@ -36,7 +36,7 @@ const Subscription = () => {
             <Trans i18nKey={'subscription:subscriptionTabSubheading'} />
           }
         >
-          <div className={'flex flex-col space-y-4 px-2'}>
+          <div className={'flex flex-col space-y-4'}>
             <If condition={status !== undefined}>
               <PlansStatusAlert
                 status={status as SubscriptionStatusQueryParams}

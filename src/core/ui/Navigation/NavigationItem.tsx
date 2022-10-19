@@ -5,19 +5,15 @@ import classNames from 'classnames';
 
 import { isRouteActive } from '~/core/is-route-active';
 
-interface WithPath {
+interface Link {
   path: string;
-}
+  label?: string;
 
-interface LinkWithLabel extends WithPath {
-  label: string;
+  /**
+   * @deprecated - Simply use {@link label}
+   */
+  i18n?: string;
 }
-
-interface LinkWithTranslation extends WithPath {
-  i18n: string;
-}
-
-type Link = LinkWithTranslation | LinkWithLabel;
 
 const NavigationMenuItem: React.FCC<{
   link: Link;
@@ -28,9 +24,7 @@ const NavigationMenuItem: React.FCC<{
 }> = ({ link, className, disabled, shallow, depth }) => {
   const router = useRouter();
   const active = isRouteActive(link.path, router.asPath, depth ?? 1);
-
-  const isTranslation = isLinkWithTranslation(link);
-  const isLabel = isLinkWithLabel(link);
+  const label = link.label ?? link.i18n;
 
   return (
     <div
@@ -45,20 +39,11 @@ const NavigationMenuItem: React.FCC<{
         shallow={shallow ?? active}
       >
         <a aria-disabled={disabled}>
-          {isTranslation ? <Trans i18nKey={link.i18n} /> : null}
-          {isLabel ? link.label : null}
+          <Trans i18nKey={label} defaults={label} />
         </a>
       </Link>
     </div>
   );
 };
-
-function isLinkWithTranslation(link: Link): link is LinkWithTranslation {
-  return 'i18n' in link;
-}
-
-function isLinkWithLabel(link: Link): link is LinkWithLabel {
-  return 'label' in link;
-}
 
 export default NavigationMenuItem;

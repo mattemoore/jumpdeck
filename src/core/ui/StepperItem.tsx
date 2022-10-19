@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import { Tab } from '@headlessui/react';
+import classNames from 'classnames';
 
 function StepperItem({
   step,
@@ -9,9 +10,9 @@ function StepperItem({
   disabled,
 }: React.PropsWithChildren<{
   step: number;
-  className: string;
-  disabled: boolean;
-  onSelect: () => void;
+  className?: string;
+  disabled?: boolean;
+  onSelect?: () => void;
 }>) {
   return (
     <>
@@ -20,9 +21,14 @@ function StepperItem({
           return (
             <button
               disabled={disabled}
-              className={`StepperStep ${
-                selected ? `StepperStepSelected` : ''
-              } ${className ?? ''}`}
+              className={classNames(
+                `StepperStep`,
+                {
+                  ['StepperStepSelected']: selected,
+                  ['StepperStepClickable']: onSelect,
+                },
+                className
+              )}
               onClick={onSelect}
             >
               <div className={'StepperStepCircle'}>{step}</div>

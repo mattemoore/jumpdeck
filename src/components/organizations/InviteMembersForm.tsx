@@ -77,6 +77,7 @@ const InviteMembersForm: React.FCC = () => {
 
   return (
     <form
+      className={'flex flex-col space-y-4'}
       data-cy={'invite-members-form'}
       onSubmit={(event) => {
         void handleSubmit(onSubmit)(event);
@@ -115,7 +116,7 @@ const InviteMembersForm: React.FCC = () => {
           return (
             <Fragment key={field.id}>
               <div className={'flex items-center space-x-0.5 md:space-x-2'}>
-                <div className={'w-6/12 md:w-8/12'}>
+                <div className={'w-7/12 md:w-8/12'}>
                   <TextField.Input
                     data-cy={'invite-email-input'}
                     name={emailControl.name}
@@ -155,7 +156,7 @@ const InviteMembersForm: React.FCC = () => {
                           clearErrors(emailInputName);
                         }}
                       >
-                        <XMarkIcon className={'h-5'} />
+                        <XMarkIcon className={'h-4 lg:h-5'} />
                       </IconButton>
                     </Tooltip>
                   </div>
@@ -184,8 +185,9 @@ const InviteMembersForm: React.FCC = () => {
         </div>
       </div>
 
-      <div className={'mt-8'}>
+      <div>
         <Button
+          className={'w-full lg:w-auto'}
           data-cy={'send-invites-button'}
           type={'submit'}
           loading={requestState.loading}

@@ -51,7 +51,7 @@ const OrganizationMembersPage: React.FCC = () => {
       <OrganizationSettingsTabs />
 
       <SettingsContentContainer>
-        <div className={'mb-4 flex justify-end'}>
+        <div className={'my-4 flex justify-end'}>
           <If condition={canInviteUsers}>
             <InviteMembersButton />
           </If>
@@ -88,6 +88,7 @@ export function getServerSideProps(ctx: GetServerSidePropsContext) {
 function InviteMembersButton() {
   return (
     <Button
+      className={'w-full lg:w-auto'}
       data-cy={'invite-form-link'}
       type="button"
       href={'/settings/organization/members/invite'}

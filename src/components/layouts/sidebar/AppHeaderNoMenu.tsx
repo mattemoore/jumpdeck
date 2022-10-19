@@ -13,14 +13,20 @@ const OrganizationsSelector = dynamic(
   }
 );
 
+const MobileNavigation = dynamic(() => import('~/components/MobileNavigation'));
+
 const AppHeaderNoMenu: React.FCC = ({ children }) => {
   const userSession = useUserSession();
   const auth = useAuth();
 
   return (
-    <div className="AppHeader justify-between py-2 px-4">
-      <div className={'flex items-center'}>
-        <div className={'flex items-center space-x-2'}>
+    <div className="AppHeader justify-between py-2.5 px-3">
+      <div className={'flex items-center space-x-2 lg:space-x-0'}>
+        <div className={'lg:hidden'}>
+          <MobileNavigation />
+        </div>
+
+        <div className={'flex items-center space-x-1 lg:space-x-2'}>
           <If condition={userSession?.auth?.uid}>
             {(uid) => <OrganizationsSelector userId={uid} />}
           </If>

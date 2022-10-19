@@ -1,6 +1,5 @@
 import Heading from '~/core/ui/Heading';
 import If from '~/core/ui/If';
-import SubHeading from '~/core/ui/SubHeading';
 
 const SettingsTile: React.FCC<{
   heading?: string | React.ReactNode;
@@ -22,7 +21,7 @@ const SettingsTile: React.FCC<{
 
       <div
         className={
-          'rounded-lg border border-gray-100 p-6 dark:border-black-300'
+          'rounded-lg border border-gray-100 p-2.5 dark:border-black-300 lg:p-6'
         }
       >
         {children}
