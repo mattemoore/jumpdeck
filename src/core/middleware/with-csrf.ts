@@ -37,7 +37,7 @@ function withCsrf(tokenProvider = defaultTokenProvider) {
     }
 
     if (!secret || !token || !csrf.verify(secret, token)) {
-      throw throwUnauthorizedException();
+      return throwUnauthorizedException();
     }
   };
 }

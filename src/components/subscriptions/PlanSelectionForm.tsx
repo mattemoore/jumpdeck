@@ -38,7 +38,11 @@ const PlanSelectionForm: React.FCC<{
           <PlanSelector plan={selectedPlan} setPlan={setSelectedPlan} />
         </div>
 
-        <div className={'flex flex-col space-y-4 lg:flex-row lg:space-x-4'}>
+        <div
+          className={
+            'flex flex-col items-center space-y-4 lg:flex-row lg:space-y-0 lg:space-x-4'
+          }
+        >
           <CheckoutRedirectButton
             organizationId={organization.id}
             priceId={selectedPlan?.stripePriceId}

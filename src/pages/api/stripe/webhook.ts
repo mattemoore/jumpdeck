@@ -56,6 +56,12 @@ async function checkoutWebhooksHandler(
 ) {
   const signature = req.headers[STRIPE_SIGNATURE_HEADER];
 
+  if (!webhookSecretKey) {
+    return throwInternalServerErrorException(
+      `The variable STRIPE_WEBHOOK_SECRET is unset. Please add the STRIPE_WEBHOOK_SECRET environment variable`
+    );
+  }
+
   // verify signature header is not missing
   if (!signature) {
     return throwBadRequestException();

@@ -4,7 +4,6 @@ import { join } from 'path';
 
 import logger from '~/core/logger';
 import configuration from '~/configuration';
-import { HttpStatusCode } from '~/core/generic';
 import withCsrf from '~/core/middleware/with-csrf';
 
 import { createBillingPortalSession } from '~/lib/stripe/create-billing-portal-session';
@@ -15,6 +14,7 @@ import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
 import { getApiRefererPath } from '~/core/generic/get-api-referer-path';
 import { getUserRoleByOrganization } from '~/lib/server/organizations/memberships';
 import { getOrganizationByCustomerId } from '~/lib/server/organizations/subscriptions';
+import { HttpStatusCode } from '~/core/generic';
 
 const SUPPORTED_HTTP_METHODS: HttpMethod[] = ['POST'];
 
@@ -52,6 +52,7 @@ async function billingPortalRedirectHandler(
 
   try {
     const headers = req.headers;
+
     const returnUrl =
       headers.referer || headers.origin || configuration.paths.appHome;
 
@@ -60,7 +61,7 @@ async function billingPortalRedirectHandler(
       customerId,
     });
 
-    res.redirect(HttpStatusCode.MovedPermanently, url);
+    res.redirect(HttpStatusCode.SeeOther, url);
   } catch (e) {
     logger.error(e, `Stripe Billing Portal redirect error`);
 
@@ -73,8 +74,8 @@ export default function stripePortalHandler(
   res: NextApiResponse
 ) {
   return withPipe(
-    withCsrf((req) => req.body.csrfToken),
     withMethodsGuard(SUPPORTED_HTTP_METHODS),
+    withCsrf((req) => req.body.csrfToken),
     withAuthedUser,
     billingPortalRedirectHandler
   )(req, res);

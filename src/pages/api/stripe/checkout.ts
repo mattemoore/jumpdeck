@@ -25,6 +25,7 @@ async function checkoutsSessionHandler(
 
   const bodyResult = getBodySchema().safeParse(req.body);
   const userId = firebaseUser.uid;
+  const currentOrganizationId = req.cookies.organizationId;
 
   const redirectToErrorPage = () => {
     const referer = getApiRefererPath(headers);
@@ -38,6 +39,12 @@ async function checkoutsSessionHandler(
   }
 
   const { organizationId, priceId, customerId, returnUrl } = bodyResult.data;
+
+  const matchesSessionOrganizationId = currentOrganizationId === organizationId;
+
+  if (!matchesSessionOrganizationId) {
+    return redirectToErrorPage();
+  }
 
   // check the user's role has access to the checkout
   const canChangeBilling = await getUserCanAccessCheckout({
@@ -71,7 +78,7 @@ async function checkoutsSessionHandler(
     const portalUrl = getCheckoutPortalUrl(url, returnUrl);
 
     // redirect user back based on the response
-    res.redirect(HttpStatusCode.MovedPermanently, portalUrl);
+    res.redirect(HttpStatusCode.SeeOther, portalUrl);
   } catch (e) {
     logger.error(e, `Stripe Checkout error`);
 
