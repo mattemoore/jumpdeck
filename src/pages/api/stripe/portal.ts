@@ -23,19 +23,11 @@ async function billingPortalRedirectHandler(
   res: NextApiResponse
 ) {
   const { firebaseUser, headers } = req;
-  const referrerPath = getApiRefererPath(headers);
   const userId = firebaseUser.uid;
-
   const schemaResult = getBodySchema().safeParse(req.body);
 
-  const redirectToErrorPage = () => {
-    const url = join(referrerPath, `?error=true`);
-
-    return res.redirect(url);
-  };
-
   if (!schemaResult.success) {
-    return redirectToErrorPage();
+    return redirectToErrorPage(req, res);
   }
 
   const { customerId } = schemaResult.data;
@@ -47,12 +39,10 @@ async function billingPortalRedirectHandler(
   });
 
   if (!canAccess) {
-    return redirectToErrorPage();
+    return redirectToErrorPage(req, res);
   }
 
   try {
-    const headers = req.headers;
-
     const returnUrl =
       headers.referer || headers.origin || configuration.paths.appHome;
 
@@ -62,23 +52,26 @@ async function billingPortalRedirectHandler(
     });
 
     res.redirect(HttpStatusCode.SeeOther, url);
-  } catch (e) {
-    logger.error(e, `Stripe Billing Portal redirect error`);
-
-    return redirectToErrorPage();
+  } catch (error) {
+    return onError(req, res, error);
   }
 }
 
-export default function stripePortalHandler(
+export default async function stripePortalHandler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  return withPipe(
-    withMethodsGuard(SUPPORTED_HTTP_METHODS),
-    withCsrf((req) => req.body.csrfToken),
-    withAuthedUser,
-    billingPortalRedirectHandler
-  )(req, res);
+  try {
+    await withPipe(
+      withMethodsGuard(SUPPORTED_HTTP_METHODS),
+      withCsrf((req) => req.body.csrfToken),
+      withAuthedUser
+    )(req, res);
+
+    return billingPortalRedirectHandler(req, res);
+  } catch (error) {
+    return onError(req, res, error);
+  }
 }
 
 /**
@@ -114,4 +107,17 @@ function getBodySchema() {
   return z.object({
     customerId: z.string(),
   });
+}
+
+function redirectToErrorPage(req: NextApiRequest, res: NextApiResponse) {
+  const referrerPath = getApiRefererPath(req.headers);
+  const url = join(referrerPath, `?error=true`);
+
+  return res.redirect(url);
+}
+
+function onError(req: NextApiRequest, res: NextApiResponse, error: unknown) {
+  logger.error(error, `Stripe Billing Portal redirect error`);
+
+  return redirectToErrorPage(req, res);
 }

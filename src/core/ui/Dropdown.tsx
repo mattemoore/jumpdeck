@@ -32,25 +32,7 @@ const Dropdown: React.FCC<{
       >
         <Menu.Items className="DropdownMenuItemsContainer">
           {items.map((item, index) => {
-            const isDivider = item.type.name === 'Divider';
-
-            if (isDivider) {
-              return [item];
-            }
-
-            return (
-              <Menu.Item as={'div'} key={index}>
-                {({ active }) => (
-                  <div
-                    className={`${
-                      active ? 'DropdownActiveItem' : 'text-gray-900'
-                    } DropdownItem`}
-                  >
-                    {item}
-                  </div>
-                )}
-              </Menu.Item>
-            );
+            return <Fragment key={index}>{item}</Fragment>;
           })}
         </Menu.Items>
       </Transition>
@@ -66,21 +48,31 @@ function Item({ children, className, ...props }: ItemProps) {
   const isStaticItem = !props.onClick && !props.href;
 
   return (
-    <Button
-      block
-      href={props.href}
-      onClick={props.onClick}
-      color={'custom'}
-      size={'custom'}
-      className={classNames(`justify-start`, className, {
-        [`static`]: isStaticItem,
-      })}
-      {...props}
-    >
-      <span className={'flex w-full flex-1 px-5 py-3 font-normal'}>
-        {children}
-      </span>
-    </Button>
+    <Menu.Item as={'div'}>
+      {({ active }) => (
+        <div
+          className={`${
+            active ? 'DropdownActiveItem' : 'text-gray-900'
+          } DropdownItem`}
+        >
+          <Button
+            block
+            href={props.href}
+            onClick={props.onClick}
+            color={'custom'}
+            size={'custom'}
+            className={classNames(`justify-start`, className, {
+              [`static`]: isStaticItem,
+            })}
+            {...props}
+          >
+            <span className={'flex w-full flex-1 px-5 py-3 font-normal'}>
+              {children}
+            </span>
+          </Button>
+        </div>
+      )}
+    </Menu.Item>
   );
 }
 
