@@ -16,8 +16,8 @@ interface QueueParams {
   delayTime: number;
 }
 
-let state = new Map<string, QueueItem>();
-let callbacks = new Map<string, (item: QueueItem, task: Task) => void>();
+const state = new Map<string, QueueItem>();
+const callbacks = new Map<string, (item: QueueItem, task: Task) => void>();
 
 /**
  * @name useQueue

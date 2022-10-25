@@ -10,7 +10,6 @@ import InviteMembersForm from '~/components/organizations/InviteMembersForm';
 import SettingsPageContainer from '~/components/settings/SettingsPageContainer';
 import SettingsContentContainer from '~/components/settings/SettingsContentContainer';
 
-import Heading from '~/core/ui/Heading';
 import Button from '~/core/ui/Button';
 import SettingsTile from '~/components/settings/SettingsTile';
 

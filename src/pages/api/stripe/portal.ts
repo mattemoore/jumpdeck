@@ -4,7 +4,6 @@ import { join } from 'path';
 
 import logger from '~/core/logger';
 import configuration from '~/configuration';
-import withCsrf from '~/core/middleware/with-csrf';
 
 import { createBillingPortalSession } from '~/lib/stripe/create-billing-portal-session';
 import { withAuthedUser } from '~/core/middleware/with-authed-user';
@@ -62,11 +61,10 @@ export default async function stripePortalHandler(
   res: NextApiResponse
 ) {
   try {
-    await withPipe(
-      withMethodsGuard(SUPPORTED_HTTP_METHODS),
-      withCsrf((req) => req.body.csrfToken),
-      withAuthedUser
-    )(req, res);
+    await withPipe(withMethodsGuard(SUPPORTED_HTTP_METHODS), withAuthedUser)(
+      req,
+      res
+    );
 
     return billingPortalRedirectHandler(req, res);
   } catch (error) {

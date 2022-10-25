@@ -1,6 +1,4 @@
 import Head from 'next/head';
-import CheckCircleIcon from '@heroicons/react/24/outline/CheckCircleIcon';
-
 import { withTranslationProps } from '~/lib/props/with-translation-props';
 
 import configuration from '~/configuration';
@@ -9,9 +7,7 @@ import SiteHeader from '~/components/SiteHeader';
 import Layout from '~/core/ui/Layout';
 import Hero from '~/core/ui/Hero';
 import Container from '~/core/ui/Container';
-import Heading from '~/core/ui/Heading';
 import SubHeading from '~/core/ui/SubHeading';
-import Button from '~/core/ui/Button';
 import Footer from '~/components/Footer';
 import PricingTable from '~/components/PricingTable';
 
