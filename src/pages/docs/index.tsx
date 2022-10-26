@@ -16,7 +16,6 @@ import SubHeading from '~/core/ui/SubHeading';
 
 import DocumentationNavigation from '~/components/docs/DocumentationNavigation';
 import FloatingDocumentationNavigation from '~/components/docs/FloatingDocumentationNavigation';
-import SearchInput from '~/components/SearchInput';
 
 export default function Docs({
   docs,
@@ -48,8 +47,6 @@ export default function Docs({
           <div className={'block md:flex md:space-x-8 lg:space-x-16'}>
             <div className={'DocumentationSidebarContainer'}>
               <div className={'flex flex-col space-y-2'}>
-                <SearchInput path={'/docs/results'} />
-
                 <DocumentationNavigation data={docs} />
               </div>
             </div>
@@ -98,12 +95,11 @@ function TopicLink({
   href,
 }: React.PropsWithChildren<{ href: string }>) {
   return (
-    <Link href={href} passHref>
-      <a
-        className={`flex w-full flex-col rounded-xl bg-gray-50 px-5 py-6 transition-colors hover:bg-gray-100 active:bg-gray-200 dark:border-2 dark:border-black-500 dark:bg-black-400 dark:hover:border-black-300 dark:hover:bg-black-500 dark:active:bg-black-600`}
-      >
-        {children}
-      </a>
+    <Link
+      className={`flex w-full flex-col rounded-xl bg-gray-50 px-5 py-6 transition-colors hover:bg-gray-100 active:bg-gray-200 dark:border-2 dark:border-black-500 dark:bg-black-400 dark:hover:border-black-300 dark:hover:bg-black-500 dark:active:bg-black-600`}
+      href={href}
+    >
+      {children}
     </Link>
   );
 }

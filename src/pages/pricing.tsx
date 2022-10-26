@@ -1,4 +1,5 @@
 import Head from 'next/head';
+
 import { withTranslationProps } from '~/lib/props/with-translation-props';
 
 import configuration from '~/configuration';

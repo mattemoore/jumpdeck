@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-import Heading from '~/core/ui/Heading';
 import { DocsTree } from '~/core/docs/types/docs-tree';
+import Heading from '~/core/ui/Heading';
 
 export default function DocumentationNavigation({
   data,
@@ -13,34 +13,42 @@ export default function DocumentationNavigation({
   const path = router.query.page;
 
   return (
-    <div className={'flex h-full flex-col space-y-2'}>
+    <div className={'flex h-full flex-col space-y-8'}>
       {data.map(({ directory, pages }) => {
         return (
           <div
             className={'DocumentationSidebarItemContainer'}
             key={directory.title}
           >
-            <div className={'px-1 py-3'}>
-              <Heading type={3}>{directory.title}</Heading>
-            </div>
+            <div className={'flex flex-col space-y-1'}>
+              <div className={'pb-4'}>
+                <Heading type={6}>
+                  <span
+                    className={
+                      'text-sm font-bold uppercase text-gray-700' +
+                      ' dark:text-gray-300'
+                    }
+                  >
+                    {directory.title}
+                  </span>
+                </Heading>
+              </div>
 
-            <div className={'flex flex-col'}>
               {pages.map((page) => {
                 const selected = path === page.slug;
                 const href = `/docs/${page.slug}`;
 
                 return (
-                  <Link key={href} href={href} passHref>
-                    <a
-                      className={`DocumentationSidebarItem ${
-                        selected
-                          ? `DocumentationSidebarItemSelected`
-                          : `DocumentationSidebarItemNotSelected`
-                      }`}
-                      key={page.label}
-                    >
-                      <span>{page.label}</span>
-                    </a>
+                  <Link
+                    key={href}
+                    href={href}
+                    className={`DocumentationSidebarItem ${
+                      selected
+                        ? `DocumentationSidebarItemSelected`
+                        : `DocumentationSidebarItemNotSelected`
+                    }`}
+                  >
+                    <span>{page.label}</span>
                   </Link>
                 );
               })}

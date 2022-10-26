@@ -1,4 +1,4 @@
-import Image from 'next/future/image';
+import Image from 'next/image';
 import Collection from '~/core/blog/types/collection';
 
 function CollectionImage({
@@ -6,7 +6,7 @@ function CollectionImage({
   size,
 }: {
   collection: Collection;
-  size: string;
+  size: number;
 }) {
   if (collection.emoji) {
     return <span style={{ fontSize: size }}>{collection.emoji}</span>;

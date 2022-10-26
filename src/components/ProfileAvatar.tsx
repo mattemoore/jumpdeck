@@ -1,4 +1,4 @@
-import Image from 'next/future/image';
+import Image from 'next/image';
 import type { UserInfo } from 'firebase/auth';
 
 import FallbackUserAvatar from './FallbackUserAvatar';

@@ -50,15 +50,15 @@ function AppSidebarItem({
   const active = isRouteActive(href, router.asPath, depth);
 
   return (
-    <Link href={href} passHref shallow={shallow ?? active}>
-      <a
-        className={classNames(`AppSidebarItem`, {
-          ['AppSidebarItemActive']: active,
-          ['AppSidebarItemNotActive']: !active,
-        })}
-      >
-        {children}
-      </a>
+    <Link
+      href={href}
+      shallow={shallow ?? active}
+      className={classNames(`AppSidebarItem`, {
+        ['AppSidebarItemActive']: active,
+        ['AppSidebarItemNotActive']: !active,
+      })}
+    >
+      {children}
     </Link>
   );
 }

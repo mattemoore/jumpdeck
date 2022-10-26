@@ -65,7 +65,7 @@ function MorePostsList({
       <h3 className="my-4 flex flex-row items-center justify-center space-x-4 text-center font-semibold dark:text-white md:my-12">
         <span>Read more about</span>{' '}
         <Badge>
-          <CollectionName logoSize="28px" collection={collection} />
+          <CollectionName logoSize={28} collection={collection} />
         </Badge>
       </h3>
 

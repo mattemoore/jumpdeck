@@ -21,12 +21,11 @@ function Footer() {
             <LogoImage className={'w-[55px] md:w-[75px]'} />
 
             <Link
+              target={'_blank'}
+              rel="nofollow noopener"
               href={`https://twitter.com/${configuration.site.twitterHandle}`}
-              passHref
             >
-              <a target={'_blank'} rel="nofollow noopener">
-                <TwitterLogo />
-              </a>
+              <TwitterLogo />
             </Link>
           </div>
 

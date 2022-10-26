@@ -10,7 +10,6 @@ import If from '~/core/ui/If';
 import Heading from '~/core/ui/Heading';
 
 import DocumentationNavigation from './DocumentationNavigation';
-import SearchInput from '~/components/SearchInput';
 
 export default function FloatingDocumentationNavigation({
   data,
@@ -59,8 +58,6 @@ export default function FloatingDocumentationNavigation({
           }
         >
           <Heading type={1}>Table of Contents</Heading>
-
-          <SearchInput path={'/docs/results'} />
 
           <DocumentationNavigation data={data} />
         </div>

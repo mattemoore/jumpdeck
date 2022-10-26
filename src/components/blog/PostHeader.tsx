@@ -28,7 +28,7 @@ const PostHeader = ({ post }: Props) => {
   return (
     <>
       <PostTitle>
-        <CollectionTag logoSize="22px" collection={collection} />
+        <CollectionTag logoSize={22} collection={collection} />
 
         {title}
       </PostTitle>
@@ -94,9 +94,7 @@ function PostTags({
 
           return (
             <Link key={tag} href={href} as={hrefAs} passHref>
-              <a>
-                <Tag>{tag}</Tag>
-              </a>
+              <Tag>{tag}</Tag>
             </Link>
           );
         })}

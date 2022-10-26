@@ -9,7 +9,7 @@
 
     /* Container.tsx */
     .Container {
-        @apply container mx-auto;
+        @apply container mx-auto px-5 xl:px-0;
     }
 
     /* NavigationContainer.tsx */
@@ -501,14 +501,13 @@
 
     /* Documentation */
     .DocumentationSidebarContainer {
-        @apply mt-6 sticky inset-0 hidden
-        md:flex overflow-y-auto h-screen;
+        @apply mt-6 sticky inset-0 hidden md:flex overflow-y-auto h-screen;
     }
 
     .DocumentationSidebarItem {
         @apply pl-4 border-l-2 dark:active:bg-black-400 active:bg-gray-100
-        md:text-[0.8rem] dark:hover:border-l-primary-400
-        py-1.5 px-3 transition-colors duration-300;
+        text-sm text-gray-500 dark:text-gray-400 hover:text-current
+        dark:hover:border-l-primary-400 py-1.5 px-3 transition-colors duration-300;
     }
 
     .DocumentationSidebarItemContainer:last-child {
@@ -516,13 +515,12 @@
     }
 
     .DocumentationSidebarItemSelected {
-        @apply font-semibold dark:text-primary-500
-        border-l-primary-400;
+        @apply font-semibold text-current dark:text-primary-500 border-l-primary-400;
     }
 
     .DocumentationSidebarItemNotSelected {
         @apply hover:border-l-primary-400 dark:hover:text-white
-        dark:border-l-black-400 font-medium;
+        dark:border-l-black-400 font-medium border-l-gray-50;
     }
 
     .AuthProviderButton {

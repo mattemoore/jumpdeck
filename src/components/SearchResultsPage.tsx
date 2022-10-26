@@ -7,14 +7,13 @@ import Layout from '~/core/ui/Layout';
 import SiteHeader from '~/components/SiteHeader';
 import Container from '~/core/ui/Container';
 import Heading from '~/core/ui/Heading';
-import SearchInput from '~/components/SearchInput';
 import Footer from '~/components/Footer';
 
 const SearchResultsPage: React.FC<{
   results: SearchResult[];
   query: Maybe<string>;
   pathMapper: (doc: SearchResult) => string;
-}> = ({ results, query, pathMapper }) => {
+}> = ({ results, pathMapper }) => {
   return (
     <>
       <Head>
@@ -32,10 +31,6 @@ const SearchResultsPage: React.FC<{
               </span>
             </Heading>
 
-            <div>
-              <SearchInput query={query} path={'/docs/results'} />
-            </div>
-
             <div className={'flex flex-col space-y-8'}>
               {results.map((result) => {
                 const href = pathMapper(result);
@@ -44,14 +39,12 @@ const SearchResultsPage: React.FC<{
                 return (
                   <div className={'flex flex-col space-y-2'} key={result.id}>
                     <Heading type={3}>
-                      <Link href={href} passHref>
-                        <a>{result.title}</a>
-                      </Link>
+                      <Link href={href}>{result.title}</Link>
                     </Heading>
 
                     <div>
-                      <Link href={href} passHref>
-                        <a className={'text-xs'}>{content}</a>
+                      <Link className={'text-xs'} href={href}>
+                        {content}
                       </Link>
                     </div>
                   </div>

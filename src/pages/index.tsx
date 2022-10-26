@@ -1,4 +1,4 @@
-import Image from 'next/future/image';
+import Image from 'next/image';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
 import { withTranslationProps } from '~/lib/props/with-translation-props';

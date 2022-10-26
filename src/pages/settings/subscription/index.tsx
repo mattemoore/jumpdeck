@@ -6,12 +6,12 @@ import { Trans } from 'next-i18next';
 
 import Plans from '~/components/subscriptions/Plans';
 import SettingsPageContainer from '~/components/settings/SettingsPageContainer';
-import SettingsTile from '~/components/settings/SettingsTile';
 
 import { withAppProps } from '~/lib/props/with-app-props';
 
 import If from '~/core/ui/If';
 import Alert from '~/core/ui/Alert';
+import SettingsTile from '~/components/settings/SettingsTile';
 
 enum SubscriptionStatusQueryParams {
   Success = 'success',

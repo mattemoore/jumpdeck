@@ -6,10 +6,8 @@ const Logo: React.FCC<{ href?: string; className?: string }> = ({
   className,
 }) => {
   return (
-    <Link href={href ?? '/'} passHref>
-      <a>
-        <LogoImage className={className} />
-      </a>
+    <Link href={href ?? '/'}>
+      <LogoImage className={className} />
     </Link>
   );
 };

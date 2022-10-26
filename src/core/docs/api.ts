@@ -12,6 +12,7 @@ import Directory from './types/directory';
 import DocumentationPage from './types/documentation-page';
 import { DocsTree } from '~/core/docs/types/docs-tree';
 import { compileMdx } from '~/core/generic/compile-mdx';
+import getMDXHeadings from "~/core/generic/get-mdx-headings";
 
 const DOCS_DIRECTORY_NAME = `_docs`;
 const DIRECTORY_CONFIG_NAME = 'meta.json';
@@ -107,11 +108,13 @@ export async function getDocsPageBySlug(slug: string) {
 
       const rawMdx = page?.content ?? '';
       const compiled = await compileMdx(rawMdx);
+      const headings = getMDXHeadings(rawMdx);
       const content = compiled ?? null;
 
       return {
         ...page,
         content,
+        headings,
       };
     }
   }

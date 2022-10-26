@@ -57,10 +57,8 @@ const EmailPasswordSignInForm: React.FCC<{
             />
 
             <div className={'py-0.5 text-xs'}>
-              <Link href={'/auth/password-reset'} passHref>
-                <a className={'hover:underline'}>
-                  <Trans i18nKey={'auth:passwordForgottenQuestion'} />
-                </a>
+              <Link href={'/auth/password-reset'} className={'hover:underline'}>
+                <Trans i18nKey={'auth:passwordForgottenQuestion'} />
               </Link>
             </div>
           </TextField.Label>

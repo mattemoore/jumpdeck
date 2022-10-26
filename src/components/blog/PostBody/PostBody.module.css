@@ -1,25 +1,29 @@
 .PostBody h1 {
-  @apply font-extrabold text-5xl mt-16;
-}
-
-.PostBody h2 {
   @apply font-extrabold text-4xl mt-14;
 }
 
+.PostBody h2 {
+  @apply font-bold text-3xl mt-12 mb-4 border-b border-b-gray-100 pb-2;
+}
+
+:global(.dark) .PostBody h2 {
+  @apply border-b-black-300;
+}
+
 .PostBody h3 {
-  @apply font-bold text-3xl mt-12;
+  @apply font-bold text-2xl mt-10;
 }
 
 .PostBody h4 {
-  @apply font-semibold text-2xl mt-10;
+  @apply font-bold text-xl mt-8;
 }
 
 .PostBody h5 {
-  @apply font-medium text-xl mt-8;
+  @apply font-semibold text-lg mt-6;
 }
 
 .PostBody h6 {
-  @apply font-medium text-lg mt-6;
+  @apply font-medium text-base mt-2;
 }
 
 /**
@@ -36,17 +40,29 @@ For more info: https://github.com/tailwindlabs/tailwindcss/issues/3258#issuecomm
   @apply text-white;
 }
 
+.BodyText {
+  font-family: ui-sans-serif,
+  system-ui,
+  -apple-system,
+  BlinkMacSystemFont,
+  Segoe UI,
+  Roboto,
+  Helvetica Neue,
+  Arial,
+  Noto Sans,
+  sans-serif,
+  Apple Color Emoji,
+  Segoe UI Emoji,
+  Segoe UI Symbol,
+  Noto Color Emoji;
+}
+
 .PostBody > p {
-  @apply text-base leading-8 my-6 dark:text-gray-400;
+  @apply BodyText text-base dark:text-gray-300 mt-2 mb-4 leading-7;
 }
 
 .PostBody li {
-  @apply text-base leading-8 my-2 dark:text-gray-400;
-}
-
-:global(.dark) .PostBody > p,
-:global(.dark) .PostBody li {
-  @apply text-gray-200;
+  @apply BodyText text-base my-1.5 leading-7 dark:text-gray-300;
 }
 
 .PostBody b,
@@ -54,12 +70,9 @@ For more info: https://github.com/tailwindlabs/tailwindcss/issues/3258#issuecomm
   @apply font-bold;
 }
 
-.PostBody pre {
-  @apply mb-8 text-sm text-current;
-}
-
-:global(.dark) .PostBody pre {
-  @apply bg-black-300 shadow-none;
+:global(.dark) .PostBody b,
+:global(.dark) .PostBody strong {
+  @apply text-white;
 }
 
 .PostBody img,
@@ -67,45 +80,80 @@ For more info: https://github.com/tailwindlabs/tailwindcss/issues/3258#issuecomm
   @apply rounded-lg;
 }
 
-.PostBody ul {
-  list-style: disc;
+.PostBody ul,
+.PostBody ol {
+  @apply pl-1;
+}
 
-  @apply pl-10 pb-2 mb-2;
+.PostBody ol > li {
+  counter-increment: counts;
+}
+
+.PostBody ol > li:before {
+  @apply font-bold mr-3 inline-flex;
+
+  content: counters(counts,".") ". ";
+  font-feature-settings: "tnum";
 }
 
 .PostBody blockquote {
-  @apply my-12 p-8 shadow
-    font-medium text-gray-600
-    font-sans border-l-8 border-primary-500;
+  @apply my-12 p-6 font-medium text-lg text-gray-600
+    font-sans border-l-4 border-primary-500;
 }
 
 :global(.dark) .PostBody blockquote {
-  @apply text-gray-300 bg-black-300;
+  @apply text-white;
 }
 
 .PostBody pre {
-  @apply my-2 rounded-3xl;
+  @apply my-6 text-sm text-current;
+}
+
+.PostBody pre[filename]:before {
+  font-family: Monospace;
+  display: inline-block;
+  content: attr(filename);
+  padding: 0.5rem 1rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 0.35rem;
+  border-top-right-radius: 0.35rem;
+
+  @apply bg-black-400 relative left-3 text-[0.55rem] md:text-sm font-bold;
+}
+
+.PostBody pre[filename] {
+  @apply bg-black-300 pt-3 rounded-md;
+}
+
+.PostBody pre[filename] code {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+:global(.dark) .PostBody pre {
+  @apply shadow-none my-8;
 }
 
 .PostBody code {
-  @apply rounded-lg;
+  @apply rounded-md bg-gray-100;
 
   word-break: break-word;
 }
 
 .PostBody pre > code {
-  @apply p-3 md:p-5 text-xs md:text-sm font-medium font-monospace block;
+  @apply p-3 md:p-6 text-xs md:text-sm font-medium font-monospace block bg-gray-100 dark:bg-black-400;
 
   white-space: pre-wrap;
 }
 
 :global(.dark) .PostBody code {
-  @apply bg-black-400;
+  @apply bg-black-400 rounded-xl;
 }
 
 .PostBody p > code,
 .PostBody li > code {
-  @apply px-1 py-1 text-sm rounded-md;
+  @apply px-1 py-0.5 border border-black-200  rounded mx-0.5 font-semibold text-sm;
 }
 
 :global(.dark) .PostBody p > code,
@@ -117,10 +165,12 @@ For more info: https://github.com/tailwindlabs/tailwindcss/issues/3258#issuecomm
   @apply mt-8 mb-6;
 }
 
-.PostBody p > a {
-  @apply font-medium underline;
+.PostBody p > a,
+:global(.dark) .PostBody li > a {
+  @apply font-medium;
 }
 
-:global(.dark) .PostBody p > a {
-  @apply text-primary-500
+:global(.dark) .PostBody p > a,
+:global(.dark) .PostBody li > a {
+  @apply text-primary-600 font-semibold underline hover:text-primary-500;
 }

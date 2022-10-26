@@ -89,8 +89,8 @@ function FooterLinkItem({
   href,
 }: React.PropsWithChildren<{ href: string }>) {
   return (
-    <Link href={href} passHref>
-      <a className={'AppSidebarFooterItem'}>{children}</a>
+    <Link className={'AppSidebarFooterItem'} href={href}>
+      {children}
     </Link>
   );
 }

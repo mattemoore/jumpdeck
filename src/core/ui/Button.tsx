@@ -141,8 +141,8 @@ function InnerButtonContainerElement({
 }: PropsWithChildren<{ href: Maybe<string>; className: string }>) {
   if (href) {
     return (
-      <Link href={href} passHref>
-        <a className={`${className} flex w-full items-center`}>{children}</a>
+      <Link className={`${className} flex w-full items-center`} href={href}>
+        {children}
       </Link>
     );
   }

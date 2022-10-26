@@ -91,14 +91,10 @@ export const SignIn: React.FCC = () => {
             <Trans i18nKey={'auth:doNotHaveAccountYet'} />
           </span>
 
-          <Link href={signUpPath}>
-            <a
-              className={
-                'text-primary-800 hover:underline dark:text-primary-500'
-              }
-            >
-              <Trans i18nKey={'auth:signUp'} />
-            </a>
+          <Link className={
+            'text-primary-800 hover:underline dark:text-primary-500'
+          } href={signUpPath}>
+            <Trans i18nKey={'auth:signUp'} />
           </Link>
         </p>
       </div>

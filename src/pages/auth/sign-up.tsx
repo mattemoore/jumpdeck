@@ -65,14 +65,11 @@ const SignUp: React.FCC = () => {
             <Trans i18nKey={'auth:alreadyHaveAnAccount'} />
           </span>
 
-          <Link href={signInPath}>
-            <a
-              className={
-                'text-primary-800 hover:underline dark:text-primary-500'
-              }
-            >
-              <Trans i18nKey={'auth:signIn'} />
-            </a>
+          <Link
+            className={'text-primary-800 hover:underline dark:text-primary-500'}
+            href={signInPath}
+          >
+            <Trans i18nKey={'auth:signIn'} />
           </Link>
         </p>
       </div>

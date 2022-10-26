@@ -1,18 +1,11 @@
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-
 import configuration from '~/configuration';
 
 const Meta = () => {
-  const router = useRouter();
-  const path = router.asPath;
   const siteUrl = configuration.site.siteUrl;
 
   if (!siteUrl) {
     throw new Error(`Please add the property siteUrl in the configuration`);
   }
-
-  const canonical = `${siteUrl}${path}`;
 
   const structuredData = {
     name: configuration.site.name,
@@ -23,7 +16,7 @@ const Meta = () => {
   };
 
   return (
-    <Head>
+   <>
       <title key={'title'}>{configuration.site.name}</title>
 
       <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" />
@@ -64,8 +57,6 @@ const Meta = () => {
         crossOrigin={'true'}
       />
 
-      <link rel="canonical" href={canonical} key="canonical" />
-
       <meta name="msapplication-TileColor" content="#ffffff" />
       <meta name="msapplication-config" content="/favicon/browserconfig.xml" />
 
@@ -99,11 +90,12 @@ const Meta = () => {
       />
 
       <script
+        async
         key="ld:json"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-    </Head>
+    </>
   );
 };
 

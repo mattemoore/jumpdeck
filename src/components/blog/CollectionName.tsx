@@ -9,16 +9,16 @@ function CollectionName({
   logoSize,
 }: {
   collection: Collection;
-  logoSize?: string;
+  logoSize?: number;
 }) {
-  const size = logoSize ?? `16px`;
+  const size = logoSize ?? 16;
 
   const href = `/blog/[collection]`;
   const hrefAs = `/blog/${collection.name.toLowerCase()}`;
 
   return (
-    <Link href={href} as={hrefAs} passHref>
-      <div
+    <Link href={href} as={hrefAs}>
+      <span
         className={cn(
           'flex cursor-pointer flex-row items-center text-gray-600' +
             ' space-x-1 text-center dark:text-gray-300',
@@ -28,7 +28,7 @@ function CollectionName({
         <CollectionImage collection={collection} size={size} />
 
         <span className="hover:underline">{collection.name}</span>
-      </div>
+      </span>
     </Link>
   );
 }

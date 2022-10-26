@@ -34,13 +34,11 @@ const NavigationMenuItem: React.FCC<{
       })}
     >
       <Link
-        passHref
+        aria-disabled={disabled}
         href={disabled ? '' : link.path}
         shallow={shallow ?? active}
       >
-        <a aria-disabled={disabled}>
-          <Trans i18nKey={label} defaults={label} />
-        </a>
+        <Trans i18nKey={label} defaults={label} />
       </Link>
     </div>
   );

@@ -106,14 +106,10 @@ export const PasswordReset: React.FCC = () => {
             <Trans i18nKey={'auth:passwordRecoveredQuestion'} />
           </span>
 
-          <Link href={configuration.paths.signIn}>
-            <a
-              className={
-                'text-primary-800 hover:underline dark:text-primary-500'
-              }
-            >
-              <Trans i18nKey={'auth:signIn'} />
-            </a>
+          <Link className={
+            'text-primary-800 hover:underline dark:text-primary-500'
+          } href={configuration.paths.signIn}>
+            <Trans i18nKey={'auth:signIn'} />
           </Link>
         </p>
       </div>

@@ -1,9 +1,9 @@
-import Image from 'next/future/image';
+import Image from 'next/image';
 import AuthorType from '~/core/blog/types/author';
 
 const Author: React.FCC<{ author: AuthorType }> = ({ author }) => {
   const alt = `${author.name}'s picture`;
-  const imageSize = `45px`;
+  const imageSize = 45;
 
   return (
     <div className="flex flex-row items-center space-x-3">

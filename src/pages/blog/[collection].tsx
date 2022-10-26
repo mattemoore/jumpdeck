@@ -38,8 +38,8 @@ const CollectionPosts = ({ posts, collection }: Props) => {
       <Container>
         <PostTitle>
           <span className={'flex space-x-2'}>
-            <Link href={'/blog'}>
-              <a className={'hover:underline'}>Blog</a>
+            <Link className={'hover:underline'} href={'/blog'}>
+              Blog
             </Link>
             <span>/</span>
             <span>{collection.name}</span>

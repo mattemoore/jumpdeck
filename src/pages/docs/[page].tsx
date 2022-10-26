@@ -15,24 +15,26 @@ import DocumentationNavigation from '~/components/docs/DocumentationNavigation';
 import FloatingDocumentationNavigation from '~/components/docs/FloatingDocumentationNavigation';
 
 import Layout from '~/core/ui/Layout';
-import Container from '~/core/ui/Container';
 import Heading from '~/core/ui/Heading';
 import Footer from '~/components/Footer';
 import If from '~/core/ui/If';
 
 import Directory from '~/core/docs/types/directory';
-import SearchInput from '~/components/SearchInput';
 import SubHeading from '~/core/ui/SubHeading';
 
 import DocumentationPage from '../../core/docs/types/documentation-page';
+import PostHeadings from '~/components/blog/PostHeadings/PostHeadings';
+
+type Page = {
+  title: string;
+  content: string;
+  headings: Array<{ level: number; text: string }>;
+  description: string;
+  label: string;
+};
 
 type Props = {
-  page: {
-    title: string;
-    content: string;
-    description: string;
-    label: string;
-  };
+  page: Page;
 
   nextPage: Maybe<DocumentationPage>;
   previousPage: Maybe<DocumentationPage>;
@@ -47,71 +49,56 @@ const DocsPage = ({ page, docs, previousPage, nextPage }: Props) => {
   return (
     <>
       <Layout>
-        <Head>
-          <title key="title">{page.title}</title>
-          <meta property="og:title" content={page.title} key="og:title" />
-
-          <meta
-            key="twitter:description"
-            property="twitter:description"
-            content={page.description}
-          />
-
-          <meta
-            property="og:description"
-            content={page.description}
-            key="og:description"
-          />
-
-          <meta
-            name="description"
-            content={page.description}
-            key="meta:description"
-          />
-
-          <meta
-            key="twitter:title"
-            property="twitter:title"
-            content={page.title}
-          />
-        </Head>
+        <PageHead page={page} />
 
         <SiteHeader />
 
-        <Container>
-          <div className={'block md:hidden'}>
+        <div>
+          <div className={'block lg:hidden'}>
             <FloatingDocumentationNavigation data={docs} />
           </div>
 
-          <div className={'md:flex md:space-x-12 lg:space-x-24'}>
-            <div className={'DocumentationSidebarContainer flex-col space-y-2'}>
-              <SearchInput path={'/docs/results'} />
-
-              <DocumentationNavigation data={docs} />
+          <div className={'flex justify-between md:space-x-2 lg:space-x-4'}>
+            <div
+              className={
+                'DocumentationSidebarContainer w-3/12 max-w-xs' +
+                ' hidden border-r border-gray-100 dark:border-black-400 lg:flex'
+              }
+            >
+              <div className={'flex-col space-y-2 px-6 py-8'}>
+                <DocumentationNavigation data={docs} />
+              </div>
             </div>
 
-            <div className="mt-8 flex max-w-2xl flex-1 flex-col space-y-2">
-              <div>
-                <Heading type={1}>
-                  <span className={'dark:text-white'}>{page.label}</span>
-                </Heading>
-              </div>
+            <div className="mx-auto flex w-full flex-1 flex-col space-y-2 py-8 px-4 lg:max-w-4xl lg:px-0">
+              <Heading type={1}>
+                <span className={'dark:text-white'}>{page.label}</span>
+              </Heading>
 
-              <div>
-                <SubHeading>
-                  <span>{page.description}</span>
-                </SubHeading>
-              </div>
+              <SubHeading>
+                <span>{page.description}</span>
+              </SubHeading>
 
               <PostBody content={page.content} />
 
-              <DocumentationLinks
-                previousPage={previousPage}
-                nextPage={nextPage}
-              />
+              <div className={'my-8'}>
+                <DocumentationLinks
+                  previousPage={previousPage}
+                  nextPage={nextPage}
+                />
+              </div>
+            </div>
+
+            <div
+              className={
+                'DocumentationSidebarContainer hidden w-3/12 max-w-xs lg:flex' +
+                ' border-l border-gray-100 px-6 py-8 dark:border-black-400'
+              }
+            >
+              <PostHeadings headings={page.headings} />
             </div>
           </div>
-        </Container>
+        </div>
       </Layout>
 
       <Footer />
@@ -124,14 +111,14 @@ function PageLink({ page }: PropsWithChildren<{ page: DocumentationPage }>) {
   const href = '/docs/[page]';
 
   return (
-    <Link as={hrefAs} href={href} passHref>
-      <a
-        className={
-          'p-2 text-sm font-medium text-current hover:underline dark:text-primary-600'
-        }
-      >
-        {page.title}
-      </a>
+    <Link
+      as={hrefAs}
+      href={href}
+      className={
+        'p-2 text-sm font-medium text-current hover:underline dark:text-primary-600'
+      }
+    >
+      {page.title}
     </Link>
   );
 }
@@ -147,6 +134,12 @@ type Params = {
 export const getStaticProps = async ({ params }: Params) => {
   const currentPage = await getDocsPageBySlug(params.page);
   const currentPagePosition = currentPage?.position ?? 0;
+
+  if (!currentPage) {
+    return {
+      notFound: true,
+    };
+  }
 
   const docs = getDocs();
 
@@ -214,8 +207,7 @@ function DocumentationLinks({
           {(page) => {
             return (
               <>
-                <ChevronLeftIcon className={'h-6'} />
-
+                <ChevronLeftIcon className={'h-4'} />
                 <PageLink page={page} />
               </>
             );
@@ -229,12 +221,51 @@ function DocumentationLinks({
             return (
               <>
                 <PageLink page={page} />
-                <ChevronRightIcon className={'h-6'} />
+                <ChevronRightIcon className={'h-4'} />
               </>
             );
           }}
         </If>
       </div>
     </div>
+  );
+}
+
+function PageHead({
+  page,
+}: React.PropsWithChildren<{
+  page: Page;
+}>) {
+  return (
+    <>
+      <Head>
+        <title key="title">{page.title}</title>
+        <meta property="og:title" content={page.title} key="og:title" />
+
+        <meta
+          key="twitter:description"
+          property="twitter:description"
+          content={page.description}
+        />
+
+        <meta
+          property="og:description"
+          content={page.description}
+          key="og:description"
+        />
+
+        <meta
+          name="description"
+          content={page.description}
+          key="meta:description"
+        />
+
+        <meta
+          key="twitter:title"
+          property="twitter:title"
+          content={page.title}
+        />
+      </Head>
+    </>
   );
 }

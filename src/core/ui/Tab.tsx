@@ -14,8 +14,7 @@ const Tab: React.FCC<{
       disabled={disabled}
       className={({ selected }) => (selected ? 'TabSelected Tab' : 'Tab')}
     >
-      <Link href={link} shallow passHref>
-        <a>{children}</a>
+      <Link href={link} shallow>
         {children}
       </Link>
     </HeadlessTab>

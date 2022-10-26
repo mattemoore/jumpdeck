@@ -1,23 +1,17 @@
-import Image from 'next/future/image';
+import Image from 'next/image';
+import classNames from 'classnames';
 
 import Alert from '~/core/ui/Alert';
 import configuration from '~/configuration';
 
-import TextField from '~/core/ui/TextField';
 import LazyRender from '~/core/ui/LazyRender';
 import ClientOnly from '~/core/ui/ClientOnly';
-import Button from '~/core/ui/Button';
-import Badge from '~/core/ui/Badge';
-import ImageUploadInput from '~/core/ui/ImageUploadInput';
-import Heading from '~/core/ui/Heading';
 import TweetEmbed from './TweetEmbed';
-import classNames from 'classnames';
 
-const NextImage: React.FCC<StringObject> = ({
-  width,
-  height,
-  ...props
-}: StringObject) => {
+const NextImage: React.FCC<StringObject & {
+  width: number;
+  height: number
+}> = (props) => {
   const className = classNames(props.class, `object-cover`);
 
   return (
@@ -25,8 +19,6 @@ const NextImage: React.FCC<StringObject> = ({
       className={className}
       src={props.src}
       alt={props.alt}
-      width={width}
-      height={height}
       {...props}
     />
   );
@@ -81,11 +73,6 @@ const MDXComponents = {
   Video,
   Alert,
   Image: NextImage,
-  Button,
-  Badge,
-  ImageUploadInput,
-  Heading,
-  TextField,
 };
 
 export default MDXComponents;

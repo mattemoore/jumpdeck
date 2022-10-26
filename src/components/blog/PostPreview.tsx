@@ -12,7 +12,7 @@ type Props = {
   imageHeight?: string | number;
 };
 
-const DEFAULT_IMAGE_HEIGHT = 350;
+const DEFAULT_IMAGE_HEIGHT = 450;
 
 const PostPreview = ({ post, preloadImage, imageHeight }: Props) => {
   const { title, slug, coverImage, collection, date, readingTime, excerpt } =
@@ -27,14 +27,12 @@ const PostPreview = ({ post, preloadImage, imageHeight }: Props) => {
       <If condition={coverImage}>
         <div className="relative mb-2 w-full" style={{ height }}>
           <Link as={hrefAs} href={href}>
-            <a>
-              <CoverImage
-                preloadImage={preloadImage}
-                slug={slug}
-                title={title}
-                src={coverImage}
-              />
-            </a>
+            <CoverImage
+              preloadImage={preloadImage}
+              slug={slug}
+              title={title}
+              src={coverImage}
+            />
           </Link>
         </div>
       </If>
@@ -42,8 +40,8 @@ const PostPreview = ({ post, preloadImage, imageHeight }: Props) => {
       <div className={'px-1'}>
         <div className="flex flex-col space-y-1 px-1 py-2">
           <h3 className="px-1 text-2xl font-bold leading-snug dark:text-white">
-            <Link as={hrefAs} href={href}>
-              <a className="hover:underline">{title}</a>
+            <Link as={hrefAs} href={href} className="hover:underline">
+              {title}
             </Link>
           </h3>
         </div>

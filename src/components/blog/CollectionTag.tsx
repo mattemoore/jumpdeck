@@ -8,20 +8,20 @@ function CollectionTag({
   logoSize,
 }: {
   collection: Collection;
-  logoSize?: string;
+  logoSize?: number;
 }) {
-  const size = logoSize ?? `16px`;
+  const size = logoSize ?? 16;
 
   const hrefAs = `/blog/${collection.name.toLowerCase()}`;
   const href = `/blog/[collection]`;
 
   return (
-    <Link href={href} as={hrefAs} passHref>
-      <a className="flex flex-row items-center space-x-1 py-2 md:py-4">
+    <Link href={href} as={hrefAs}>
+      <span className="flex flex-row items-center space-x-1 py-2 md:py-4">
         <CollectionImage collection={collection} size={size} />
 
         <span className={'text-base font-medium'}>{collection.name}</span>
-      </a>
+      </span>
     </Link>
   );
 }
