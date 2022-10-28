@@ -5,6 +5,7 @@ import Heading from '~/core/ui/Heading';
 import Button from '~/core/ui/Button';
 import TextField from '~/core/ui/TextField';
 import SubHeading from '~/core/ui/SubHeading';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
 export interface OrganizationInfoStepData {
   organization: string;
@@ -31,14 +32,14 @@ export const OrganizationInfoStep: React.FCC<{
   return (
     <form
       onSubmit={handleFormSubmit}
-      className={'flex flex-1 flex-col space-y-8'}
+      className={'flex w-full flex-1 flex-col space-y-6'}
     >
-      <div>
-        <Heading type={2}>Hi {displayName}</Heading>
-        <SubHeading>Let&apos;s set your organization up</SubHeading>
+      <div className={'flex flex-col space-y-1.5'}>
+        <Heading type={2}>Hi, {displayName}!</Heading>
+        <SubHeading>Let&apos;s create your organization.</SubHeading>
       </div>
 
-      <div className={'flex flex-1  flex-col space-y-2'}>
+      <div className={'flex flex-1 flex-col space-y-2'}>
         <TextField>
           <TextField.Label>
             Your organization&apos;s name
@@ -50,7 +51,14 @@ export const OrganizationInfoStep: React.FCC<{
           </TextField.Label>
         </TextField>
 
-        <Button type={'submit'}>Continue</Button>
+        <div>
+          <Button type={'submit'}>
+            <span className={'flex items-center space-x-2'}>
+              <span>Continue</span>
+              <ArrowRightIcon className={'h-5'} />
+            </span>
+          </Button>
+        </div>
       </div>
     </form>
   );

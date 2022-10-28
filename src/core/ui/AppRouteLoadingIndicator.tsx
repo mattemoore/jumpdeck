@@ -1,17 +1,25 @@
-import { useCallback, useEffect, useState } from 'react';
+import { createRef, useCallback, useEffect, useState } from 'react';
 import Router from 'next/router';
-import { Transition } from '@headlessui/react';
+import LoadingBar, { LoadingBarRef } from 'react-top-loading-bar';
 
-import PageLoadingIndicator from '~/core/ui/PageLoadingIndicator';
-
-function AppRouteLoadingIndicator({ children }: React.PropsWithChildren) {
+function AppRouteLoadingIndicator() {
+  const ref = createRef<LoadingBarRef>();
   const [loading, setLoading] = useState(false);
-  const onRouteChangeStartCallback = useCallback(() => setLoading(true), []);
+  const onRouteChangeStartCallback = useCallback(() => {
+    setLoading(true);
+  }, []);
 
-  const onRouteChangeCompleteCallback = useCallback(
-    () => setLoading(false),
-    []
-  );
+  const onRouteChangeCompleteCallback = useCallback(() => {
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    if (loading) {
+      ref.current?.continuousStart();
+    } else {
+      ref.current?.complete();
+    }
+  }, [loading, ref]);
 
   useEffect(() => {
     Router.events.on('routeChangeStart', onRouteChangeStartCallback);
@@ -26,20 +34,13 @@ function AppRouteLoadingIndicator({ children }: React.PropsWithChildren) {
   }, [onRouteChangeCompleteCallback, onRouteChangeStartCallback]);
 
   return (
-    <Transition
-      appear={loading}
-      show={loading}
-      enter="transition-opacity duration-150"
-      enterFrom="opacity-40"
-      enterTo="opacity-100"
-      leave="transition-opacity duration-300"
-      leaveFrom="opacity-100"
-      leaveTo="opacity-0"
-    >
-      <PageLoadingIndicator fullPage={true}>
-        <>{children}</>
-      </PageLoadingIndicator>
-    </Transition>
+    <LoadingBar
+      waitingTime={200}
+      shadow={true}
+      className={'bg-primary-500'}
+      color={''}
+      ref={ref}
+    />
   );
 }
 

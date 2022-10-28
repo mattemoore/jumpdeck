@@ -16,6 +16,7 @@ import {
   OrganizationInfoStep,
   OrganizationInfoStepData,
 } from '~/components/onboarding/OrganizationInfoStep';
+import OnboardingIllustration from '~/components/onboarding/OnboardingIllustration';
 
 interface Data {
   organization: string;
@@ -54,30 +55,41 @@ const Onboarding = () => {
         <title key="title">Onboarding</title>
       </Head>
 
-      <div
-        className={
-          'flex h-screen w-screen flex-1 flex-col items-center justify-center space-y-10 overflow-hidden bg-gray-100 dark:bg-black-500'
-        }
-      >
-        <div>
-          <Logo href={''} />
-        </div>
+      <div className={'flex flex-1 flex-col dark:bg-black-500'}>
+        <div className={'flex divide-x divide-gray-100 dark:divide-black-300'}>
+          <div
+            className={
+              'flex h-screen flex-1 flex-col items-center justify-center' +
+              ' w-full lg:w-6/12'
+            }
+          >
+            <div className={'absolute top-24 flex'}>
+              <Logo href={'/onboarding'} />
+            </div>
 
-        <div
-          className={
-            'flex w-11/12 rounded-xl bg-white p-10 shadow dark:bg-black-400' +
-            ' sm:w-8/12 md:w-6/12 xl:w-4/12 2xl:w-3/12'
-          }
-        >
-          <If condition={currentStep === 0}>
-            <OrganizationInfoStep onSubmit={onFirstStepSubmitted} />
-          </If>
+            <div className={'w-9/12'}>
+              <If condition={currentStep === 0}>
+                <OrganizationInfoStep onSubmit={onFirstStepSubmitted} />
+              </If>
 
-          <If condition={currentStep === 1 && data}>
-            {(data) => (
-              <CompleteOnboardingStep data={data} onComplete={onComplete} />
-            )}
-          </If>
+              <If condition={currentStep === 1 && data}>
+                {(data) => (
+                  <CompleteOnboardingStep data={data} onComplete={onComplete} />
+                )}
+              </If>
+            </div>
+          </div>
+
+          <div
+            className={
+              'hidden w-6/12 flex-1 items-center bg-gray-50' +
+              ' justify-center dark:bg-black-400 lg:flex'
+            }
+          >
+            <div>
+              <OnboardingIllustration />
+            </div>
+          </div>
         </div>
       </div>
     </Layout>

@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useAuth, useSigninCheck } from 'reactfire';
 import { parseCookies, destroyCookie } from 'nookies';
-import { useRouter } from 'next/router';
 
 import { isBrowser } from '~/core/generic';
 import useClearFirestoreCache from '~/core/hooks/use-clear-firestore-cache';
@@ -106,22 +105,18 @@ function getExpiresAtCookie() {
 }
 
 function useRedirectUserAway() {
-  const router = useRouter();
+  return useCallback((path: string) => {
+    const currentPath = window.location.pathname;
+    const isNotCurrentPage = currentPath !== path;
 
-  return useCallback(
-    (path: string) => {
-      const currentPath = window.location.pathname;
-      const isNotCurrentPage = currentPath !== path;
+    // we then redirect the user to the page
+    // specified in the props of the component
+    if (isNotCurrentPage) {
+      clearAuthCookies();
 
-      // we then redirect the user to the page
-      // specified in the props of the component
-      if (isNotCurrentPage) {
-        clearAuthCookies();
-        return router.push(path);
-      }
-    },
-    [router]
-  );
+      window.location.assign(path);
+    }
+  }, []);
 }
 
 function clearAuthCookies() {

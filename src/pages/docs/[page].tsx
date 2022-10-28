@@ -65,7 +65,7 @@ const DocsPage = ({ page, docs, previousPage, nextPage }: Props) => {
                 ' hidden border-r border-gray-100 dark:border-black-400 lg:flex'
               }
             >
-              <div className={'flex-col space-y-2 px-6 py-8'}>
+              <div className={'w-full flex-col space-y-2 px-6 py-8'}>
                 <DocumentationNavigation data={docs} />
               </div>
             </div>

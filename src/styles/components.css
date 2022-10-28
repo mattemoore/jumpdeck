@@ -505,9 +505,9 @@
     }
 
     .DocumentationSidebarItem {
-        @apply pl-4 border-l-2 dark:active:bg-black-400 active:bg-gray-100
-        text-sm text-gray-500 dark:text-gray-400 hover:text-current
-        dark:hover:border-l-primary-400 py-1.5 px-3 transition-colors duration-300;
+        @apply flex dark:active:bg-black-400 active:bg-gray-100 flex-1
+        text-sm text-gray-500 dark:text-gray-400 hover:text-current rounded-md
+        py-1.5 px-2 transition-colors duration-300 w-full;
     }
 
     .DocumentationSidebarItemContainer:last-child {
@@ -515,7 +515,7 @@
     }
 
     .DocumentationSidebarItemSelected {
-        @apply font-semibold text-current dark:text-primary-500 border-l-primary-400;
+        @apply font-semibold text-current dark:text-primary-500 bg-primary-500/5;
     }
 
     .DocumentationSidebarItemNotSelected {

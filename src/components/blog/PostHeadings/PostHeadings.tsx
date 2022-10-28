@@ -51,8 +51,8 @@ const PostHeadings: React.FC<{
               <li>
                 <a
                   className={
-                    'font-medium text-gray-400' +
-                    ' text-sm transition-all hover:text-white'
+                    'font-medium text-gray-400 hover:text-gray-700' +
+                    ' text-sm transition-all dark:hover:text-white'
                   }
                   href={`#${slug}`}
                 >

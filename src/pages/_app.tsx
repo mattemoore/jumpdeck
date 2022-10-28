@@ -3,6 +3,7 @@ import '../styles/index.css';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 
 import type { User as AuthUser } from 'firebase/auth';
 import { appWithTranslation, SSRConfig } from 'next-i18next';
@@ -22,6 +23,13 @@ import { OrganizationContext } from '~/lib/contexts/organization';
 import { UserData } from '~/core/session/types/user-data';
 import { UserSessionContext } from '~/core/session/contexts/user-session';
 import { UserSession } from '~/core/session/types/user-session';
+
+const AppRouteLoadingIndicator = dynamic(
+  () => import('~/core/ui/AppRouteLoadingIndicator'),
+  {
+    ssr: false,
+  }
+);
 
 interface DefaultPageProps extends SSRConfig {
   session?: Maybe<AuthUser>;
@@ -80,6 +88,7 @@ function App(
                 value={{ organization, setOrganization }}
               >
                 <CsrfTokenMetaAttribute csrfToken={pageProps.csrfToken} />
+                <AppRouteLoadingIndicator />
                 <Component {...pageProps} />
               </OrganizationContext.Provider>
             </UserSessionContext.Provider>

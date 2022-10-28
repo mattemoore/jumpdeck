@@ -48,9 +48,9 @@ export const CompleteOnboardingStep: React.FCC<{
   }
 
   return (
-    <div className={'flex flex-1 items-center space-x-8'}>
+    <div className={'flex flex-1 flex-col items-center space-y-8'}>
       <span>
-        <SpringSpinner size={36} color={'currentColor'} />
+        <SpringSpinner size={52} color={'currentColor'} />
       </span>
 
       <span>Getting Started. Please wait...</span>
