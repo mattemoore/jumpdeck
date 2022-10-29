@@ -4,7 +4,7 @@ const FallbackUserAvatar: React.FCC<{ text: Maybe<string> }> = ({ text }) => {
   if (!text) {
     return (
       <span className={`FallbackUserAvatar`}>
-        <UserIcon className={'h-6'} />
+        <UserIcon className={'h-5'} />
       </span>
     );
   }

@@ -444,7 +444,7 @@
 
     /* FallbackUserAvatar.tsx */
     .FallbackUserAvatar {
-        @apply h-9 w-9 text-lg flex items-center
+        @apply h-8 w-8 text-lg flex items-center
         transition-all justify-center
         bg-primary-500 rounded-full uppercase font-extrabold
         text-black-500 text-primary-contrast;

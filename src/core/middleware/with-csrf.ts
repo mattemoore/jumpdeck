@@ -36,7 +36,15 @@ function withCsrf(tokenProvider = defaultTokenProvider) {
       return;
     }
 
-    if (!secret || !token || !csrf.verify(secret, token)) {
+    if (!token) {
+      return throwUnauthorizedException(`CSRF token is invalid`);
+    }
+
+    if (!secret) {
+      return throwUnauthorizedException(`CSRF secret not found`);
+    }
+
+    if (!csrf.verify(secret, token)) {
       return throwUnauthorizedException(`CSRF check failed`);
     }
   };

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Trans } from 'next-i18next';
+import { Transition } from '@headlessui/react';
 
 import MoonIcon from '@heroicons/react/24/outline/MoonIcon';
 import SunIcon from '@heroicons/react/24/outline/SunIcon';
@@ -14,7 +15,6 @@ import {
 
 import Tooltip from '~/core/ui/Tooltip';
 import IconButton from '~/core/ui/IconButton';
-import { Transition } from '@headlessui/react';
 
 const DarkModeToggle = () => {
   const defaultTheme = useMemo(() => {
@@ -61,7 +61,7 @@ const DarkModeToggle = () => {
           appear={true}
           show={true}
           enter="transition-opacity duration-500"
-          enterFrom="opacity-0"
+          enterFrom="opacity-60"
           enterTo="opacity-100"
         >
           {Icon}

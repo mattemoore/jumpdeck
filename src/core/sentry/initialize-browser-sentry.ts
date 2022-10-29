@@ -23,6 +23,7 @@ export async function initializeBrowserSentry() {
     dsn,
     integrations: [new SentryIntegrations.BrowserTracing()],
     tracesSampleRate: 1.0,
+    environment: configuration.environment,
   });
 
   initialized = true;

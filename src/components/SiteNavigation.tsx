@@ -12,6 +12,10 @@ interface Link {
 }
 
 const links: Record<string, Link> = {
+  SignIn: {
+    label: 'Sign In',
+    path: '/auth/sign-in',
+  },
   Blog: {
     label: 'Blog',
     path: '/blog',
@@ -33,8 +37,13 @@ const links: Record<string, Link> = {
 const SiteNavigation = () => {
   return (
     <>
-      <div className={'hidden items-center space-x-0.5 md:flex'}>
+      <div className={'hidden items-center space-x-0.5 lg:flex'}>
         <NavigationMenu>
+          <NavigationMenuItem
+            className={'flex lg:hidden'}
+            link={links.SignIn}
+          />
+
           <NavigationMenuItem link={links.Blog} />
           <NavigationMenuItem link={links.Docs} />
           <NavigationMenuItem link={links.Pricing} />
@@ -42,7 +51,7 @@ const SiteNavigation = () => {
         </NavigationMenu>
       </div>
 
-      <div className={'ml-4 flex items-center md:hidden'}>
+      <div className={'ml-4 flex items-center lg:hidden'}>
         <MobileDropdown />
       </div>
     </>

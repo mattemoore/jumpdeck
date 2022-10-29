@@ -23,6 +23,7 @@ export function initializeNodeSentry() {
   Sentry.init({
     dsn,
     tracesSampleRate: 1.0,
+    environment: configuration.environment,
   });
 }
 

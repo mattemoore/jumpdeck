@@ -37,6 +37,7 @@ const configuration = {
       oAuth: [GoogleAuthProvider],
     },
   },
+  environment: process.env.NEXT_PUBLIC_VERCEL_ENV ?? 'development',
   emulatorHost: process.env.NEXT_PUBLIC_EMULATOR_HOST,
   emulator: process.env.NEXT_PUBLIC_EMULATOR === 'true',
   production: process.env.NODE_ENV === 'production',
