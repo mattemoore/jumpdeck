@@ -1,8 +1,14 @@
 import Image from 'next/image';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
+
+import {
+  ArrowRightIcon,
+  UserGroupIcon,
+  FireIcon,
+} from '@heroicons/react/24/outline';
 
 import { withTranslationProps } from '~/lib/props/with-translation-props';
 import ConvertkitSignupForm from '~/components/newsletter/ConvertkitSignupForm';
+import configuration from '~/configuration';
 
 import Layout from '~/core/ui/Layout';
 import Container from '~/core/ui/Container';
@@ -81,8 +87,18 @@ const Index = () => {
             'flex flex-col items-center justify-center space-y-24 py-12'
           }
         >
-          <div className={'flex max-w-3xl flex-col items-center text-center'}>
-            <b className={'text-primary-500'}>Features</b>
+          <div
+            className={
+              'flex max-w-3xl flex-col items-center space-y-4 text-center'
+            }
+          >
+            <div className={'flex flex-col items-center space-y-2'}>
+              <div>
+                <FireIcon className={'h-6 text-primary-500'} />
+              </div>
+
+              <b className={'text-primary-500'}>Features</b>
+            </div>
 
             <Hero>The best tool in the space</Hero>
 
@@ -93,55 +109,61 @@ const Index = () => {
           </div>
 
           <div>
-            <FeaturesGrid>
-              <div className={'text-center'}>
+            <div className={'grid gap-12 lg:grid-cols-3'}>
+              <div className={'flex flex-col space-y-2 text-center'}>
                 <Heading type={3}>Item</Heading>
 
                 <div className={'text-gray-500 dark:text-gray-400'}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
                 </div>
               </div>
 
-              <div className={'text-center'}>
+              <div className={'flex flex-col space-y-2 text-center'}>
                 <Heading type={3}>Item</Heading>
 
                 <div className={'text-gray-500 dark:text-gray-400'}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
                 </div>
               </div>
 
-              <div className={'text-center'}>
+              <div className={'flex flex-col space-y-2 text-center'}>
                 <Heading type={3}>Item</Heading>
 
                 <div className={'text-gray-500 dark:text-gray-400'}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
                 </div>
               </div>
 
-              <div className={'text-center'}>
+              <div className={'flex flex-col space-y-2 text-center'}>
                 <Heading type={3}>Item</Heading>
 
                 <div className={'text-gray-500 dark:text-gray-400'}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
                 </div>
               </div>
 
-              <div className={'text-center'}>
+              <div className={'flex flex-col space-y-2 text-center'}>
                 <Heading type={3}>Item</Heading>
 
                 <div className={'text-gray-500 dark:text-gray-400'}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
                 </div>
               </div>
 
-              <div className={'text-center'}>
+              <div className={'flex flex-col space-y-2 text-center'}>
                 <Heading type={3}>Item</Heading>
 
                 <div className={'text-gray-500 dark:text-gray-400'}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
                 </div>
               </div>
-            </FeaturesGrid>
+            </div>
           </div>
         </div>
       </Container>
@@ -154,8 +176,18 @@ const Index = () => {
             'flex flex-col items-center justify-center space-y-24 py-12'
           }
         >
-          <div className={'flex max-w-3xl flex-col items-center text-center'}>
-            <b className={'text-primary-500'}>Testimonials</b>
+          <div
+            className={
+              'flex max-w-3xl flex-col items-center space-y-4 text-center'
+            }
+          >
+            <div className={'flex flex-col items-center space-y-2'}>
+              <div>
+                <UserGroupIcon className={'h-6 text-primary-500'} />
+              </div>
+
+              <b className={'text-primary-500'}>Testimonials</b>
+            </div>
 
             <Hero>Trusted by indie-hackers all over the world</Hero>
 
@@ -166,55 +198,61 @@ const Index = () => {
           </div>
 
           <div>
-            <FeaturesGrid>
+            <div className={'grid gap-12 lg:grid-cols-3'}>
               <div className={'flex flex-col space-y-2 text-center'}>
                 <Heading type={3}>Item</Heading>
 
                 <div className={'text-gray-500 dark:text-gray-400'}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
                 </div>
               </div>
 
-              <div className={'text-center'}>
+              <div className="flex flex-col space-y-2 text-center">
                 <Heading type={3}>Item</Heading>
 
                 <div className={'text-gray-500 dark:text-gray-400'}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
                 </div>
               </div>
 
-              <div className={'text-center'}>
+              <div className="flex flex-col space-y-2 text-center">
                 <Heading type={3}>Item</Heading>
 
                 <div className={'text-gray-500 dark:text-gray-400'}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
                 </div>
               </div>
 
-              <div className={'text-center'}>
+              <div className="flex flex-col space-y-2 text-center">
                 <Heading type={3}>Item</Heading>
 
                 <div className={'text-gray-500 dark:text-gray-400'}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
                 </div>
               </div>
 
-              <div className={'text-center'}>
+              <div className="flex flex-col space-y-2 text-center">
                 <Heading type={3}>Item</Heading>
 
                 <div className={'text-gray-500 dark:text-gray-400'}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
                 </div>
               </div>
 
-              <div className={'text-center'}>
+              <div className="flex flex-col space-y-2 text-center">
                 <Heading type={3}>Item</Heading>
 
                 <div className={'text-gray-500 dark:text-gray-400'}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
                 </div>
               </div>
-            </FeaturesGrid>
+            </div>
           </div>
         </div>
       </Container>
@@ -224,31 +262,35 @@ const Index = () => {
           <div
             className={
               'flex flex-col justify-between rounded-lg md:flex-row' +
-              ' space-y-2 bg-primary-50 p-8' +
-              ' dark:bg-primary-500/10 md:space-y-0'
+              ' space-y-2 bg-primary-50 px-8 py-12 dark:bg-primary-600/10' +
+              ' md:space-y-0'
             }
           >
-            <div className={'flex items-center justify-between'}>
+            <div className={'flex flex-col justify-between space-y-2'}>
               <Heading type={2}>
-                <p className={'text-gray-800 dark:text-current'}>
-                  The application you were dreaming.
+                <p className={'text-gray-800 dark:text-white'}>
+                  The application you were waiting for.
                 </p>
+              </Heading>
 
-                <p className={'text-primary-500'}>Get Started for free</p>
+              <Heading type={2}>
+                <p className={'text-primary-500'}>Sign up for free, today.</p>
               </Heading>
             </div>
 
-            <div className={'flex items-center justify-end'}>
-              <div className={'flex flex-col items-center space-y-2'}>
+            <div className={'flex flex-col justify-end space-y-2'}>
+              <div>
                 <Button
                   className={'w-full md:w-auto'}
                   size={'large'}
                   href={'/auth/sign-up'}
                 >
-                  Create an account for free
+                  Get Started for free
                 </Button>
+              </div>
 
-                <div className={'text-xs'}>No credit card required</div>
+              <div className="flex flex-col space-y-2 text-center">
+                <span className={'text-xs'}>No credit-card required</span>
               </div>
             </div>
           </div>
@@ -258,6 +300,8 @@ const Index = () => {
       <Container>
         <NewsletterSignup />
       </Container>
+
+      <Divider />
 
       <Footer />
     </Layout>
@@ -276,22 +320,20 @@ export async function getStaticProps() {
 
 function NewsletterSignup() {
   return (
-    <div className={'flex flex-col justify-center space-y-4 py-12'}>
-      <ConvertkitSignupForm formId={''}>Subscribe</ConvertkitSignupForm>
-
-      <p className={'text-center text-xs'}>
-        Subscribe to our Newsletter to receive updates
-      </p>
-    </div>
-  );
-}
-
-function FeaturesGrid({ children }: React.PropsWithChildren) {
-  return (
     <div
-      className={'grid gap-8 sm:grid-cols-2 sm:gap-12 lg:grid-cols-3 xl:gap-16'}
+      className={
+        'flex flex-col items-center justify-center space-y-4 py-16 text-sm text-gray-500 dark:text-gray-400 lg:py-24'
+      }
     >
-      {children}
+      <p>Let&apos;s stay in touch.</p>
+
+      <p>Subscribe to Makerkit&apos;s Newsletter to receive updates.</p>
+
+      <ConvertkitSignupForm formId={configuration.site.convertKitFormId}>
+        Subscribe
+      </ConvertkitSignupForm>
+
+      <p className={'text-center text-xs'}>No spam. Ever.</p>
     </div>
   );
 }
@@ -304,9 +346,9 @@ function HeroTitle({ children }: React.PropsWithChildren) {
   return (
     <h1
       className={
-        'text-center text-5xl text-black-500 dark:text-current' +
+        'text-center text-4xl text-black-500 dark:text-white' +
         ' flex flex-col space-y-2 font-extrabold md:text-6xl' +
-        ' xl:text-7xl'
+        ' xl:text-7xl 2xl:text-8xl'
       }
     >
       {children}

@@ -75,7 +75,7 @@
 
     /* SubHeading.tsx */
     .SubHeading {
-        @apply text-xl leading-[2.2rem] text-gray-500
+        @apply text-lg lg:text-xl lg:leading-[2.2rem] text-gray-500
         dark:text-gray-400 font-normal;
     }
 

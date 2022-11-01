@@ -2,45 +2,112 @@ import Link from 'next/link';
 
 import Container from '~/core/ui/Container';
 import LogoImage from '~/core/ui/Logo/LogoImage';
-import TwitterLogo from '~/core/ui/TwitterLogo';
 import configuration from '~/configuration';
+import Heading from '~/core/ui/Heading';
+
+const YEAR = new Date().getFullYear();
 
 function Footer() {
-  const year = new Date().getFullYear();
-
   return (
     <footer className={'Footer'}>
       <Container>
         <div
           className={
-            'flex flex-col space-y-4 md:flex-row md:items-center md:space-y-0' +
-            ' md:justify-between'
+            'flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-y-0' +
+            ' lg:justify-between'
           }
         >
-          <div className={'flex w-4/12 items-center space-x-8'}>
-            <LogoImage className={'w-[55px] md:w-[75px]'} />
+          <div className={'flex w-full space-x-8 lg:w-4/12'}>
+            <div className={'flex flex-col space-y-2.5'}>
+              <div>
+                <LogoImage className={'w-[85px] md:w-[115px]'} />
+              </div>
 
-            <Link
-              target={'_blank'}
-              rel="nofollow noopener"
-              href={`https://twitter.com/${configuration.site.twitterHandle}`}
-            >
-              <TwitterLogo />
-            </Link>
+              <div>
+                <p className={'text-sm text-gray-500 dark:text-gray-400'}>
+                  Add a short tagline about your product
+                </p>
+              </div>
+
+              <div className={'flex text-xs text-gray-500 dark:text-gray-400'}>
+                <p>
+                  © Copyright {YEAR} {configuration.site.siteName}. All Rights
+                  Reserved.
+                </p>
+              </div>
+            </div>
           </div>
 
-          <div className={'flex flex-col space-y-1 text-sm'}>
-            <p>
-              © Copyright {year} {configuration.site.siteName}. All Rights
-              Reserved.
-            </p>
+          <div
+            className={
+              'flex flex-col space-y-8 lg:space-y-0 lg:space-x-24' +
+              ' lg:flex-row lg:justify-end'
+            }
+          >
+            <div>
+              <div className={'flex flex-col space-y-2.5'}>
+                <Heading type={6}>Our Company</Heading>
 
-            <div className={'flex flex-row space-x-2'}>
-              <Link href={'#'}>Terms of Service</Link>
+                <ul
+                  className={
+                    'flex flex-col space-y-2 text-sm text-gray-600 dark:text-gray-400'
+                  }
+                >
+                  <li>
+                    <Link href={'#'}>Who we are</Link>
+                  </li>
+                  <li>
+                    <Link href={'/blog'}>Blog</Link>
+                  </li>
+                  <li>
+                    <Link href={'/contact'}>Contact</Link>
+                  </li>
+                </ul>
+              </div>
+            </div>
 
-              <span>|</span>
+            <div>
+              <div className={'flex flex-col space-y-2.5'}>
+                <Heading type={6}>Product</Heading>
 
-              <Link href={'#'}>Privacy Policy</Link>
+                <ul
+                  className={
+                    'flex flex-col space-y-2 text-sm text-gray-600 dark:text-gray-400'
+                  }
+                >
+                  <li>
+                    <Link href={'/docs'}>Documentation</Link>
+                  </li>
+                  <li>
+                    <Link href={'#'}>Help Center</Link>
+                  </li>
+                  <li>
+                    <Link href={'#'}>Changelog</Link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div>
+              <div className={'flex flex-col space-y-4'}>
+                <Heading type={6}>Legal</Heading>
+
+                <ul
+                  className={
+                    'flex flex-col space-y-2 text-sm text-gray-600 dark:text-gray-400'
+                  }
+                >
+                  <li>
+                    <Link href={'#'}>Terms of Service</Link>
+                  </li>
+                  <li>
+                    <Link href={'#'}>Privacy Policy</Link>
+                  </li>
+                  <li>
+                    <Link href={'#'}>Cookie Policy</Link>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
