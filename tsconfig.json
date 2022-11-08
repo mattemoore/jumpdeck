@@ -10,7 +10,7 @@
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext"
+      "es2020"
     ],
     "allowJs": true,
     "noEmit": true,

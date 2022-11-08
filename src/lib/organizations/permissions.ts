@@ -65,7 +65,7 @@ export function canInviteUser(
   inviteeRole: MembershipRole
 ) {
   const canInvite = canInviteUsers(inviterRole);
-  const hasGreaterRole = inviteeRole >= inviteeRole;
+  const hasGreaterRole = inviterRole >= inviteeRole;
   const isNotOwner = inviteeRole !== MembershipRole.Owner;
 
   return canInvite && hasGreaterRole && isNotOwner;
