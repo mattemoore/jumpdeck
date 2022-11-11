@@ -2,7 +2,7 @@ import { useCallback, useContext, useRef } from 'react';
 import { AppCheckSdkContext } from 'reactfire';
 
 import { useRequestState } from '~/core/hooks/use-request-state';
-import { useGetCsrfToken } from '~/core/firebase/hooks/use-get-csrf-token';
+import { useCsrfToken } from '~/core/firebase/hooks/use-csrf-token';
 
 const FIREBASE_APP_CHECK_HEADER = 'X-Firebase-AppCheck';
 const CSRF_TOKEN_HEADER = 'x-csrf-token';
@@ -25,7 +25,7 @@ export function useApiRequest<Resp = unknown, Body = void>(
 
   const headersRef = useRef(headers);
   const getAppCheckToken = useGetAppCheckToken();
-  const getCsrfToken = useGetCsrfToken();
+  const csrfToken = useCsrfToken();
 
   const fn = useCallback(
     async (body: Body) => {
@@ -34,7 +34,6 @@ export function useApiRequest<Resp = unknown, Body = void>(
       try {
         const payload = JSON.stringify(body);
         const appCheckToken = await getAppCheckToken();
-        const csrfToken = getCsrfToken();
 
         if (!headersRef.current) {
           headersRef.current = {};
@@ -72,7 +71,7 @@ export function useApiRequest<Resp = unknown, Body = void>(
     [
       setLoading,
       getAppCheckToken,
-      getCsrfToken,
+      csrfToken,
       path,
       method,
       setData,

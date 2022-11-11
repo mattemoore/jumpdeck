@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext } from 'next';
-import { setCookie, destroyCookie } from 'nookies';
+import { setCookie, destroyCookie, parseCookies } from "nookies";
 
 import configuration from '~/configuration';
 import { getUserInfoById } from '~/core/firebase/admin/auth/get-user-info-by-id';
@@ -106,12 +106,15 @@ export async function withAppProps(
       mergedOptions
     );
 
+    const ui = getUiProps(ctx);
+
     return {
       props: {
         session: metadata,
         user,
         organization,
         csrfToken,
+        ui,
         ...translationProps,
       },
     };
@@ -191,5 +194,16 @@ function getAppPropsOptions(
   return {
     ...mergedOptions,
     locale: locale ?? mergedOptions.locale,
+  };
+}
+
+function getUiProps(ctx: GetServerSidePropsContext) {
+  const cookies = parseCookies(ctx);
+  const sidebarState = cookies['sidebarState'] ?? 'expanded';
+  const theme = cookies['theme'] ?? 'light';
+
+  return  {
+    sidebarState,
+    theme
   };
 }

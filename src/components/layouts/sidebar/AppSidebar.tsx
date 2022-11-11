@@ -16,7 +16,7 @@ import IconButton from '~/core/ui/IconButton';
 import Tooltip from '~/core/ui/Tooltip';
 
 import configuration from '~/configuration';
-import { SidebarContext } from '~/lib/contexts/sidebar';
+import { SidebarContext } from '~/core/contexts/sidebar';
 import AppSidebarNavigation from './AppSidebarNavigation';
 
 const AppSidebar: React.FC = () => {

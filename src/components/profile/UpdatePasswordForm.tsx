@@ -30,8 +30,7 @@ const UpdatePasswordForm: React.FCC<{ user: User }> = ({ user }) => {
   const [multiFactorAuthError, setMultiFactorAuthError] =
     useState<Maybe<MultiFactorError>>();
 
-  const { register, handleSubmit, getValues, reset } = useForm({
-    shouldUseNativeValidation: true,
+  const { register, handleSubmit, getValues, reset, formState } = useForm({
     defaultValues: {
       currentPassword: '',
       newPassword: '',
@@ -39,14 +38,24 @@ const UpdatePasswordForm: React.FCC<{ user: User }> = ({ user }) => {
     },
   });
 
+  const errors = formState.errors;
+
   const currentPasswordControl = register('currentPassword', {
     value: '',
     required: true,
+    minLength: {
+      value: 6,
+      message: t<string>(`auth:passwordLengthError`),
+    },
   });
 
   const newPasswordControl = register('newPassword', {
     value: '',
     required: true,
+    minLength: {
+      value: 6,
+      message: t<string>(`auth:passwordLengthError`),
+    },
     validate: (value) => {
       // current password cannot be the same as the current one
       if (value === getValues('currentPassword')) {
@@ -58,6 +67,10 @@ const UpdatePasswordForm: React.FCC<{ user: User }> = ({ user }) => {
   const repeatPasswordControl = register('repeatPassword', {
     value: '',
     required: true,
+    minLength: {
+      value: 6,
+      message: t<string>(`auth:passwordLengthError`),
+    },
     validate: (value) => {
       // new password and repeat new password must match
       if (value !== getValues('newPassword')) {
@@ -190,13 +203,14 @@ const UpdatePasswordForm: React.FCC<{ user: User }> = ({ user }) => {
 
               <TextField.Input
                 data-cy={'current-password'}
-                required
                 type={'password'}
                 name={currentPasswordControl.name}
                 innerRef={currentPasswordControl.ref}
                 onChange={currentPasswordControl.onChange}
                 onBlur={currentPasswordControl.onBlur}
               />
+
+              <TextField.Error error={errors.currentPassword?.message} />
             </TextField.Label>
           </TextField>
 
@@ -212,6 +226,11 @@ const UpdatePasswordForm: React.FCC<{ user: User }> = ({ user }) => {
                 innerRef={newPasswordControl.ref}
                 onChange={newPasswordControl.onChange}
                 onBlur={newPasswordControl.onBlur}
+              />
+
+              <TextField.Error
+                data-cy={'new-password-error'}
+                error={errors.newPassword?.message}
               />
             </TextField.Label>
           </TextField>
@@ -230,6 +249,11 @@ const UpdatePasswordForm: React.FCC<{ user: User }> = ({ user }) => {
                 onBlur={repeatPasswordControl.onBlur}
               />
             </TextField.Label>
+
+            <TextField.Error
+              data-cy={'repeat-password-error'}
+              error={errors.repeatPassword?.message}
+            />
           </TextField>
 
           <div>

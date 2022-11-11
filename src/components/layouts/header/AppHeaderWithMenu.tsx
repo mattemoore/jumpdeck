@@ -12,12 +12,8 @@ import Container from '~/core/ui/Container';
 import ProfileDropdown from '../../ProfileDropdown';
 import AppNavigation from './AppNavigation';
 
-const OrganizationsSelector = dynamic(
-  () => import('../../organizations/OrganizationsSelector'),
-  {
-    ssr: false,
-  }
-);
+import OrganizationsSelector
+  from "~/components/organizations/OrganizationsSelector";
 
 const MobileNavigation = dynamic(() => import('~/components/MobileNavigation'));
 

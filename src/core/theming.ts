@@ -1,5 +1,6 @@
 import { isBrowser } from '~/core/generic/is-browser';
 import configuration from '~/configuration';
+import { parseCookies, setCookie } from 'nookies';
 
 const THEME_LOCAL_STORAGE_KEY = `theme`;
 const LIGHT_THEME_META_COLOR = configuration.site.themeColor;
@@ -8,16 +9,8 @@ const DARK_THEME_META_COLOR = configuration.site.themeColorDark;
 export const DARK_THEME_CLASSNAME = `dark`;
 export const LIGHT_THEME_CLASSNAME = `light`;
 
-function getThemeFromLocalStorage() {
-  if (isBrowser()) {
-    return localStorage.getItem(THEME_LOCAL_STORAGE_KEY);
-  }
-
-  return null;
-}
-
 export function getStoredTheme() {
-  return getThemeFromLocalStorage();
+  return parseCookies(null)['theme'];
 }
 
 export function getDefaultTheme() {
@@ -32,11 +25,11 @@ export function setTheme(theme: string | null) {
   }
 
   if (theme === DARK_THEME_CLASSNAME) {
-    localStorage.setItem(THEME_LOCAL_STORAGE_KEY, DARK_THEME_CLASSNAME);
+    setCookie(null, THEME_LOCAL_STORAGE_KEY, DARK_THEME_CLASSNAME);
     root.classList.add(DARK_THEME_CLASSNAME);
     setMetaTag(DARK_THEME_META_COLOR);
   } else {
-    localStorage.setItem(THEME_LOCAL_STORAGE_KEY, 'light');
+    setCookie(null, THEME_LOCAL_STORAGE_KEY, LIGHT_THEME_CLASSNAME);
     root.classList.remove(DARK_THEME_CLASSNAME);
     setMetaTag(LIGHT_THEME_META_COLOR);
   }

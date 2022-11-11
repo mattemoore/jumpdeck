@@ -7,7 +7,7 @@ import { useUser } from 'reactfire';
 import FirebaseStorageProvider from '~/core/firebase/components/FirebaseStorageProvider';
 
 import { withAppProps } from '~/lib/props/with-app-props';
-import { UserSessionContext } from '~/core/session/contexts/user-session';
+import { UserSessionContext } from '~/core/contexts/user-session';
 
 import UpdateProfileForm from '~/components/profile/UpdateProfileForm';
 import ProfileSettingsTabs from '~/components/profile/ProfileSettingsTabs';

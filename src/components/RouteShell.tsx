@@ -1,4 +1,3 @@
-import React from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 
@@ -16,12 +15,18 @@ const FirebaseFirestoreProvider = dynamic(
   () => import('~/core/firebase/components/FirebaseFirestoreProvider')
 );
 
-const SentryProvider = dynamic(() => import('~/components/SentryProvider'), {
-  ssr: false,
-});
+const SentryProvider = dynamic(() => import('~/components/SentryProvider'));
 
 const GuardedPage = dynamic(
   () => import('~/core/firebase/components/GuardedPage')
+);
+
+const RouteShellWithSidebar = dynamic(
+  () => import('./layouts/sidebar/RouteShellWithSidebar')
+);
+
+const RouteShellWithTopNavigation = dynamic(
+  () => import('./layouts/header/RouteShellWithTopNavigation')
 );
 
 const redirectPathWhenSignedOut = '/';
@@ -61,10 +66,6 @@ function LayoutRenderer(
 ) {
   switch (props.style) {
     case LayoutStyle.Sidebar: {
-      const RouteShellWithSidebar = dynamic(
-        () => import('./layouts/sidebar/RouteShellWithSidebar')
-      );
-
       return (
         <RouteShellWithSidebar title={props.title}>
           {props.children}
@@ -73,10 +74,6 @@ function LayoutRenderer(
     }
 
     case LayoutStyle.TopHeader: {
-      const RouteShellWithTopNavigation = dynamic(
-        () => import('./layouts/header/RouteShellWithTopNavigation')
-      );
-
       return (
         <RouteShellWithTopNavigation title={props.title}>
           {props.children}

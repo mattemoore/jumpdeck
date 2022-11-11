@@ -1,6 +1,5 @@
 import { useCallback, useContext, useState } from 'react';
 import Image from 'next/image';
-import { SpringSpinner } from 'react-epic-spinners';
 
 import { setCookie } from 'nookies';
 import { Trans } from 'next-i18next';
@@ -14,6 +13,7 @@ import If from '~/core/ui/If';
 import { PopoverDropdown, PopoverDropdownItem } from '~/core/ui/Popover';
 
 import CreateOrganizationModal from './CreateOrganizationModal';
+import ClientOnly from "~/core/ui/ClientOnly";
 
 const PopoverButton: React.FCC<{
   organization: Maybe<WithId<Organization>>;
@@ -28,8 +28,6 @@ const PopoverButton: React.FCC<{
 const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
   const [isOrganizationModalOpen, setIsOrganizationModalOpen] = useState(false);
   const { organization, setOrganization } = useContext(OrganizationContext);
-  const { data: organizations, status } = useFetchUserOrganizations(userId);
-  const isLoadingOrganizations = status === `loading`;
 
   const organizationSelected = useCallback(
     async (item: WithId<Organization>) => {
@@ -45,32 +43,17 @@ const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
     [setOrganization]
   );
 
-  if (isLoadingOrganizations) {
-    return <SpringSpinner size={24} color={`currentColor`} />;
-  }
-
   return (
     <>
       <div data-cy={'organization-selector'}>
         <PopoverDropdown button={<PopoverButton organization={organization} />}>
-          {(organizations ?? []).map((item) => {
-            const isSelected = item.id === organization?.id;
-
-            if (!isSelected) {
-              return (
-                <PopoverDropdownItem
-                  key={item.name}
-                  onClick={() => organizationSelected(item)}
-                >
-                  <PopoverDropdownItem.Label>
-                    <OrganizationItem organization={item} />
-                  </PopoverDropdownItem.Label>
-                </PopoverDropdownItem>
-              );
-            }
-
-            return null;
-          })}
+          <ClientOnly>
+            <OrganizationsOptions
+              userId={userId}
+              organizationId={organization?.id}
+              onSelect={organizationSelected}
+            />
+          </ClientOnly>
 
           <PopoverDropdownItem
             className={'border-t border-gray-100 dark:border-black-400'}
@@ -102,6 +85,45 @@ const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
     </>
   );
 };
+
+function OrganizationsOptions(
+  props: React.PropsWithChildren<{
+    userId: string;
+    organizationId: Maybe<string>;
+    onSelect: (organization: WithId<Organization>) => unknown;
+  }>
+) {
+  const { data: organizations, status } = useFetchUserOrganizations(
+    props.userId
+  );
+
+  if (status !== 'success') {
+    return null;
+  }
+
+  return (
+    <>
+      {(organizations ?? []).map((item) => {
+        const isSelected = item.id === props.organizationId;
+
+        if (!isSelected) {
+          return (
+            <PopoverDropdownItem
+              key={item.name}
+              onClick={() => props.onSelect(item)}
+            >
+              <PopoverDropdownItem.Label>
+                <OrganizationItem organization={item} />
+              </PopoverDropdownItem.Label>
+            </PopoverDropdownItem>
+          );
+        }
+
+        return null;
+      })}
+    </>
+  );
+}
 
 function OrganizationItem({ organization }: { organization: Organization }) {
   const { logoURL, name } = organization;

@@ -1,11 +1,10 @@
 import { useCallback, useState } from 'react';
+import { setCookie } from "nookies";
 
-const SIDEBAR_COLLAPSED_STORAGE_KEY = 'sidebarCollapsed';
+const SIDEBAR_COLLAPSED_STORAGE_KEY = 'sidebarState';
 
-function useCollapsible() {
-  const [isCollapsed, setIsCollapsed] = useState(
-    getCollapsibleStateFromStorage()
-  );
+function useCollapsible(initialValue?: boolean) {
+  const [isCollapsed, setIsCollapsed] = useState(initialValue);
 
   const onCollapseChange = useCallback((collapsed: boolean) => {
     setIsCollapsed(collapsed);
@@ -15,16 +14,12 @@ function useCollapsible() {
   return [isCollapsed, onCollapseChange] as [boolean, typeof onCollapseChange];
 }
 
-function getCollapsibleStateFromStorage() {
-  return localStorage.getItem(SIDEBAR_COLLAPSED_STORAGE_KEY) === 'true';
-}
-
 function storeCollapsibleState(collapsed: boolean) {
-  if (collapsed) {
-    localStorage.setItem(SIDEBAR_COLLAPSED_STORAGE_KEY, 'true');
-  } else {
-    localStorage.removeItem(SIDEBAR_COLLAPSED_STORAGE_KEY);
-  }
+  setCookie(
+    null,
+    SIDEBAR_COLLAPSED_STORAGE_KEY,
+    collapsed ? 'collapsed' : 'expanded'
+  );
 }
 
 export default useCollapsible;

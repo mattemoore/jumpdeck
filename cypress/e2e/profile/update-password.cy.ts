@@ -36,11 +36,9 @@ describe(`Update Password`, () => {
     });
 
     it('should display an error on the repeat password input', () => {
-      profilePo
-        .$getRepeatNewPasswordInput()
-        .invoke('prop', 'validationMessage')
+      cy.cyGet('repeat-password-error')
         .should(
-          `equal`,
+          `contain.text`,
           `Passwords do not match. Make sure you're using the correct password`
         );
     });
@@ -56,10 +54,8 @@ describe(`Update Password`, () => {
     });
 
     it('should display an error on the new password input', () => {
-      profilePo
-        .$getNewPasswordInput()
-        .invoke('prop', 'validationMessage')
-        .should(`equal`, `Your password has not changed`);
+      cy.cyGet('new-password-error')
+        .should(`contain.text`, `Your password has not changed`);
     });
   });
 

@@ -1,8 +1,7 @@
 import '../styles/index.css';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import type { AppProps } from 'next/app';
-import Head from 'next/head';
 import dynamic from 'next/dynamic';
 
 import type { User as AuthUser } from 'firebase/auth';
@@ -17,12 +16,16 @@ import FirebaseAnalyticsProvider from '~/core/firebase/components/FirebaseAnalyt
 
 import { loadSelectedTheme } from '~/core/theming';
 import { isBrowser } from '~/core/generic';
+import useCollapsible from '~/core/hooks/use-sidebar-state';
 
 import { Organization } from '~/lib/organizations/types/organization';
 import { OrganizationContext } from '~/lib/contexts/organization';
 import { UserData } from '~/core/session/types/user-data';
-import { UserSessionContext } from '~/core/session/contexts/user-session';
+import { UserSessionContext } from '~/core/contexts/user-session';
 import { UserSession } from '~/core/session/types/user-session';
+import { SidebarContext } from '~/core/contexts/sidebar';
+import { ThemeContext } from '~/core/contexts/theme';
+import { CsrfTokenContext } from '~/core/contexts/csrf-token';
 
 const AppRouteLoadingIndicator = dynamic(
   () => import('~/core/ui/AppRouteLoadingIndicator'),
@@ -31,11 +34,17 @@ const AppRouteLoadingIndicator = dynamic(
   }
 );
 
+interface UIState {
+  sidebarState: string;
+  theme: 'light' | 'dark';
+}
+
 interface DefaultPageProps extends SSRConfig {
   session?: Maybe<AuthUser>;
   user?: Maybe<UserData>;
   organization?: Maybe<WithId<Organization>>;
   csrfToken?: string;
+  ui?: UIState;
 }
 
 function App(
@@ -87,9 +96,13 @@ function App(
               <OrganizationContext.Provider
                 value={{ organization, setOrganization }}
               >
-                <CsrfTokenMetaAttribute csrfToken={pageProps.csrfToken} />
                 <AppRouteLoadingIndicator />
-                <Component {...pageProps} />
+
+                <UiStateProvider state={pageProps.ui}>
+                  <CsrfTokenContext.Provider value={pageProps.csrfToken}>
+                    <Component {...pageProps} />
+                  </CsrfTokenContext.Provider>
+                </UiStateProvider>
               </OrganizationContext.Provider>
             </UserSessionContext.Provider>
           </FirebaseAnalyticsProvider>
@@ -103,15 +116,24 @@ export default appWithTranslation<AppProps & { pageProps: DefaultPageProps }>(
   App
 );
 
-function CsrfTokenMetaAttribute({ csrfToken }: { csrfToken: Maybe<string> }) {
-  if (!csrfToken) {
-    return null;
-  }
+function UiStateProvider(
+  props: React.PropsWithChildren<{
+    state: Maybe<UIState>;
+  }>
+) {
+  const ui = props.state;
+  const isCollapsed = ui?.sidebarState === 'collapsed';
+  const currentTheme = ui?.theme ?? 'light';
+
+  const [collapsed, setCollapsed] = useCollapsible(isCollapsed);
+  const [theme, setTheme] = useState(currentTheme);
 
   return (
-    <Head>
-      <meta name={'csrf-token'} content={csrfToken} />
-    </Head>
+    <SidebarContext.Provider value={{ collapsed, setCollapsed }}>
+      <ThemeContext.Provider value={{ theme, setTheme }}>
+        {props.children}
+      </ThemeContext.Provider>
+    </SidebarContext.Provider>
   );
 }
 

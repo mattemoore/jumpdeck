@@ -73,8 +73,8 @@ export default function inviteHandler(
   res: NextApiResponse
 ) {
   const handler = withPipe(
-    withCsrf(),
     withMethodsGuard(SUPPORTED_METHODS),
+    withCsrf(),
     withAuthedUser,
     inviteMembersToOrganizationHandler
   );

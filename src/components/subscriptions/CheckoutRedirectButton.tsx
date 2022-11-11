@@ -1,12 +1,16 @@
+import dynamic from 'next/dynamic';
 import React from 'react';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
 import Button from '~/core/ui/Button';
 import configuration from '~/configuration';
 import { isBrowser } from '~/core/generic';
-import { useGetCsrfToken } from '~/core/firebase/hooks/use-get-csrf-token';
 
 const CHECKOUT_SESSION_API_ENDPOINT = configuration.paths.api.checkout;
+
+const CSRFTokenInput = dynamic(() => import('./CsrfTokenInput'), {
+  ssr: false,
+});
 
 const CheckoutRedirectButton: React.FCC<{
   disabled?: boolean;
@@ -51,20 +55,14 @@ function CheckoutFormData(
     customerId: Maybe<string>;
   }>
 ) {
-  const getCsrfToken = useGetCsrfToken();
-
   return (
     <>
+      <CSRFTokenInput />
+
       <input
         type="hidden"
         name={'organizationId'}
         defaultValue={props.organizationId}
-      />
-
-      <input
-        type="hidden"
-        name={'csrfToken'}
-        defaultValue={getCsrfToken() ?? ''}
       />
 
       <input type="hidden" name={'returnUrl'} defaultValue={getReturnUrl()} />

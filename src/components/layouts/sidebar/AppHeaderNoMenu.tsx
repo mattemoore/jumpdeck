@@ -6,12 +6,8 @@ import { useUserSession } from '~/core/hooks/use-user-session';
 import ProfileDropdown from '~/components/ProfileDropdown';
 import If from '~/core/ui/If';
 
-const OrganizationsSelector = dynamic(
-  () => import('../../organizations/OrganizationsSelector'),
-  {
-    ssr: false,
-  }
-);
+import OrganizationsSelector
+  from "~/components/organizations/OrganizationsSelector";
 
 const MobileNavigation = dynamic(() => import('~/components/MobileNavigation'));
 
