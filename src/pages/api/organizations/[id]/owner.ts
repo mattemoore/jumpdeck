@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { z } from 'zod';
-import { UpdateData } from 'firebase-admin/firestore';
+import type { UpdateData } from 'firebase-admin/firestore';
 
 import { withAuthedUser } from '~/core/middleware/with-authed-user';
 import { withPipe } from '~/core/middleware/with-pipe';
@@ -74,7 +74,7 @@ async function updateOrganizationOwnerHandler(
   const updateData = {
     [`members.${currentUserId}.role`]: MembershipRole.Admin,
     [`members.${targetUserId}.role`]: MembershipRole.Owner,
-  } as UpdateData<Organization>;
+  } as unknown as UpdateData<Organization>;
 
   // now we can swap the roles by updating the members' roles in the
   // organization's "members" object

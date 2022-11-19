@@ -21,7 +21,7 @@ const AuthPageLayout: React.FCC<{
           className={`flex w-11/12 max-w-xl flex-col items-center space-y-5 rounded-xl border border-transparent bg-white p-8 dark:bg-black-600 dark:bg-black-500 sm:border-gray-100 dark:sm:border-black-500 md:w-8/12 lg:w-5/12 xl:w-4/12 2xl:w-3/12`}
         >
           <div>
-            <Heading type={3}>{heading}</Heading>
+            <Heading type={4}>{heading}</Heading>
           </div>
 
           {children}

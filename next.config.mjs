@@ -12,7 +12,9 @@ const SECONDS_PER_DAY = 86400;
  */
 const config = {
   pageExtensions: ["ts", "tsx", "md", "mdx"],
-  swcMinify: true,
+  // SWC minification breaks AppCheck. You may set to true if you're not
+  // interested in using Firebase AppCheck
+  swcMinify: false,
   // please disable if too verbose while developing. No judgment
   reactStrictMode: true,
   images: {
