@@ -79,13 +79,16 @@ service cloud.firestore {
       let isMember = userIsMemberByOrganizationId(organizationId);
 
       // we should not let users update these fields from a non-admin env
-      let noDisallowedFields = fieldsNotInUpdateAction(['members', 'subscription']);
+      let noDisallowedFields = fieldsNotInUpdateAction(['members',
+      'subscription', 'customerId']);
 
       return isMember && noDisallowedFields;
     }
 
     function canCreateOrganization() {
-      return isSignedIn() && fieldsNotInCreateAction(['members', 'subscription']);
+      return isSignedIn() && fieldsNotInCreateAction(['members', 'subscription',
+       'customerId'
+      ]);
     }
 
     match /organizations/{organizationId} {
