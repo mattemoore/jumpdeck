@@ -59,7 +59,7 @@ const UpdatePasswordForm: React.FCC<{ user: User }> = ({ user }) => {
     validate: (value) => {
       // current password cannot be the same as the current one
       if (value === getValues('currentPassword')) {
-        return t(`profile:passwordNotChanged`);
+        return t<string>(`profile:passwordNotChanged`);
       }
     },
   });
@@ -74,7 +74,7 @@ const UpdatePasswordForm: React.FCC<{ user: User }> = ({ user }) => {
     validate: (value) => {
       // new password and repeat new password must match
       if (value !== getValues('newPassword')) {
-        return t(`profile:passwordNotMatching`);
+        return t<string>(`profile:passwordNotMatching`);
       }
     },
   });

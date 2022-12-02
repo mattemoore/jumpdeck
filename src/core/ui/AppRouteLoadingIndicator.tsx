@@ -5,6 +5,7 @@ import LoadingBar, { LoadingBarRef } from 'react-top-loading-bar';
 function AppRouteLoadingIndicator() {
   const ref = createRef<LoadingBarRef>();
   const [loading, setLoading] = useState(false);
+
   const onRouteChangeStartCallback = useCallback(() => {
     setLoading(true);
   }, []);

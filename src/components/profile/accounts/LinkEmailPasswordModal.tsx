@@ -72,7 +72,7 @@ function LinkEmailPasswordModal({
     },
     validate: (value) => {
       if (value !== passwordValue) {
-        return t(`auth:passwordsDoNotMatch`);
+        return t<string>(`auth:passwordsDoNotMatch`);
       }
 
       return true;

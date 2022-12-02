@@ -95,13 +95,13 @@ const InviteMembersForm: React.FCC = () => {
               const invalid = getFormValidator(watchFieldArray)(value, index);
 
               if (invalid) {
-                return t(`duplicateInviteEmailError`);
+                return t<string>(`duplicateInviteEmailError`);
               }
 
               const isSameAsCurrentUserEmail = user?.auth?.email === value;
 
               if (isSameAsCurrentUserEmail) {
-                return t(`invitingOwnAccountError`);
+                return t<string>(`invitingOwnAccountError`);
               }
 
               return true;
@@ -150,7 +150,7 @@ const InviteMembersForm: React.FCC = () => {
                     >
                       <IconButton
                         data-cy={'remove-invite-button'}
-                        label={t('removeInviteButtonLabel')}
+                        label={t<string>('removeInviteButtonLabel')}
                         onClick={() => {
                           remove(index);
                           clearErrors(emailInputName);

@@ -42,7 +42,7 @@ const UpdateEmailForm: React.FC<{ user: User }> = ({ user }) => {
           setErrorMessage(undefined);
         })
         .catch((e) => {
-          setErrorMessage(t(`profile:updateEmailError`));
+          setErrorMessage(t<string>(`profile:updateEmailError`));
 
           return e;
         });
@@ -107,7 +107,7 @@ const UpdateEmailForm: React.FC<{ user: User }> = ({ user }) => {
         } else {
           // otherwise, it's a simple error, meaning the user wasn't able
           // to authenticate
-          setErrorMessage(t(`profile:updateEmailError`));
+          setErrorMessage(t<string>(`profile:updateEmailError`));
         }
 
         requestState.setError(e);
