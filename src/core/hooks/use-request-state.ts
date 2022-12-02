@@ -22,6 +22,23 @@ type State<Data, ErrorType> =
 
 /**
  * @name useRequestState
+ * @description A hook to manage the state of a request.
+ *
+ * Useful to "hookify" async functions and make them play well with React.
+ *
+ * Example:
+ * const { setLoading, setData, setError } = useRequestState();
+ *
+ * async function request() {
+ *   setLoading(true);
+ *
+ *   try {
+ *      const data = await fetch('/api');
+ *     setData(data);
+ *   } catch (error) {
+ *     setError(error);
+ *   }
+ * }
  */
 export function useRequestState<Data = unknown, ErrorType = unknown>() {
   const [state, setState] = useState<State<Data, ErrorType>>({

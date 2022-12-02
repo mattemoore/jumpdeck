@@ -4,6 +4,9 @@ import type { ServerResponse } from 'http';
 
 /**
  * @name createCsrfCookie
+ * @description Creates a CSRF secret cookie and returns the CSRF token to be
+ * sent to the client-side. The client-side will return this token in the
+ * HTTP request header.
  * @param ctx
  */
 async function createCsrfCookie<Ctx extends { res: ServerResponse }>(ctx: Ctx) {

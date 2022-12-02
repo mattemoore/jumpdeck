@@ -17,11 +17,11 @@ import {
   getUserRoleByOrganization,
 } from '~/lib/server/organizations/memberships';
 
-import { useApiRequest } from '~/core/hooks/use-api';
+import useAddMemberToOrganization from '~/lib/organizations/hooks/use-add-member-to-organization';
+
 import logger from '~/core/logger';
 import If from '~/core/ui/If';
 import Button from '~/core/ui/Button';
-import configuration from '~/configuration';
 import { isBrowser } from '~/core/generic';
 import OAuthProviders from '~/components/auth/OAuthProviders';
 import PageLoadingIndicator from '~/core/ui/PageLoadingIndicator';
@@ -35,6 +35,8 @@ import EmailPasswordSignInContainer from '~/components/auth/EmailPasswordSignInC
 import AuthPageLayout from '~/components/auth/AuthPageLayout';
 import PhoneNumberSignInContainer from '~/components/auth/PhoneNumberSignInContainer';
 import EmailLinkAuth from '~/components/auth/EmailLinkAuth';
+
+import configuration from '~/configuration';
 
 enum Mode {
   SignUp,
@@ -329,17 +331,6 @@ function redirectToErrorPage() {
       destination: '/500',
     },
   };
-}
-
-function useAddMemberToOrganization(id: string) {
-  const path = `/api/organizations/${id}/members`;
-
-  return useApiRequest<
-    void,
-    {
-      code: string;
-    }
-  >(path);
 }
 
 function getRedirectPath() {

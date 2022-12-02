@@ -1,5 +1,6 @@
 /**
- *
+ * @name isMethodSupported
+ * @description Check if the HTP method is supported
  * @param method
  * @param supportedMethods
  */

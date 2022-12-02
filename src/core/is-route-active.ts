@@ -2,10 +2,11 @@ const ROOT_PATH = '/';
 
 /**
  * @name isRouteActive
- * @description Check if the current route is active
- * @param targetLink
- * @param currentRoute
- * @param depth
+ * @description A function to check if a route is active. This is used to
+ * highlight the active link in the navigation.
+ * @param targetLink - The link to check against
+ * @param currentRoute - the current route
+ * @param depth - how far down should segments be matched?
  */
 export function isRouteActive(
   targetLink: string,

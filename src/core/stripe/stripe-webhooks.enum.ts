@@ -1,3 +1,7 @@
+/**
+ * @name StripeWebhooks
+ * @description A list of Stripe webhooks topics. Add new webhooks here.
+ */
 export enum StripeWebhooks {
   AsyncPaymentSuccess = 'checkout.session.async_payment_succeeded',
   Completed = 'checkout.session.completed',

@@ -1,3 +1,7 @@
+/**
+ * @name HttpStatusCode
+ * @description HTTP status codes
+ */
 export enum HttpStatusCode {
   Ok = 200,
   MovedPermanently = 301,

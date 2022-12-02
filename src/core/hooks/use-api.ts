@@ -9,6 +9,7 @@ const CSRF_TOKEN_HEADER = 'x-csrf-token';
 
 /**
  * @name useApiRequest
+ * @description A hook to make API requests
  * @param path
  * @param method
  * @param headers
@@ -68,15 +69,7 @@ export function useApiRequest<Resp = unknown, Body = void>(
         return Promise.reject(error);
       }
     },
-    [
-      setLoading,
-      getAppCheckToken,
-      csrfToken,
-      path,
-      method,
-      setData,
-      setError,
-    ]
+    [setLoading, getAppCheckToken, csrfToken, path, method, setData, setError]
   );
 
   return [fn, state] as [typeof fn, typeof state];

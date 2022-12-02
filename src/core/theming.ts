@@ -9,6 +9,10 @@ const DARK_THEME_META_COLOR = configuration.site.themeColorDark;
 export const DARK_THEME_CLASSNAME = `dark`;
 export const LIGHT_THEME_CLASSNAME = `light`;
 
+/**
+ * @name getStoredTheme
+ * @description Get the stored theme from the cookies
+ */
 export function getStoredTheme() {
   return parseCookies(null)['theme'];
 }
@@ -65,6 +69,12 @@ function getThemeMetaTag() {
   return document.querySelector(`meta[name='theme-color']`);
 }
 
+/**
+ * @name setMetaTag
+ * @description Set the theme color meta tag when the theme changes. This is
+ * useful for Safari and PWAs since it will change the color of the status bar
+ * @param value
+ */
 function setMetaTag(value: string) {
   const callback = () => {
     let tag = getThemeMetaTag();

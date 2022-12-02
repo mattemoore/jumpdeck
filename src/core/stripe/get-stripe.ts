@@ -1,6 +1,7 @@
 const STRIPE_API_VERSION = '2022-11-15';
 
 /**
+ * @name getStripeInstance
  * @description returns a Stripe instance
  * If running in Cypress: it will use the Stripe emulated instance pointing
  * to the docker container

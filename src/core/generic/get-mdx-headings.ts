@@ -1,3 +1,8 @@
+/**
+ * @namee getMdxHeadings
+ * @description Get the headings from the MDX content
+ * @param source
+ */
 export default function getMDXHeadings(source: string) {
   const headingLines = source.split('\n').filter((line) => {
     return line.match(/^#*\s/);
