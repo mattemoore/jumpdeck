@@ -6,29 +6,26 @@ describe(`Create Invite`, () => {
   const email = `invited-member@makerkit.dev`;
   const defaultEmailAddress = authPo.getDefaultUserEmail();
 
-  before(() => {
-    organizationPageObject.useDefaultOrganization();
+  beforeEach(() => {
     cy.signIn(`/settings/organization/members/invite`);
   });
 
   describe(`Given a user invites a new member`, () => {
     describe(`When entering current user's email address`, () => {
-      before(() => {
+      it('should disallow the form submission', () => {
         organizationPageObject
           .$getInvitationEmailInput()
           .type(defaultEmailAddress);
 
         organizationPageObject.$getInviteMembersForm().submit();
-      });
 
-      it('should disallow the form submission', () => {
         const validity = false;
         getInviteMembersFormValidity().should('equal', validity);
       });
     });
 
     describe(`When entering the same email address multiple times`, () => {
-      before(() => {
+      it('should disallow the form submission', () => {
         const emailAddress = `dupe@makerkit.dev`;
 
         // here we add the same email into multiple rows
@@ -40,19 +37,13 @@ describe(`Create Invite`, () => {
         organizationPageObject.$getAppendNewInviteButton().click();
         organizationPageObject.$getInvitationEmailInput(1).type(emailAddress);
         organizationPageObject.$getInviteMembersForm().submit();
-      });
 
-      it('should disallow the form submission', () => {
         const validity = false;
         getInviteMembersFormValidity().should('equal', validity);
       });
     });
 
     describe(`When the user is invited successfully`, () => {
-      before(() => {
-        cy.reload();
-      });
-
       it('should be added to the list', () => {
         organizationPageObject.inviteMember(email, MembershipRole.Member);
         organizationPageObject.$getInvitedMemberByEmail(email).should('exist');
@@ -60,10 +51,6 @@ describe(`Create Invite`, () => {
     });
 
     describe(`When the same user is invited again`, () => {
-      before(() => {
-        organizationPageObject.navigateToInviteForm();
-      });
-
       it('should update the existing invite', () => {
         organizationPageObject.inviteMember(email, MembershipRole.Admin);
 

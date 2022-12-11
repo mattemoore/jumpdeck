@@ -77,13 +77,18 @@ const CreateOrganizationModal: React.FC<{
             </TextField.Label>
           </TextField>
 
-          <Button
-            data-cy={'confirm-create-organization-button'}
-            block
-            loading={loading}
-          >
-            <Trans i18nKey={'organization:createOrganizationSubmitLabel'} />
-          </Button>
+          <div>
+            <div className={'flex justify-end space-x-2'}>
+              <Modal.CancelButton onClick={() => setIsOpen(false)} />
+
+              <Button
+                data-cy={'confirm-create-organization-button'}
+                loading={loading}
+              >
+                <Trans i18nKey={'organization:createOrganizationSubmitLabel'} />
+              </Button>
+            </div>
+          </div>
         </div>
       </form>
     </Modal>

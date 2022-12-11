@@ -4,13 +4,10 @@ describe(`Delete Invite`, () => {
   // this invite has been pre-populated with the following email
   const invitedMemberEmail = `invite-delete@makerkit.dev`;
 
-  before(() => {
-    organizationPageObject.useDefaultOrganization();
-    cy.signIn(`/settings/organization/members`);
-  });
-
   describe(`When the invite is deleted`, () => {
-    before(() => {
+    it('should be removed from the list', () => {
+      cy.signIn(`/settings/organization/members`);
+
       organizationPageObject
         .$getInvitedMemberByEmail(invitedMemberEmail)
         .within(() => {
@@ -22,9 +19,7 @@ describe(`Delete Invite`, () => {
         });
 
       organizationPageObject.$getConfirmDeleteInviteButton().click();
-    });
 
-    it('should be removed from the list', () => {
       organizationPageObject
         .$getInvitedMemberByEmail(invitedMemberEmail)
         .should('not.exist');

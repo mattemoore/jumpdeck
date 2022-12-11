@@ -76,7 +76,14 @@ const OAuthProviders: React.FCC<{
   return (
     <>
       <If condition={loading}>
-        <PageLoadingIndicator />
+        <div>
+          <PageLoadingIndicator
+            displayLogo={false}
+            className={'m-0 !h-full !w-full rounded-xl'}
+          >
+            <Trans i18nKey={'auth:signingIn'} />
+          </PageLoadingIndicator>
+        </div>
       </If>
 
       <div className={'flex w-full flex-1 flex-col space-y-3'}>

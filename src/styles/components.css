@@ -30,13 +30,13 @@
 
     /* NavigationItem.tsx */
     .NavigationItem {
-        @apply leading-loose rounded-md justify-center
+        @apply leading-loose rounded-md 
         transition-colors dark:text-gray-300
         text-gray-700 flex items-center;
     }
 
     .NavigationItem a {
-        @apply py-2 px-1 lg:px-3 block flex font-medium items-center justify-center rounded-md w-full text-sm;
+        @apply py-2 px-1 lg:px-3 block flex font-medium items-center rounded-md w-full text-sm;
     }
 
     .NavigationItemActive a {
@@ -47,17 +47,25 @@
         @apply bg-transparent font-semibold;
     }
 
+    .BorderedNavigationMenu {
+        @apply border-b border-gray-100 dark:border-black-200;
+    }
+
     .BorderedNavigationMenu .NavigationItem a {
-        @apply py-3 border-b-[0.2rem] relative border-transparent top-[1px];
+        @apply h-12 border-b-[0.2rem] relative border-transparent top-[1px];
     }
 
     .BorderedNavigationMenu .NavigationItemActive a {
-        @apply border-primary-500 text-current bg-transparent rounded-none font-medium;
+        @apply border-primary-500 text-primary-500 dark:text-white bg-transparent rounded-none font-semibold;
+    }
+
+    .BorderedNavigationMenu .NavigationItemNotActive a {
+        @apply hover:text-primary-500;
     }
 
     .NavigationItemNotActive {
         @apply active:text-current text-gray-500 dark:text-gray-400
-        dark:hover:text-white hover:text-current;
+         hover:text-current;
     }
 
     .NavigationItemActive {
@@ -111,46 +119,44 @@
 
     /** Alert.tsx */
     .Alert {
-        @apply p-6 rounded relative flex text-base font-medium
-        items-center justify-between text-black-300 border-l-4;
+        @apply p-4 rounded relative flex
+        items-center justify-between text-black-300 rounded-lg text-sm;
     }
 
     .Alert .AlertIcon {
-        @apply absolute top-[-0.25rem] left-[-0.75rem]
-        p-[0.1rem] h-[2rem] w-[2rem] rounded-full
-        bg-white dark:bg-black-500;
+        @apply rounded-full h-5 dark:bg-black-500;
     }
 
     .Alert.AlertSuccess {
-        @apply bg-green-50 dark:bg-green-500/10 dark:text-green-500 border-green-500 text-green-900;
+        @apply bg-green-50 dark:bg-green-500/10 dark:text-green-500 text-green-900;
     }
 
     .Alert.AlertSuccess .AlertIcon {
-        @apply text-green-600;
+        @apply text-green-700;
     }
 
     .Alert.AlertError {
-        @apply bg-red-50 dark:bg-red-500/10 dark:text-red-500 border-red-500 text-red-900;
+        @apply bg-red-50 dark:bg-red-500/10 dark:text-red-500 text-red-900;
     }
 
     .Alert.AlertError .AlertIcon {
-        @apply text-red-600;
+        @apply text-red-700;
     }
 
     .Alert.AlertWarn {
-        @apply bg-orange-50 dark:bg-orange-500/10 dark:text-orange-500 text-orange-900 border-orange-500;
+        @apply bg-yellow-50 dark:bg-yellow-500/5 dark:text-yellow-500 text-yellow-800;
     }
 
     .Alert.AlertWarn .AlertIcon {
-        @apply text-orange-600 p-[0.3rem];
+        @apply text-yellow-700;
     }
 
     .Alert.AlertInfo {
-        @apply bg-blue-50 dark:bg-blue-500/10 dark:text-blue-500 text-blue-900 border-blue-500;
+        @apply bg-blue-50 dark:bg-blue-500/10 dark:text-blue-500 text-blue-900;
     }
 
     .Alert.AlertInfo .AlertIcon {
-        @apply text-blue-600;
+        @apply text-blue-700;
     }
 
     /* TextField.tsx */
@@ -160,12 +166,12 @@
 
     .TextFieldInputContainer {
         @apply dark:border-black-200 dark:hover:border-black-100 w-full
-        border-gray-200 border relative flex h-11
-        text-gray-800 dark:text-gray-200 transition-all duration-300
+        border-gray-200 border relative flex h-10
+        text-gray-800 dark:text-gray-200 transition-all
         text-sm items-center flex rounded-md font-medium
         bg-white hover:bg-gray-50 dark:bg-black-500 ring-primary-500
-        focus:border-transparent focus-within:ring-2
-        focus-within:border-transparent focus-within:hover:border-transparent
+        focus-within:ring-2 focus-within:border-transparent
+        focus-within:hover:border-transparent dark:focus-within:hover:border-transparent
         shadow-sm dark:focus:bg-black-400 hover:border-gray-300;
     }
 
@@ -174,18 +180,14 @@
     }
 
     .TextFieldInputContainer input {
-        @apply bg-transparent outline-none flex-auto px-2.5;
+        @apply bg-transparent outline-none flex-auto px-2.5 h-10 rounded-md;
     }
 
     .TextFieldInputContainer input:-webkit-autofill,
     .TextFieldInputContainer input:-webkit-autofill:hover,
     .TextFieldInputContainer input:-webkit-autofill:active,
     .TextFieldInputContainer input:-webkit-autofill:focus {
-        box-shadow: inset 0 0 0 1000px transparent;
-    }
-
-    .TextFieldInputContainer input[data-autocompleted] {
-        @apply bg-transparent;
+        @apply shadow-[inset_0_0_0_1000] shadow-white;
     }
 
     .TextFieldInputContainer textarea {
@@ -214,11 +216,11 @@
 
     /* Label.tsx */
     .Label {
-        @apply text-gray-600 text-sm font-medium w-full dark:text-gray-300;
+        @apply text-gray-500 text-sm font-semibold w-full dark:text-gray-400;
     }
 
     .Label > * {
-        margin-top: 0.4rem;
+        margin-top: 0.3rem;
     }
 
     .Label.no-margin > * {
@@ -227,7 +229,7 @@
 
     /* Button.tsx */
     .Button {
-        @apply rounded-md font-semibold transition-colors
+        @apply rounded-md font-normal transition-colors
         flex items-center justify-center outline-none focus:ring-2;
     }
 
@@ -261,11 +263,11 @@
     }
 
     .ButtonNormal {
-        @apply text-sm py-2.5 px-5;
+        @apply text-sm py-2 px-5 h-10;
     }
 
     .ButtonLarge {
-        @apply py-3 px-5 h-12 text-lg;
+        @apply py-2.5 px-6 h-12 text-lg h-12;
     }
 
     .ButtonSmall {
@@ -312,11 +314,6 @@
         transition-colors duration-300 border
         border-gray-200 dark:border-black-200
         p-2.5 rounded-lg dark:hover:border-black-100;
-    }
-
-    /* Footer.tsx */
-    .Footer {
-        @apply py-8 lg:py-16;
     }
 
     /* Popover.tsx */
@@ -383,7 +380,7 @@
 
     /* ListBox.tsx */
     .ListBoxButton {
-        @apply TextFieldInputContainer px-2.5 h-11 text-left
+        @apply TextFieldInputContainer px-2.5 h-10 text-left
         font-semibold hover:text-current dark:text-current;
     }
 
@@ -405,7 +402,7 @@
     .ListBoxOptionsContainer {
         @apply absolute w-full mt-0.5 overflow-auto
         text-base bg-white dark:bg-black-300
-        rounded-lg shadow-md max-h-96 z-50;
+        rounded-lg shadow-sm max-h-96 z-50;
     }
 
     /* ListBoxOption.tsx */
@@ -626,44 +623,6 @@
     .StepperStep:not(.StepperStepSelected):disabled,
     .StepperStep:not(.Actionable):not(.StepperStepSelected) {
         @apply dark:text-gray-500 text-gray-400;
-    }
-
-    /*
-     faq.tsx
-     */
-    .FaqItem {
-        @apply rounded-xl border border-gray-100
-        dark:border-black-300 bg-gray-50 p-8
-        dark:bg-black-500
-    }
-
-    /* PlanSelector.tsx */
-    .PlanSelectorRadioItem {
-        @apply relative flex cursor-pointer rounded-lg border border-gray-200
-        px-5 py-4 shadow-sm focus:outline-none hover:border-gray-300 dark:border-black-400
-        dark:hover:border-black-300 transition-all duration-100;
-    }
-
-    .PlanSelectorRadioItemNonActive {
-        @apply hover:bg-gray-50 dark:bg-black-200
-        dark:hover:bg-black-300 dark:active:bg-black-100
-        active:bg-gray-200;
-    }
-
-    .PlanSelectorRadioItemChecked {
-        @apply bg-gray-100 ring dark:bg-black-300 ring-primary-500;
-    }
-
-    .PlanSelectorCheckIcon {
-        @apply h-6 w-6 rounded-full bg-primary-500 fill-transparent;
-    }
-
-    .PlanSelectorName {
-        @apply text-lg font-bold text-current dark:text-white;
-    }
-
-    .PlanSelectorPrice {
-        @apply text-base font-bold dark:text-white;
     }
 
     .Table {

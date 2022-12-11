@@ -13,11 +13,11 @@ const links = {
 };
 
 const OrganizationSettingsTabs = () => {
-  const itemClassName = `flex justify-center lg:justify-start items-center flex-auto lg:flex-initial`;
+  const itemClassName = `flex justify-center lg:justify-start items-center w-full`;
 
   return (
-    <div>
-      <NavigationMenu secondary vertical>
+    <div className={'h-full w-full max-w-[10rem]'}>
+      <NavigationMenu vertical>
         <NavigationItem
           className={itemClassName}
           link={links.General}

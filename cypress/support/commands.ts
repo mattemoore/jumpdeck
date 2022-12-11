@@ -25,6 +25,7 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 import authPo from './auth.po';
+import organizationPageObject from './organization.po';
 
 Cypress.Commands.add('cyGet', (name: string) => {
   return cy.get(createCySelector(name));
@@ -33,25 +34,23 @@ Cypress.Commands.add('cyGet', (name: string) => {
 Cypress.Commands.add(
   'signIn',
   (redirectPath = '/', credentials = authPo.getDefaultUserCredentials()) => {
-    preserveCookies();
+    cy.session([redirectPath, credentials.email], () => {
+      cy.log(
+        `Signing in programmatically and redirecting to ${redirectPath} ...`
+      );
 
-    cy.log(
-      `Signing in programmatically and redirecting to ${redirectPath} ...`
-    );
+      organizationPageObject.useDefaultOrganization();
+      authPo.signInProgrammatically(credentials);
 
-    authPo.signInProgrammatically(credentials);
+      cy.log(`Successfully signed in`);
+    });
 
-    cy.log(`Successfully signed in`);
-
-    cy.visit(redirectPath);
+    return cy.visit(redirectPath);
   }
 );
 
 Cypress.Commands.add(`clearStorage`, () => {
-  cy.clearCookies();
   indexedDB.deleteDatabase('firebaseLocalStorageDb');
-  localStorage.clear();
-  sessionStorage.clear();
 });
 
 Cypress.Commands.add(`signOutSession`, () => {
@@ -60,18 +59,4 @@ Cypress.Commands.add(`signOutSession`, () => {
 
 export function createCySelector(name: string) {
   return `[data-cy="${name}"]`;
-}
-
-function preserveCookies() {
-  // preserve the session cookie between tests
-  // otherwise the user will get logged out
-  Cypress.Cookies.defaults({
-    preserve: [
-      'session',
-      'sessionExpiresAt',
-      'organizationId',
-      'csrfToken',
-      'csrfSecret',
-    ],
-  });
 }

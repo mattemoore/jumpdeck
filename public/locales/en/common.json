@@ -10,9 +10,10 @@
   "imageInputLabel": "Click here to upload an image",
   "cancel": "Cancel",
   "backToHomePage": "Back to Home Page",
-  "pageNotFound": "Oooops. Page not Found.",
+  "pageNotFound": "Sorry, the page was not found",
   "pageNotFoundSubHeading": "Apologies, the page you were looking for was not found",
-  "genericError": "Oooops. An error occurred",
+  "genericError": "Sorry, we hit an unexpected error",
+  "genericErrorSubHeading": "We apologize for the inconvenience, but we hit an unexpected error. Please try again later.",
   "anonymousUser": "Anonymous",
   "switchToLightTheme": "Switch to Light theme",
   "switchToDarkTheme": "Switch to Dark theme",
@@ -20,6 +21,7 @@
   "collapseSidebar": "Collapse Sidebar",
   "documentation": "Documentation",
   "getStarted": "Get Started",
+  "contactUs": "Contact Us",
   "roles": {
     "owner": {
       "label": "Owner",

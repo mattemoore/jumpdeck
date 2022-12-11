@@ -1,9 +1,9 @@
-import { useUser } from 'reactfire';
 import { Line, ResponsiveContainer, LineChart, XAxis } from 'recharts';
 import { useMemo } from 'react';
 
 import Tile from '~/core/ui/Tile';
 import Heading from '~/core/ui/Heading';
+import { useUserSession } from '~/core/hooks/use-user-session';
 
 export default function DashboardDemo() {
   const mrr = useMemo(() => generateDemoData(), []);
@@ -160,8 +160,8 @@ export default function DashboardDemo() {
 }
 
 function UserGreetings() {
-  const user = useUser();
-  const userDisplayName = user.data?.displayName ?? user.data?.email ?? '';
+  const user = useUserSession();
+  const userDisplayName = user?.auth?.displayName ?? user?.auth?.email ?? '';
 
   return (
     <div>

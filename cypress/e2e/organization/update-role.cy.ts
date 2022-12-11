@@ -4,29 +4,15 @@ import { MembershipRole } from '~/lib/organizations/types/membership-role';
 describe(`Update User Role`, () => {
   const email = `test-role-update@makerkit.dev`;
 
-  before(() => {
-    organizationPageObject.useDefaultOrganization();
+  beforeEach(() => {
     cy.signIn(`/settings/organization/members`);
   });
 
   describe(`Given the current user updates a member's role`, () => {
-    describe('When the role is the same as the current one', () => {
-      before(() => {
-        organizationPageObject.updateMemberRole(email, MembershipRole.Member);
-      });
-
-      it('the UI will display an error', () => {
-        cy.get(`.chooseDifferentRoleError`).should('be.visible');
-        cy.cyGet(`close-modal-button`).click();
-      });
-    });
-
     describe('When the request is successful', () => {
-      before(() => {
-        organizationPageObject.updateMemberRole(email, MembershipRole.Admin);
-      });
-
       it('the UI will be updated accordingly', () => {
+        organizationPageObject.updateMemberRole(email, MembershipRole.Admin);
+
         organizationPageObject.$getMemberByEmail(email).within(() => {
           organizationPageObject.$getRoleBadge().should(`contain`, `Admin`);
         });

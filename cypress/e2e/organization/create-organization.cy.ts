@@ -2,15 +2,16 @@ import organizationPageObject from '../../support/organization.po';
 
 describe(`Create Organization`, () => {
   const organizationName = `New Organization`;
+
   const defaultOrganizationId =
     organizationPageObject.getDefaultOrganizationId();
 
-  before(() => {
+  beforeEach(() => {
     cy.signIn(`/dashboard`);
   });
 
   describe(`Given the user updates the organization name and logo`, () => {
-    before(() => {
+    it('the current selected organization will be the one created', () => {
       organizationPageObject.$currentOrganization().click();
       organizationPageObject.$createOrganizationButton().click();
 
@@ -19,9 +20,7 @@ describe(`Create Organization`, () => {
         .type(organizationName);
 
       organizationPageObject.$confirmCreateOrganizationButton().click();
-    });
 
-    it('the current selected organization will be the one created', () => {
       organizationPageObject
         .$currentOrganization()
         .should('contain', organizationName);
@@ -34,8 +33,6 @@ describe(`Create Organization`, () => {
     });
 
     it('should go back to the previous organization', () => {
-      organizationPageObject.switchToOrganization('Test');
-
       cy.getCookie('organizationId').should(
         'have.property',
         'value',

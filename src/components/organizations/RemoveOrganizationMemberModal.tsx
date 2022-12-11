@@ -42,19 +42,24 @@ const RemoveOrganizationMemberModal: React.FCC<{
   return (
     <Modal heading={heading} isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className={'flex flex-col space-y-4'}>
-        <p>
-          <Trans i18nKey={'common:modalConfirmationQuestion'} />
-        </p>
+        <div>
+          <p>
+            <Trans i18nKey={'common:modalConfirmationQuestion'} />
+          </p>
+        </div>
 
-        <Button
-          block
-          data-cy={'confirm-remove-member'}
-          color={'danger'}
-          onClick={onUserRemoved}
-          loading={state.loading}
-        >
-          <Trans i18nKey={'organization:removeMemberSubmitLabel'} />
-        </Button>
+        <div className={'flex justify-end space-x-2'}>
+          <Modal.CancelButton onClick={() => setIsOpen(false)} />
+
+          <Button
+            data-cy={'confirm-remove-member'}
+            color={'danger'}
+            onClick={onUserRemoved}
+            loading={state.loading}
+          >
+            <Trans i18nKey={'organization:removeMemberSubmitLabel'} />
+          </Button>
+        </div>
       </div>
     </Modal>
   );

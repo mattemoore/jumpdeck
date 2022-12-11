@@ -4,11 +4,14 @@ import {
   ArrowRightIcon,
   UserGroupIcon,
   FireIcon,
+  UserIcon,
+  BuildingLibraryIcon,
+  CubeIcon,
+  PaintBrushIcon,
+  DocumentIcon,
 } from '@heroicons/react/24/outline';
 
 import { withTranslationProps } from '~/lib/props/with-translation-props';
-import ConvertkitSignupForm from '~/components/newsletter/ConvertkitSignupForm';
-import configuration from '~/configuration';
 
 import Layout from '~/core/ui/Layout';
 import Container from '~/core/ui/Container';
@@ -18,6 +21,7 @@ import SubHeading from '~/core/ui/SubHeading';
 import Button from '~/core/ui/Button';
 import Heading from '~/core/ui/Heading';
 import Hero from '~/core/ui/Hero';
+import Divider from '~/core/ui/Divider';
 
 const Index = () => {
   return (
@@ -27,7 +31,7 @@ const Index = () => {
       <Container>
         <div
           className={
-            'my-8 mb-8 flex flex-col items-center md:mt-24 md:flex-row' +
+            'my-12 flex flex-col items-center md:flex-row lg:my-36' +
             ' mx-auto flex-1 justify-center'
           }
         >
@@ -39,7 +43,12 @@ const Index = () => {
               <span className={'text-primary-500'}>your SaaS is awesome</span>
             </HeroTitle>
 
-            <div className={'text-center text-gray-700 dark:text-gray-400'}>
+            <div
+              className={
+                'text-center text-gray-700 dark:text-gray-400' +
+                ' flex w-10/12 flex-col space-y-1 md:w-full'
+              }
+            >
               <SubHeading>
                 Here you can write a short description of your SaaS
               </SubHeading>
@@ -71,9 +80,9 @@ const Index = () => {
         <div className={'flex justify-center py-12'}>
           <Image
             className={'rounded-2xl'}
-            width={800}
-            height={600}
-            src={`/assets/images/browser.webp`}
+            width={2894}
+            height={1950}
+            src={`/assets/images/dashboard-dark.webp`}
             alt={`App Image`}
           />
         </div>
@@ -103,64 +112,82 @@ const Index = () => {
             <Hero>The best tool in the space</Hero>
 
             <SubHeading>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
-              malesuada nisi tellus, non imperdiet nisi tempor at.
+              Unbeatable Features and Benefits for Your SaaS Business
             </SubHeading>
           </div>
 
           <div>
             <div className={'grid gap-12 lg:grid-cols-3'}>
-              <div className={'flex flex-col space-y-2 text-center'}>
-                <Heading type={3}>Item</Heading>
+              <div className={'flex flex-col space-y-3 text-center'}>
+                <FeatureIcon>
+                  <UserIcon className={'h-6'} />
+                </FeatureIcon>
+
+                <Heading type={3}>Authentication</Heading>
 
                 <div className={'text-gray-500 dark:text-gray-400'}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
+                  Secure and Easy-to-Use Authentication for Your SaaS Website
                 </div>
               </div>
 
-              <div className={'flex flex-col space-y-2 text-center'}>
-                <Heading type={3}>Item</Heading>
+              <div className={'flex flex-col space-y-3 text-center'}>
+                <FeatureIcon>
+                  <BuildingLibraryIcon className={'h-6'} />
+                </FeatureIcon>
+
+                <Heading type={3}>Multi-Tenancy</Heading>
 
                 <div className={'text-gray-500 dark:text-gray-400'}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
+                  Powerful Multi-Tenancy Features for Maximum Flexibility and
+                  Efficiency
                 </div>
               </div>
 
-              <div className={'flex flex-col space-y-2 text-center'}>
-                <Heading type={3}>Item</Heading>
+              <div className={'flex flex-col space-y-3 text-center'}>
+                <FeatureIcon>
+                  <UserGroupIcon className={'h-6'} />
+                </FeatureIcon>
+
+                <Heading type={3}>Team-Management</Heading>
 
                 <div className={'text-gray-500 dark:text-gray-400'}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
+                  Effortlessly Manage and Organize Your Team Members
                 </div>
               </div>
 
-              <div className={'flex flex-col space-y-2 text-center'}>
-                <Heading type={3}>Item</Heading>
+              <div className={'flex flex-col space-y-3 text-center'}>
+                <FeatureIcon>
+                  <PaintBrushIcon className={'h-6'} />
+                </FeatureIcon>
+
+                <Heading type={3}>UI Themes</Heading>
 
                 <div className={'text-gray-500 dark:text-gray-400'}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
+                  Customizable UI Themes to Match Your Brand and Style
                 </div>
               </div>
 
-              <div className={'flex flex-col space-y-2 text-center'}>
-                <Heading type={3}>Item</Heading>
+              <div className={'flex flex-col space-y-3 text-center'}>
+                <FeatureIcon>
+                  <CubeIcon className={'h-6'} />
+                </FeatureIcon>
+
+                <Heading type={3}>UI Components</Heading>
 
                 <div className={'text-gray-500 dark:text-gray-400'}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
+                  Pre-built UI Components to Speed Up Your Development
                 </div>
               </div>
 
-              <div className={'flex flex-col space-y-2 text-center'}>
-                <Heading type={3}>Item</Heading>
+              <div className={'flex flex-col space-y-3 text-center'}>
+                <FeatureIcon>
+                  <DocumentIcon className={'h-6'} />
+                </FeatureIcon>
+
+                <Heading type={3}>Blog and Documentation</Heading>
 
                 <div className={'text-gray-500 dark:text-gray-400'}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
+                  Pre-built Blog and Documentation Pages to Help Your Users
                 </div>
               </div>
             </div>
@@ -171,99 +198,12 @@ const Index = () => {
       <Divider />
 
       <Container>
-        <div
-          className={
-            'flex flex-col items-center justify-center space-y-24 py-12'
-          }
-        >
-          <div
-            className={
-              'flex max-w-3xl flex-col items-center space-y-4 text-center'
-            }
-          >
-            <div className={'flex flex-col items-center space-y-2'}>
-              <div>
-                <UserGroupIcon className={'h-6 text-primary-500'} />
-              </div>
-
-              <b className={'text-primary-500'}>Testimonials</b>
-            </div>
-
-            <Hero>Trusted by indie-hackers all over the world</Hero>
-
-            <SubHeading>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
-              malesuada nisi tellus, non imperdiet nisi tempor at.
-            </SubHeading>
-          </div>
-
-          <div>
-            <div className={'grid gap-12 lg:grid-cols-3'}>
-              <div className={'flex flex-col space-y-2 text-center'}>
-                <Heading type={3}>Item</Heading>
-
-                <div className={'text-gray-500 dark:text-gray-400'}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
-                </div>
-              </div>
-
-              <div className="flex flex-col space-y-2 text-center">
-                <Heading type={3}>Item</Heading>
-
-                <div className={'text-gray-500 dark:text-gray-400'}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
-                </div>
-              </div>
-
-              <div className="flex flex-col space-y-2 text-center">
-                <Heading type={3}>Item</Heading>
-
-                <div className={'text-gray-500 dark:text-gray-400'}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
-                </div>
-              </div>
-
-              <div className="flex flex-col space-y-2 text-center">
-                <Heading type={3}>Item</Heading>
-
-                <div className={'text-gray-500 dark:text-gray-400'}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
-                </div>
-              </div>
-
-              <div className="flex flex-col space-y-2 text-center">
-                <Heading type={3}>Item</Heading>
-
-                <div className={'text-gray-500 dark:text-gray-400'}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
-                </div>
-              </div>
-
-              <div className="flex flex-col space-y-2 text-center">
-                <Heading type={3}>Item</Heading>
-
-                <div className={'text-gray-500 dark:text-gray-400'}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Container>
-
-      <Container>
         <div className={'py-12'}>
           <div
             className={
-              'flex flex-col justify-between rounded-lg md:flex-row' +
-              ' space-y-2 bg-primary-50 px-8 py-12 dark:bg-primary-600/10' +
-              ' md:space-y-0'
+              'flex flex-col justify-between rounded-lg lg:flex-row' +
+              ' space-y-4 bg-primary-50 px-8 py-10 dark:bg-primary-500/5' +
+              ' lg:space-y-0'
             }
           >
             <div className={'flex flex-col justify-between space-y-2'}>
@@ -281,7 +221,7 @@ const Index = () => {
             <div className={'flex flex-col justify-end space-y-2'}>
               <div>
                 <Button
-                  className={'w-full md:w-auto'}
+                  className={'w-full lg:w-auto'}
                   size={'large'}
                   href={'/auth/sign-up'}
                 >
@@ -295,10 +235,6 @@ const Index = () => {
             </div>
           </div>
         </div>
-      </Container>
-
-      <Container>
-        <NewsletterSignup />
       </Container>
 
       <Divider />
@@ -318,40 +254,28 @@ export async function getStaticProps() {
   };
 }
 
-function NewsletterSignup() {
-  return (
-    <div
-      className={
-        'flex flex-col items-center justify-center space-y-4 py-16 text-sm text-gray-500 dark:text-gray-400 lg:py-24'
-      }
-    >
-      <p>Let&apos;s stay in touch.</p>
-
-      <p>Subscribe to Makerkit&apos;s Newsletter to receive updates.</p>
-
-      <ConvertkitSignupForm formId={configuration.site.convertKitFormId}>
-        Subscribe
-      </ConvertkitSignupForm>
-
-      <p className={'text-center text-xs'}>No spam. Ever.</p>
-    </div>
-  );
-}
-
-function Divider() {
-  return <hr className={'border border-gray-50 dark:border-black-400'} />;
-}
-
 function HeroTitle({ children }: React.PropsWithChildren) {
   return (
     <h1
       className={
         'text-center text-4xl text-black-500 dark:text-white' +
         ' flex flex-col space-y-2 font-extrabold md:text-6xl' +
-        ' xl:text-7xl 2xl:text-8xl'
+        ' xl:text-7xl 2xl:text-[5rem]'
       }
     >
       {children}
     </h1>
+  );
+}
+
+function FeatureIcon(props: React.PropsWithChildren) {
+  return (
+    <div className={'flex justify-center'}>
+      <div
+        className={'rounded-xl bg-primary-500/10 p-4 dark:bg-primary-500/20'}
+      >
+        {props.children}
+      </div>
+    </div>
   );
 }

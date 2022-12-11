@@ -53,25 +53,32 @@ const DeleteInviteButton: React.FCC<{
       <If condition={isDeleting}>
         <Modal heading={heading} isOpen={isDeleting} setIsOpen={setIsDeleting}>
           <div className={'flex flex-col space-y-4'}>
-            <p>
-              <Trans
-                i18nKey={'organization:confirmDeletingMemberInvite'}
-                values={{ email: memberEmail }}
-                components={{ b: <b /> }}
-              />
-            </p>
+            <div className={'flex flex-col space-y-2'}>
+              <p>
+                <Trans
+                  i18nKey={'organization:confirmDeletingMemberInvite'}
+                  values={{ email: memberEmail }}
+                  components={{ b: <b /> }}
+                />
+                .
+              </p>
 
-            <p>
-              <Trans i18nKey={'common:modalConfirmationQuestion'} />
-            </p>
+              <p>
+                <Trans i18nKey={'common:modalConfirmationQuestion'} />
+              </p>
+            </div>
 
-            <Button
-              data-cy={'confirm-delete-invite-button'}
-              color={'danger'}
-              onClick={onInviteDeleteRequested}
-            >
-              <Trans i18nKey={'organization:deleteInviteSubmitLabel'} />
-            </Button>
+            <div className={'flex justify-end space-x-2'}>
+              <Modal.CancelButton onClick={() => setIsDeleting(false)} />
+
+              <Button
+                data-cy={'confirm-delete-invite-button'}
+                color={'danger'}
+                onClick={onInviteDeleteRequested}
+              >
+                <Trans i18nKey={'organization:deleteInviteSubmitLabel'} />
+              </Button>
+            </div>
           </div>
         </Modal>
       </If>

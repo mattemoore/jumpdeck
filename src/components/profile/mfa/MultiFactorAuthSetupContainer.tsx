@@ -24,7 +24,7 @@ const MultiFactorAuthSetupContainer: React.FC<{
 
   return (
     <>
-      <div className={'flex flex-col space-y-6'}>
+      <div className={'flex flex-col space-y-4'}>
         <Alert type={'info'}>
           <Alert.Heading>
             <Trans i18nKey={'profile:multiFactorAuthHeading'} />

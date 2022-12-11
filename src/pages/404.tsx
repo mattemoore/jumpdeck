@@ -3,10 +3,8 @@ import { Trans } from 'next-i18next';
 
 import configuration from '~/configuration';
 import Layout from '~/core/ui/Layout';
-import Hero from '~/core/ui/Hero';
-import Container from '~/core/ui/Container';
-import SubHeading from '~/core/ui/SubHeading';
 import Button from '~/core/ui/Button';
+import Heading from '~/core/ui/Heading';
 
 import SiteHeader from '~/components/SiteHeader';
 import { withTranslationProps } from '~/lib/props/with-translation-props';
@@ -21,23 +19,45 @@ const NotFoundPage = () => {
 
         <SiteHeader />
 
-        <Container>
-          <div>
-            <Hero>
-              <Trans i18nKey={'common:pageNotFound'} />
-            </Hero>
+        <div
+          className={
+            'm-auto flex min-h-[50vh] w-full items-center justify-center'
+          }
+        >
+          <div className={'flex flex-col space-y-8'}>
+            <div className={'flex space-x-8 divide-x divide-gray-100'}>
+              <div>
+                <Heading type={1}>
+                  <span className={'text-primary-500'}>404</span>
+                </Heading>
+              </div>
 
-            <SubHeading>
-              <Trans i18nKey={'common:pageNotFoundSubHeading'} />
-            </SubHeading>
-          </div>
+              <div className={'flex flex-col space-y-4 pl-8'}>
+                <div className={'flex flex-col space-y-2'}>
+                  <div>
+                    <Heading type={1}>
+                      <Trans i18nKey={'common:pageNotFound'} />
+                    </Heading>
+                  </div>
 
-          <div className={'my-8'}>
-            <Button href={'/'}>
-              <Trans i18nKey={'common:backToHomePage'} />
-            </Button>
+                  <p className={'text-gray-500 dark:text-gray-300'}>
+                    <Trans i18nKey={'common:pageNotFoundSubHeading'} />
+                  </p>
+                </div>
+
+                <div className={'flex space-x-4'}>
+                  <Button color={'secondary'} href={'/'}>
+                    <Trans i18nKey={'common:contactUs'} />
+                  </Button>
+
+                  <Button href={'/'}>
+                    <Trans i18nKey={'common:backToHomePage'} />
+                  </Button>
+                </div>
+              </div>
+            </div>
           </div>
-        </Container>
+        </div>
       </Layout>
     </>
   );

@@ -41,11 +41,11 @@ const ProfileSettingsTabs = () => {
     });
   }, [user]);
 
-  const itemClassName = `flex justify-center md:justify-start items-center flex-auto md:flex-initial`;
+  const itemClassName = `flex justify-center md:justify-start items-center w-full`;
 
   return (
-    <div>
-      <NavigationMenu vertical secondary>
+    <div className={'w-full max-w-[10rem]'}>
+      <NavigationMenu vertical>
         <NavigationItem
           className={itemClassName}
           link={links.General}

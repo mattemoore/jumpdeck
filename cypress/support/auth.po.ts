@@ -3,7 +3,6 @@ import {
   connectAuthEmulator,
   initializeAuth,
   signInWithEmailAndPassword,
-  UserCredential,
   indexedDBLocalPersistence,
 } from 'firebase/auth';
 
@@ -47,45 +46,41 @@ const authPageObject = {
     this.$getRepeatPasswordInput().type(repeatPassword || password);
     this.$getSubmitButton().click();
   },
-  signInProgrammatically({
-    email,
-    password,
-  }: {
-    email: string;
-    password: string;
-  }) {
-    // let's clean everything up
-    cy.clearStorage();
-
-    const auth = getAuth();
-
-    const signIn = signInWithEmailAndPassword(auth, email, password).catch(
-      (e) => {
-        cy.log(`User could not sign in programmatically`);
-        console.error(e);
-      }
-    );
-
-    cy.wrap(signIn).then((result) => {
-      const { user } = result as UserCredential;
-
-      cy.wrap(user.getIdToken()).then((idToken) => {
-        const body = {
-          idToken: idToken,
-        };
-
-        cy.request({
-          method: 'POST',
-          url: `/api/session/sign-in`,
-          body,
-          headers: {
-            'x-csrf-token': `MOCKCSRFTOKEN`,
-          },
-        });
-      });
+  signInProgrammatically(params: { email: string; password: string }) {
+    cy.wrap(getIdToken(params)).then((idToken) => {
+      fetchSessionId(idToken as string);
     });
   },
 };
+
+function getIdToken({ email, password }: { email: string; password: string }) {
+  return signInWithEmailAndPassword(getAuth(), email, password).then(
+    (response) => {
+      if (!response) {
+        return Promise.reject(`No id token found`);
+      }
+
+      return response.user.getIdToken();
+    }
+  );
+}
+
+function fetchSessionId(idToken: string) {
+  const body = {
+    idToken: idToken,
+  };
+
+  cy.log(`Executing Session ID request...`);
+
+  cy.request({
+    method: 'POST',
+    url: `/api/session/sign-in`,
+    body,
+    headers: {
+      'x-csrf-token': `MOCKCSRFTOKEN`,
+    },
+  });
+}
 
 function createFirebaseApp() {
   const env = (varName: string) => Cypress.env(varName) as string;

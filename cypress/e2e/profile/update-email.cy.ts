@@ -7,53 +7,49 @@ describe(`Update Email`, () => {
   const password = authPo.getDefaultUserPassword();
   const newEmailAddress = `new-email@makerkit.dev`;
 
-  before(() => {
+  function signIn() {
     cy.signIn(`/settings/profile/email`, {
       email: existingEmailAddress,
       password,
     });
-  });
+  }
 
   describe(`When updating the user Email with the existing email address`, () => {
-    before(() => {
+    it('should display an alert', () => {
+      signIn();
+
       profilePo.$getNewEmailInput().type(existingEmailAddress);
       profilePo.$getRepeatEmailInput().type(existingEmailAddress);
       profilePo.$getUpdateEmailPasswordInput().type('anypass');
-    });
 
-    it('should display an alert', () => {
       profilePo.$getUpdateEmailForm().submit();
       profilePo.$getUpdateEmailErrorAlert().should('be.visible');
     });
   });
 
   describe(`When updating the user Email and the emails do not match`, () => {
-    before(() => {
+    it('should display an alert', () => {
+      signIn();
+
       profilePo.$getNewEmailInput().clear().type(newEmailAddress);
       profilePo.$getRepeatEmailInput().clear().type(newEmailAddress);
-
       profilePo.$getUpdateEmailPasswordInput().clear().type(`wrong password`);
-    });
 
-    it('should display an alert', () => {
       profilePo.$getUpdateEmailForm().submit();
       profilePo.$getUpdateEmailErrorAlert().should('be.visible');
     });
   });
 
   describe(`When updating the user Email and the emails do match`, () => {
-    before(() => {
+    it('should remove the error alert', () => {
+      signIn();
+
       profilePo.$getNewEmailInput().clear().type(newEmailAddress);
       profilePo.$getRepeatEmailInput().clear().type(newEmailAddress);
       profilePo.$getUpdateEmailPasswordInput().clear().type(password);
       profilePo.$getUpdateEmailForm().submit();
-    });
 
-    it('should remove the error alert', () => {
       profilePo.$getUpdateEmailErrorAlert().should('not.exist');
-    });
-
-    it('should reset the form values', () => {
       profilePo.$getNewEmailInput().invoke('val').should('be.empty');
       profilePo.$getRepeatEmailInput().invoke('val').should('be.empty');
       profilePo.$getUpdateEmailPasswordInput().invoke('val').should('be.empty');

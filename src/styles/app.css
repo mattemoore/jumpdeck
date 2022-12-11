@@ -8,12 +8,12 @@
     .AppSidebar {
         @apply flex flex-row py-4 justify-center
         relative dark:bg-black-500
-        h-screen hidden lg:flex border-r transition-all duration-100
+        h-screen hidden lg:flex border-r
         border-gray-100 dark:border-black-300;
     }
 
     .AppSidebarItem {
-        @apply rounded-md items-center transition-colors border-transparent text-sm
+        @apply rounded-md items-center transition-colors border-transparent text-sm text-gray-600
         w-full pr-12 w-full p-2 font-medium flex space-x-2 transition-colors duration-300;
     }
 

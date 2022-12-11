@@ -10,6 +10,7 @@ import Button from '~/core/ui/Button';
 
 import SiteHeader from '~/components/SiteHeader';
 import { withTranslationProps } from '~/lib/props/with-translation-props';
+import Heading from '~/core/ui/Heading';
 
 const InternalServerErrorPage = () => {
   return (
@@ -21,21 +22,45 @@ const InternalServerErrorPage = () => {
 
         <SiteHeader />
 
-        <Container>
-          <div>
-            <Hero>
-              <Trans i18nKey={'common:genericError'} />
-            </Hero>
+        <div
+          className={
+            'm-auto flex min-h-[50vh] w-full items-center justify-center'
+          }
+        >
+          <div className={'flex flex-col space-y-8'}>
+            <div className={'flex space-x-8 divide-x divide-gray-100'}>
+              <div>
+                <Heading type={1}>
+                  <span className={'text-primary-500'}>500</span>
+                </Heading>
+              </div>
 
-            <SubHeading>It&apos;s on us, sorry.</SubHeading>
-          </div>
+              <div className={'flex flex-col space-y-4 pl-8'}>
+                <div className={'flex flex-col space-y-2'}>
+                  <div>
+                    <Heading type={1}>
+                      <Trans i18nKey={'common:genericError'} />
+                    </Heading>
+                  </div>
 
-          <div className={'my-8'}>
-            <Button href={'/'}>
-              <Trans i18nKey={'common:backToHomePage'} />
-            </Button>
+                  <p className={'text-gray-500 dark:text-gray-300'}>
+                    <Trans i18nKey={'common:genericErrorSubHeading'} />
+                  </p>
+                </div>
+
+                <div className={'flex space-x-4'}>
+                  <Button color={'secondary'} href={'/'}>
+                    <Trans i18nKey={'common:contactUs'} />
+                  </Button>
+
+                  <Button href={'/'}>
+                    <Trans i18nKey={'common:backToHomePage'} />
+                  </Button>
+                </div>
+              </div>
+            </div>
           </div>
-        </Container>
+        </div>
       </Layout>
     </>
   );

@@ -29,7 +29,6 @@ const EmailPasswordSignInForm: React.FCC<{
             <Trans i18nKey={'common:emailAddress'} />
 
             <TextField.Input
-              autoComplete={'off'}
               data-cy={'email-input'}
               required
               type="email"

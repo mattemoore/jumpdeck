@@ -52,14 +52,17 @@ const DisableMultiFactorButton: React.FC<{
             </p>
           </div>
 
-          <Button
-            color={'danger'}
-            block
-            loading={loading}
-            onClick={onDisableSubmit}
-          >
-            <Trans i18nKey={'profile:confirmDisableMfaButtonLabel'} />
-          </Button>
+          <div className={'flex justify-end space-x-2'}>
+            <Modal.CancelButton onClick={() => setIsModalOpen(false)} />
+
+            <Button
+              color={'danger'}
+              loading={loading}
+              onClick={onDisableSubmit}
+            >
+              <Trans i18nKey={'profile:confirmDisableMfaButtonLabel'} />
+            </Button>
+          </div>
         </div>
       </Modal>
     </>

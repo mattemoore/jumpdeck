@@ -50,16 +50,15 @@ const OrganizationMembersPage: React.FCC = () => {
       <OrganizationSettingsTabs />
 
       <SettingsContentContainer>
-        <div className={'my-4 flex justify-end'}>
-          <If condition={canInviteUsers}>
-            <InviteMembersButton />
-          </If>
-        </div>
-
         <div className="flex flex-1 flex-col space-y-6">
           <SettingsTile
             heading={<Trans i18nKey={'organization:membersTabLabel'} />}
             subHeading={<Trans i18nKey={'organization:membersTabSubheading'} />}
+            actions={
+              <If condition={canInviteUsers}>
+                <InviteMembersButton />
+              </If>
+            }
           >
             <OrganizationMembersList organizationId={id} />
           </SettingsTile>

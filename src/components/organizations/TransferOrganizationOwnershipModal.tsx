@@ -43,34 +43,39 @@ const TransferOrganizationOwnershipModal: React.FC<{
   return (
     <Modal heading={heading} isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className={'flex flex-col space-y-4'}>
-        <p>
-          <Trans
-            i18nKey={'organization:transferOwnershipDisclaimer'}
-            values={{
-              member: targetMemberDisplayName,
-            }}
-            components={{ b: <b /> }}
-          />
-        </p>
+        <div className={'flex flex-col space-y-2'}>
+          <p>
+            <Trans
+              i18nKey={'organization:transferOwnershipDisclaimer'}
+              values={{
+                member: targetMemberDisplayName,
+              }}
+              components={{ b: <b /> }}
+            />
+          </p>
 
-        <p>
-          <Trans i18nKey={'common:modalConfirmationQuestion'} />
-        </p>
+          <p>
+            <Trans i18nKey={'common:modalConfirmationQuestion'} />
+          </p>
+        </div>
 
-        <Button
-          block
-          data-cy={'confirm-transfer-ownership-button'}
-          color={'danger'}
-          onClick={onConfirmTransferOwnership}
-          loading={loading}
-        >
-          <If
-            condition={loading}
-            fallback={<Trans i18nKey={'organization:transferOwnership'} />}
+        <div className={'flex justify-end space-x-2'}>
+          <Modal.CancelButton onClick={() => setIsOpen(false)} />
+
+          <Button
+            data-cy={'confirm-transfer-ownership-button'}
+            color={'danger'}
+            onClick={onConfirmTransferOwnership}
+            loading={loading}
           >
-            <Trans i18nKey={'organization:transferringOwnership'} />
-          </If>
-        </Button>
+            <If
+              condition={loading}
+              fallback={<Trans i18nKey={'organization:transferOwnership'} />}
+            >
+              <Trans i18nKey={'organization:transferringOwnership'} />
+            </If>
+          </Button>
+        </div>
       </div>
     </Modal>
   );

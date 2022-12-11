@@ -4,12 +4,14 @@ import { parseCookies, destroyCookie } from 'nookies';
 
 import { isBrowser } from '~/core/generic';
 import useClearFirestoreCache from '~/core/hooks/use-clear-firestore-cache';
+import { useDestroySession } from '~/core/hooks/use-destroy-session';
 
 const AuthRedirectListener: React.FCC<{
   whenSignedOut?: string;
 }> = ({ children, whenSignedOut }) => {
   const auth = useAuth();
   const { status } = useSigninCheck({ suspense: true });
+  const destroySession = useDestroySession();
   const redirectUserAway = useRedirectUserAway();
   const clearCache = useClearFirestoreCache();
   const isSignInCheckDone = status === 'success';
@@ -38,7 +40,7 @@ const AuthRedirectListener: React.FCC<{
 
     // keep this running for the whole session
     // unless the component was unmounted, for example, on log-outs
-    const listener = auth.onAuthStateChanged((user) => {
+    const listener = auth.onAuthStateChanged(async (user) => {
       // log user out if user is falsy
       // and if the consumer provided a route to redirect the user
       const shouldLogOut = !user && whenSignedOut;
@@ -48,6 +50,8 @@ const AuthRedirectListener: React.FCC<{
       }
 
       if (shouldLogOut) {
+        await destroySession();
+
         return redirectUserAway(whenSignedOut);
       }
     });
@@ -57,6 +61,7 @@ const AuthRedirectListener: React.FCC<{
   }, [
     auth,
     clearCache,
+    destroySession,
     isSignInCheckDone,
     redirectUserAway,
     status,

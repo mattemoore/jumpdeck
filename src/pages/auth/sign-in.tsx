@@ -68,11 +68,9 @@ export const SignIn: React.FCC = () => {
       <OAuthProviders onSignIn={onSignIn} />
 
       <If condition={configuration.auth.providers.emailPassword}>
-        <div>
-          <span className={'text-xs text-gray-400'}>
-            <Trans i18nKey={'auth:orContinueWithEmail'} />
-          </span>
-        </div>
+        <span className={'text-xs text-gray-400'}>
+          <Trans i18nKey={'auth:orContinueWithEmail'} />
+        </span>
 
         <EmailPasswordSignInContainer onSignIn={onSignIn} />
       </If>
@@ -91,9 +89,10 @@ export const SignIn: React.FCC = () => {
             <Trans i18nKey={'auth:doNotHaveAccountYet'} />
           </span>
 
-          <Link className={
-            'text-primary-800 hover:underline dark:text-primary-500'
-          } href={signUpPath}>
+          <Link
+            className={'text-primary-800 hover:underline dark:text-primary-500'}
+            href={signUpPath}
+          >
             <Trans i18nKey={'auth:signUp'} />
           </Link>
         </p>

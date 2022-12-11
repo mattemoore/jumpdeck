@@ -1,6 +1,6 @@
-import CheckCircleIcon from '@heroicons/react/24/outline/CheckCircleIcon';
 import classNames from 'classnames';
 import { Trans } from 'next-i18next';
+import { CheckIcon } from '@heroicons/react/24/outline';
 
 import Heading from '~/core/ui/Heading';
 import Button from '~/core/ui/Button';
@@ -19,7 +19,7 @@ const PricingTable: React.FC & {
     <div
       className={
         'flex flex-col items-start items-center space-y-6 lg:space-y-0' +
-        ' justify-center lg:flex-row lg:space-x-4'
+        ' justify-center lg:flex-row lg:space-x-8'
       }
     >
       {PLANS.map((plan) => {
@@ -53,9 +53,9 @@ function PricingItem(
     <div
       className={classNames(
         `
-         relative flex w-full flex-col justify-between rounded-2xl border-2 border-gray-100
-         p-4 shadow-2xl shadow-transparent transition-all duration-500 dark:border-black-300 dark:bg-black-500 
-         sm:p-6 lg:w-4/12 xl:p-8 2xl:w-3/12
+         relative flex w-full flex-col justify-between space-y-4 rounded-2xl border border-gray-200
+         p-6 shadow-2xl shadow-transparent duration-500 dark:border-black-300 dark:bg-black-500 lg:w-4/12 
+         lg:p-5 xl:p-6 2xl:w-3/12
       `,
         {
           ['dark:hover:border-primary-500 dark:hover:bg-black-500' +
@@ -64,21 +64,19 @@ function PricingItem(
         }
       )}
     >
-      <div className={'flex flex-col space-y-4'}>
-        <Heading type={2}>
-          <span className={'font-semibold dark:text-white'}>
-            {props.plan.name}
-          </span>
+      <div className={'flex flex-col space-y-1.5'}>
+        <Heading type={4}>
+          <span className={'font-bold dark:text-white'}>{props.plan.name}</span>
         </Heading>
 
-        <Price>{props.plan.price}</Price>
-
-        <span className={'text-xl text-gray-500 dark:text-gray-400'}>
+        <span className={'text-lg text-gray-400 dark:text-gray-400'}>
           {props.plan.description}
         </span>
       </div>
 
-      <div className={'my-4 py-4'}>
+      <Price>{props.plan.price}</Price>
+
+      <div className={'my-2 py-2'}>
         <FeaturesList features={props.plan.features} />
       </div>
 
@@ -99,7 +97,7 @@ function FeaturesList(
   }>
 ) {
   return (
-    <ul className={'flex flex-col space-y-2'}>
+    <ul className={'flex flex-col space-y-4'}>
       {props.features.map((feature) => {
         return (
           <ListItem key={feature}>
@@ -117,19 +115,19 @@ function FeaturesList(
 function Price({ children }: React.PropsWithChildren) {
   return (
     <div>
-      <span className={'text-3xl font-extrabold lg:text-4xl'}>{children}</span>
+      <span className={'text-2xl font-extrabold lg:text-3xl'}>{children}</span>
     </div>
   );
 }
 
 function ListItem({ children }: React.PropsWithChildren) {
   return (
-    <li className={'flex items-center space-x-3 text-lg font-medium'}>
+    <li className={'flex items-center space-x-4 font-medium'}>
       <div>
-        <CheckCircleIcon className={'h-7 text-green-500'} />
+        <CheckIcon className={'h-5 text-primary-500'} />
       </div>
 
-      <span>{children}</span>
+      <span className={'text-gray-500 dark:text-gray-300'}>{children}</span>
     </li>
   );
 }

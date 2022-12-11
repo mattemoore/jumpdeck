@@ -17,7 +17,11 @@ export default function AuthErrorMessage({ error }: { error: Maybe<string> }) {
 
   return (
     <Alert className={'w-full'} type={'error'}>
-      <p className={'text-sm font-semibold'} data-cy={'auth-error-message'}>
+      <Alert.Heading>
+        <Trans i18nKey={`auth:errorAlertHeading`} />
+      </Alert.Heading>
+
+      <p data-cy={'auth-error-message'}>
         <Trans
           i18nKey={`auth:errors.${error}`}
           defaults={'<DefaultError />'}

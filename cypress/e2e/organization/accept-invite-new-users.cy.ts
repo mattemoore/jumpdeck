@@ -6,27 +6,23 @@ describe(`Accept Invite - New User`, () => {
   const nonExistingUserEmail = `user-invite-email-pwd@makerkit.dev`;
   const nonExistingUserInviteCode = 'v1DwLrD9n5X4Uakgymi3';
 
-  before(() => {
-    Cypress.Cookies.defaults({
-      preserve: ['session', 'sessionExpiresAt', 'organizationId'],
-    });
-
-    visitInvitePage(nonExistingUserInviteCode);
-
-    // and then, sign user up
-    authPo.signUpWithEmailAndPassword(nonExistingUserEmail, 'anypass');
-  });
-
   describe(`After accepting the invite`, () => {
     it('should be redirected to the app home', () => {
-      cy.url().should('contain', configuration.paths.appHome);
+      cy.session([nonExistingUserInviteCode], () => {
+        visitInvitePage(nonExistingUserInviteCode);
+
+        // and then, sign user up
+        authPo.signUpWithEmailAndPassword(nonExistingUserEmail, 'anypass');
+
+        cy.url().should('contain', configuration.paths.appHome);
+      });
     });
   });
 
   describe(`The members page`, () => {
-    before(() => {
+    beforeEach(() => {
       // go back to members page
-      cy.visit('/settings/organization/members');
+      cy.signIn('/settings/organization/members');
     });
 
     it('should have removed the new member from the invited list', () => {

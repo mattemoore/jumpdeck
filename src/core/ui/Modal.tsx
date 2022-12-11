@@ -1,13 +1,12 @@
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import { Trans } from 'next-i18next';
 
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
-import { Trans } from 'next-i18next';
 
 import IconButton from '~/core/ui/IconButton';
 import If from '~/core/ui/If';
-
-import Button from './Button';
+import Button from '~/core/ui/Button';
 
 const Modal: React.FC<
   React.PropsWithChildren<{
@@ -16,7 +15,9 @@ const Modal: React.FC<
     setIsOpen: (isOpen: boolean) => unknown;
     closeButton?: boolean;
   }>
-> = ({ isOpen, setIsOpen, closeButton, heading, children }) => {
+> & {
+  CancelButton: typeof CancelButton;
+} = ({ isOpen, setIsOpen, closeButton, heading, children }) => {
   const useCloseButton = closeButton ?? true;
 
   return (
@@ -60,41 +61,30 @@ const Modal: React.FC<
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-80"
           >
-            <div className="my-4 inline-block max-h-[90%] w-full max-w-xl transform overflow-auto rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all dark:bg-black-400">
-              <div className="flex items-center">
-                <Dialog.Title
-                  as="h2"
-                  className="flex w-full text-2xl font-bold leading-4 text-current"
-                >
-                  {heading}
-                </Dialog.Title>
-
-                <If condition={useCloseButton}>
-                  <div className={'justify-end'}>
-                    <IconButton
-                      label={'Close Modal'}
-                      onClick={() => setIsOpen(false)}
-                    >
-                      <XMarkIcon className={'h-6'} />
-                    </IconButton>
-                  </div>
-                </If>
-              </div>
-
-              <div className="relative mt-4">{children}</div>
-
-              <If condition={useCloseButton}>
-                <div className="mt-2">
-                  <Button
-                    data-cy={'close-modal-button'}
-                    block
-                    color={'secondary'}
-                    onClick={() => setIsOpen(false)}
+            <div className="inline-block max-h-[90%] w-full max-w-xl transform overflow-auto rounded-xl bg-white p-6 text-left align-middle shadow-xl transition-all dark:bg-black-400">
+              <div className={'flex flex-col space-y-4'}>
+                <div className="flex items-center">
+                  <Dialog.Title
+                    as="h2"
+                    className="flex w-full text-xl font-semibold text-current"
                   >
-                    <Trans i18nKey={'common:cancel'} />
-                  </Button>
+                    {heading}
+                  </Dialog.Title>
+
+                  <If condition={useCloseButton}>
+                    <div className={'justify-end'}>
+                      <IconButton
+                        label={'Close Modal'}
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <XMarkIcon className={'h-6'} />
+                      </IconButton>
+                    </div>
+                  </If>
                 </div>
-              </If>
+
+                <div className="relative">{children}</div>
+              </div>
             </div>
           </Transition.Child>
         </div>
@@ -104,3 +94,15 @@ const Modal: React.FC<
 };
 
 export default Modal;
+
+function CancelButton<Props extends React.ButtonHTMLAttributes<unknown>>(
+  props: Props
+) {
+  return (
+    <Button data-cy={'close-modal-button'} color={'transparent'} {...props}>
+      <Trans i18nKey={'common:cancel'} />
+    </Button>
+  );
+}
+
+Modal.CancelButton = CancelButton;
