@@ -44,8 +44,8 @@ const ProfileSettingsTabs = () => {
   const itemClassName = `flex justify-center md:justify-start items-center w-full`;
 
   return (
-    <div className={'w-full max-w-[10rem]'}>
-      <NavigationMenu vertical>
+    <div className={'w-full max-w-[12rem]'}>
+      <NavigationMenu vertical pill>
         <NavigationItem
           className={itemClassName}
           link={links.General}
