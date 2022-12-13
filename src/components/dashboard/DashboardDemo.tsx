@@ -203,9 +203,10 @@ function Chart(
       <ResponsiveContainer width={'100%'} height={'100%'}>
         <LineChart width={400} height={100} data={props.data}>
           <Line
+            className={'text-primary-500'}
             type="monotone"
             dataKey="value"
-            stroke="#3b82f6"
+            stroke="currentColor"
             strokeWidth={2.5}
             dot={false}
           />

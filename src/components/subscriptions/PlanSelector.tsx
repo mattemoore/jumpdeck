@@ -27,7 +27,7 @@ export default function PlanSelector(
       }
     >
       <RadioGroup<Plan>
-        className={'w-full lg:w-6/12 2xl:w-4/12'}
+        className={'w-full lg:w-8/12 xl:w-6/12 2xl:w-5/12'}
         value={props.plan}
         setValue={props.setPlan}
       >

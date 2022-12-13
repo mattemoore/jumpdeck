@@ -1,4 +1,4 @@
-import { FirebaseError } from 'firebase/app';
+import type { FirebaseError } from 'firebase/app';
 
 export function getFirebaseErrorCode(error: Maybe<unknown>) {
   if (!error) {
@@ -9,5 +9,5 @@ export function getFirebaseErrorCode(error: Maybe<unknown>) {
 }
 
 function isFirebaseError(error: unknown): error is FirebaseError {
-  return error instanceof FirebaseError;
+  return error instanceof Error && 'code' in error;
 }

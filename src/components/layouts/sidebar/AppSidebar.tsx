@@ -26,10 +26,10 @@ const AppSidebar: React.FC = () => {
     <div
       className={classNames('AppSidebar', {
         ['AppSidebarCollapsed w-[5rem]']: collapsed,
-        [`w-2/12 max-w-xs sm:min-w-[12rem] lg:min-w-[16rem]`]: !collapsed,
+        [`w-2/12 max-w-xs sm:min-w-[12rem] lg:min-w-[17rem]`]: !collapsed,
       })}
     >
-      <div className={'flex w-full flex-col space-y-7 px-3'}>
+      <div className={'flex w-full flex-col space-y-7 px-4'}>
         <AppSidebarHeader collapsed={collapsed} />
         <AppSidebarNavigation collapsed={collapsed} />
       </div>
@@ -45,7 +45,7 @@ function AppSidebarHeader({
   const logoHref = configuration.paths.appHome;
 
   return (
-    <div className={'flex justify-center px-2.5 py-1'}>
+    <div className={'flex px-2.5 py-1'}>
       {collapsed ? <LogoMini href={logoHref} /> : <Logo href={logoHref} />}
     </div>
   );

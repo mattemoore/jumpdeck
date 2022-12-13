@@ -6,8 +6,7 @@ import { useUserSession } from '~/core/hooks/use-user-session';
 import ProfileDropdown from '~/components/ProfileDropdown';
 import If from '~/core/ui/If';
 
-import OrganizationsSelector
-  from "~/components/organizations/OrganizationsSelector";
+import OrganizationsSelector from '~/components/organizations/OrganizationsSelector';
 
 const MobileNavigation = dynamic(() => import('~/components/MobileNavigation'));
 
@@ -22,12 +21,10 @@ const AppHeaderNoMenu: React.FCC = ({ children }) => {
           <MobileNavigation />
         </div>
 
-        <div className={'flex items-center space-x-1 lg:space-x-2'}>
+        <div className={'flex items-center space-x-1 lg:space-x-4'}>
           <If condition={userSession?.auth?.uid}>
             {(uid) => <OrganizationsSelector userId={uid} />}
           </If>
-
-          <ChevronRightIcon className={'h-6'} />
 
           {children}
         </div>

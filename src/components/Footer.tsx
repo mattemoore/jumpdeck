@@ -12,13 +12,12 @@ function Footer() {
   return (
     <footer className={'py-8 lg:py-24'}>
       <Container>
-        <div
-          className={
-            'flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-y-0'
-          }
-        >
+        <div className={'flex flex-col space-y-8 lg:flex-row lg:space-y-0'}>
           <div
-            className={'flex w-full space-x-4 lg:w-4/12 xl:w-3/12 xl:space-x-8'}
+            className={
+              'flex w-full space-x-2 lg:w-4/12 xl:w-3/12' +
+              ' xl:space-x-6 2xl:space-x-8'
+            }
           >
             <div className={'flex flex-col space-y-4'}>
               <div>
@@ -42,7 +41,7 @@ function Footer() {
 
           <div
             className={
-              'flex flex-col space-y-8 lg:space-y-0 lg:space-x-4' +
+              'flex flex-col space-y-8 lg:space-y-0 lg:space-x-6' +
               ' xl:space-x-16 2xl:space-x-20' +
               ' w-full lg:flex-row lg:justify-end'
             }
@@ -51,21 +50,17 @@ function Footer() {
               <div className={'flex flex-col space-y-4'}>
                 <Heading type={5}>Our Company</Heading>
 
-                <ul
-                  className={
-                    'flex flex-col space-y-4 text-gray-500 dark:text-gray-400'
-                  }
-                >
-                  <li>
+                <FooterSectionList>
+                  <FooterLink>
                     <Link href={'#'}>Who we are</Link>
-                  </li>
-                  <li>
+                  </FooterLink>
+                  <FooterLink>
                     <Link href={'/blog'}>Blog</Link>
-                  </li>
-                  <li>
+                  </FooterLink>
+                  <FooterLink>
                     <Link href={'/contact'}>Contact</Link>
-                  </li>
-                </ul>
+                  </FooterLink>
+                </FooterSectionList>
               </div>
             </div>
 
@@ -73,21 +68,17 @@ function Footer() {
               <div className={'flex flex-col space-y-2.5'}>
                 <Heading type={5}>Product</Heading>
 
-                <ul
-                  className={
-                    'flex flex-col space-y-4 text-gray-500 dark:text-gray-400'
-                  }
-                >
-                  <li>
+                <FooterSectionList>
+                  <FooterLink>
                     <Link href={'/docs'}>Documentation</Link>
-                  </li>
-                  <li>
+                  </FooterLink>
+                  <FooterLink>
                     <Link href={'#'}>Help Center</Link>
-                  </li>
-                  <li>
+                  </FooterLink>
+                  <FooterLink>
                     <Link href={'#'}>Changelog</Link>
-                  </li>
-                </ul>
+                  </FooterLink>
+                </FooterSectionList>
               </div>
             </div>
 
@@ -95,21 +86,17 @@ function Footer() {
               <div className={'flex flex-col space-y-4'}>
                 <Heading type={5}>Legal</Heading>
 
-                <ul
-                  className={
-                    'flex flex-col space-y-4 text-gray-500 dark:text-gray-400'
-                  }
-                >
-                  <li>
+                <FooterSectionList>
+                  <FooterLink>
                     <Link href={'#'}>Terms of Service</Link>
-                  </li>
-                  <li>
+                  </FooterLink>
+                  <FooterLink>
                     <Link href={'#'}>Privacy Policy</Link>
-                  </li>
-                  <li>
+                  </FooterLink>
+                  <FooterLink>
                     <Link href={'#'}>Cookie Policy</Link>
-                  </li>
-                </ul>
+                  </FooterLink>
+                </FooterSectionList>
               </div>
             </div>
 
@@ -119,6 +106,18 @@ function Footer() {
       </Container>
     </footer>
   );
+}
+
+function FooterSectionList(props: React.PropsWithChildren) {
+  return (
+    <ul className={'flex flex-col space-y-4 text-gray-500 dark:text-gray-400'}>
+      {props.children}
+    </ul>
+  );
+}
+
+function FooterLink(props: React.PropsWithChildren) {
+  return <li className={'text-sm xl:text-base'}>{props.children}</li>;
 }
 
 export default Footer;

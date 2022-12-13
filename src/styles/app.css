@@ -2,19 +2,19 @@
 
 @layer components {
     .AppHeader {
-        @apply py-2 flex items-center justify-between flex-1 border-b border-gray-50 dark:border-black-400;
+        @apply py-2 flex items-center justify-between flex-1 border-b border-gray-50 dark:border-black-300;
     }
 
     .AppSidebar {
         @apply flex flex-row py-4 justify-center
-        relative dark:bg-black-500
+        relative dark:bg-black-700
         h-screen hidden lg:flex border-r
-        border-gray-100 dark:border-black-300;
+        border-gray-100 dark:border-black-400;
     }
 
     .AppSidebarItem {
-        @apply rounded-md items-center transition-colors border-transparent text-sm text-gray-600
-        w-full pr-12 w-full p-2 font-medium flex space-x-2 transition-colors duration-300;
+        @apply rounded-md items-center transition-colors border-transparent text-sm text-gray-600 font-medium
+        w-full pr-12 w-full py-1.5 px-3.5 flex space-x-2.5 transition-colors duration-300;
     }
 
     .AppSidebarCollapsed .AppSidebarItem {
@@ -27,7 +27,7 @@
     }
 
     .AppSidebarItemActive {
-        @apply bg-gray-100 dark:bg-primary-500 dark:text-primary-contrast font-semibold;
+        @apply bg-gray-100 dark:bg-primary-300/10 dark:text-primary-contrast text-current font-semibold;
     }
 
     .AppSidebarCollapsed .AppSidebarItemActive {
@@ -37,11 +37,15 @@
     .AppSidebarItemNotActive {
         @apply dark:text-gray-300 dark:hover:text-white text-gray-600 ring-transparent
             active:bg-gray-200 dark:active:bg-black-300 dark:active:bg-black-300
-            hover:bg-gray-50 dark:hover:bg-black-400 dark:bg-black-500;
+            hover:bg-gray-50 dark:hover:bg-black-400 dark:bg-black-600;
     }
 
     .AppSidebarItemIcon {
         @apply text-gray-600 dark:text-primary-contrast;
+    }
+
+    .AppSidebarItemActive .AppSidebarItemIcon {
+        @apply text-primary-600;
     }
 
     .AppSidebarCollapsed .AppSidebarItemActive .AppSidebarItemIcon {

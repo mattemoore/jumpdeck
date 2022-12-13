@@ -3,6 +3,7 @@ import '../styles/index.css';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
+import { Inter } from '@next/font/google';
 
 import type { User as AuthUser } from 'firebase/auth';
 import { appWithTranslation, SSRConfig } from 'next-i18next';
@@ -33,6 +34,14 @@ const AppRouteLoadingIndicator = dynamic(
     ssr: false,
   }
 );
+
+const fontFamilySans = Inter({
+  subsets: ['latin'],
+  variable: '--font-family-sans',
+  fallback: ['SF Pro Text', 'Helvetica Neue', 'Helvetica', 'Arial'],
+  preload: true,
+  weight: ['300', '400', '500', '600', '700'],
+});
 
 interface UIState {
   sidebarState: string;
@@ -100,6 +109,7 @@ function App(
 
                 <UiStateProvider state={pageProps.ui}>
                   <CsrfTokenContext.Provider value={pageProps.csrfToken}>
+                    <FontFamily />
                     <Component {...pageProps} />
                   </CsrfTokenContext.Provider>
                 </UiStateProvider>
@@ -143,4 +153,16 @@ function UiStateProvider(
  */
 if (isBrowser()) {
   loadSelectedTheme();
+}
+
+function FontFamily() {
+  return (
+    <style jsx global>
+      {`
+        body {
+          --font-family-sans: ${fontFamilySans.style.fontFamily};
+        }
+      `}
+    </style>
+  );
 }
