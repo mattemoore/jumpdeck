@@ -35,7 +35,7 @@
     }
 
     .NavigationItem a {
-        @apply py-1 px-1 lg:px-2 xl:px-3 flex items-center rounded-md font-medium w-full transition-colors;
+        @apply py-1 px-1 lg:px-2 xl:px-2.5 flex items-center rounded-md font-medium w-full transition-colors;
     }
 
     .PillNavigationMenu .NavigationItemActive a {
@@ -55,11 +55,11 @@
     }
 
     .BorderedNavigationMenu .NavigationItem a {
-        @apply h-12 border-b-[0.2rem] relative border-transparent top-[1px];
+        @apply h-14 border-b-[0.15rem] relative border-transparent top-[1px];
     }
 
     .BorderedNavigationMenu .NavigationItemActive a {
-        @apply border-primary-500 text-primary-500 dark:text-white bg-transparent rounded-none font-semibold;
+        @apply border-primary-500 text-primary-600 dark:text-white bg-transparent rounded-none;
     }
 
     .BorderedNavigationMenu .NavigationItemNotActive a {

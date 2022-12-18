@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext } from 'next';
-import { setCookie, destroyCookie, parseCookies } from "nookies";
+import { setCookie, destroyCookie, parseCookies } from 'nookies';
 
 import configuration from '~/configuration';
 import { getUserInfoById } from '~/core/firebase/admin/auth/get-user-info-by-id';
@@ -202,8 +202,8 @@ function getUiProps(ctx: GetServerSidePropsContext) {
   const sidebarState = cookies['sidebarState'] ?? 'expanded';
   const theme = cookies['theme'] ?? 'light';
 
-  return  {
+  return {
     sidebarState,
-    theme
+    theme,
   };
 }

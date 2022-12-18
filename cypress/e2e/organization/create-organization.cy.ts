@@ -6,38 +6,26 @@ describe(`Create Organization`, () => {
   const defaultOrganizationId =
     organizationPageObject.getDefaultOrganizationId();
 
-  beforeEach(() => {
+  it('should be able to create a new organization', () => {
     cy.signIn(`/dashboard`);
-  });
 
-  describe(`Given the user updates the organization name and logo`, () => {
-    it('the current selected organization will be the one created', () => {
-      organizationPageObject.$currentOrganization().click();
-      organizationPageObject.$createOrganizationButton().click();
+    organizationPageObject.$currentOrganization().click();
+    organizationPageObject.$createOrganizationButton().click();
 
-      organizationPageObject
-        .$createOrganizationNameInput()
-        .type(organizationName);
+    organizationPageObject
+      .$createOrganizationNameInput()
+      .type(organizationName);
 
-      organizationPageObject.$confirmCreateOrganizationButton().click();
+    organizationPageObject.$confirmCreateOrganizationButton().click();
 
-      organizationPageObject
-        .$currentOrganization()
-        .should('contain', organizationName);
+    organizationPageObject
+      .$currentOrganization()
+      .should('contain', organizationName);
 
-      cy.getCookie('organizationId').should(
-        'not.have.property',
-        'value',
-        defaultOrganizationId
-      );
-    });
-
-    it('should go back to the previous organization', () => {
-      cy.getCookie('organizationId').should(
-        'have.property',
-        'value',
-        defaultOrganizationId
-      );
-    });
+    cy.getCookie('organizationId').should(
+      'not.have.property',
+      'value',
+      defaultOrganizationId
+    );
   });
 });

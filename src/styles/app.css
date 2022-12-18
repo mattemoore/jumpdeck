@@ -27,7 +27,7 @@
     }
 
     .AppSidebarItemActive {
-        @apply bg-gray-100 dark:bg-primary-300/10 dark:text-primary-contrast text-current font-semibold;
+        @apply bg-gray-100 dark:bg-primary-300/10 dark:text-primary-contrast text-current font-medium;
     }
 
     .AppSidebarCollapsed .AppSidebarItemActive {

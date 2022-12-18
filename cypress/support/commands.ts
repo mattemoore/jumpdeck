@@ -45,7 +45,8 @@ Cypress.Commands.add(
       cy.log(`Successfully signed in`);
     });
 
-    return cy.visit(redirectPath);
+    cy.visit(redirectPath);
+    cy.wait(500);
   }
 );
 

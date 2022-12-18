@@ -99,7 +99,12 @@ function CancelButton<Props extends React.ButtonHTMLAttributes<unknown>>(
   props: Props
 ) {
   return (
-    <Button data-cy={'close-modal-button'} color={'transparent'} {...props}>
+    <Button
+      type={'button'}
+      data-cy={'close-modal-button'}
+      color={'transparent'}
+      {...props}
+    >
       <Trans i18nKey={'common:cancel'} />
     </Button>
   );

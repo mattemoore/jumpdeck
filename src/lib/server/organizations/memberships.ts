@@ -1,4 +1,4 @@
-import { FieldValue, getFirestore } from 'firebase-admin/firestore';
+import { FieldValue } from 'firebase-admin/firestore';
 import { getAuth } from 'firebase-admin/auth';
 import { ApiError } from 'next/dist/server/api-utils';
 
@@ -16,6 +16,7 @@ import {
 import { getInvitesCollection } from '~/lib/server/collections';
 import { MembershipInvite } from '~/lib/organizations/types/membership-invite';
 import { OrganizationPlanStatus } from '~/lib/organizations/types/organization-subscription';
+import getRestFirestore from '~/core/firebase/admin/get-rest-firestore';
 
 /**
  * @name getOrganizationMembers
@@ -120,7 +121,7 @@ export async function acceptInviteToOrganization({
   code: string;
   userId: string;
 }) {
-  const firestore = getFirestore();
+  const firestore = getRestFirestore();
   const auth = getAuth();
   const batch = firestore.batch();
   const inviteDoc = await getInviteByCode(code);

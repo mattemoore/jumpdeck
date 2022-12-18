@@ -35,7 +35,6 @@ const organizationPageObject = {
   $removeMemberActionButton: () => $get(`remove-member-action`),
   $transferOwnershipAction: () => $get('transfer-ownership-action'),
   $updateMemberRoleActionButton: () => $get(`update-member-role-action`),
-  navigateToInviteForm: () => $get(`invite-form-link`).click(),
   getDefaultOrganizationId() {
     return DEFAULT_ORGANIZATION_ID;
   },

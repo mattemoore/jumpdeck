@@ -1,10 +1,10 @@
-import { getFirestore } from 'firebase-admin/firestore';
 import { getAuth } from 'firebase-admin/auth';
 
 import { MembershipRole } from '~/lib/organizations/types/membership-role';
 import { GlobalRole } from '~/core/session/types/global-role';
 
 import { getOrganizationsCollection, getUsersCollection } from '../collections';
+import getRestFirestore from '~/core/firebase/admin/get-rest-firestore';
 
 interface Params {
   organizationName: string;
@@ -20,7 +20,7 @@ interface Params {
  * @param organizationName
  */
 export async function completeOnboarding({ userId, organizationName }: Params) {
-  const firestore = getFirestore();
+  const firestore = getRestFirestore();
   const auth = getAuth();
 
   const batch = firestore.batch();

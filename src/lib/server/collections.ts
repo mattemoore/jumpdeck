@@ -1,7 +1,6 @@
-import {
+import type {
   CollectionReference,
   CollectionGroup,
-  getFirestore,
 } from 'firebase-admin/firestore';
 
 import { Organization } from '~/lib/organizations/types/organization';
@@ -13,6 +12,8 @@ import {
   USERS_COLLECTION,
   INVITES_COLLECTION,
 } from '~/lib/firestore-collections';
+
+import getRestFirestore from '~/core/firebase/admin/get-rest-firestore';
 
 export function getUsersCollection() {
   return getCollectionByName(USERS_COLLECTION) as CollectionReference<UserData>;
@@ -31,9 +32,9 @@ export function getInvitesCollection() {
 }
 
 function getCollectionByName(collection: string) {
-  return getFirestore().collection(collection);
+  return getRestFirestore().collection(collection);
 }
 
 function getCollectionGroupByName(collection: string) {
-  return getFirestore().collectionGroup(collection);
+  return getRestFirestore().collectionGroup(collection);
 }
