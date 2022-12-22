@@ -1,6 +1,5 @@
 import { useAuth } from 'reactfire';
 import dynamic from 'next/dynamic';
-import ChevronRightIcon from '@heroicons/react/20/solid/ChevronRightIcon';
 
 import { useUserSession } from '~/core/hooks/use-user-session';
 import ProfileDropdown from '~/components/ProfileDropdown';
@@ -21,7 +20,7 @@ const AppHeaderNoMenu: React.FCC = ({ children }) => {
           <MobileNavigation />
         </div>
 
-        <div className={'flex items-center space-x-1 lg:space-x-4'}>
+        <div className={'flex items-center space-x-2.5 lg:space-x-4'}>
           <If condition={userSession?.auth?.uid}>
             {(uid) => <OrganizationsSelector userId={uid} />}
           </If>

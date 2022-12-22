@@ -4,23 +4,24 @@ import { useUser } from 'reactfire';
 
 import NavigationItem from '~/core/ui/Navigation/NavigationItem';
 import NavigationMenu from '~/core/ui/Navigation/NavigationMenu';
+import MobileNavigationDropdown from '~/core/ui/MobileNavigationMenu';
 
 const links = {
   General: {
     path: '/settings/profile',
-    i18n: 'profile:generalTab',
+    label: 'profile:generalTab',
   },
   Authentication: {
     path: '/settings/profile/authentication',
-    i18n: 'profile:authenticationTab',
+    label: 'profile:authenticationTab',
   },
   Email: {
     path: '/settings/profile/email',
-    i18n: 'profile:emailTab',
+    label: 'profile:emailTab',
   },
   Password: {
     path: '/settings/profile/password',
-    i18n: 'profile:passwordTab',
+    label: 'profile:passwordTab',
   },
 };
 
@@ -44,29 +45,38 @@ const ProfileSettingsTabs = () => {
   const itemClassName = `flex justify-center md:justify-start items-center w-full`;
 
   return (
-    <div className={'w-full max-w-[12rem]'}>
-      <NavigationMenu vertical pill>
-        <NavigationItem
-          className={itemClassName}
-          link={links.General}
-          depth={0}
-        />
+    <>
+      <div className={'hidden w-full max-w-[12rem] md:flex'}>
+        <NavigationMenu vertical pill>
+          <NavigationItem
+            className={itemClassName}
+            link={links.General}
+            depth={0}
+          />
 
-        <NavigationItem className={itemClassName} link={links.Authentication} />
+          <NavigationItem
+            className={itemClassName}
+            link={links.Authentication}
+          />
 
-        <NavigationItem
-          className={itemClassName}
-          disabled={!canEditEmailAndPassword}
-          link={links.Email}
-        />
+          <NavigationItem
+            className={itemClassName}
+            disabled={!canEditEmailAndPassword}
+            link={links.Email}
+          />
 
-        <NavigationItem
-          className={itemClassName}
-          disabled={!canEditEmailAndPassword}
-          link={links.Password}
-        />
-      </NavigationMenu>
-    </div>
+          <NavigationItem
+            className={itemClassName}
+            disabled={!canEditEmailAndPassword}
+            link={links.Password}
+          />
+        </NavigationMenu>
+      </div>
+
+      <div className={'block w-full md:hidden'}>
+        <MobileNavigationDropdown links={Object.values(links)} />
+      </div>
+    </>
   );
 };
 

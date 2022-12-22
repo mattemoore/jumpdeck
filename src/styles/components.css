@@ -15,7 +15,7 @@
     /* NavigationMenu.tsx */
     .NavigationMenu {
         @apply flex-1 space-x-1 lg:space-x-2 dark:text-gray-300
-        items-center flex-row flex-wrap hidden lg:flex;
+        items-center flex-wrap flex;
     }
 
     .NavigationMenu.VerticalNavigationMenu {
@@ -35,7 +35,7 @@
     }
 
     .NavigationItem a {
-        @apply py-1 px-1 lg:px-2 xl:px-2.5 flex items-center rounded-md font-medium w-full transition-colors;
+        @apply py-1 px-1 lg:px-2 xl:px-2.5 flex flex-col lg:flex-row items-center justify-center lg:justify-start rounded-md font-medium w-full transition-colors;
     }
 
     .PillNavigationMenu .NavigationItemActive a {
@@ -570,18 +570,14 @@
     }
 
     .Stepper {
-        @apply flex space-x-2 justify-between shadow-sm
-        dark:border-black-400 dark:bg-black-400 px-2 py-1 rounded-md;
+        @apply flex flex-col md:flex-row md:space-x-2 justify-between shadow-sm
+        px-2 py-1 rounded-md dark:border-black-400 dark:bg-black-400;
     }
 
     .StepperDivider {
-        @apply flex bg-gray-300 dark:bg-black-200
-        h-[2px] flex-1 transition-colors;
-
-        align-items: center;
-        justify-items: center;
-        justify-self: center;
-        align-self: center;
+        @apply flex bg-gray-300 dark:bg-black-200 h-full
+        ml-[1.5rem] md:ml-0 min-h-[8px] md:min-h-0 w-[2px] md:w-full md:h-[2px]
+        flex-1 transition-colors md:self-center;
     }
 
     .StepperDivider:last-child {

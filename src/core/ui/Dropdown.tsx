@@ -13,12 +13,13 @@ type ItemProps = PropsWithChildren<{
 const Dropdown: React.FCC<{
   button: JSX.Element;
   items: Array<JSX.Element>;
+  className?: string;
 }> & {
   Divider: typeof Divider;
   Item: typeof Item;
-} = ({ items, button }) => {
+} = ({ items, button, className }) => {
   return (
-    <Menu as="div" className="DropdownMenu">
+    <Menu as="div" className={classNames(`DropdownMenu`, className)}>
       <div className="DropdownMenuButtonContainer">{button}</div>
 
       <Transition

@@ -25,12 +25,16 @@ const SettingsPageContainer: React.FCC<{
     <RouteShell title={title}>
       <NavigationMenu bordered>
         {links.map((link) => (
-          <NavigationItem link={link} key={link.path} />
+          <NavigationItem
+            className={'flex-1 lg:flex-none'}
+            link={link}
+            key={link.path}
+          />
         ))}
       </NavigationMenu>
 
       <div
-        className={`flex h-full flex-col space-y-4 md:space-y-0 lg:mt-6 lg:flex-row lg:space-x-8`}
+        className={`mt-4 flex h-full flex-col space-y-4 md:space-y-0 lg:mt-6 lg:flex-row lg:space-x-8`}
       >
         {children}
       </div>

@@ -13,13 +13,17 @@ import If from '~/core/ui/If';
 import { PopoverDropdown, PopoverDropdownItem } from '~/core/ui/Popover';
 
 import CreateOrganizationModal from './CreateOrganizationModal';
-import ClientOnly from "~/core/ui/ClientOnly";
+import ClientOnly from '~/core/ui/ClientOnly';
 
 const PopoverButton: React.FCC<{
   organization: Maybe<WithId<Organization>>;
 }> = ({ organization }) => {
   if (organization) {
-    return <OrganizationItem organization={organization} />;
+    return (
+      <span className={'text-base'}>
+        <OrganizationItem organization={organization} />
+      </span>
+    );
   }
 
   return null;
@@ -150,7 +154,7 @@ function OrganizationItem({ organization }: { organization: Organization }) {
         </span>
       </If>
 
-      <span className={'w-auto text-left font-medium ellipsify'}>{name}</span>
+      <span className={'w-auto ellipsify'}>{name}</span>
     </span>
   );
 }
