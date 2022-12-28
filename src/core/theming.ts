@@ -24,7 +24,7 @@ export function getDefaultTheme() {
 export function setTheme(theme: string | null) {
   const root = getHtml();
 
-  if (getDefaultTheme() === theme) {
+  if (getDefaultTheme() === theme || theme === null) {
     return;
   }
 
@@ -42,7 +42,7 @@ export function setTheme(theme: string | null) {
 export function loadSelectedTheme() {
   const storedTheme = getStoredTheme();
 
-  if (storedTheme === null) {
+  if (!storedTheme) {
     return;
   }
 
