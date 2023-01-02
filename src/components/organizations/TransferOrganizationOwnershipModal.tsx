@@ -23,13 +23,11 @@ const TransferOrganizationOwnershipModal: React.FC<{
   const organization = useCurrentOrganization();
   const organizationId = organization?.id ?? '';
 
-  const [transferOrganizationOwnership, transferOrganizationOwnershipState] =
+  const { trigger, isMutating } =
     useTransferOrganizationOwnership(organizationId);
 
-  const loading = transferOrganizationOwnershipState.loading;
-
   const onConfirmTransferOwnership = useCallback(async () => {
-    const promise = transferOrganizationOwnership({ userId: targetMemberId });
+    const promise = trigger({ userId: targetMemberId });
 
     await toaster.promise(promise, {
       loading: t('organization:transferringOwnership'),
@@ -38,7 +36,7 @@ const TransferOrganizationOwnershipModal: React.FC<{
     });
 
     setIsOpen(false);
-  }, [setIsOpen, t, targetMemberId, transferOrganizationOwnership]);
+  }, [setIsOpen, t, targetMemberId, trigger]);
 
   return (
     <Modal heading={heading} isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -66,10 +64,10 @@ const TransferOrganizationOwnershipModal: React.FC<{
             data-cy={'confirm-transfer-ownership-button'}
             color={'danger'}
             onClick={onConfirmTransferOwnership}
-            loading={loading}
+            loading={isMutating}
           >
             <If
-              condition={loading}
+              condition={isMutating}
               fallback={<Trans i18nKey={'organization:transferOwnership'} />}
             >
               <Trans i18nKey={'organization:transferringOwnership'} />

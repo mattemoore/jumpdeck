@@ -1,3 +1,4 @@
+import useSWRMutation from 'swr/mutation';
 import { useApiRequest } from '~/core/hooks/use-api';
 import { MembershipRole } from '../types/membership-role';
 
@@ -8,8 +9,14 @@ export function useUpdateMemberRequest({
   organizationId: string;
   targetMemberId: string;
 }) {
-  return useApiRequest<void, { role: MembershipRole }>(
-    `/api/organizations/${organizationId}/members/${targetMemberId}`,
-    'PUT'
-  );
+  const fetcher = useApiRequest<void, { role: MembershipRole }>();
+  const endpoint = `/api/organizations/${organizationId}/members/${targetMemberId}`;
+
+  return useSWRMutation(endpoint, (path, { arg: body }) => {
+    return fetcher({
+      path,
+      body,
+      method: 'PUT',
+    });
+  });
 }

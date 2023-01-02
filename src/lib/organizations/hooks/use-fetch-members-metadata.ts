@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
 import type { User } from 'firebase/auth';
+import useSWR from 'swr';
 
 import { useApiRequest } from '~/core/hooks/use-api';
 
@@ -8,22 +8,12 @@ import { useApiRequest } from '~/core/hooks/use-api';
  * @param organizationId
  */
 export function useFetchOrganizationMembersMetadata(organizationId: string) {
-  const requestDone = useRef<boolean>(false);
-  const path = getFetchMembersPath(organizationId);
-  const [fetchMembersRequest, state] = useApiRequest<User[]>(path, 'GET');
+  const endpoint = getFetchMembersPath(organizationId);
+  const fetcher = useApiRequest<User[]>();
 
-  useEffect(() => {
-    // prevent repeated requests in dev mode
-    if (requestDone.current) {
-      return;
-    }
-
-    void fetchMembersRequest();
-
-    requestDone.current = true;
-  }, [organizationId, fetchMembersRequest]);
-
-  return state;
+  return useSWR(endpoint, (path) => {
+    return fetcher({ path, method: 'GET' });
+  });
 }
 
 function getFetchMembersPath(organizationId: string) {

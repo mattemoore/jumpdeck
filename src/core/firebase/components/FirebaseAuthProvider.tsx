@@ -42,7 +42,7 @@ export default function FirebaseAuthProvider({
   setUserSession: Dispatch<Maybe<UserSession>>;
 }>) {
   const app = useFirebaseApp();
-  const signOut = useDestroySession();
+  const { trigger: signOut } = useDestroySession();
   const userRef = useRef<Maybe<User>>();
 
   // make sure we're not using IndexedDB when SSR

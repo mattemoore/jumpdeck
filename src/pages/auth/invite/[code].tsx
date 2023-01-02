@@ -69,9 +69,8 @@ const InvitePage = (
   const redirectOnSignOut = getRedirectPath();
   const [mode, setMode] = useState<Mode>(Mode.SignUp);
 
-  const [addMemberToOrganization, requestState] = useAddMemberToOrganization(
-    organization.id
-  );
+  const { trigger: addMemberToOrganization, isMutating } =
+    useAddMemberToOrganization(organization.id);
 
   const redirectToHomePage = useCallback(() => {
     const homePage = configuration.paths.appHome;
@@ -79,16 +78,18 @@ const InvitePage = (
     return router.push(homePage);
   }, [router]);
 
-  const onInviteAccepted = useCallback(() => {
+  const onInviteAccepted = useCallback(async () => {
     const body = { code: invite.code };
-    const promise = addMemberToOrganization(body);
+    const promise = addMemberToOrganization(body).then(() =>
+      redirectToHomePage()
+    );
 
-    return toaster.promise(promise, {
+    await toaster.promise(promise, {
       loading: t('auth:acceptingInvite'),
       success: t('auth:acceptInviteSuccess'),
       error: t('auth:acceptInviteError'),
     });
-  }, [addMemberToOrganization, invite.code, t]);
+  }, [addMemberToOrganization, redirectToHomePage, invite.code, t]);
 
   useEffect(() => {
     if (signInCheck.status === 'success' && !signInCheck.data.signedIn) {
@@ -96,13 +97,7 @@ const InvitePage = (
     }
   }, [signInCheck]);
 
-  useEffect(() => {
-    if (requestState.success) {
-      void redirectToHomePage();
-    }
-  }, [redirectToHomePage, requestState.success]);
-
-  if (requestState.loading) {
+  if (isMutating) {
     return (
       <PageLoadingIndicator>
         <Trans
@@ -185,7 +180,7 @@ const InvitePage = (
                   block
                   color={'transparent'}
                   size={'small'}
-                  disabled={requestState.loading}
+                  disabled={isMutating}
                   onClick={() => auth.signOut()}
                   type={'button'}
                 >

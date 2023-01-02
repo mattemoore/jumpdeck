@@ -1,9 +1,11 @@
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
-import { Trans } from 'react-i18next';
+import { Trans } from 'next-i18next';
 import { Menu } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
+
 import Dropdown from '~/core/ui/Dropdown';
+import If from '~/core/ui/If';
 
 const MobileNavigationDropdown: React.FC<{
   links: Array<{
@@ -14,21 +16,20 @@ const MobileNavigationDropdown: React.FC<{
   const router = useRouter();
   const path = router.asPath;
 
-  const items = useMemo(
-    function MenuItems() {
-      return Object.values(links).map((link) => {
-        return (
-          <Dropdown.Item key={link.path} href={link.path}>
-            <Trans i18nKey={link.label} defaults={link.label} />
-          </Dropdown.Item>
-        );
-      });
-    },
-    [links]
-  );
+  const items = useMemo(() => {
+    return Object.values(links).map((link) => {
+      return (
+        <Dropdown.Item key={link.path} href={link.path}>
+          <Trans i18nKey={link.label} defaults={link.label} />
+        </Dropdown.Item>
+      );
+    });
+  }, [links]);
 
   const currentPathName = useMemo(() => {
-    return Object.values(links).find((link) => link.path === path)?.label;
+    return Object.values(links).find((link) => {
+      return link.path === path;
+    })?.label;
   }, [links, path]);
 
   const DropdownButton = (

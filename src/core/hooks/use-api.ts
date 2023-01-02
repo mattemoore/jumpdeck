@@ -1,7 +1,5 @@
 import { useCallback, useContext, useRef } from 'react';
 import { AppCheckSdkContext } from 'reactfire';
-
-import { useRequestState } from '~/core/hooks/use-request-state';
 import { useCsrfToken } from '~/core/firebase/hooks/use-csrf-token';
 
 const FIREBASE_APP_CHECK_HEADER = 'X-Firebase-AppCheck';
@@ -10,69 +8,51 @@ const CSRF_TOKEN_HEADER = 'x-csrf-token';
 /**
  * @name useApiRequest
  * @description A hook to make API requests
- * @param path
- * @param method
- * @param headers
+ * 1. By default, it will use the `POST` method and will send the payload as
+ * JSON
+ * 2. Also, it will automatically add the CSRF token to the request headers and
+ * the App Check token if the SDK is initialized
  */
-export function useApiRequest<Resp = unknown, Body = void>(
-  path: string,
-  method: HttpMethod = 'POST',
-  headers?: StringObject
-) {
-  const { setError, setLoading, setData, state } = useRequestState<
-    Resp,
-    string
-  >();
+export function useApiRequest<Resp = unknown, Body = void>() {
+  const headersRef = useRef<StringObject>({});
+  const getSecurityHeaders = useGetSecurityHeaders();
 
-  const headersRef = useRef(headers);
-  const getAppCheckToken = useGetAppCheckToken();
-  const csrfToken = useCsrfToken();
+  return useCallback(
+    async (params: {
+      path: string;
+      body?: Body;
+      method?: HttpMethod;
+      headers?: StringObject;
+    }) => {
+      const securityHeaders = await getSecurityHeaders();
+      const payload = JSON.stringify(params.body);
 
-  const fn = useCallback(
-    async (body: Body) => {
-      setLoading(true);
-
-      try {
-        const payload = JSON.stringify(body);
-        const appCheckToken = await getAppCheckToken();
-
-        if (!headersRef.current) {
-          headersRef.current = {};
-        }
-
-        // if the app-check token was found
-        // we add the header to the API request
-        if (appCheckToken) {
-          headersRef.current[FIREBASE_APP_CHECK_HEADER] = appCheckToken;
-        }
-
-        if (csrfToken) {
-          headersRef.current[CSRF_TOKEN_HEADER] = csrfToken;
-        }
-
-        const data = await executeFetchRequest<Resp>(
-          path,
-          payload,
-          method,
-          headersRef.current
-        );
-
-        setData(data);
-
-        return Promise.resolve(data);
-      } catch (error) {
-        const message =
-          error instanceof Error ? error.message : `Unknown error`;
-
-        setError(message);
-
-        return Promise.reject(error);
+      // initialize the headers if they are not defined
+      if (!headersRef.current) {
+        headersRef.current = params.headers ?? {};
       }
-    },
-    [setLoading, getAppCheckToken, csrfToken, path, method, setData, setError]
-  );
 
-  return [fn, state] as [typeof fn, typeof state];
+      // add the AppCheck token to the request headers if it exists
+      if (securityHeaders.appCheckToken) {
+        headersRef.current[FIREBASE_APP_CHECK_HEADER] =
+          securityHeaders.appCheckToken;
+      }
+
+      // add the CSRF token to the request headers if it exists
+      if (securityHeaders.csrfToken) {
+        headersRef.current[CSRF_TOKEN_HEADER] = securityHeaders.csrfToken;
+      }
+
+      // execute the fetch request
+      return executeFetchRequest<Resp>(
+        params.path,
+        payload,
+        params.method,
+        headersRef.current
+      );
+    },
+    [getSecurityHeaders]
+  );
 }
 
 async function executeFetchRequest<Resp = unknown>(
@@ -104,9 +84,9 @@ async function executeFetchRequest<Resp = unknown>(
       return (await response.json()) as Promise<Resp>;
     }
 
-    return Promise.reject(response.statusText);
-  } catch (e) {
-    return Promise.reject(e);
+    return Promise.reject(await response.json());
+  } catch (error) {
+    return Promise.reject(error);
   }
 }
 
@@ -119,6 +99,7 @@ function useGetAppCheckToken() {
   return useCallback(async () => {
     try {
       // if the SDK does not exist, we cannot generate a token
+      // so we return undefined
       if (!sdk) {
         return;
       }
@@ -132,4 +113,18 @@ function useGetAppCheckToken() {
       return;
     }
   }, [sdk]);
+}
+
+function useGetSecurityHeaders() {
+  const csrfToken = useCsrfToken();
+  const getAppCheckToken = useGetAppCheckToken();
+
+  return useCallback(async () => {
+    const appCheckToken = await getAppCheckToken();
+
+    return {
+      csrfToken,
+      appCheckToken,
+    };
+  }, [csrfToken, getAppCheckToken]);
 }

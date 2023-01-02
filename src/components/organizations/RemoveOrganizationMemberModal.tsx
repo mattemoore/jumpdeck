@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import toaster from 'react-hot-toast';
 import type { User } from 'firebase/auth';
 import { Trans, useTranslation } from 'next-i18next';
@@ -7,7 +8,7 @@ import { useApiRequest } from '~/core/hooks/use-api';
 
 import Button from '~/core/ui/Button';
 import Modal from '~/core/ui/Modal';
-import { useCallback } from 'react';
+import useSWRMutation from 'swr/mutation';
 
 const RemoveOrganizationMemberModal: React.FCC<{
   isOpen: boolean;
@@ -18,16 +19,14 @@ const RemoveOrganizationMemberModal: React.FCC<{
   const organizationId = organization?.id as string;
   const { t } = useTranslation('organization');
 
-  const [removeMemberRequest, state] = useRemoveMemberRequest(
+  const { isMutating, trigger } = useRemoveMemberRequest(
     organizationId,
     member.uid
   );
 
   const onUserRemoved = useCallback(() => {
     void (async () => {
-      const promise = removeMemberRequest();
-
-      await toaster.promise(promise, {
+      await toaster.promise(trigger(), {
         success: t(`removeMemberSuccessMessage`),
         error: t(`removeMemberErrorMessage`),
         loading: t(`removeMemberLoadingMessage`),
@@ -35,7 +34,7 @@ const RemoveOrganizationMemberModal: React.FCC<{
 
       setIsOpen(false);
     })();
-  }, [removeMemberRequest, setIsOpen, t]);
+  }, [trigger, setIsOpen, t]);
 
   const heading = <Trans i18nKey="organization:removeMemberModalHeading" />;
 
@@ -55,7 +54,7 @@ const RemoveOrganizationMemberModal: React.FCC<{
             data-cy={'confirm-remove-member'}
             color={'danger'}
             onClick={onUserRemoved}
-            loading={state.loading}
+            loading={isMutating}
           >
             <Trans i18nKey={'organization:removeMemberSubmitLabel'} />
           </Button>
@@ -66,10 +65,15 @@ const RemoveOrganizationMemberModal: React.FCC<{
 };
 
 function useRemoveMemberRequest(organizationId: string, targetMember: string) {
-  return useApiRequest(
-    `/api/organizations/${organizationId}/members/${targetMember}`,
-    'DELETE'
-  );
+  const fetcher = useApiRequest();
+  const endpoint = `/api/organizations/${organizationId}/members/${targetMember}`;
+
+  return useSWRMutation(endpoint, (path) => {
+    return fetcher({
+      path,
+      method: 'DELETE',
+    });
+  });
 }
 
 export default RemoveOrganizationMemberModal;

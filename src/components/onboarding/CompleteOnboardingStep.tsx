@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { SpringSpinner } from 'react-epic-spinners';
+import useSWRMutation from 'swr/mutation';
 
 import { useApiRequest } from '~/core/hooks/use-api';
 import Alert from '~/core/ui/Alert';
@@ -12,32 +13,21 @@ export const CompleteOnboardingStep: React.FCC<{
   onComplete: () => void;
   data: CompleteOnboardingStepData;
 }> = ({ onComplete, data }) => {
-  const [request, state] = useCompleteOnboardingRequest();
-  const { error, success } = state;
+  const { trigger, error } = useCompleteOnboardingRequest();
   const onboardingCompleteRequested = useRef(false);
 
-  const callRequestCallback = useCallback(() => {
-    if (data) {
-      return request(data);
-    }
-  }, [request, data]);
-
-  const callOnCompleteCallback = useCallback(() => {
-    if (success) {
-      onComplete();
-    }
-  }, [success, onComplete]);
-
   useEffect(() => {
-    // React will run the effect twice
-    // so we use the ref to prevent it
-    if (!onboardingCompleteRequested.current) {
-      onboardingCompleteRequested.current = true;
-      void callRequestCallback();
-    }
-  }, [callRequestCallback]);
+    void (async () => {
+      // React will run the effect twice
+      // so we use the ref to prevent it
+      if (!onboardingCompleteRequested.current) {
+        onboardingCompleteRequested.current = true;
+        await trigger(data);
 
-  useEffect(callOnCompleteCallback, [callOnCompleteCallback]);
+        onComplete();
+      }
+    })();
+  }, [data, onComplete, trigger]);
 
   if (error) {
     return (
@@ -59,7 +49,12 @@ export const CompleteOnboardingStep: React.FCC<{
 };
 
 function useCompleteOnboardingRequest() {
-  const path = '/api/onboarding';
+  const fetcher = useApiRequest<void, CompleteOnboardingStepData>();
 
-  return useApiRequest<void, CompleteOnboardingStepData>(path);
+  return useSWRMutation('/api/onboarding', (path, { arg: body }) => {
+    return fetcher({
+      path,
+      body,
+    });
+  });
 }

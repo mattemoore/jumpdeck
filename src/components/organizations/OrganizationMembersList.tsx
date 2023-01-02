@@ -29,7 +29,7 @@ const OrganizationMembersList: React.FCC<{
   // so that we can display email/name and profile picture
   const {
     data: membersMetadata,
-    loading,
+    isLoading: loading,
     error,
   } = useFetchOrganizationMembersMetadata(organizationId);
 

@@ -31,7 +31,7 @@ const InviteMembersForm: React.FCC = () => {
   const organization = useCurrentOrganization();
   const organizationId = organization?.id ?? '';
 
-  const [request, requestState] = useInviteMembers(organizationId);
+  const { trigger, isMutating } = useInviteMembers(organizationId);
 
   const { register, handleSubmit, setValue, control, clearErrors, watch } =
     useForm({
@@ -64,7 +64,9 @@ const InviteMembersForm: React.FCC = () => {
 
   const onSubmit = useCallback(
     async ({ members }: { members: InviteModel[] }) => {
-      await toast.promise(request(members), {
+      const promise = trigger(members);
+
+      await toast.promise(promise, {
         success: t(`inviteMembersSuccess`),
         error: t(`inviteMembersError`),
         loading: t(`inviteMembersLoading`),
@@ -72,7 +74,7 @@ const InviteMembersForm: React.FCC = () => {
 
       navigateToMembersPage();
     },
-    [navigateToMembersPage, request, t]
+    [navigateToMembersPage, trigger, t]
   );
 
   return (
@@ -190,7 +192,7 @@ const InviteMembersForm: React.FCC = () => {
           className={'w-full lg:w-auto'}
           data-cy={'send-invites-button'}
           type={'submit'}
-          loading={requestState.loading}
+          loading={isMutating}
         >
           <Trans i18nKey={'organization:inviteMembersSubmitLabel'} />
         </Button>

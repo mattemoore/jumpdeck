@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import type { User } from 'firebase/auth';
 
 import { useCreateSession } from '~/core/hooks/use-create-session';
@@ -9,21 +9,27 @@ import { useCreateSession } from '~/core/hooks/use-create-session';
  * authentication work with SSR.
  */
 function useCreateServerSideSession() {
-  const [signIn, signInState] = useCreateSession();
+  const { trigger, ...mutationState } = useCreateSession();
 
   const signInCallback = useCallback(
     async (user: User, forceRefresh = true) => {
       const idToken = await user.getIdToken(forceRefresh);
 
-      return signIn({ idToken });
+      return trigger({ idToken });
     },
-    [signIn]
+    [trigger]
   );
 
-  return [signInCallback, signInState] as [
-    typeof signInCallback,
-    typeof signInState
-  ];
+  const state = useMemo(() => {
+    return {
+      data: mutationState.data,
+      error: mutationState.error,
+      loading: mutationState.isMutating,
+      success: !mutationState.isMutating && mutationState.data,
+    };
+  }, [mutationState]);
+
+  return [signInCallback, state] as [typeof signInCallback, typeof state];
 }
 
 export default useCreateServerSideSession;

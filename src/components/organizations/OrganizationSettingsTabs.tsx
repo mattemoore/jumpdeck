@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import NavigationItem from '~/core/ui/Navigation/NavigationItem';
 import NavigationMenu from '~/core/ui/Navigation/NavigationMenu';
 import MobileNavigationDropdown from '~/core/ui/MobileNavigationMenu';
@@ -31,10 +33,16 @@ const OrganizationSettingsTabs = () => {
       </div>
 
       <div className={'block w-full md:hidden'}>
-        <MobileNavigationDropdown links={Object.values(links)} />
+        <MobileTabs />
       </div>
     </>
   );
 };
+
+function MobileTabs() {
+  const items = useMemo(() => Object.values(links), []);
+
+  return <MobileNavigationDropdown links={items} />;
+}
 
 export default OrganizationSettingsTabs;

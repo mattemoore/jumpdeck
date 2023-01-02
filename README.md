@@ -7,7 +7,7 @@ CSS.
 
 ### Requirements
 
-- Node.js LTS (Please do not upgrade yet to Node 18)
+- Node.js
 - Firebase Tools
 - Git
 
@@ -49,7 +49,7 @@ We recommend to watch to the repository, so you know when there's an update.
 To pull the latest updates, use:
 
 ```
-git pull upstream main
+git pull upstream main --allow-unrelated-histories
 ```
 
 In case we change the same files, you will need to resolve the conflicts.
@@ -71,7 +71,7 @@ Start the application and the Firebase emulators:
 
 ```
 npm run dev
-firebase:emulators:start
+npm run firebase:emulators:start
 ```
 
 The application should be running at [http://localhost:3000](http://localhost:3000).

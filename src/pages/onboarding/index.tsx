@@ -63,7 +63,7 @@ const Onboarding = () => {
               ' w-full lg:w-6/12'
             }
           >
-            <div className={'absolute top-24 flex'}>
+            <div className={'absolute top-24 hidden lg:flex'}>
               <Logo href={'/onboarding'} />
             </div>
 

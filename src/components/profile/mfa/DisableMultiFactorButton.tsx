@@ -10,21 +10,20 @@ import useDisableMultiFactorAuthentication from '~/lib/profile/hooks/use-disable
 const DisableMultiFactorButton: React.FC<{
   onDisable: EmptyCallback;
 }> = ({ onDisable }) => {
-  const [disableMultiFactorAuthentication, { loading }] =
-    useDisableMultiFactorAuthentication();
+  const { trigger, isMutating } = useDisableMultiFactorAuthentication();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { t } = useTranslation();
 
   const onDisableSubmit = useCallback(async () => {
-    const promise = disableMultiFactorAuthentication().then(onDisable);
+    const promise = trigger().then(onDisable);
 
     return toaster.promise(promise, {
       loading: t(`profile:disablingMfa`),
       error: t(`profile:disableMfaError`),
       success: t(`profile:disableMfaSuccess`),
     });
-  }, [disableMultiFactorAuthentication, onDisable, t]);
+  }, [trigger, onDisable, t]);
 
   return (
     <>
@@ -57,7 +56,7 @@ const DisableMultiFactorButton: React.FC<{
 
             <Button
               color={'danger'}
-              loading={loading}
+              loading={isMutating}
               onClick={onDisableSubmit}
             >
               <Trans i18nKey={'profile:confirmDisableMfaButtonLabel'} />

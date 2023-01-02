@@ -1,3 +1,4 @@
+import useSWRMutation from 'swr/mutation';
 import { useApiRequest } from '~/core/hooks/use-api';
 import { MembershipRole } from '../types/membership-role';
 
@@ -7,7 +8,13 @@ interface Invite {
 }
 
 export function useInviteMembers(organizationId: string) {
-  return useApiRequest<void, Invite[]>(
-    `/api/organizations/${organizationId}/invite`
-  );
+  const endpoint = `/api/organizations/${organizationId}/invite`;
+  const fetcher = useApiRequest<void, Invite[]>();
+
+  return useSWRMutation(endpoint, (path, { arg: body }) => {
+    return fetcher({
+      path,
+      body,
+    });
+  });
 }

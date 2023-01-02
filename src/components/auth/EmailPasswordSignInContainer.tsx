@@ -33,8 +33,9 @@ const EmailPasswordSignInContainer: React.FCC<{
   const [multiFactorAuthError, setMultiFactorAuthError] =
     useState<Maybe<MultiFactorError>>();
 
-  const isLoading =
-    sessionState.loading || requestState.state.loading || sessionState.success;
+  const isLoading = Boolean(
+    sessionState.loading || requestState.state.loading || sessionState.success
+  );
 
   const signInWithCredentials = useCallback(
     async (params: { email: string; password: string }) => {

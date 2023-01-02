@@ -1,4 +1,5 @@
 import { useApiRequest } from '~/core/hooks/use-api';
+import useSWRMutation from 'swr/mutation';
 
 /**
  * @name useDestroySession
@@ -6,7 +7,12 @@ import { useApiRequest } from '~/core/hooks/use-api';
  * needs to be called when the user signs out.
  */
 export function useDestroySession() {
-  const [request] = useApiRequest('/api/session/sign-out');
+  const endpoint = '/api/session/sign-out';
+  const fetcher = useApiRequest();
 
-  return request;
+  return useSWRMutation(endpoint, (path) => {
+    return fetcher({
+      path,
+    });
+  });
 }

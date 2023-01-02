@@ -25,7 +25,7 @@ const UpdateMemberRoleModal: React.FCC<{
   const organization = useCurrentOrganization();
   const organizationId = organization?.id ?? '';
 
-  const [request, state] = useUpdateMemberRequest({
+  const { trigger, isMutating } = useUpdateMemberRequest({
     organizationId,
     targetMemberId: member.uid,
   });
@@ -37,7 +37,7 @@ const UpdateMemberRoleModal: React.FCC<{
       });
     }
 
-    const promise = request({ role: role.value });
+    const promise = trigger({ role: role.value });
 
     await toaster.promise(promise, {
       loading: t('updateRoleLoadingMessage'),
@@ -46,7 +46,7 @@ const UpdateMemberRoleModal: React.FCC<{
     });
 
     setIsOpen(false);
-  }, [request, role, setIsOpen, t, memberRole]);
+  }, [trigger, role, setIsOpen, t, memberRole]);
 
   const heading = (
     <Trans i18nKey={'organization:updateMemberRoleModalHeading'} />
@@ -65,7 +65,7 @@ const UpdateMemberRoleModal: React.FCC<{
           <Button
             disabled={!role}
             data-cy={'confirm-update-member-role'}
-            loading={state.loading}
+            loading={isMutating}
             onClick={onRoleUpdated}
           >
             <Trans i18nKey={'organization:updateRoleSubmitLabel'} />

@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { Menu } from '@headlessui/react';
 import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon';
 
@@ -6,12 +5,7 @@ import NavigationMenuItem from '~/core/ui/Navigation/NavigationItem';
 import NavigationMenu from '~/core/ui/Navigation/NavigationMenu';
 import Dropdown from '~/core/ui/Dropdown';
 
-interface Link {
-  label: string;
-  path: string;
-}
-
-const links: Record<string, Link> = {
+const links = {
   SignIn: {
     label: 'Sign In',
     path: '/auth/sign-in',

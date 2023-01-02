@@ -1,4 +1,5 @@
 import { useApiRequest } from '~/core/hooks/use-api';
+import useSWRMutation from 'swr/mutation';
 
 interface AddMemberToOrganizationProps {
   // the code generated when creating the invitation
@@ -12,9 +13,15 @@ interface AddMemberToOrganizationProps {
  * @param id
  */
 function useAddMemberToOrganization(id: string) {
-  const path = `/api/organizations/${id}/members`;
+  const endpoint = `/api/organizations/${id}/members`;
+  const fetcher = useApiRequest<void, AddMemberToOrganizationProps>();
 
-  return useApiRequest<void, AddMemberToOrganizationProps>(path);
+  return useSWRMutation(endpoint, (path, { arg: body }) => {
+    return fetcher({
+      path,
+      body,
+    });
+  });
 }
 
 export default useAddMemberToOrganization;
