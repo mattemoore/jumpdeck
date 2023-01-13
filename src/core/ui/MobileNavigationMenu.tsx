@@ -5,7 +5,6 @@ import { Menu } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 
 import Dropdown from '~/core/ui/Dropdown';
-import If from '~/core/ui/If';
 
 const MobileNavigationDropdown: React.FC<{
   links: Array<{

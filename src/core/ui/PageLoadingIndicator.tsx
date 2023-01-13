@@ -1,9 +1,9 @@
 import { PropsWithChildren } from 'react';
-import { FulfillingBouncingCircleSpinner } from 'react-epic-spinners';
 
 import LogoImage from '~/core/ui/Logo/LogoImage';
 import If from '~/core/ui/If';
 import classNames from 'classnames';
+import Spinner from '~/core/ui/Spinner';
 
 export default function PageLoadingIndicator({
   children,
@@ -36,7 +36,7 @@ export default function PageLoadingIndicator({
       </If>
 
       <div className={'text-primary-500'}>
-        <FulfillingBouncingCircleSpinner size={48} color={`currentColor`} />
+        <Spinner className={'h-12 w-12'} />
       </div>
 
       <div className={'text-sm font-medium'}>{children}</div>

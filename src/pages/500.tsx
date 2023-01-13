@@ -3,14 +3,11 @@ import { Trans } from 'next-i18next';
 
 import configuration from '~/configuration';
 import Layout from '~/core/ui/Layout';
-import Hero from '~/core/ui/Hero';
-import Container from '~/core/ui/Container';
-import SubHeading from '~/core/ui/SubHeading';
 import Button from '~/core/ui/Button';
 
 import SiteHeader from '~/components/SiteHeader';
-import { withTranslationProps } from '~/lib/props/with-translation-props';
 import Heading from '~/core/ui/Heading';
+import { withTranslationProps } from '~/lib/props/with-translation-props';
 
 const InternalServerErrorPage = () => {
   return (

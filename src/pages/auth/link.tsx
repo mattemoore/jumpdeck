@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import { useAuth } from 'reactfire';
 
 import { Trans } from 'next-i18next';
-import { SpringSpinner } from 'react-epic-spinners';
 
 import {
   isSignInWithEmailLink,
@@ -27,6 +26,7 @@ import AuthPageLayout from '~/components/auth/AuthPageLayout';
 
 import configuration from '~/configuration';
 import { getFirebaseErrorCode } from '~/core/firebase/utils/get-firebase-error-code';
+import Spinner from '~/core/ui/Spinner';
 
 // this is the key we use for storing the email locally
 // so we can verify it is the same
@@ -162,7 +162,7 @@ const EmailLinkAuthPage: React.FC = () => {
 function LoadingState() {
   return (
     <div className={'flex space-x-2'}>
-      <SpringSpinner size={32} color={'currentColor'} />
+      <Spinner />
 
       <span>
         <Trans i18nKey={'auth:signingIn'} />

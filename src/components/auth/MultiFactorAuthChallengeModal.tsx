@@ -8,7 +8,6 @@ import {
 
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useAuth } from 'reactfire';
-import { SpringSpinner } from 'react-epic-spinners';
 import { FirebaseError } from 'firebase/app';
 import { Trans } from 'next-i18next';
 
@@ -21,6 +20,7 @@ import Alert from '~/core/ui/Alert';
 import { useRequestState } from '~/core/hooks/use-request-state';
 import useRecaptchaVerifier from '~/core/firebase/hooks/use-recaptcha-verifier';
 import AuthErrorMessage from '~/components/auth/AuthErrorMessage';
+import Spinner from '~/core/ui/Spinner';
 
 const buttonId = `multi-factor-auth-challenge-button`;
 
@@ -191,7 +191,7 @@ function LoadingSpinner() {
   return (
     <div className={'my-6 flex flex-col items-center justify-center space-y-4'}>
       <div>
-        <SpringSpinner color={'currentColor'} size={36} />
+        <Spinner />
       </div>
 
       <div>

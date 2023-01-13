@@ -1,9 +1,9 @@
 import { PropsWithChildren } from 'react';
 import Link from 'next/link';
-import { SpringSpinner } from 'react-epic-spinners';
 import classNames from 'classnames';
 
 import If from '~/core/ui/If';
+import Spinner from '~/core/ui/Spinner';
 
 type Color = 'primary' | 'secondary' | 'transparent' | 'danger' | 'custom';
 type Size = 'normal' | 'small' | 'large' | 'custom';
@@ -124,12 +124,7 @@ const Button: React.FCC<Props> = ({
 function Animation() {
   return (
     <span className={'mx-2'}>
-      <SpringSpinner
-        className={'mx-auto'}
-        color={'currentColor'}
-        size={20}
-        animationDuration={2000}
-      />
+      <Spinner className={'mx-auto !h-4 !w-4 fill-white dark:fill-white'} />
     </span>
   );
 }

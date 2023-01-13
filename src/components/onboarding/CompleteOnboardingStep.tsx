@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
-import { SpringSpinner } from 'react-epic-spinners';
 import useSWRMutation from 'swr/mutation';
 
 import { useApiRequest } from '~/core/hooks/use-api';
 import Alert from '~/core/ui/Alert';
+import PageLoadingIndicator from '~/core/ui/PageLoadingIndicator';
 
 interface CompleteOnboardingStepData {
   organization: string;
@@ -39,11 +39,9 @@ export const CompleteOnboardingStep: React.FCC<{
 
   return (
     <div className={'flex flex-1 flex-col items-center space-y-8'}>
-      <span>
-        <SpringSpinner size={52} color={'currentColor'} />
-      </span>
-
-      <span>Getting Started. Please wait...</span>
+      <PageLoadingIndicator fullPage={false} displayLogo={false}>
+        <span>Getting Started. Please wait...</span>
+      </PageLoadingIndicator>
     </div>
   );
 };

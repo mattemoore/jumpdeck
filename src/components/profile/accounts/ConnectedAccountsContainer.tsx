@@ -23,7 +23,6 @@ import {
 
 import { Trans, useTranslation } from 'next-i18next';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
-import { SpringSpinner } from 'react-epic-spinners';
 
 import FirebaseAuthProviderClass from '~/core/firebase/types/auth-provider-class';
 
@@ -42,6 +41,7 @@ import AuthProviderLogo from '~/core/ui/AuthProviderLogo';
 import getFirebaseAuthProviderId from '~/core/firebase/utils/get-firebase-auth-provider-id';
 import configuration from '~/configuration';
 import { getFirebaseErrorCode } from '~/core/firebase/utils/get-firebase-error-code';
+import Spinner from '~/core/ui/Spinner';
 
 type GenericOAuthProvider = { new (): AuthProvider } & typeof OAuthProvider;
 
@@ -436,7 +436,7 @@ function useSupportedAuthProviders() {
 function LoadingUserIndicator() {
   return (
     <div className={'flex items-center space-x-4'}>
-      <SpringSpinner size={16} color={'currentColor'} />
+      <Spinner />
 
       <span>
         <Trans i18nKey={'profile:loadingUser'} />
