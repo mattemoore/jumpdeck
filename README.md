@@ -8,18 +8,9 @@ CSS.
 ### Requirements
 
 - Node.js
-- Firebase Tools
 - Git
 
-Assuming that yu have likely installed Node.js and Git, please also install 
-the `firebase-tools` package using `npm`:
-
-```
-npm i -g firebase-tools
-```
-
-If you have already installed it, please ensure that you are running the 
-latest version.
+Please ensure you installed these before proceeding.
 
 ### Cloning the Repository
 
