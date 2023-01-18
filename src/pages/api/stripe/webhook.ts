@@ -46,17 +46,17 @@ async function checkoutWebhooksHandler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const signature = req.headers[STRIPE_SIGNATURE_HEADER];
-
   if (!webhookSecretKey) {
     return throwInternalServerErrorException(
       `The variable STRIPE_WEBHOOK_SECRET is unset. Please add the STRIPE_WEBHOOK_SECRET environment variable`
     );
   }
 
+  const signature = req.headers[STRIPE_SIGNATURE_HEADER];
+
   // verify signature header is not missing
   if (!signature) {
-    return throwBadRequestException();
+    return throwBadRequestException(`No signature header found`);
   }
 
   const rawBody = await getRawBody(req);

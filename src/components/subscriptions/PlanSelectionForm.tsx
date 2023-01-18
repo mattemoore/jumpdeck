@@ -1,61 +1,54 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Trans } from 'next-i18next';
 
-import configuration from '~/configuration';
-
-import PlanSelector from '~/components/subscriptions/PlanSelector';
 import CheckoutRedirectButton from '~/components/subscriptions/CheckoutRedirectButton';
 import BillingPortalRedirectButton from '~/components/subscriptions/BillingRedirectButton';
 
 import { Organization } from '~/lib/organizations/types/organization';
-import { Plan } from '~/lib/organizations/types/plan';
 
 import { IfHasPermissions } from '~/components/IfHasPermissions';
 import { canChangeBilling } from '~/lib/organizations/permissions';
 
 import If from '~/core/ui/If';
-
-const stripePlans = configuration.stripe.plans;
+import PricingTable from '~/components/PricingTable';
 
 const PlanSelectionForm: React.FCC<{
   organization: WithId<Organization>;
 }> = ({ organization }) => {
-  const initialPlan = stripePlans.find((item) => {
-    return item.stripePriceId === organization?.subscription?.priceId;
-  });
-
-  const [selectedPlan, setSelectedPlan] = useState<Maybe<Plan>>(initialPlan);
-
-  const isCheckoutDisabled =
-    initialPlan?.stripePriceId === selectedPlan?.stripePriceId;
-
   const customerId = organization.customerId;
 
   return (
     <div className={'flex flex-col space-y-6'}>
       <IfHasPermissions condition={canChangeBilling}>
-        <div className={'w-full'}>
-          <PlanSelector plan={selectedPlan} setPlan={setSelectedPlan} />
-        </div>
-
-        <div
-          className={
-            'flex flex-col items-center space-y-4 lg:flex-row lg:space-y-0 lg:space-x-4'
-          }
-        >
-          <CheckoutRedirectButton
-            organizationId={organization.id}
-            priceId={selectedPlan?.stripePriceId}
-            customerId={customerId}
-            disabled={isCheckoutDisabled}
-          >
-            <Trans i18nKey={'subscription:goToCheckout'} />
-          </CheckoutRedirectButton>
+        <div className={'flex w-full flex-col space-y-8'}>
+          <PricingTable
+            CheckoutButton={(props) => {
+              return (
+                <CheckoutRedirectButton
+                  organizationId={organization.id}
+                  customerId={customerId}
+                  stripePriceId={props.stripePriceId}
+                  recommended={props.recommended}
+                >
+                  <Trans
+                    i18nKey={'subscriptions:checkout'}
+                    defaults={'Checkout'}
+                  />
+                </CheckoutRedirectButton>
+              );
+            }}
+          />
 
           <If condition={customerId}>
-            <BillingPortalRedirectButton customerId={customerId as string}>
-              <Trans i18nKey={'subscription:manageBilling'} />
-            </BillingPortalRedirectButton>
+            <div className={'flex flex-col space-y-2'}>
+              <BillingPortalRedirectButton customerId={customerId as string}>
+                <Trans i18nKey={'subscription:manageBilling'} />
+              </BillingPortalRedirectButton>
+
+              <span className={'text-xs text-gray-500 dark:text-gray-400'}>
+                <Trans i18nKey={'subscription:manageBillingDescription'} />
+              </span>
+            </div>
           </If>
         </div>
       </IfHasPermissions>

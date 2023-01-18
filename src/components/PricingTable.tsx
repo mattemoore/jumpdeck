@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import classNames from 'classnames';
 import { Trans } from 'next-i18next';
-import { CheckIcon } from '@heroicons/react/24/outline';
+import { Transition } from '@headlessui/react';
+import CheckCircleIcon from '@heroicons/react/24/outline/CheckCircleIcon';
 
 import Heading from '~/core/ui/Heading';
 import Button from '~/core/ui/Button';
@@ -8,26 +10,83 @@ import If from '~/core/ui/If';
 
 import configuration from '~/configuration';
 
-const PLANS = configuration.stripe.plans;
+interface CheckoutButtonProps {
+  readonly stripePriceId?: string;
+  readonly recommended?: boolean;
+}
 
-const PricingTable: React.FC & {
-  Item: typeof PricingItem;
-  Price: typeof Price;
-  FeaturesList: typeof FeaturesList;
-} = () => {
+interface PricingItemProps {
+  selectable: boolean;
+  product: {
+    name: string;
+    features: string[];
+    description: string;
+    recommended?: boolean;
+    badge?: string;
+  };
+  plan: {
+    name: string;
+    stripePriceId?: string;
+    price: string;
+    label?: string;
+    href?: string;
+  };
+}
+
+const STRIPE_PRODUCTS = configuration.stripe.products;
+
+const STRIPE_PLANS = STRIPE_PRODUCTS.reduce<string[]>((acc, product) => {
+  product.plans.forEach((plan) => {
+    if (plan.name && !acc.includes(plan.name)) {
+      acc.push(plan.name);
+    }
+  });
+
+  return acc;
+}, []);
+
+function PricingTable(
+  props: React.PropsWithChildren<{
+    CheckoutButton?: React.ComponentType<CheckoutButtonProps>;
+  }>
+) {
+  const [planVariant, setPlanVariant] = useState<string>(STRIPE_PLANS[0]);
+
   return (
-    <div
-      className={
-        'flex flex-col items-start items-center space-y-6 lg:space-y-0' +
-        ' justify-center lg:flex-row lg:space-x-8'
-      }
-    >
-      {PLANS.map((plan) => {
-        return <PricingItem selectable key={plan.stripePriceId} plan={plan} />;
-      })}
+    <div className={'flex flex-col space-y-12'}>
+      <div className={'flex justify-center'}>
+        <PlansSwitcher
+          plans={STRIPE_PLANS}
+          plan={planVariant}
+          setPlan={setPlanVariant}
+        />
+      </div>
+
+      <div
+        className={
+          'flex flex-col items-start space-y-6 lg:space-y-0' +
+          ' justify-center lg:flex-row lg:space-x-4 xl:space-x-6'
+        }
+      >
+        {STRIPE_PRODUCTS.map((product) => {
+          const plan =
+            product.plans.find((item) => item.name === planVariant) ??
+            product.plans[0];
+
+          return (
+            <PricingItem
+              selectable
+              key={plan.stripePriceId ?? plan.name}
+              plan={plan}
+              product={product}
+              CheckoutButton={props.CheckoutButton}
+            />
+          );
+        })}
+      </div>
     </div>
   );
-};
+}
 
 export default PricingTable;
 
@@ -36,56 +95,110 @@ PricingTable.Price = Price;
 PricingTable.FeaturesList = FeaturesList;
 
 function PricingItem(
-  props: React.PropsWithChildren<{
-    selectable: boolean;
-    plan: {
-      name: string;
-      stripePriceId: string;
-      description: string;
-      price: string;
-      features: string[];
-    };
-  }>
+  props: React.PropsWithChildren<
+    PricingItemProps & {
+      CheckoutButton?: React.ComponentType<CheckoutButtonProps>;
+    }
+  >
 ) {
-  const linkHref = `${configuration.paths.signUp}?utm_source=${props.plan.stripePriceId}`;
+  const recommended = props.product.recommended ?? false;
 
   return (
     <div
+      data-cy={'subscription-plan'}
       className={classNames(
         `
-         relative flex w-full flex-col justify-between space-y-4 rounded-2xl border border-gray-200
-         p-6 shadow-2xl shadow-transparent duration-500 dark:border-black-300 dark:bg-black-500 lg:w-4/12 
-         lg:p-5 xl:p-6 2xl:w-3/12
+         relative flex w-full flex-col justify-between space-y-6 rounded-2xl
+         p-6 lg:w-4/12 lg:p-8 xl:p-10 2xl:w-3/12
       `,
         {
-          ['dark:hover:border-primary-500 dark:hover:bg-black-500' +
-          ' hover:scale-[1.01] dark:hover:shadow-primary-500/40']:
-            props.selectable,
+          ['bg-primary-600 text-primary-contrast']: recommended,
+          ['bg-gray-50/20 dark:bg-black-300/30']: !recommended,
         }
       )}
     >
       <div className={'flex flex-col space-y-1.5'}>
-        <Heading type={4}>
-          <span className={'font-bold dark:text-white'}>{props.plan.name}</span>
-        </Heading>
+        <div className={'flex items-center space-x-3'}>
+          <Heading type={3}>
+            <span className={'font-semibold dark:text-white'}>
+              {props.product.name}
+            </span>
+          </Heading>
 
-        <span className={'text-lg text-gray-400 dark:text-gray-400'}>
-          {props.plan.description}
+          <If condition={props.product.badge}>
+            <span
+              className={classNames(
+                `rounded-md py-1 px-2 text-xs font-medium`,
+                {
+                  ['bg-primary-700 text-primary-contrast']: recommended,
+                  ['bg-gray-50 text-gray-500 dark:bg-black-300' +
+                  ' dark:text-gray-300']: !recommended,
+                }
+              )}
+            >
+              {props.product.badge}
+            </span>
+          </If>
+        </div>
+
+        <span
+          className={classNames('text-sm font-medium', {
+            'text-primary-contrast': recommended,
+            'text-gray-400': !recommended,
+          })}
+        >
+          {props.product.description}
         </span>
       </div>
 
-      <Price>{props.plan.price}</Price>
+      <Transition
+        show
+        appear
+        enter={'duration-300 relative transition-all ease-in'}
+        enterFrom="opacity-0 right-1"
+        enterTo="opacity-100 right-0"
+        leave={'duration-300 relative transition-all ease-out'}
+        leaveFrom="opacity-100 right-0"
+        leaveTo={`opacity-0 right-1`}
+      >
+        <div className={'flex items-end space-x-1'}>
+          <Price>{props.plan.price}</Price>
 
-      <div className={'my-2 py-2'}>
-        <FeaturesList features={props.plan.features} />
+          <If condition={props.plan.name}>
+            <span
+              className={classNames(`text-lg lowercase`, {
+                'text-gray-100': recommended,
+                'text-gray-400 dark:text-gray-400': !recommended,
+              })}
+            >
+              <span>/</span>
+              <span>{props.plan.name}</span>
+            </span>
+          </If>
+        </div>
+      </Transition>
+
+      <div className={'my-2.5 py-2.5 text-current'}>
+        <FeaturesList features={props.product.features} />
       </div>
 
       <If condition={props.selectable}>
-        <div className={'bottom-0 left-0 w-full p-0'}>
-          <Button size={'large'} block href={linkHref}>
-            <Trans i18nKey={'common:getStarted'} />
-          </Button>
-        </div>
+        <If
+          condition={props.CheckoutButton}
+          fallback={
+            <DefaultCheckoutButton
+              recommended={recommended}
+              plan={props.plan}
+            />
+          }
+        >
+          {(CheckoutButton) => (
+            <CheckoutButton
+              recommended={recommended}
+              stripePriceId={props.plan.stripePriceId}
+            />
+          )}
+        </If>
       </If>
     </div>
   );
@@ -97,7 +210,7 @@ function FeaturesList(
   }>
 ) {
   return (
-    <ul className={'flex flex-col space-y-4'}>
+    <ul className={'flex flex-col space-y-3'}>
       {props.features.map((feature) => {
         return (
           <ListItem key={feature}>
@@ -115,19 +228,79 @@ function FeaturesList(
 function Price({ children }: React.PropsWithChildren) {
   return (
     <div>
-      <span className={'text-2xl font-extrabold lg:text-3xl'}>{children}</span>
+      <span className={'text-2xl font-extrabold lg:text-3xl xl:text-4xl'}>
+        {children}
+      </span>
     </div>
   );
 }
 
 function ListItem({ children }: React.PropsWithChildren) {
   return (
-    <li className={'flex items-center space-x-4 font-medium'}>
+    <li className={'flex items-center space-x-3 font-medium'}>
       <div>
-        <CheckIcon className={'h-5 text-primary-500'} />
+        <CheckCircleIcon className={'h-6'} />
       </div>
 
-      <span className={'text-gray-500 dark:text-gray-300'}>{children}</span>
+      <span className={'text-sm'}>{children}</span>
     </li>
+  );
+}
+
+function PlansSwitcher(
+  props: React.PropsWithChildren<{
+    plans: string[];
+    plan: string;
+    setPlan: (plan: string) => void;
+  }>
+) {
+  return (
+    <div className={'flex'}>
+      {props.plans.map((plan, index) => {
+        const className = classNames('focus:ring-0', {
+          'rounded-r-none': index === 0,
+          'rounded-l-none': index === props.plans.length - 1,
+        });
+
+        return (
+          <Button
+            key={plan}
+            color={plan === props.plan ? 'primary' : 'secondary'}
+            className={className}
+            onClick={() => props.setPlan(plan)}
+          >
+            <Trans i18nKey={`common:plans.${plan}`} defaults={plan} />
+          </Button>
+        );
+      })}
+    </div>
+  );
+}
+
+function DefaultCheckoutButton(
+  props: React.PropsWithChildren<{
+    plan: PricingItemProps['plan'];
+    recommended?: boolean;
+  }>
+) {
+  const linkHref =
+    props.plan.href ??
+    `${configuration.paths.signUp}?utm_source=${props.plan.stripePriceId}`;
+  const label = props.plan.label ?? 'common:getStarted';
+
+  return (
+    <div className={'bottom-0 left-0 w-full p-0'}>
+      <Button
+        className={classNames({
+          ['bg-primary-contrast hover:bg-primary-contrast/90' +
+          ' font-bold text-gray-900']: props.recommended,
+        })}
+        block
+        href={linkHref}
+        color={props.recommended ? 'custom' : 'secondary'}
+      >
+        <Trans i18nKey={label} defaults={label} />
+      </Button>
+    </div>
   );
 }

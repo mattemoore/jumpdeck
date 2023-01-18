@@ -3,7 +3,7 @@ import '../styles/index.css';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
-import { Inter } from '@next/font/google';
+import { Inter as SansFont } from '@next/font/google';
 
 import type { User as AuthUser } from 'firebase/auth';
 import { appWithTranslation, SSRConfig } from 'next-i18next';
@@ -35,12 +35,12 @@ const AppRouteLoadingIndicator = dynamic(
   }
 );
 
-const fontFamilySans = Inter({
+const fontFamilySans = SansFont({
   subsets: ['latin'],
   variable: '--font-family-sans',
-  fallback: ['SF Pro Text', 'Helvetica Neue', 'Helvetica', 'Arial'],
+  fallback: ['system-ui', 'Helvetica Neue', 'Helvetica', 'Arial'],
   preload: true,
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['300', '400', '500', '600', '700', '800'],
 });
 
 interface UIState {

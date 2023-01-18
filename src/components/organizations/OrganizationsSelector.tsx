@@ -66,7 +66,7 @@ const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
             <PopoverDropdownItem.Label>
               <span
                 data-cy={'create-organization-button'}
-                className={'flex flex-row items-center space-x-2 ellipsify'}
+                className={'flex flex-row items-center space-x-2 truncate'}
               >
                 <PlusCircleIcon className={'h-5'} />
 
@@ -154,7 +154,7 @@ function OrganizationItem({ organization }: { organization: Organization }) {
         </span>
       </If>
 
-      <span className={'w-auto ellipsify'}>{name}</span>
+      <span className={'w-auto truncate'}>{name}</span>
     </span>
   );
 }

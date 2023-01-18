@@ -32,8 +32,7 @@ const stripePo = {
     });
   },
   selectPlan(number: number = 0) {
-    this.$plans().eq(number).click({ force: true });
-    this.$checkoutForm().submit();
+    this.$plans().eq(number).find('button').click();
   },
   createSignature(payload: unknown) {
     return stripe.webhooks.generateTestHeaderString({

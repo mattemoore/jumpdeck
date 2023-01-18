@@ -14,7 +14,7 @@
 
     .AppSidebarItem {
         @apply rounded-md items-center transition-colors border-transparent text-sm text-gray-600 font-medium
-        w-full pr-12 w-full py-1.5 px-3.5 flex space-x-2.5 transition-colors duration-300;
+        w-full pr-12 w-full py-2.5 px-3.5 flex space-x-2.5 transition-colors duration-300;
     }
 
     .AppSidebarCollapsed .AppSidebarItem {
@@ -27,11 +27,11 @@
     }
 
     .AppSidebarItemActive {
-        @apply bg-gray-100 dark:bg-primary-300/10 dark:text-primary-contrast text-current font-medium;
+        @apply bg-primary-500/5 dark:bg-primary-300/10 dark:text-primary-contrast text-current font-medium;
     }
 
     .AppSidebarCollapsed .AppSidebarItemActive {
-        @apply bg-primary-500;
+        @apply bg-primary-500/5 dark:bg-primary-500/20;
     }
 
     .AppSidebarItemNotActive {
@@ -45,11 +45,11 @@
     }
 
     .AppSidebarItemActive .AppSidebarItemIcon {
-        @apply text-primary-600;
+        @apply text-primary-500;
     }
 
     .AppSidebarCollapsed .AppSidebarItemActive .AppSidebarItemIcon {
-        @apply bg-primary-500 text-primary-contrast;
+        @apply text-primary-500;
     }
 
     .AppSidebarFooterItem {

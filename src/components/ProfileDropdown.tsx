@@ -37,13 +37,11 @@ const ProfileDropdown: React.FCC<{
 
   const items = [
     <Dropdown.Item className={'rounded-none py-0'} key={'signedInAs'}>
-      <div
-        className={'flex flex-col justify-start text-left text-xs ellipsify'}
-      >
+      <div className={'flex flex-col justify-start truncate text-left text-xs'}>
         <div className={'text-gray-500'}>Signed in as</div>
 
         <div>
-          <span className={'block ellipsify'}>{signedInAsLabel}</span>
+          <span className={'block truncate'}>{signedInAsLabel}</span>
         </div>
       </div>
     </Dropdown.Item>,

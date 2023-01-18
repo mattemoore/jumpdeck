@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import type { GetStaticPropsContext } from 'next';
 
 import {
   ArrowRightIcon,
@@ -246,8 +247,8 @@ const Index = () => {
 
 export default Index;
 
-export async function getStaticProps() {
-  const { props } = await withTranslationProps();
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  const { props } = await withTranslationProps({ locale });
 
   return {
     props,

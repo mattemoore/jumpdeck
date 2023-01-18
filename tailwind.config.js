@@ -1,4 +1,3 @@
-const plugin = require('tailwindcss/plugin');
 const colors = require('tailwindcss/colors');
 
 module.exports = {
@@ -9,7 +8,6 @@ module.exports = {
       serif: ['serif'],
       sans: [
         'var(--font-family-sans)',
-        'SF Pro Text',
         'system-ui',
         'BlinkMacSystemFont',
         'Segoe UI',
@@ -37,17 +35,4 @@ module.exports = {
       },
     },
   },
-  plugins: [plugin(ellipisfyPlugin)],
 };
-
-function ellipisfyPlugin({ addUtilities }) {
-  const styles = {
-    '.ellipsify': {
-      overflow: 'hidden',
-      'text-overflow': 'ellipsis',
-      'white-space': 'pre',
-    },
-  };
-
-  addUtilities(styles);
-}

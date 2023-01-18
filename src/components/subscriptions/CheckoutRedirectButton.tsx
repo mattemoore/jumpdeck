@@ -5,6 +5,7 @@ import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import Button from '~/core/ui/Button';
 import configuration from '~/configuration';
 import { isBrowser } from '~/core/generic';
+import classNames from 'classnames';
 
 const CHECKOUT_SESSION_API_ENDPOINT = configuration.paths.api.checkout;
 
@@ -13,13 +14,15 @@ const CSRFTokenInput = dynamic(() => import('./CsrfTokenInput'), {
 });
 
 const CheckoutRedirectButton: React.FCC<{
+  stripePriceId?: string;
+  recommended?: boolean;
   disabled?: boolean;
-  priceId: Maybe<string>;
   organizationId: Maybe<string>;
   customerId: Maybe<string>;
 }> = ({ children, ...props }) => {
   return (
     <form
+      className={'w-full'}
       data-cy={'checkout-form'}
       action={CHECKOUT_SESSION_API_ENDPOINT}
       method="POST"
@@ -27,19 +30,22 @@ const CheckoutRedirectButton: React.FCC<{
       <CheckoutFormData
         customerId={props.customerId}
         organizationId={props.organizationId}
-        priceId={props.priceId}
+        priceId={props.stripePriceId}
       />
 
       <Button
-        size={'large'}
-        color={'primary'}
+        block
+        className={classNames({
+          'bg-primary-contrast text-gray-800': props.recommended,
+        })}
+        color={props.recommended ? 'custom' : 'secondary'}
         type="submit"
         disabled={props.disabled}
       >
         <span className={'flex items-center space-x-2'}>
           <span>{children}</span>
 
-          <ArrowRightIcon className={'h-6'} />
+          <ArrowRightIcon className={'h-5'} />
         </span>
       </Button>
     </form>

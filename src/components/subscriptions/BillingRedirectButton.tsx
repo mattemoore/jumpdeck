@@ -1,9 +1,9 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
 import Button from '~/core/ui/Button';
 import configuration from '~/configuration';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
 const BILLING_PORTAL_REDIRECT_ENDPOINT = configuration.paths.api.billingPortal;
 
@@ -21,11 +21,11 @@ const BillingPortalRedirectButton: React.FCC<{
 
       <input type={'hidden'} name={'customerId'} value={customerId} />
 
-      <Button size={'large'} color={'secondary'} className={className}>
+      <Button color={'secondary'} className={className}>
         <span className={'flex items-center space-x-2'}>
           <span>{children}</span>
 
-          <ArrowRightIcon className={'h-6'} />
+          <ArrowRightIcon className={'h-4'} />
         </span>
       </Button>
     </form>

@@ -41,9 +41,15 @@ const Plans: React.FC = () => {
 
       <IfHasPermissions condition={canChangeBilling}>
         <If condition={customerId}>
-          <BillingPortalRedirectButton customerId={customerId as string}>
-            <Trans i18nKey={'subscription:manageBilling'} />
-          </BillingPortalRedirectButton>
+          <div className={'flex flex-col space-y-2'}>
+            <BillingPortalRedirectButton customerId={customerId as string}>
+              <Trans i18nKey={'subscription:manageBilling'} />
+            </BillingPortalRedirectButton>
+
+            <span className={'text-xs text-gray-500 dark:text-gray-400'}>
+              <Trans i18nKey={'subscription:manageBillingDescription'} />
+            </span>
+          </div>
         </If>
       </IfHasPermissions>
     </div>

@@ -11,6 +11,7 @@ import Container from '~/core/ui/Container';
 import SubHeading from '~/core/ui/SubHeading';
 import Footer from '~/components/Footer';
 import PricingTable from '~/components/PricingTable';
+import { GetStaticPropsContext } from 'next';
 
 const Pricing = () => {
   return (
@@ -39,8 +40,8 @@ const Pricing = () => {
   );
 };
 
-export async function getStaticProps() {
-  const { props } = await withTranslationProps();
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  const { props } = await withTranslationProps({ locale });
 
   return {
     props,

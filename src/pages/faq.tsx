@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 import classNames from 'classnames';
+import { GetStaticPropsContext } from 'next';
 
 import { withTranslationProps } from '~/lib/props/with-translation-props';
 import configuration from '~/configuration';
@@ -140,8 +141,8 @@ function FaqItem({
   );
 }
 
-export async function getStaticProps() {
-  const { props } = await withTranslationProps();
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  const { props } = await withTranslationProps({ locale });
 
   return {
     props,

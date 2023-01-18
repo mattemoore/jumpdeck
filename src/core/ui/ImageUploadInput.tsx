@@ -127,13 +127,13 @@ const ImageUploadInput: React.FCC<Props> = ({
               fallback={
                 <Label
                   as={'span'}
-                  className={'cursor-pointer text-xs ellipsify'}
+                  className={'cursor-pointer truncate text-xs'}
                 >
                   {children}
                 </Label>
               }
             >
-              <Label as="span" className={'text-xs ellipsify'}>
+              <Label as="span" className={'ellipsify text-xs'}>
                 {fileName}
               </Label>
             </If>

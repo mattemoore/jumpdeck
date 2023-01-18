@@ -78,42 +78,77 @@ const configuration = {
     dsn: process.env.SENTRY_DSN,
   },
   stripe: {
-    plans: [
+    products: [
       {
         name: 'Basic',
         description: 'Description of your Basic plan',
-        price: '$9/month',
-        stripePriceId: 'basic-plan',
-        trialPeriodDays: 0,
+        badge: `Up to 20 users`,
         features: [
           'Basic Reporting',
           'Up to 20 users',
           '1GB for each user',
           'Chat Support',
         ],
+        plans: [
+          {
+            name: 'Monthly',
+            price: '$9',
+            stripePriceId: 'basic-plan-mth',
+            trialPeriodDays: 0,
+          },
+          {
+            name: 'Yearly',
+            price: '$90',
+            stripePriceId: 'basic-plan-yr',
+            trialPeriodDays: 0,
+          },
+        ],
       },
       {
         name: 'Pro',
+        badge: `Most Popular`,
+        recommended: true,
         description: 'Description of your Pro plan',
-        price: '29/month',
-        stripePriceId: 'pro-plan',
         features: [
           'Advanced Reporting',
           'Up to 50 users',
           '5GB for each user',
           'Chat and Phone Support',
         ],
+        plans: [
+          {
+            name: 'Monthly',
+            price: '$29',
+            stripePriceId: 'pro-plan-mth',
+            trialPeriodDays: 0,
+          },
+          {
+            name: 'Yearly',
+            price: '$200',
+            stripePriceId: 'pro-plan-yr',
+            trialPeriodDays: 0,
+          },
+        ],
       },
       {
         name: 'Premium',
         description: 'Description of your Premium plan',
-        price: '$79/year',
-        stripePriceId: 'premium-plan',
+        badge: ``,
         features: [
           'Advanced Reporting',
           'Unlimited users',
           '50GB for each user',
           'Account Manager',
+        ],
+        plans: [
+          {
+            name: '',
+            price: 'Contact us',
+            stripePriceId: '',
+            trialPeriodDays: 0,
+            label: `Contact us`,
+            href: `/contact`,
+          },
         ],
       },
     ],

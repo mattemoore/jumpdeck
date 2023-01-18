@@ -11,13 +11,10 @@
 @tailwind utilities;
 /* Stop purging. */
 
-html {
-    text-rendering: geometricPrecision;
-    -webkit-font-smoothing: subpixel-antialiased;
-}
-
 body {
-    @apply bg-white text-gray-800 dark:bg-black-500 dark:text-gray-300 font-sans;
+    text-rendering: geometricPrecision;
+
+    @apply bg-white text-gray-800 dark:bg-black-500 dark:text-gray-300 font-sans antialiased;
 }
 
 /*

@@ -11,7 +11,9 @@ const SettingsTile: React.FCC<{
       <div className={'flex flex-col space-y-1.5'}>
         <div className={'flex justify-between'}>
           <If condition={heading}>
-            <Heading type={3}>{heading}</Heading>
+            <Heading type={3}>
+              <span className={'font-medium'}>{heading}</span>
+            </Heading>
           </If>
 
           <If condition={actions}>

@@ -35,7 +35,7 @@
     }
 
     .NavigationItem a {
-        @apply py-1 px-1 lg:px-2 xl:px-2.5 flex flex-col lg:flex-row items-center justify-center lg:justify-start rounded-md font-medium w-full transition-colors;
+        @apply py-1 px-1 lg:px-2 xl:px-2.5 xl:py-1.5 flex flex-col lg:flex-row items-center justify-center lg:justify-start rounded-md font-medium w-full transition-colors;
     }
 
     .PillNavigationMenu .NavigationItemActive a {
@@ -54,16 +54,16 @@
         @apply border-b border-gray-100 dark:border-black-200;
     }
 
-    .BorderedNavigationMenu .NavigationItem a {
+    .BorderedNavigationMenu .NavigationItem {
         @apply h-14 border-b-[0.15rem] relative border-transparent top-[1px];
     }
 
-    .BorderedNavigationMenu .NavigationItemActive a {
+    .BorderedNavigationMenu .NavigationItemActive {
         @apply border-primary-500 text-primary-600 dark:text-white bg-transparent rounded-none;
     }
 
     .BorderedNavigationMenu .NavigationItemNotActive a {
-        @apply hover:text-primary-500;
+        @apply hover:bg-gray-50 dark:hover:bg-black-300 transition-colors rounded-lg;
     }
 
     .NavigationItemNotActive {
@@ -232,7 +232,7 @@
 
     /* Button.tsx */
     .Button {
-        @apply rounded-md font-normal transition-colors
+        @apply rounded-md font-normal transition-colors duration-300
         flex items-center justify-center outline-none focus:ring-2;
     }
 
@@ -355,7 +355,7 @@
     .PopoverItemLabel {
         @apply text-sm font-medium text-gray-700
         hover:text-black-500 dark:hover:text-white
-        dark:text-gray-300 py-3 px-4 ellipsify;
+        dark:text-gray-300 py-3 px-4 truncate;
     }
 
     .PopoverItemIcon {

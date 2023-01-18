@@ -1,7 +1,8 @@
 {
   "subscriptionTabSubheading": "Manage your Subscription and Billing",
-  "goToCheckout": "Go to Checkout",
-  "manageBilling": "Manage Billing",
+  "checkout": "Checkout",
+  "manageBillingDescription": "Visit your Customer Portal to manage your subscription and billing.",
+  "manageBilling": "Go to Customer Portal",
   "notSubscribedToAnyPlan": "You are not currently subscribed to any plan",
   "choosePlan": "Select a plan below",
   "currentPlan": "Your Plan",
@@ -14,5 +15,6 @@
   "checkOutCompletedAlert": "Yay, your payment went through!",
   "awaitingPaymentAlertHeading": "Waiting for payment",
   "awaitingPaymentAlert": "Please bear with us while we wait for the payment to go through.",
-  "subscriptionActiveBadge": "Subscription Active"
+  "subscriptionActiveBadge": "Subscription Active",
+  "trialAlertHeading": "Your trial will end on {{ endDate }}"
 }
