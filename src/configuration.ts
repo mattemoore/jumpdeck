@@ -93,7 +93,7 @@ const configuration = {
           {
             name: 'Monthly',
             price: '$9',
-            stripePriceId: 'price_1LfXGaI1i3VnbZTq7l3VgZNa',
+            stripePriceId: 'basic-plan-mth',
             trialPeriodDays: 0,
           },
           {
