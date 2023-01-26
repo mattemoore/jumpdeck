@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { HttpStatusCode } from '~/core/generic';
+import { HttpStatusCode } from '~/core/generic/http-status-code.enum';
 import { ApiError } from 'next/dist/server/api-utils';
 
 export const throwInternalServerErrorException = buildException(

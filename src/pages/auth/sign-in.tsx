@@ -9,7 +9,7 @@ import { Trans, useTranslation } from 'next-i18next';
 import If from '~/core/ui/If';
 
 import configuration from '~/configuration';
-import { isBrowser } from '~/core/generic';
+import { isBrowser } from '~/core/generic/is-browser';
 import getClientQueryParams from '~/core/generic/get-client-query-params';
 import { getRedirectPathWithoutSearchParam } from '~/core/generic/get-redirect-url';
 

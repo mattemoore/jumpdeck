@@ -5,7 +5,7 @@ import * as Sentry from '@sentry/node';
 import '@sentry/tracing';
 
 import configuration from '~/configuration';
-import { isBrowser } from '~/core/generic';
+import { isBrowser } from '~/core/generic/is-browser';
 
 export function initializeNodeSentry() {
   const dsn = configuration.sentry.dsn;

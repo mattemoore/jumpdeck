@@ -2,7 +2,7 @@ import { join } from 'path';
 import { existsSync, readFileSync } from 'fs';
 import configuration from '../../configuration';
 
-import { getPath, readDirectory, readFrontMatter } from '../generic';
+import { getPath, readDirectory, readFrontMatter } from '../generic/fs-utils';
 
 import Post from './types/post';
 import BasePost from './types/base-post';

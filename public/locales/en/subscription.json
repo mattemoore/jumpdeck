@@ -1,5 +1,5 @@
 {
-  "subscriptionTabSubheading": "Manage your Subscription and Billing",
+  "subscriptionTabSubheading": "Manage your Subscription and Billing Settings",
   "checkout": "Checkout",
   "manageBillingDescription": "Visit your Customer Portal to manage your subscription and billing.",
   "manageBilling": "Go to Customer Portal",
@@ -13,8 +13,48 @@
   "checkOutCanceledAlert": "The checkout was canceled. Please contact us if you're experiencing any issues.",
   "checkOutCompletedAlertHeading": "Checkout successfully completed",
   "checkOutCompletedAlert": "Yay, your payment went through!",
-  "awaitingPaymentAlertHeading": "Waiting for payment",
-  "awaitingPaymentAlert": "Please bear with us while we wait for the payment to go through.",
-  "subscriptionActiveBadge": "Subscription Active",
-  "trialAlertHeading": "Your trial will end on {{ endDate }}"
+  "cancelAtPeriodEndDescription": "Your subscription is scheduled to be canceled on {{ endDate }}.",
+  "renewAtPeriodEndDescription": "Your subscription is scheduled to be renewed on {{ endDate }}",
+  "status": {
+    "free": {
+      "label": "Free Plan",
+      "heading": "You're on a free plan",
+      "description": "You're on a free plan. You can upgrade to a paid plan at any time."
+    },
+    "active": {
+      "label": "Active",
+      "heading": "Your subscription is active",
+      "description": "Your subscription is active. You can manage your subscription and billing in the Customer Portal."
+    },
+    "trialing": {
+      "label": "Trial",
+      "heading": "You're on a trial",
+      "description": "Your trial will end on {{ trialEndDate }}."
+    },
+    "past_due": {
+      "label": "Past Due",
+      "heading": "Your invoice is past due",
+      "description": "Your invoice is past due. Please update your payment method."
+    },
+    "canceled": {
+      "label": "Canceled",
+      "heading": "Your subscription is canceled",
+      "description": "Your subscription is canceled. It is scheduled to end on {{ endDate }}."
+    },
+    "unpaid": {
+      "label": "Unpaid",
+      "heading": "Your invoice is unpaid",
+      "description": "Your invoice is unpaid. Please update your payment method."
+    },
+    "incomplete": {
+      "label": "Incomplete",
+      "heading": "We're waiting for your payment",
+      "description": "We're waiting for your payment to go through. Please bear with us."
+    },
+    "incomplete_expired": {
+      "label": "Expired",
+      "heading": "Your payment has expired",
+      "description": "Your payment has expired. Please update your payment method."
+    }
+  }
 }

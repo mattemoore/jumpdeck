@@ -63,8 +63,8 @@ const Faq = () => {
       <SiteHeader />
 
       <Container>
-        <div className={'flex flex-col space-y-12'}>
-          <div>
+        <div className={'flex flex-col space-y-8'}>
+          <div className={'flex flex-col items-center'}>
             <Hero>FAQ</Hero>
 
             <SubHeading>Frequently Asked Questions</SubHeading>

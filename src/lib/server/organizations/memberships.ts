@@ -2,7 +2,7 @@ import { FieldValue } from 'firebase-admin/firestore';
 import { getAuth } from 'firebase-admin/auth';
 import { ApiError } from 'next/dist/server/api-utils';
 
-import { HttpStatusCode } from '~/core/generic';
+import { HttpStatusCode } from '~/core/generic/http-status-code.enum';
 import { MembershipRole } from '~/lib/organizations/types/membership-role';
 import { Organization } from '~/lib/organizations/types/organization';
 
@@ -15,7 +15,6 @@ import {
 
 import { getInvitesCollection } from '~/lib/server/collections';
 import { MembershipInvite } from '~/lib/organizations/types/membership-invite';
-import { OrganizationPlanStatus } from '~/lib/organizations/types/organization-subscription';
 import getRestFirestore from '~/core/firebase/admin/get-rest-firestore';
 
 /**
@@ -259,6 +258,11 @@ export async function getOrganizationSubscription(organizationId: string) {
  */
 export async function isOrganizationSubscriptionActive(organizationId: string) {
   const subscription = await getOrganizationSubscription(organizationId);
+  const status = subscription?.status;
 
-  return subscription?.status === OrganizationPlanStatus.Paid;
+  if (!status) {
+    return false;
+  }
+
+  return ['active', 'trialing'].includes(status);
 }

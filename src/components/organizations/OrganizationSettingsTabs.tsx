@@ -20,7 +20,7 @@ const OrganizationSettingsTabs = () => {
 
   return (
     <>
-      <div className={'hidden h-full w-full max-w-[12rem] md:flex'}>
+      <div className={'hidden h-full w-full max-w-[12rem] lg:flex'}>
         <NavigationMenu vertical pill>
           <NavigationItem
             className={itemClassName}
@@ -32,7 +32,7 @@ const OrganizationSettingsTabs = () => {
         </NavigationMenu>
       </div>
 
-      <div className={'block w-full md:hidden'}>
+      <div className={'block w-full lg:hidden'}>
         <MobileTabs />
       </div>
     </>

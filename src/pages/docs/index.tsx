@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { GetStaticPropsContext } from 'next';
 
 import configuration from '~/configuration';
 import { withTranslationProps } from '~/lib/props/with-translation-props';
@@ -36,7 +37,7 @@ export default function Docs({
         </div>
 
         <Container>
-          <div>
+          <div className={'flex flex-col items-center'}>
             <Hero>Documentation</Hero>
 
             <SubHeading>
@@ -104,9 +105,9 @@ function TopicLink({
   );
 }
 
-export async function getStaticProps() {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   const docs = getDocs() ?? [];
-  const { props } = await withTranslationProps();
+  const { props } = await withTranslationProps({ locale });
 
   return {
     props: {

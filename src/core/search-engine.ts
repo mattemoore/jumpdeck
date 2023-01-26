@@ -1,7 +1,7 @@
 import MiniSearch, { SearchResult } from 'minisearch';
 import { writeFile, readdir, lstat } from 'fs/promises';
 import { join } from 'path';
-import { readFrontMatter } from '~/core/generic';
+import { readFrontMatter } from '~/core/generic/fs-utils';
 import configuration from '~/configuration';
 
 const MDX_EXTENSION = `.mdx`;

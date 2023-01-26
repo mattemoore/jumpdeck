@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { GetStaticPropsContext } from 'next';
 
 import { withTranslationProps } from '~/lib/props/with-translation-props';
 
@@ -11,7 +12,6 @@ import Container from '~/core/ui/Container';
 import SubHeading from '~/core/ui/SubHeading';
 import Footer from '~/components/Footer';
 import PricingTable from '~/components/PricingTable';
-import { GetStaticPropsContext } from 'next';
 
 const Pricing = () => {
   return (
@@ -26,10 +26,12 @@ const Pricing = () => {
         <SiteHeader />
 
         <Container>
-          <Hero>Pricing</Hero>
-          <SubHeading>Fair pricing for your customers</SubHeading>
+          <div className={'flex flex-col space-y-8'}>
+            <div className={'flex flex-col items-center'}>
+              <Hero>Pricing</Hero>
+              <SubHeading>Fair pricing for your customers</SubHeading>
+            </div>
 
-          <div className={'mt-12'}>
             <PricingTable />
           </div>
         </Container>

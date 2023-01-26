@@ -1,11 +1,11 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import ArrowRightIcon from '@heroicons/react/24/outline/ArrowRightIcon';
+import classNames from 'classnames';
 
 import Button from '~/core/ui/Button';
 import configuration from '~/configuration';
-import { isBrowser } from '~/core/generic';
-import classNames from 'classnames';
+import { isBrowser } from '~/core/generic/is-browser';
 
 const CHECKOUT_SESSION_API_ENDPOINT = configuration.paths.api.checkout;
 

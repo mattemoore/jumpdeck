@@ -1,13 +1,11 @@
-export enum OrganizationPlanStatus {
-  AwaitingPayment = 'awaitingPayment',
-  Paid = 'paid',
-}
+import type { Stripe } from 'stripe';
 
 export interface OrganizationSubscription {
   id: string;
   priceId: string;
 
-  status: OrganizationPlanStatus;
+  status: Stripe.Subscription.Status;
+  cancelAtPeriodEnd: boolean;
   currency: string | null;
 
   interval: string | null;

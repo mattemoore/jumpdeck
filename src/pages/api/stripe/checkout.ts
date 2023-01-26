@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { join } from 'path';
 
 import logger from '~/core/logger';
-import { HttpStatusCode } from '~/core/generic';
+import { HttpStatusCode } from '~/core/generic/http-status-code.enum';
 
 import { withAuthedUser } from '~/core/middleware/with-authed-user';
 import { withPipe } from '~/core/middleware/with-pipe';

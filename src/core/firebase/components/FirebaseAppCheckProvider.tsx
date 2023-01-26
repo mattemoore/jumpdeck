@@ -3,7 +3,7 @@ import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 import { useEffect, useMemo } from 'react';
 
 import configuration from '~/configuration';
-import { isBrowser } from '~/core/generic';
+import { isBrowser } from '~/core/generic/is-browser';
 
 const siteKey = configuration.appCheckSiteKey;
 

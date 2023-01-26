@@ -1,7 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { ApiError } from 'next/dist/server/api-utils';
 
-import { HttpStatusCode } from '~/core/generic';
+import { HttpStatusCode } from '~/core/generic/http-status-code.enum';
 import logger from '~/core/logger';
 import { getClientIp } from '~/core/generic/get-client-ip';
 

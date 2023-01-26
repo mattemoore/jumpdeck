@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { isBrowser } from '~/core/generic';
+import { isBrowser } from '~/core/generic/is-browser';
 import AppHeaderNoMenu from './AppHeaderNoMenu';
 import Heading from '~/core/ui/Heading';
 import AppSidebar from './AppSidebar';

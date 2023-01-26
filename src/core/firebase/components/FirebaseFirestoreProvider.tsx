@@ -7,7 +7,7 @@ import {
   initializeFirestore,
 } from 'firebase/firestore';
 
-import { isBrowser } from '~/core/generic';
+import { isBrowser } from '~/core/generic/is-browser';
 import configuration from '~/configuration';
 
 export default function FirebaseFirestoreProvider({

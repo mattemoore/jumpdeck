@@ -16,7 +16,7 @@ import { withAuthProps } from '~/lib/props/with-auth-props';
 import If from '~/core/ui/If';
 import Button from '~/core/ui/Button';
 
-import { isBrowser } from '~/core/generic';
+import { isBrowser } from '~/core/generic/is-browser';
 import { useRequestState } from '~/core/hooks/use-request-state';
 import useCreateServerSideSession from '~/core/hooks/use-create-server-side-session';
 import AuthErrorMessage from '~/components/auth/AuthErrorMessage';

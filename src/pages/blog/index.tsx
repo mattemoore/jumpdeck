@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { GetStaticPropsContext } from 'next';
 
 import configuration from '~/configuration';
 import PostsList from '~/components/blog/PostsList';
@@ -28,18 +29,18 @@ const Blog = ({ posts }: Props) => {
       <SiteHeader />
 
       <Container>
-        <div className={'flex items-center justify-between'}>
-          <div>
+        <div className={'flex flex-col space-y-8'}>
+          <div className={'flex flex-col items-center justify-center'}>
             <Hero>Blog</Hero>
 
             <SubHeading>
               Tutorials, Guides and Updates from the MakerKit team
             </SubHeading>
           </div>
-        </div>
 
-        <div className="mt-4 flex-col space-y-12 md:mt-8">
-          <PostsList posts={posts} />
+          <div className="flex-col space-y-12 md:mt-8">
+            <PostsList posts={posts} />
+          </div>
         </div>
       </Container>
 
@@ -50,8 +51,8 @@ const Blog = ({ posts }: Props) => {
 
 export default Blog;
 
-export const getStaticProps = async () => {
-  const { props } = await withTranslationProps();
+export const getStaticProps = async ({ locale }: GetStaticPropsContext) => {
+  const { props } = await withTranslationProps({ locale });
 
   return {
     props: {

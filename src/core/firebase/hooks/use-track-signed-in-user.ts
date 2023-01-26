@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { isBrowser } from '~/core/generic';
+import { isBrowser } from '~/core/generic/is-browser';
 import { useUserSession } from '~/core/hooks/use-user-session';
 
 /**

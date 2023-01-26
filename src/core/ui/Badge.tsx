@@ -1,15 +1,18 @@
-type Color = `normal` | 'success' | 'custom';
+type Color = `normal` | 'success' | 'warn' | 'error' | 'info' | 'custom';
 type Size = `normal` | `small`;
 
 const colorClasses = {
-  normal: `ColorNormal`,
-  success: `ColorSuccess`,
+  normal: `BadgeNormal`,
+  success: `BadgeSuccess`,
+  warn: `BadgeWarn`,
+  error: `BadgeError`,
+  info: `BadgeInfo`,
   custom: '',
 };
 
 const sizeClasses = {
-  normal: `SizeNormal`,
-  small: `SizeSmall`,
+  normal: `BadgeNormal`,
+  small: `BadgeSmall`,
 };
 
 function getColorClasses(color?: Color) {

@@ -16,7 +16,7 @@ import FirebaseAppCheckProvider from '~/core/firebase/components/FirebaseAppChec
 import FirebaseAnalyticsProvider from '~/core/firebase/components/FirebaseAnalyticsProvider';
 
 import { loadSelectedTheme } from '~/core/theming';
-import { isBrowser } from '~/core/generic';
+import { isBrowser } from '~/core/generic/is-browser';
 import useCollapsible from '~/core/hooks/use-sidebar-state';
 
 import { Organization } from '~/lib/organizations/types/organization';

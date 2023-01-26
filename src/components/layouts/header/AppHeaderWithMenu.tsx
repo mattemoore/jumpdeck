@@ -12,8 +12,8 @@ import Container from '~/core/ui/Container';
 import ProfileDropdown from '../../ProfileDropdown';
 import AppNavigation from './AppNavigation';
 
-import OrganizationsSelector
-  from "~/components/organizations/OrganizationsSelector";
+import OrganizationsSelector from '~/components/organizations/OrganizationsSelector';
+import HeaderSubscriptionStatusBadge from '~/components/subscriptions/HeaderSubscriptionStatusBadge';
 
 const MobileNavigation = dynamic(() => import('~/components/MobileNavigation'));
 
@@ -33,7 +33,7 @@ const AppHeaderWithMenu: React.FCC = ({ children }) => {
   }, [userSession?.auth]);
 
   const signOutRequested = useCallback(() => {
-    void auth.signOut();
+    return auth.signOut();
   }, [auth]);
 
   return (
@@ -53,7 +53,11 @@ const AppHeaderWithMenu: React.FCC = ({ children }) => {
               <div>{OrganizationsDropdown}</div>
             </div>
 
-            <div className={'flex flex-1 justify-end'}>
+            <div className={'flex flex-1 justify-end space-x-4'}>
+              <div className={'hidden items-center lg:flex'}>
+                <HeaderSubscriptionStatusBadge />
+              </div>
+
               <ProfileDropdown
                 user={userSession?.auth}
                 signOutRequested={signOutRequested}

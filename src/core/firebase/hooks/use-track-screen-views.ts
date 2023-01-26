@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import Router from 'next/router';
 
-import { isBrowser } from '~/core/generic';
+import { isBrowser } from '~/core/generic/is-browser';
 
 /**
  * @name useTrackScreenViews

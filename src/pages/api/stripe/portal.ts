@@ -13,7 +13,7 @@ import { withMethodsGuard } from '~/core/middleware/with-methods-guard';
 import { getApiRefererPath } from '~/core/generic/get-api-referer-path';
 import { getUserRoleByOrganization } from '~/lib/server/organizations/memberships';
 import { getOrganizationByCustomerId } from '~/lib/server/organizations/subscriptions';
-import { HttpStatusCode } from '~/core/generic';
+import { HttpStatusCode } from '~/core/generic/http-status-code.enum';
 
 const SUPPORTED_HTTP_METHODS: HttpMethod[] = ['POST'];
 

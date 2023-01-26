@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react';
 import { useAuth, useSigninCheck } from 'reactfire';
 import { parseCookies, destroyCookie } from 'nookies';
 
-import { isBrowser } from '~/core/generic';
+import { isBrowser } from '~/core/generic/is-browser';
 import useClearFirestoreCache from '~/core/hooks/use-clear-firestore-cache';
 import { useDestroySession } from '~/core/hooks/use-destroy-session';
 

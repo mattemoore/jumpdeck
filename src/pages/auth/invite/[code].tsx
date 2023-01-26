@@ -22,7 +22,7 @@ import useAddMemberToOrganization from '~/lib/organizations/hooks/use-add-member
 import logger from '~/core/logger';
 import If from '~/core/ui/If';
 import Button from '~/core/ui/Button';
-import { isBrowser } from '~/core/generic';
+import { isBrowser } from '~/core/generic/is-browser';
 import OAuthProviders from '~/components/auth/OAuthProviders';
 import PageLoadingIndicator from '~/core/ui/PageLoadingIndicator';
 

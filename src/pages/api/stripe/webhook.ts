@@ -17,13 +17,11 @@ import { withAdmin } from '~/core/middleware/with-admin';
 import { withExceptionFilter } from '~/core/middleware/with-exception-filter';
 
 import {
-  activatePendingSubscription,
   deleteOrganizationSubscription,
   setOrganizationSubscription,
   updateSubscriptionById,
 } from '~/lib/server/organizations/subscriptions';
 
-import { OrganizationPlanStatus } from '~/lib/organizations/types/organization-subscription';
 import { buildOrganizationSubscription } from '~/lib/stripe/build-organization-subscription';
 
 const SUPPORTED_HTTP_METHODS: HttpMethod[] = ['POST'];
@@ -90,15 +88,6 @@ async function checkoutWebhooksHandler(
         break;
       }
 
-      case StripeWebhooks.AsyncPaymentSuccess: {
-        const session = event.data.object as Stripe.Checkout.Session;
-        const organizationId = session.client_reference_id as string;
-
-        await activatePendingSubscription(organizationId);
-
-        break;
-      }
-
       case StripeWebhooks.SubscriptionDeleted: {
         const subscription = event.data.object as Stripe.Subscription;
 
@@ -155,14 +144,13 @@ async function onCheckoutCompleted(
 ) {
   const organizationId = session.client_reference_id as string;
   const customerId = session.customer as string;
-  const status = getOrderStatus(session.payment_status);
 
   // build organization subscription and set on the organization document
   // we add just enough data in the DB, so we do not query
   // Stripe for every bit of data
   // if you need your DB record to contain further data
   // add it to {@link buildOrganizationSubscription}
-  const subscriptionData = buildOrganizationSubscription(subscription, status);
+  const subscriptionData = buildOrganizationSubscription(subscription);
 
   return setOrganizationSubscription({
     organizationId,
@@ -174,17 +162,9 @@ async function onCheckoutCompleted(
 async function onSubscriptionUpdated(subscription: Stripe.Subscription) {
   const subscriptionData = buildOrganizationSubscription(subscription);
 
-  await updateSubscriptionById(subscription.id, subscriptionData);
+  return updateSubscriptionById(subscription.id, subscriptionData);
 }
 
 function respondOk(res: NextApiResponse) {
   res.status(200).send({ success: true });
-}
-
-function getOrderStatus(paymentStatus: string) {
-  const isPaid = paymentStatus === 'paid';
-
-  return isPaid
-    ? OrganizationPlanStatus.Paid
-    : OrganizationPlanStatus.AwaitingPayment;
 }

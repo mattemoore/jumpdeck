@@ -42,11 +42,11 @@ const ProfileSettingsTabs = () => {
     });
   }, [user]);
 
-  const itemClassName = `flex justify-center md:justify-start items-center w-full`;
+  const itemClassName = `flex justify-center lg:justify-start items-center w-full`;
 
   return (
     <>
-      <div className={'hidden w-full max-w-[12rem] md:flex'}>
+      <div className={'hidden w-full max-w-[12rem] lg:flex'}>
         <NavigationMenu vertical pill>
           <NavigationItem
             className={itemClassName}
@@ -73,7 +73,7 @@ const ProfileSettingsTabs = () => {
         </NavigationMenu>
       </div>
 
-      <div className={'block w-full md:hidden'}>
+      <div className={'block w-full lg:hidden'}>
         <MobileNavigationDropdown links={Object.values(links)} />
       </div>
     </>

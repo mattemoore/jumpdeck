@@ -2,7 +2,7 @@ import { AnalyticsProvider, useInitAnalytics } from 'reactfire';
 
 import configuration from '~/configuration';
 import { useAnalyticsTracking } from '~/core/firebase/hooks/use-analytics-tracking';
-import { isBrowser } from '~/core/generic';
+import { isBrowser } from '~/core/generic/is-browser';
 
 const FirebaseAnalyticsProvider: React.FCC = ({ children }) => {
   const isEmulator = configuration.emulator;

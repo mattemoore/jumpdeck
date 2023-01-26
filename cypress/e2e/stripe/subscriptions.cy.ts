@@ -1,6 +1,5 @@
 import stripePo from '../../support/stripe.po';
 import { StripeWebhooks } from '~/core/stripe/stripe-webhooks.enum';
-import { OrganizationPlanStatus } from '~/lib/organizations/types/organization-subscription';
 
 describe(`Create Subscription`, () => {
   describe('Using the UI', () => {
@@ -58,7 +57,7 @@ describe(`Create Subscription`, () => {
           stripePo.sendWebhook({
             body: {
               ...session,
-              payment_status: OrganizationPlanStatus.AwaitingPayment,
+              payment_status: 'incomplete',
             },
             type: StripeWebhooks.Completed,
           });

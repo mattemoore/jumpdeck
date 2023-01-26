@@ -6,6 +6,7 @@ import ProfileDropdown from '~/components/ProfileDropdown';
 import If from '~/core/ui/If';
 
 import OrganizationsSelector from '~/components/organizations/OrganizationsSelector';
+import HeaderSubscriptionStatusBadge from '~/components/subscriptions/HeaderSubscriptionStatusBadge';
 
 const MobileNavigation = dynamic(() => import('~/components/MobileNavigation'));
 
@@ -29,7 +30,11 @@ const AppHeaderNoMenu: React.FCC = ({ children }) => {
         </div>
       </div>
 
-      <div className={'flex items-center'}>
+      <div className={'flex items-center justify-center space-x-4'}>
+        <div className={'hidden items-center lg:flex'}>
+          <HeaderSubscriptionStatusBadge />
+        </div>
+
         <ProfileDropdown
           user={userSession?.auth}
           signOutRequested={() => auth.signOut()}

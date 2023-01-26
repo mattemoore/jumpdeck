@@ -1,30 +1,30 @@
 import React, { useMemo } from 'react';
 import { Trans } from 'next-i18next';
+import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 
-import {
-  OrganizationPlanStatus,
-  OrganizationSubscription,
-} from '~/lib/organizations/types/organization-subscription';
+import { OrganizationSubscription } from '~/lib/organizations/types/organization-subscription';
 
 import Heading from '~/core/ui/Heading';
-import Badge from '~/core/ui/Badge';
+import PricingTable from '~/components/PricingTable';
+import SubscriptionStatusBadge from '~/components/subscriptions/SubscriptionStatusBadge';
+import SubscriptionStatusAlert from '~/components/subscriptions/SubscriptionStatusAlert';
 
 import configuration from '~/configuration';
 import If from '~/core/ui/If';
-import Alert from '~/core/ui/Alert';
-import PricingTable from '~/components/PricingTable';
 
 const SubscriptionCard: React.FC<{
   subscription: OrganizationSubscription;
 }> = ({ subscription }) => {
   const details = useSubscriptionDetails(subscription.priceId);
-  const endDate = getDateFromSeconds(subscription.periodEndsAt);
+  const cancelAtPeriodEnd = subscription.cancelAtPeriodEnd;
+  const isActive = subscription.status === 'active';
 
-  const isSubscriptionActive = useMemo(() => {
-    return subscription.status === OrganizationPlanStatus.Paid;
-  }, [subscription.status]);
-
-  const isTrialPeriod = useIsTrialPeriod(subscription);
+  const dates = useMemo(() => {
+    return {
+      endDate: getDateFromSeconds(subscription.periodEndsAt),
+      trialEndDate: getDateFromSeconds(subscription.trialEndsAt),
+    };
+  }, [subscription]);
 
   if (!details) {
     return null;
@@ -38,11 +38,7 @@ const SubscriptionCard: React.FC<{
             <span data-cy={'subscription-name'}>{details.product.name}</span>
           </Heading>
 
-          <If condition={isSubscriptionActive}>
-            <Badge size={'small'} color={'success'}>
-              <Trans i18nKey={'subscription:subscriptionActiveBadge'} />
-            </Badge>
-          </If>
+          <SubscriptionStatusBadge subscription={subscription} />
         </div>
 
         <Heading type={6}>
@@ -62,46 +58,51 @@ const SubscriptionCard: React.FC<{
         </span>
       </div>
 
-      <If condition={isTrialPeriod}>
-        <TrialAlert subscription={subscription} />
-      </If>
+      <SubscriptionStatusAlert subscription={subscription} values={dates} />
 
-      <div>
-        <p>
-          <span className={'text-sm'} data-cy={'subscription-period-end'}>
-            <Trans
-              i18nKey={'subscription:subscriptionWillEndOn'}
-              values={{ endDate }}
-            />
-          </span>
-        </p>
-      </div>
+      <If condition={isActive}>
+        <RenewStatusDescription
+          dates={dates}
+          cancelAtPeriodEnd={cancelAtPeriodEnd}
+        />
+      </If>
     </div>
   );
 };
 
-function TrialAlert(
+function RenewStatusDescription(
   props: React.PropsWithChildren<{
-    subscription: OrganizationSubscription;
+    cancelAtPeriodEnd: boolean;
+    dates: {
+      endDate: string;
+      trialEndDate: string | null;
+    };
   }>
 ) {
-  const trialEndsAt = props.subscription.trialEndsAt;
-
-  if (!trialEndsAt) {
-    return null;
-  }
-
   return (
-    <Alert type={'warn'}>
-      <Alert.Heading>
-        <Trans
-          i18nKey={'subscription:trialAlertHeading'}
-          values={{
-            endDate: getDateFromSeconds(trialEndsAt),
-          }}
-        />
-      </Alert.Heading>
-    </Alert>
+    <span className={'block flex items-center space-x-1.5 text-sm'}>
+      <If condition={props.cancelAtPeriodEnd}>
+        <XCircleIcon className={'h-5 text-yellow-500'} />
+
+        <span>
+          <Trans
+            i18nKey={'subscription:cancelAtPeriodEndDescription'}
+            values={props.dates}
+          />
+        </span>
+      </If>
+
+      <If condition={!props.cancelAtPeriodEnd}>
+        <CheckCircleIcon className={'h-5 text-green-700'} />
+
+        <span>
+          <Trans
+            i18nKey={'subscription:renewAtPeriodEndDescription'}
+            values={props.dates}
+          />
+        </span>
+      </If>
+    </span>
   );
 }
 
@@ -154,19 +155,14 @@ function useSubscriptionDetails(priceId: string) {
   }, [products, priceId]);
 }
 
-function useIsTrialPeriod(subscription: OrganizationSubscription) {
-  return useMemo(() => {
-    return (
-      subscription.trialEndsAt &&
-      subscription.trialEndsAt * 1000 > new Date().getTime()
-    );
-  }, [subscription.trialEndsAt]);
-}
+function getDateFromSeconds(seconds: Maybe<number> | null) {
+  if (!seconds) {
+    return '';
+  }
 
-function getDateFromSeconds(seconds: number) {
   const endDateMs = seconds * 1000;
 
-  return new Date(endDateMs).toLocaleDateString();
+  return new Date(endDateMs).toDateString();
 }
 
 export default SubscriptionCard;
