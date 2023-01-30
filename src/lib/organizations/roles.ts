@@ -1,4 +1,3 @@
-import { ListBoxOptionModel } from '~/core/ui/ListBox/ListBox';
 import { MembershipRole } from '~/lib/organizations/types/membership-role';
 
 /**
@@ -34,6 +33,6 @@ const MEMBER = {
   value: MembershipRole.Member,
 };
 
-const roles: ListBoxOptionModel<MembershipRole>[] = [OWNER, ADMIN, MEMBER];
+const roles = [OWNER, ADMIN, MEMBER];
 
 export default roles;

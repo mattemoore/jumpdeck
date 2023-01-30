@@ -46,7 +46,7 @@ const ProfileSettingsTabs = () => {
 
   return (
     <>
-      <div className={'hidden w-full max-w-[12rem] lg:flex'}>
+      <div className={'hidden w-[12rem] lg:flex'}>
         <NavigationMenu vertical pill>
           <NavigationItem
             className={itemClassName}

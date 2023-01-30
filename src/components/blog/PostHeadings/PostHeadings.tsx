@@ -21,7 +21,7 @@ const PostHeadings: React.FC<{
       <Heading type={6}>
         <span
           className={
-            'text-sm font-bold uppercase text-gray-700' + ' dark:text-gray-300'
+            'text-sm font-bold uppercase text-gray-700 dark:text-gray-300'
           }
         >
           Table of Contents

@@ -1,5 +1,3 @@
-import { PropsWithChildren } from 'react';
-import { Menu } from '@headlessui/react';
 import { Trans } from 'next-i18next';
 
 import {
@@ -9,7 +7,14 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline';
 
-import Dropdown from '~/core/ui/Dropdown';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from '~/core/ui/Dropdown';
+
 import IconButton from '~/core/ui/IconButton';
 import If from '~/core/ui/If';
 
@@ -20,27 +25,37 @@ const OrganizationMemberActionsDropdown: React.FCC<{
   disabled: boolean;
   isOwner: boolean;
 }> = (props) => {
-  const Button = <DropdownButton disabled={props.disabled} />;
-
   return (
-    <Dropdown
-      button={Button}
-      items={[
-        <Dropdown.Item
-          key={1}
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild disabled={props.disabled}>
+        <IconButton
+          data-cy={'member-actions-dropdown'}
+          disabled={props.disabled}
+          label={'Open members actions menu'}
+        >
+          <EllipsisVerticalIcon className={'h-6'} />
+        </IconButton>
+      </DropdownMenuTrigger>
+
+      <DropdownMenuContent>
+        <DropdownMenuItem
           data-cy={'update-member-role-action'}
+          className={'cursor-pointer'}
           onClick={props.onChangeRoleSelected}
         >
           <span className={'flex items-center space-x-2'}>
             <AdjustmentsHorizontalIcon className={'h-5'} />
+
             <span>
               <Trans i18nKey={'organization:changeRole'} />
             </span>
           </span>
-        </Dropdown.Item>,
-        <If key={2} condition={props.isOwner}>
-          <Dropdown.Item
+        </DropdownMenuItem>
+
+        <If condition={props.isOwner}>
+          <DropdownMenuItem
             data-cy={'transfer-ownership-action'}
+            className={'cursor-pointer'}
             onClick={props.onTransferOwnershipSelected}
           >
             <span className={'flex items-center space-x-2'}>
@@ -49,12 +64,16 @@ const OrganizationMemberActionsDropdown: React.FCC<{
                 <Trans i18nKey={'organization:transferOwnership'} />
               </span>
             </span>
-          </Dropdown.Item>
-        </If>,
-        <Dropdown.Divider key={'divider'} />,
-        <Dropdown.Item
-          key={3}
+          </DropdownMenuItem>
+        </If>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem
           data-cy={'remove-member-action'}
+          className={
+            'cursor-pointer focus:!bg-red-50 dark:focus:!bg-red-500/10'
+          }
           onClick={props.onRemoveSelected}
         >
           <span
@@ -67,26 +86,10 @@ const OrganizationMemberActionsDropdown: React.FCC<{
               <Trans i18nKey={'organization:removeMember'} />
             </span>
           </span>
-        </Dropdown.Item>,
-      ]}
-    />
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
-
-function DropdownButton({
-  disabled,
-}: PropsWithChildren<{ disabled: boolean }>) {
-  return (
-    <Menu.Button
-      data-cy={'member-actions-dropdown'}
-      as={'button'}
-      disabled={disabled}
-    >
-      <IconButton label={'Open members actions menu'} as={'div'}>
-        <EllipsisVerticalIcon className={'h-6'} />
-      </IconButton>
-    </Menu.Button>
-  );
-}
 
 export default OrganizationMemberActionsDropdown;

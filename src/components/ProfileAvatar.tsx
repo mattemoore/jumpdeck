@@ -1,32 +1,34 @@
-import Image from 'next/image';
 import type { UserInfo } from 'firebase/auth';
+import { Avatar, AvatarFallback, AvatarImage } from '~/core/ui/Avatar';
 
-import FallbackUserAvatar from './FallbackUserAvatar';
+type ProfileAvatarProps =
+  | {
+      user: Maybe<UserInfo>;
+    }
+  | {
+      text: Maybe<string>;
+    };
 
-const ProfileAvatar: React.FCC<{ user: Maybe<UserInfo> }> = ({ user }) => {
-  if (!user) {
-    return null;
-  }
-
-  const photoURL = user?.photoURL;
-  const size = 36;
-
-  if (photoURL) {
+const ProfileAvatar: React.FCC<ProfileAvatarProps> = (props) => {
+  if ('user' in props && props.user) {
     return (
-      <div>
-        <Image
-          width={size}
-          height={size}
-          className={'rounded-full object-cover'}
-          src={photoURL}
-          alt={photoURL}
-          style={{ height: size }}
-        />
-      </div>
+      <Avatar>
+        {props.user.photoURL ? <AvatarImage src={props.user.photoURL} /> : null}
+
+        <AvatarFallback>{getUserInitials(props.user)}</AvatarFallback>
+      </Avatar>
     );
   }
 
-  return <FallbackUserAvatar text={getUserInitials(user)} />;
+  if ('text' in props && props.text) {
+    return (
+      <Avatar>
+        <AvatarFallback>{props.text[0]}</AvatarFallback>
+      </Avatar>
+    );
+  }
+
+  return null;
 };
 
 function getUserInitials(user: UserInfo) {
@@ -40,7 +42,7 @@ function getDisplayName(user: UserInfo) {
     return user.displayName;
   }
 
-  return user.email ?? '';
+  return user.email ?? 'Anonymous';
 }
 
 export default ProfileAvatar;

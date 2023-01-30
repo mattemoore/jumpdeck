@@ -80,7 +80,7 @@ function RenewStatusDescription(
   }>
 ) {
   return (
-    <span className={'block flex items-center space-x-1.5 text-sm'}>
+    <span className={'flex items-center space-x-1.5 text-sm'}>
       <If condition={props.cancelAtPeriodEnd}>
         <XCircleIcon className={'h-5 text-yellow-500'} />
 

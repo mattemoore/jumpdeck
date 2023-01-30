@@ -17,7 +17,6 @@ import ReauthenticationModal from '~/components/auth/ReauthenticationModal';
 
 import If from '~/core/ui/If';
 import Alert from '~/core/ui/Alert';
-import Heading from '~/core/ui/Heading';
 
 import configuration from '~/configuration';
 import PageLoadingIndicator from '~/core/ui/PageLoadingIndicator';
@@ -132,9 +131,9 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 function MultiFactorSuccessAlert() {
   return (
     <Alert type={'success'} className={'flex flex-col space-y-2'}>
-      <Heading type={4}>
+      <Alert.Heading>
         <Trans i18nKey={'profile:mfaEnabledSuccessTitle'} />
-      </Heading>
+      </Alert.Heading>
 
       <p>
         <Trans i18nKey={'profile:mfaEnabledSuccessDescription'} />

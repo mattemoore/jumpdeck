@@ -1,10 +1,6 @@
 @tailwind components;
 
 @layer components {
-    .AppHeader {
-        @apply py-2 flex items-center justify-between flex-1 border-b border-gray-50 dark:border-black-300;
-    }
-
     .AppSidebar {
         @apply flex flex-row py-4 justify-center
         relative dark:bg-black-700

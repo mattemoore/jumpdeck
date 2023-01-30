@@ -1,7 +1,14 @@
-import ListBox from '~/core/ui/ListBox/ListBox';
-import ListBoxOption from '~/core/ui/ListBox/ListBoxOption';
+import { Trans } from 'next-i18next';
 
-import { MembershipRole } from '~/lib/organizations/types/membership-role';
+import {
+  Select,
+  SelectItem,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+} from '~/core/ui/Select';
+
+import type { MembershipRole } from '~/lib/organizations/types/membership-role';
 import roles from '~/lib/organizations/roles';
 import { IfHasPermissions } from '~/components/IfHasPermissions';
 import { canInviteUser } from '~/lib/organizations/permissions';
@@ -13,26 +20,38 @@ const MembershipRoleSelector: React.FCC<{
   const selectedRole = getSelectedRoleModel(currentRole);
 
   return (
-    <ListBox
-      value={selectedRole}
-      setValue={(role) => {
-        onChange && onChange(role.value);
+    <Select
+      value={selectedRole.value.toString()}
+      onValueChange={(value) => {
+        onChange && onChange(Number(value));
       }}
-      cy={'invite-role-selector-button'}
     >
-      {roles.map((role) => {
-        return (
-          <IfHasPermissions
-            key={role.value}
-            condition={(currentUserRole) =>
-              canInviteUser(currentUserRole, role.value)
-            }
-          >
-            <ListBoxOption option={role} />
-          </IfHasPermissions>
-        );
-      })}
-    </ListBox>
+      <SelectTrigger data-cy={'role-selector-trigger'}>
+        <SelectValue />
+      </SelectTrigger>
+
+      <SelectContent>
+        {roles.map((role) => {
+          return (
+            <IfHasPermissions
+              key={role.value}
+              condition={(currentUserRole) =>
+                canInviteUser(currentUserRole, role.value)
+              }
+            >
+              <SelectItem
+                data-cy={`role-item-${role.value}`}
+                value={role.value.toString()}
+              >
+                <span className={'text-sm'}>
+                  <Trans i18nKey={role.label} />
+                </span>
+              </SelectItem>
+            </IfHasPermissions>
+          );
+        })}
+      </SelectContent>
+    </Select>
   );
 };
 

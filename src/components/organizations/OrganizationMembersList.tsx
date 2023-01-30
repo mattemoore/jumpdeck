@@ -99,7 +99,7 @@ const OrganizationMembersList: React.FCC<{
                 <div className={'block truncate text-sm'}>{displayName}</div>
 
                 <If condition={isCurrentUser}>
-                  <Badge>
+                  <Badge size={'small'}>
                     <Trans i18nKey={'organization:youBadgeLabel'} />
                   </Badge>
                 </If>
@@ -132,7 +132,7 @@ export default OrganizationMembersList;
  * @param organization
  */
 function getSortedMembers(organization: WithId<Organization>) {
-  const membersIds = Object.keys(organization.members);
+  const membersIds = Object.keys(organization.members ?? {});
 
   return membersIds
     .map((memberId) => {

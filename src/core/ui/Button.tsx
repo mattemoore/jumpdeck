@@ -1,9 +1,10 @@
-import { PropsWithChildren } from 'react';
 import Link from 'next/link';
 import classNames from 'classnames';
+import { cva } from 'cva';
 
 import If from '~/core/ui/If';
 import Spinner from '~/core/ui/Spinner';
+import { forwardRef } from 'react';
 
 type Color = 'primary' | 'secondary' | 'transparent' | 'danger' | 'custom';
 type Size = 'normal' | 'small' | 'large' | 'custom';
@@ -19,107 +20,53 @@ type Props = React.ButtonHTMLAttributes<unknown> &
     href?: Maybe<string>;
   }>;
 
-const getColorClasses = (color: Color) => {
-  const colors: Record<Color, string> = {
-    primary: `ButtonPrimary`,
-    danger: `ButtonDanger`,
-    secondary: `ButtonSecondary`,
-    transparent: 'ButtonTransparent',
-    custom: ``,
-  };
+const classNameBuilder = getClassNameBuilder();
+const defaultColor: Color = `primary`;
+const defaultSize: Size = `normal`;
+const defaultVariant = `normal`;
 
-  return colors[color];
-};
+const Button: React.FCC<Props> = forwardRef<React.ElementRef<'button'>, Props>(
+  function ButtonComponent(
+    { children, color, size, variant, block, loading, href, ...props },
+    ref
+  ) {
+    const className = classNames(
+      classNameBuilder({
+        variant: variant ?? defaultVariant,
+        color: color ?? defaultColor,
+      }),
+      block ? `w-full` : ``,
+      loading ? `opacity-70` : ``,
+      props.className
+    );
 
-const getSizeClasses = (size: Size) => {
-  // cannot be too smart here due to purge-js
-  const sizes: Record<Size, string> = {
-    normal: `ButtonNormal`,
-    large: `ButtonLarge`,
-    small: 'ButtonSmall',
-    custom: '',
-  };
+    const sizesClassName = getSizesClassName()[size ?? defaultSize];
 
-  return `${sizes[size]} w-full`;
-};
-
-const getVariantClasses = (variant: Variant, color: Color = `primary`) => {
-  // cannot be too smart here due to purge-js
-  const variants: Record<Variant, Record<Color, string>> = {
-    normal: {
-      primary: ``,
-      danger: ``,
-      secondary: ``,
-      transparent: ``,
-      custom: ``,
-    },
-    outline: {
-      primary: `ButtonPrimaryOutline`,
-      danger: `ButtonDangerOutline`,
-      secondary: `ButtonSecondaryOutline`,
-      transparent: ``,
-      custom: ``,
-    },
-    flat: {
-      primary: `ButtonPrimaryFlat`,
-      danger: `ButtonDangerFlat`,
-      secondary: ``,
-      transparent: ``,
-      custom: ``,
-    },
-  };
-
-  return variants[variant][color];
-};
-
-const Button: React.FCC<Props> = ({
-  children,
-  color,
-  size,
-  variant,
-  block,
-  loading,
-  href,
-  ...props
-}) => {
-  const defaultColor: Color = `primary`;
-  const defaultSize: Size = `normal`;
-  const defaultVariant = `normal`;
-
-  const useColor = color ?? defaultColor;
-  const useSize = size ?? defaultSize;
-  const useVariant = variant ?? defaultVariant;
-
-  const className = classNames(
-    `Button`,
-    getColorClasses(useColor),
-    getVariantClasses(useVariant, useColor),
-    block ? `w-full` : ``,
-    loading ? `opacity-70` : ``,
-    props.className ?? ''
-  );
-
-  return (
-    <button
-      {...props}
-      className={className}
-      disabled={loading || props.disabled}
-    >
-      <InnerButtonContainerElement
-        href={href}
-        className={getSizeClasses(useSize)}
+    return (
+      <button
+        {...props}
+        ref={ref}
+        className={className}
+        disabled={loading || props.disabled}
       >
-        <span className={`flex w-full flex-1 items-center justify-center`}>
-          <If condition={loading}>
-            <Animation />
-          </If>
+        <InnerButtonContainerElement href={href}>
+          <span
+            className={classNames(
+              `flex w-full flex-1 items-center justify-center`,
+              sizesClassName
+            )}
+          >
+            <If condition={loading}>
+              <Animation />
+            </If>
 
-          {children}
-        </span>
-      </InnerButtonContainerElement>
-    </button>
-  );
-};
+            {children}
+          </span>
+        </InnerButtonContainerElement>
+      </button>
+    );
+  }
+);
 
 function Animation() {
   return (
@@ -132,19 +79,92 @@ function Animation() {
 function InnerButtonContainerElement({
   children,
   href,
-  className,
-}: PropsWithChildren<{ href: Maybe<string>; className: string }>) {
+}: React.PropsWithChildren<{ href: Maybe<string> }>) {
   if (href) {
     return (
-      <Link className={`${className} flex w-full items-center`} href={href}>
+      <Link className={`flex w-full items-center`} href={href}>
         {children}
       </Link>
     );
   }
 
-  return (
-    <span className={`${className} flex w-full items-center`}>{children}</span>
+  return <span className={`flex w-full items-center`}>{children}</span>;
+}
+
+function getClassNameBuilder() {
+  return cva(
+    [
+      `flex items-center justify-center rounded-md font-medium outline-none transition-colors focus:ring-2 disabled:cursor-not-allowed disabled:opacity-50`,
+    ],
+    {
+      variants: {
+        color: {
+          primary: `ring-primary-400`,
+          secondary: `ring-gray-200`,
+          danger: `ring-red-300`,
+          transparent: `text-gray-800 ring-primary-50 hover:bg-gray-50 active:bg-gray-100 dark:text-gray-300 dark:ring-black-400 dark:hover:bg-black-400 dark:hover:text-white dark:active:bg-black-300`,
+          custom: ``,
+        },
+        variant: {
+          normal: ``,
+          outline: ``,
+          flat: ``,
+        },
+      },
+      compoundVariants: [
+        {
+          color: 'primary',
+          variant: 'normal',
+          className: `bg-primary-500 text-primary-contrast hover:bg-primary-600 active:bg-primary-700 dark:text-primary-contrast`,
+        },
+        {
+          color: 'danger',
+          variant: 'normal',
+          className: `bg-red-400 text-white hover:bg-red-500 active:bg-red-600`,
+        },
+        {
+          color: 'secondary',
+          variant: 'normal',
+          className: `bg-gray-100 hover:bg-gray-200 active:bg-gray-200 dark:bg-black-300 dark:ring-black-200 dark:hover:bg-black-200 dark:active:bg-black-400`,
+        },
+        {
+          color: 'primary',
+          variant: 'outline',
+          className: `border-2 border-primary-500 bg-transparent text-primary-700 hover:text-white`,
+        },
+        {
+          color: 'danger',
+          variant: 'outline',
+          className: `border-2 border-red-400 bg-transparent text-red-400 hover:text-white`,
+        },
+        {
+          color: 'primary',
+          variant: 'flat',
+          className: `bg-primary-500/10 text-primary-500 hover:bg-primary-500/20 ring-0 
+      active:bg-primary-500/30 dark:hover:bg-primary-500/20 dark:active:bg-primary-500/30`,
+        },
+        {
+          color: 'danger',
+          variant: 'flat',
+          className: `bg-red-500/10 text-red-500 ring-0 
+    active:bg-red-500/30 hover:bg-red-500/20 dark:active:bg-red-500/30`,
+        },
+      ],
+      defaultVariants: {
+        color: 'primary',
+        variant: 'normal',
+      },
+    }
   );
+}
+
+function getSizesClassName() {
+  return {
+    normal: `text-sm py-2 px-5 h-10`,
+    small: `py-2 px-3 text-xs`,
+    large: `py-2.5 px-6 h-12 text-lg h-12`,
+    custom: ``,
+  };
 }
 
 export default Button;

@@ -40,8 +40,8 @@ const TransferOrganizationOwnershipModal: React.FC<{
 
   return (
     <Modal heading={heading} isOpen={isOpen} setIsOpen={setIsOpen}>
-      <div className={'flex flex-col space-y-4'}>
-        <div className={'flex flex-col space-y-2'}>
+      <div className={'flex flex-col space-y-6'}>
+        <div className={'flex flex-col space-y-2 text-sm'}>
           <p>
             <Trans
               i18nKey={'organization:transferOwnershipDisclaimer'}
@@ -63,6 +63,7 @@ const TransferOrganizationOwnershipModal: React.FC<{
           <Button
             data-cy={'confirm-transfer-ownership-button'}
             color={'danger'}
+            variant={'flat'}
             onClick={onConfirmTransferOwnership}
             loading={isMutating}
           >

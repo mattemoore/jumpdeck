@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 
 import { setCookie } from 'nookies';
@@ -10,60 +10,108 @@ import { useFetchUserOrganizations } from '~/lib/organizations/hooks/use-fetch-u
 import { OrganizationContext } from '~/lib/contexts/organization';
 
 import If from '~/core/ui/If';
-import { PopoverDropdown, PopoverDropdownItem } from '~/core/ui/Popover';
-
 import CreateOrganizationModal from './CreateOrganizationModal';
+
+import {
+  Select,
+  SelectItem,
+  SelectContent,
+  SelectTrigger,
+  SelectSeparator,
+  SelectGroup,
+  SelectAction,
+  SelectLabel,
+  SelectValue,
+} from '~/core/ui/Select';
+
 import ClientOnly from '~/core/ui/ClientOnly';
-
-const PopoverButton: React.FCC<{
-  organization: Maybe<WithId<Organization>>;
-}> = ({ organization }) => {
-  if (organization) {
-    return (
-      <span className={'text-base'}>
-        <OrganizationItem organization={organization} />
-      </span>
-    );
-  }
-
-  return null;
-};
 
 const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
   const [isOrganizationModalOpen, setIsOrganizationModalOpen] = useState(false);
+  const [isSelectOpen, setIsSelectOpen] = useState(false);
   const { organization, setOrganization } = useContext(OrganizationContext);
+  const organizationsRef = useRef<Array<WithId<Organization>>>([]);
 
-  const organizationSelected = useCallback(
-    async (item: WithId<Organization>) => {
+  const onOrganizationsLoaded = useCallback(
+    (organizations: Array<WithId<Organization>>) => {
+      organizationsRef.current = organizations;
+    },
+    []
+  );
+
+  const onChange = useCallback(
+    (organization: WithId<Organization>) => {
       // update the global Organization context
       // with the selected organization
-      setOrganization(item);
+      setOrganization(organization);
 
       // we save the selected organization in
       // a cookie so that we can return to it when
       // the user refreshes or navigates elsewhere
-      saveOrganizationIdInCookie(item.id);
+      saveOrganizationIdInCookie(organization.id);
     },
     [setOrganization]
   );
 
+  const organizationSelected = useCallback(
+    (organizationId: string) => {
+      if (organizationId === organization?.id) {
+        return;
+      }
+
+      const selectedOrganization = organizationsRef.current.find(
+        ({ id }) => id === organizationId
+      );
+
+      if (selectedOrganization) {
+        onChange(selectedOrganization);
+      }
+    },
+    [onChange, organization?.id]
+  );
+
   return (
     <>
-      <div data-cy={'organization-selector'}>
-        <PopoverDropdown button={<PopoverButton organization={organization} />}>
-          <ClientOnly>
-            <OrganizationsOptions
-              userId={userId}
-              organizationId={organization?.id}
-              onSelect={organizationSelected}
-            />
-          </ClientOnly>
-
-          <PopoverDropdownItem
-            className={'border-t border-gray-100 dark:border-black-400'}
-            onClick={() => setIsOrganizationModalOpen(true)}
+      <Select
+        open={isSelectOpen}
+        onOpenChange={setIsSelectOpen}
+        onValueChange={organizationSelected}
+        value={organization?.id}
+      >
+        <SelectTrigger data-cy={'organization-selector'}>
+          <span
+            className={'max-w-[5rem] text-sm lg:max-w-[12rem] lg:text-base'}
           >
-            <PopoverDropdownItem.Label>
+            <OrganizationItem organization={organization} />
+
+            <span hidden>
+              <SelectValue />
+            </span>
+          </span>
+        </SelectTrigger>
+
+        <SelectContent position={'popper'} collisionPadding={{ top: 100 }}>
+          <SelectGroup>
+            <SelectLabel>Your Organizations</SelectLabel>
+
+            <ClientOnly>
+              <OrganizationsOptions
+                onLoad={onOrganizationsLoaded}
+                organization={organization}
+                userId={userId}
+              />
+            </ClientOnly>
+          </SelectGroup>
+
+          <SelectSeparator />
+
+          <SelectGroup>
+            <SelectAction
+              onClick={() => {
+                setIsSelectOpen(false);
+                setIsOrganizationModalOpen(true);
+              }}
+            >
               <span
                 data-cy={'create-organization-button'}
                 className={'flex flex-row items-center space-x-2 truncate'}
@@ -76,62 +124,71 @@ const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
                   />
                 </span>
               </span>
-            </PopoverDropdownItem.Label>
-          </PopoverDropdownItem>
-        </PopoverDropdown>
-      </div>
+            </SelectAction>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
 
       <CreateOrganizationModal
         setIsOpen={setIsOrganizationModalOpen}
         isOpen={isOrganizationModalOpen}
-        onCreate={organizationSelected}
+        onCreate={onChange}
       />
     </>
   );
 };
 
-function OrganizationsOptions(
-  props: React.PropsWithChildren<{
-    userId: string;
-    organizationId: Maybe<string>;
-    onSelect: (organization: WithId<Organization>) => unknown;
-  }>
-) {
-  const { data: organizations, status } = useFetchUserOrganizations(
-    props.userId
-  );
+function OrganizationsOptions({
+  userId,
+  onLoad,
+  organization,
+}: React.PropsWithChildren<{
+  userId: string;
+  organization: Maybe<WithId<Organization>>;
+  onLoad: (organizations: Array<WithId<Organization>>) => void;
+}>) {
+  const { data, status } = useFetchUserOrganizations(userId);
+  const isLoading = status === 'loading';
 
-  if (status !== 'success') {
-    return null;
+  useEffect(() => {
+    if (data) {
+      onLoad(data);
+    }
+  }, [data, onLoad]);
+
+  if (isLoading && organization) {
+    return (
+      <SelectItem value={organization.id} key={organization.id}>
+        <OrganizationItem organization={organization} />
+      </SelectItem>
+    );
   }
+
+  const organizations = data ?? [];
 
   return (
     <>
-      {(organizations ?? []).map((item) => {
-        const isSelected = item.id === props.organizationId;
-
-        if (!isSelected) {
-          return (
-            <PopoverDropdownItem
-              key={item.name}
-              onClick={() => props.onSelect(item)}
-            >
-              <PopoverDropdownItem.Label>
-                <OrganizationItem organization={item} />
-              </PopoverDropdownItem.Label>
-            </PopoverDropdownItem>
-          );
-        }
-
-        return null;
-      })}
+      {organizations.map((organization) => (
+        <SelectItem value={organization.id} key={organization.id}>
+          <OrganizationItem organization={organization} />
+        </SelectItem>
+      ))}
     </>
   );
 }
 
-function OrganizationItem({ organization }: { organization: Organization }) {
-  const { logoURL, name } = organization;
+function OrganizationItem({
+  organization,
+}: {
+  organization: Maybe<Organization>;
+}) {
   const imageSize = 18;
+
+  if (!organization) {
+    return null;
+  }
+
+  const { logoURL, name } = organization;
 
   return (
     <span
@@ -154,7 +211,7 @@ function OrganizationItem({ organization }: { organization: Organization }) {
         </span>
       </If>
 
-      <span className={'w-auto truncate'}>{name}</span>
+      <span className={'w-auto truncate text-sm font-medium'}>{name}</span>
     </span>
   );
 }

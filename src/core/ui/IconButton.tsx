@@ -1,4 +1,5 @@
-import React, { createElement, PropsWithChildren } from 'react';
+import React, { createElement, forwardRef } from 'react';
+import classNames from 'classnames';
 
 type DefaultProps = React.ButtonHTMLAttributes<unknown> & {
   loading?: boolean;
@@ -6,36 +7,49 @@ type DefaultProps = React.ButtonHTMLAttributes<unknown> & {
 };
 
 type DivProps<TTag extends React.ElementType = 'div'> =
-  React.HTMLAttributes<unknown> & {
+  React.HTMLAttributes<HTMLDivElement> & {
     loading?: boolean;
     disabled?: boolean;
     label?: string;
     as: TTag;
   };
 
-function IconButton({
-  className,
-  loading,
-  disabled,
-  children,
-  label,
-  ...props
-}: React.PropsWithChildren<DefaultProps | DivProps>) {
+type Props = React.PropsWithChildren<DefaultProps | DivProps>;
+
+const CLASSNAME = `rounded-full bg-transparent p-1
+  outline-none ring-primary-400 transition-colors
+  duration-300 hover:bg-gray-100 focus:ring 
+  disabled:cursor-not-allowed disabled:opacity-50
+  dark:hover:bg-black-300 dark:active:bg-gray-100 dark:active:bg-black-200`;
+
+const IconButton = forwardRef(function IconButtonComponent(
+  iconButtonProps: Props,
+  ref
+) {
+  const { className, loading, disabled, children, label, ...props } =
+    iconButtonProps;
+
   const allProps = {
     ...props,
-    className: `IconButton ${className ?? ''}`,
+    className: classNames(CLASSNAME, className),
     disabled: loading || disabled,
     'aria-label': label,
     title: label,
+    innerRef: ref,
   };
 
-  const Element = ({ children }: PropsWithChildren) => {
-    const tag = 'as' in props ? props.as : 'button';
+  return <IconButtonElement {...allProps}>{children}</IconButtonElement>;
+});
 
-    return createElement(tag, allProps, children);
-  };
+function IconButtonElement({
+  innerRef,
+  ...props
+}: Props & {
+  innerRef: React.ForwardedRef<unknown>;
+}) {
+  const tag = 'as' in props ? props.as : 'button';
 
-  return <Element {...props}>{children}</Element>;
+  return createElement(tag, { ...props, ref: innerRef }, props.children);
 }
 
 export default IconButton;

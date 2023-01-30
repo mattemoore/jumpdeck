@@ -1,112 +1,74 @@
-import React, { createContext, Fragment, useContext } from 'react';
+import { forwardRef } from 'react';
 
-import { Popover, Transition } from '@headlessui/react';
-import ChevronDownIcon from '@heroicons/react/20/solid/ChevronDownIcon';
+import * as PopoverPrimitive from '@radix-ui/react-popover';
+import classNames from 'classnames';
 
-const PopoverItem = createContext({
-  close() {
-    return;
-  },
+const Popover = PopoverPrimitive.Root;
+
+const PopoverTrigger = PopoverPrimitive.Trigger;
+
+const PopoverContent = forwardRef<
+  React.ElementRef<typeof PopoverPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
+>(function PopoverContentComponent(
+  { className, align = 'start', sideOffset = 8, alignOffset = 0, ...props },
+  ref
+) {
+  return (
+    <PopoverPrimitive.Portal>
+      <PopoverPrimitive.Content
+        ref={ref}
+        align={align}
+        sideOffset={sideOffset}
+        alignOffset={alignOffset}
+        className={classNames(
+          `animate-in data-[side=bottom]:slide-in-from-top-2
+          data-[side=top]:slide-in-from-bottom-2 z-50 rounded-md border
+          border-gray-100 bg-white p-2 shadow-lg outline-none
+          dark:border-black-300 dark:bg-black-400`,
+          className
+        )}
+        {...props}
+      />
+    </PopoverPrimitive.Portal>
+  );
 });
 
-const PopoverDropdown: PopoverDropdownComponent<{
-  button: JSX.Element;
-}> = ({ children, button }) => {
-  return (
-    <Popover className="relative">
-      {({ open, close }) => (
-        <>
-          <Popover.Button
-            className={`PopoverButton ${open ? 'PopoverButtonActive' : ' '}`}
-          >
-            {button}
-
-            <span className="flex flex-1 justify-end">
-              <ChevronDownIcon
-                className={`PopoverChevronDownIcon ${
-                  open ? '' : 'text-opacity-70'
-                }`}
-                aria-hidden="true"
-              />
-            </span>
-          </Popover.Button>
-
-          <Transition
-            as={Fragment}
-            enter="transition ease-out duration-200"
-            enterFrom="opacity-0 translate-y-1"
-            enterTo="opacity-100 translate-y-0"
-            leave="transition ease-in duration-150"
-            leaveFrom="opacity-100 translate-y-0"
-            leaveTo="opacity-0 translate-y-1"
-          >
-            <Popover.Panel className="PopoverPanel">
-              <div className="overflow-hidden rounded-md">
-                <div className="relative flex flex-col bg-white dark:bg-black-300">
-                  <PopoverItem.Provider value={{ close }}>
-                    {children}
-                  </PopoverItem.Provider>
-                </div>
-              </div>
-            </Popover.Panel>
-          </Transition>
-        </>
-      )}
-    </Popover>
-  );
-};
-
-const ItemIcon: React.FCC = ({ children }) => {
-  return <div className="PopoverItemIcon">{children}</div>;
-};
-
-const ItemLabel: React.FCC<{
-  className?: string;
-}> = ({ children, className }) => {
-  return <p className={`PopoverItemLabel ${className ?? ''}`}>{children}</p>;
-};
-
-const Item: PopoverDropdownItemComponent = ({
-  children,
-  className,
-  onClick,
-}) => {
-  const popover = useContext(PopoverItem);
-
-  const itemClicked = () => {
-    if (onClick) {
-      onClick();
-    }
-
-    popover.close();
-  };
-
+const PopoverItem = forwardRef<
+  HTMLDivElement,
+  React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>
+>(function PopoverItemComponent({ children, className, ...props }, ref) {
   return (
     <div
-      className={`PopoverPanelItem ${className ?? ''}`}
-      onClick={itemClicked}
+      ref={ref}
+      className={classNames(
+        `flex cursor-pointer items-center rounded-md bg-transparent py-2 px-4 transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none active:bg-gray-100 dark:hover:bg-black-300 dark:active:bg-black-300`,
+        className
+      )}
+      {...props}
     >
-      {children}
+      <span
+        className={classNames(
+          `truncate text-sm font-medium text-gray-700 hover:text-black-500 dark:text-gray-300 dark:hover:text-white`
+        )}
+      >
+        {children}
+      </span>
     </div>
   );
-};
+});
 
-type PopoverDropdownComponent<Props> = React.FCC<Props> & {
-  Item: typeof Item;
-};
-
-type PopoverDropdownItemComponent = React.FCC<{
-  onClick?: () => void;
+const PopoverDivider: React.FC<{
   className?: string;
-}> & {
-  Label: typeof ItemLabel;
-  Icon: typeof ItemIcon;
-};
+}> = ({ className }) => (
+  <div
+    className={classNames(
+      `my-1 border-t border-gray-100 dark:border-black-300`,
+      className
+    )}
+  />
+);
 
-Item.Label = ItemLabel;
-Item.Icon = ItemIcon;
+PopoverContent.displayName = PopoverPrimitive.Content.displayName;
 
-PopoverDropdown.Item = Item;
-
-export const PopoverDropdownItem = Item;
-export { PopoverDropdown };
+export { Popover, PopoverTrigger, PopoverContent, PopoverItem, PopoverDivider };

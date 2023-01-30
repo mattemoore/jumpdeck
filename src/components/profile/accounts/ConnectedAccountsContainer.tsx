@@ -181,12 +181,14 @@ const ConnectedAccountsContainer = () => {
     <div className={'flex flex-col space-y-6'}>
       <div>
         <div className={'mb-2'}>
-          <Heading type={4}>
-            <Trans i18nKey={'profile:connectedAccounts'} />
+          <Heading type={5}>
+            <span className={'font-medium'}>
+              <Trans i18nKey={'profile:connectedAccounts'} />
+            </span>
           </Heading>
 
           <div>
-            <span className={'text-gray-500 dark:text-gray-400'}>
+            <span className={'text-sm text-gray-500 dark:text-gray-400'}>
               <Trans i18nKey={'profile:connectedAccountsSubheading'} />
             </span>
           </div>
@@ -224,12 +226,14 @@ const ConnectedAccountsContainer = () => {
         <If condition={notConnectedProviders.length}>
           <div>
             <div className={'mb-4'}>
-              <Heading type={4}>
-                <Trans i18nKey={'profile:availableProviders'} />
+              <Heading type={5}>
+                <span className={'font-medium'}>
+                  <Trans i18nKey={'profile:availableProviders'} />
+                </span>
               </Heading>
 
               <p>
-                <span className={'text-gray-500 dark:text-gray-400'}>
+                <span className={'text-sm text-gray-500 dark:text-gray-400'}>
                   <Trans i18nKey={'profile:availableProvidersSubheading'} />
                 </span>
               </p>

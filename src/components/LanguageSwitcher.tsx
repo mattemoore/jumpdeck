@@ -2,8 +2,13 @@ import { useRouter } from 'next/router';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 
-import ListBox, { ListBoxOptionModel } from '~/core/ui/ListBox/ListBox';
-import ListBoxOption from '~/core/ui/ListBox/ListBoxOption';
+import {
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectItem,
+  SelectValue,
+} from '~/core/ui/Select';
 
 const LanguageSwitcher: React.FC<{
   onChange?: (locale: string) => unknown;
@@ -19,10 +24,7 @@ const LanguageSwitcher: React.FC<{
     });
   }, [currentLanguage]);
 
-  const [value, setValue] = useState({
-    value: i18n.language,
-    label: capitalize(languageNames.of(currentLanguage) ?? currentLanguage),
-  });
+  const [value, setValue] = useState(i18n.language);
 
   const switchToLocale = useCallback(
     (locale: string) => {
@@ -34,10 +36,8 @@ const LanguageSwitcher: React.FC<{
   );
 
   const languageChanged = useCallback(
-    async (option: ListBoxOptionModel<string>) => {
-      setValue(option);
-
-      const locale = option.value;
+    async (locale: string) => {
+      setValue(locale);
 
       if (onChange) {
         onChange(locale);
@@ -49,17 +49,28 @@ const LanguageSwitcher: React.FC<{
   );
 
   return (
-    <ListBox value={value} setValue={languageChanged}>
-      {locales.map((locale) => {
-        const label = capitalize(languageNames.of(locale) ?? locale);
-        const option = {
-          value: locale,
-          label,
-        };
+    <Select value={value} onValueChange={languageChanged}>
+      <SelectTrigger>
+        <SelectValue />
+      </SelectTrigger>
 
-        return <ListBoxOption key={locale} option={option} />;
-      })}
-    </ListBox>
+      <SelectContent>
+        {locales.map((locale) => {
+          const label = capitalize(languageNames.of(locale) ?? locale);
+
+          const option = {
+            value: locale,
+            label,
+          };
+
+          return (
+            <SelectItem value={option.value} key={option.value}>
+              {option.label}
+            </SelectItem>
+          );
+        })}
+      </SelectContent>
+    </Select>
   );
 };
 

@@ -38,10 +38,10 @@ const AppHeaderWithMenu: React.FCC = ({ children }) => {
 
   return (
     <>
-      <div className="AppHeader">
+      <div className="flex flex-1 items-center justify-between border-b border-gray-50 py-2.5 px-0.5 dark:border-black-300">
         <div className={'w-full px-3 lg:px-6'}>
           <div className={'flex w-full flex-1 items-center justify-between'}>
-            <div className={'lg:hidden'}>
+            <div className={'flex items-center lg:hidden'}>
               <MobileNavigation />
             </div>
 
@@ -72,7 +72,7 @@ const AppHeaderWithMenu: React.FCC = ({ children }) => {
           <AppNavigation />
         </div>
 
-        <div className={'border-y border-gray-100 py-6 dark:border-black-300'}>
+        <div className={'border-b border-gray-100 py-6 dark:border-black-300'}>
           <Container>
             <div className={'px-3 lg:px-1.5'}>
               <Heading type={2}>

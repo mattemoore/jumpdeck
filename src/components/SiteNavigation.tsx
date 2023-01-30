@@ -1,9 +1,15 @@
-import { Menu } from '@headlessui/react';
+import Link from 'next/link';
 import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon';
 
 import NavigationMenuItem from '~/core/ui/Navigation/NavigationItem';
 import NavigationMenu from '~/core/ui/Navigation/NavigationMenu';
-import Dropdown from '~/core/ui/Dropdown';
+
+import {
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenu,
+  DropdownMenuTrigger,
+} from '~/core/ui/Dropdown';
 
 const links = {
   SignIn: {
@@ -53,21 +59,23 @@ const SiteNavigation = () => {
 };
 
 function MobileDropdown() {
-  const Button = (
-    <Menu.Button>
-      <Bars3Icon className={'h-9'} />
-    </Menu.Button>
-  );
-
   const Links = Object.values(links).map((item) => {
     return (
-      <Dropdown.Item key={item.path} href={item.path}>
-        {item.label}
-      </Dropdown.Item>
+      <DropdownMenuItem key={item.path}>
+        <Link href={item.path}>{item.label}</Link>
+      </DropdownMenuItem>
     );
   });
 
-  return <Dropdown button={Button} items={Links} />;
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <Bars3Icon className={'h-9'} />
+      </DropdownMenuTrigger>
+
+      <DropdownMenuContent>{Links}</DropdownMenuContent>
+    </DropdownMenu>
+  );
 }
 
 export default SiteNavigation;

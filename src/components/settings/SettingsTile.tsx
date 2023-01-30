@@ -8,10 +8,10 @@ const SettingsTile: React.FCC<{
 }> = ({ children, heading, subHeading, actions }) => {
   return (
     <div className={'flex flex-col space-y-6'}>
-      <div className={'flex flex-col space-y-1.5'}>
+      <div className={'flex flex-col space-y-1'}>
         <div className={'flex justify-between'}>
           <If condition={heading}>
-            <Heading type={3}>
+            <Heading type={4}>
               <span className={'font-medium'}>{heading}</span>
             </Heading>
           </If>
@@ -22,9 +22,7 @@ const SettingsTile: React.FCC<{
         </div>
 
         <If condition={subHeading}>
-          <p className={'text-xl text-gray-500 dark:text-gray-400'}>
-            {subHeading}
-          </p>
+          <p className={'text-gray-500 dark:text-gray-400'}>{subHeading}</p>
         </If>
       </div>
 

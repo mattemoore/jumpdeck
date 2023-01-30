@@ -1,7 +1,7 @@
 import { Trans } from 'next-i18next';
 import Badge from '~/core/ui/Badge';
 import { OrganizationSubscription } from '~/lib/organizations/types/organization-subscription';
-import Tooltip from '~/core/ui/Tooltip';
+import { Tooltip, TooltipTrigger, TooltipContent } from '~/core/ui/Tooltip';
 
 function SubscriptionStatusBadge({
   subscription,
@@ -65,12 +65,16 @@ function SubscriptionStatusBadge({
   }
 
   return (
-    <Tooltip
-      content={<Trans i18nKey={description} values={getDates(subscription)} />}
-    >
-      <Badge size={'small'} color={type}>
-        <Trans i18nKey={label} />
-      </Badge>
+    <Tooltip>
+      <TooltipTrigger>
+        <Badge size={'small'} color={type}>
+          <Trans i18nKey={label} />
+        </Badge>
+      </TooltipTrigger>
+
+      <TooltipContent>
+        <Trans i18nKey={description} values={getDates(subscription)} />
+      </TooltipContent>
     </Tooltip>
   );
 }

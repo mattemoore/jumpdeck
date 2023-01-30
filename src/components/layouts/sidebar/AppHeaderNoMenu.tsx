@@ -15,9 +15,9 @@ const AppHeaderNoMenu: React.FCC = ({ children }) => {
   const auth = useAuth();
 
   return (
-    <div className="AppHeader justify-between py-2.5 px-3">
-      <div className={'flex items-center space-x-2 lg:space-x-0'}>
-        <div className={'lg:hidden'}>
+    <div className="flex flex-1 items-center justify-between border-b border-gray-50 py-2.5 px-3 dark:border-black-300">
+      <div className={'flex items-center space-x-2.5 lg:space-x-0'}>
+        <div className={'flex items-center lg:hidden'}>
           <MobileNavigation />
         </div>
 

@@ -3,13 +3,13 @@ import { Trans } from 'next-i18next';
 import { useFetchInvitedMembers } from '~/lib/organizations/hooks/use-fetch-invited-members';
 import { canDeleteInvites } from '~/lib/organizations/permissions';
 
-import FallbackUserAvatar from '../FallbackUserAvatar';
 import RoleBadge from './RoleBadge';
 import DeleteInviteButton from './DeleteInviteButton';
 
 import { IfHasPermissions } from '~/components/IfHasPermissions';
 import LoadingMembersSpinner from '~/components/organizations/LoadingMembersSpinner';
 import Alert from '~/core/ui/Alert';
+import ProfileAvatar from '~/components/ProfileAvatar';
 
 const OrganizationInvitedMembersList: React.FCC<{
   organizationId: string;
@@ -53,7 +53,7 @@ const OrganizationInvitedMembersList: React.FCC<{
             }
           >
             <div className={'flex flex-auto items-center space-x-4'}>
-              <FallbackUserAvatar text={email} />
+              <ProfileAvatar text={email} />
 
               <div className={'block truncate text-sm'}>{email}</div>
             </div>

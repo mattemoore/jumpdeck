@@ -1,29 +1,29 @@
 import { useRouter } from 'next/router';
 import { Trans, useTranslation } from 'next-i18next';
 import { Fragment, useCallback } from 'react';
+import { useFieldArray, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 import PlusCircleIcon from '@heroicons/react/24/outline/PlusCircleIcon';
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
 
-import { useFieldArray, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
-
 import { MembershipRole } from '~/lib/organizations/types/membership-role';
-import { useCurrentOrganization } from '~/lib/organizations/hooks/use-current-organization';
 import { useInviteMembers } from '~/lib/organizations/hooks/use-invite-members';
 
 import If from '~/core/ui/If';
 import TextField from '~/core/ui/TextField';
 import Button from '~/core/ui/Button';
 import IconButton from '~/core/ui/IconButton';
-import Tooltip from '~/core/ui/Tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '~/core/ui/Tooltip';
 
 import MembershipRoleSelector from './MembershipRoleSelector';
 import { useUserSession } from '~/core/hooks/use-user-session';
 
+import { useCurrentOrganization } from '~/lib/organizations/hooks/use-current-organization';
+
 type InviteModel = ReturnType<typeof memberFactory>;
 
-const InviteMembersForm: React.FCC = () => {
+const InviteMembersForm = () => {
   const { t } = useTranslation('organization');
   const router = useRouter();
 
@@ -34,14 +34,7 @@ const InviteMembersForm: React.FCC = () => {
   const { trigger, isMutating } = useInviteMembers(organizationId);
 
   const { register, handleSubmit, setValue, control, clearErrors, watch } =
-    useForm({
-      defaultValues: {
-        members: [memberFactory()],
-      },
-      shouldUseNativeValidation: true,
-      shouldFocusError: true,
-      shouldUnregister: true,
-    });
+    useInviteMembersForm();
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -146,20 +139,23 @@ const InviteMembersForm: React.FCC = () => {
 
                 <If condition={fields.length > 1}>
                   <div className={'w-1/12'}>
-                    <Tooltip
-                      className={'flex justify-center'}
-                      content={t('removeInviteButtonLabel')}
-                    >
-                      <IconButton
-                        data-cy={'remove-invite-button'}
-                        label={t<string>('removeInviteButtonLabel')}
-                        onClick={() => {
-                          remove(index);
-                          clearErrors(emailInputName);
-                        }}
-                      >
-                        <XMarkIcon className={'h-4 lg:h-5'} />
-                      </IconButton>
+                    <Tooltip className={'flex justify-center'}>
+                      <TooltipTrigger>
+                        <IconButton
+                          data-cy={'remove-invite-button'}
+                          label={t<string>('removeInviteButtonLabel')}
+                          onClick={() => {
+                            remove(index);
+                            clearErrors(emailInputName);
+                          }}
+                        >
+                          <XMarkIcon className={'h-4 lg:h-5'} />
+                        </IconButton>
+                      </TooltipTrigger>
+
+                      <TooltipContent>
+                        {t('removeInviteButtonLabel')}
+                      </TooltipContent>
                     </Tooltip>
                   </div>
                 </If>
@@ -174,6 +170,7 @@ const InviteMembersForm: React.FCC = () => {
             type={'button'}
             color={'transparent'}
             size={'small'}
+            loading={isMutating}
             onClick={() => append(memberFactory())}
           >
             <span className={'flex items-center space-x-2'}>
@@ -194,7 +191,13 @@ const InviteMembersForm: React.FCC = () => {
           type={'submit'}
           loading={isMutating}
         >
-          <Trans i18nKey={'organization:inviteMembersSubmitLabel'} />
+          <If condition={!isMutating}>
+            <Trans i18nKey={'organization:inviteMembersSubmitLabel'} />
+          </If>
+
+          <If condition={isMutating}>
+            <Trans i18nKey={'organization:inviteMembersLoading'} />
+          </If>
         </Button>
       </div>
     </form>
@@ -215,6 +218,17 @@ function getFormValidator(members: InviteModel[]) {
 
     return valueIndex >= 0 && valueIndex !== index;
   };
+}
+
+function useInviteMembersForm() {
+  return useForm({
+    defaultValues: {
+      members: [memberFactory()],
+    },
+    shouldUseNativeValidation: true,
+    shouldFocusError: true,
+    shouldUnregister: true,
+  });
 }
 
 export default InviteMembersForm;

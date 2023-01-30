@@ -11,6 +11,8 @@ import If from '~/core/ui/If';
 import Modal from '~/core/ui/Modal';
 import Button from '~/core/ui/Button';
 
+const Heading = <Trans i18nKey={'organization:deleteInviteModalHeading'} />;
+
 const DeleteInviteButton: React.FCC<{
   inviteId: string;
   organizationId: string;
@@ -38,8 +40,6 @@ const DeleteInviteButton: React.FCC<{
     })();
   }, [deleteRequest, inviteId, organizationId, t]);
 
-  const heading = <Trans i18nKey={'organization:deleteInviteModalHeading'} />;
-
   return (
     <>
       <IconButton
@@ -51,9 +51,9 @@ const DeleteInviteButton: React.FCC<{
       </IconButton>
 
       <If condition={isDeleting}>
-        <Modal heading={heading} isOpen={isDeleting} setIsOpen={setIsDeleting}>
-          <div className={'flex flex-col space-y-4'}>
-            <div className={'flex flex-col space-y-2'}>
+        <Modal heading={Heading} isOpen={isDeleting} setIsOpen={setIsDeleting}>
+          <div className={'flex flex-col space-y-6'}>
+            <div className={'flex flex-col space-y-2 text-sm'}>
               <p>
                 <Trans
                   i18nKey={'organization:confirmDeletingMemberInvite'}
@@ -74,6 +74,7 @@ const DeleteInviteButton: React.FCC<{
               <Button
                 data-cy={'confirm-delete-invite-button'}
                 color={'danger'}
+                variant={'flat'}
                 onClick={onInviteDeleteRequested}
               >
                 <Trans i18nKey={'organization:deleteInviteSubmitLabel'} />

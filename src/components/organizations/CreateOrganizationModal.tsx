@@ -62,7 +62,7 @@ const CreateOrganizationModal: React.FC<{
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen} heading={Heading}>
       <form onSubmit={onSubmit}>
-        <div className={'flex flex-col space-y-4'}>
+        <div className={'flex flex-col space-y-6'}>
           <TextField>
             <TextField.Label>
               <Trans i18nKey={'organization:organizationNameLabel'} />
@@ -83,6 +83,7 @@ const CreateOrganizationModal: React.FC<{
 
               <Button
                 data-cy={'confirm-create-organization-button'}
+                variant={'flat'}
                 loading={loading}
               >
                 <Trans i18nKey={'organization:createOrganizationSubmitLabel'} />

@@ -29,8 +29,7 @@ const organizationPageObject = {
   $getConfirmDeleteInviteButton: () => $get(`confirm-delete-invite-button`),
   $getConfirmTransferOwnershipButton: () =>
     $get(`confirm-transfer-ownership-button`),
-  $getRoleSelector: (index = 0) =>
-    $get(`invite-role-selector-button`).eq(index),
+  $getRoleSelector: (index = 0) => $get(`role-selector-trigger`).eq(index),
   $getRoleBadge: () => $get(`member-role-badge`),
   $removeMemberActionButton: () => $get(`remove-member-action`),
   $transferOwnershipAction: () => $get('transfer-ownership-action'),
@@ -64,12 +63,7 @@ const organizationPageObject = {
   },
   selectRole(role: MembershipRole) {
     this.openRoleSelectorDropdown();
-    cy.cyGet(`listbox-option-${role}`).click();
-
-    return this;
-  },
-  selectRoleFromRadioGroup(role: MembershipRole) {
-    cy.cyGet(`update-role-option-${role}`).click();
+    cy.cyGet(`role-item-${role}`).click();
 
     return this;
   },
@@ -83,8 +77,9 @@ const organizationPageObject = {
   removeMember(email: string) {
     this.$getMemberByEmail(email).within(() => {
       this.openMemberActionsDropdown();
-      this.$removeMemberActionButton().click({ force: true });
     });
+
+    this.$removeMemberActionButton().click({ force: true });
 
     cy.cyGet(`confirm-remove-member`).click();
 
@@ -93,10 +88,11 @@ const organizationPageObject = {
   updateMemberRole(email: string, role: MembershipRole) {
     this.$getMemberByEmail(email).within(() => {
       this.openMemberActionsDropdown();
-      this.$updateMemberRoleActionButton().click({ force: true });
     });
 
-    this.selectRoleFromRadioGroup(role);
+    this.$updateMemberRoleActionButton().click({ force: true });
+
+    this.selectRole(role);
     cy.cyGet(`confirm-update-member-role`).click();
 
     return this;
@@ -104,8 +100,9 @@ const organizationPageObject = {
   transferOwnership(email: string) {
     this.$getMemberByEmail(email).within(() => {
       this.openMemberActionsDropdown();
-      this.$transferOwnershipAction().click({ force: true });
     });
+
+    this.$transferOwnershipAction().click({ force: true });
   },
 };
 

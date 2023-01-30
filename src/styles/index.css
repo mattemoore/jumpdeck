@@ -1,9 +1,5 @@
 @import "components.css";
 @import "app.css";
-@import "tippy.css";
-
-/* Remove the next import if you do not use coding snippets */
-@import "github-dark.css";
 
 @tailwind base;
 

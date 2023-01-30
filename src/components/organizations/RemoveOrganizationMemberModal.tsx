@@ -40,7 +40,7 @@ const RemoveOrganizationMemberModal: React.FCC<{
 
   return (
     <Modal heading={heading} isOpen={isOpen} setIsOpen={setIsOpen}>
-      <div className={'flex flex-col space-y-4'}>
+      <div className={'flex flex-col space-y-6'}>
         <div>
           <p>
             <Trans i18nKey={'common:modalConfirmationQuestion'} />
@@ -53,6 +53,7 @@ const RemoveOrganizationMemberModal: React.FCC<{
           <Button
             data-cy={'confirm-remove-member'}
             color={'danger'}
+            variant={'flat'}
             onClick={onUserRemoved}
             loading={isMutating}
           >

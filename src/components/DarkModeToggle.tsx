@@ -13,7 +13,7 @@ import {
   getDefaultTheme,
 } from '~/core/theming';
 
-import Tooltip from '~/core/ui/Tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '~/core/ui/Tooltip';
 import IconButton from '~/core/ui/IconButton';
 
 const DarkModeToggle = () => {
@@ -52,21 +52,25 @@ const DarkModeToggle = () => {
   }, [currentTheme]);
 
   return (
-    <Tooltip content={TooltipText}>
-      <IconButton
-        className={'flex items-center bg-transparent p-1'}
-        onClick={toggleMode}
-      >
-        <Transition
-          appear={true}
-          show={true}
-          enter="transition-opacity duration-500"
-          enterFrom="opacity-60"
-          enterTo="opacity-100"
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <IconButton
+          className={'flex items-center bg-transparent p-1'}
+          onClick={toggleMode}
         >
-          {Icon}
-        </Transition>
-      </IconButton>
+          <Transition
+            appear
+            show
+            enter="transition-opacity duration-500"
+            enterFrom="opacity-60"
+            enterTo="opacity-100"
+          >
+            {Icon}
+          </Transition>
+        </IconButton>
+      </TooltipTrigger>
+
+      <TooltipContent>{TooltipText}</TooltipContent>
     </Tooltip>
   );
 };
