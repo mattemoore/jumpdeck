@@ -9,7 +9,7 @@ function NewsletterSignup() {
         <Heading type={5}>Subscribe to our Newsletter</Heading>
 
         <div
-          className={'text-sm text-gray-500 dark:text-gray-400 xl:text-base'}
+          className={'text-sm text-gray-500 dark:text-gray-400 2xl:text-base'}
         >
           Get the latest updates from our team.
         </div>

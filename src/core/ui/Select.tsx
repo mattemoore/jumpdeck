@@ -24,9 +24,13 @@ const SelectTrigger = React.forwardRef<
     )}
     {...props}
   >
-    <div>{children}</div>
-
-    <ChevronDownIcon className="h-4" />
+    {props.asChild ? (
+      children
+    ) : (
+      <>
+        <div>{children}</div> <ChevronDownIcon className="h-4" />
+      </>
+    )}
   </SelectPrimitive.Trigger>
 ));
 
@@ -89,7 +93,7 @@ const SelectItem = React.forwardRef<
   >
     <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
       <SelectPrimitive.ItemIndicator>
-        <CheckCircleIcon className="h-5" />
+        <CheckCircleIcon className="h-5 text-primary-500" />
       </SelectPrimitive.ItemIndicator>
     </span>
 

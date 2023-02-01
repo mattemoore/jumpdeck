@@ -1,77 +1,101 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Trans } from 'next-i18next';
-import { Transition } from '@headlessui/react';
 
 import MoonIcon from '@heroicons/react/24/outline/MoonIcon';
 import SunIcon from '@heroicons/react/24/outline/SunIcon';
+import { ComputerDesktopIcon } from '@heroicons/react/24/outline';
 
 import {
   setTheme,
   DARK_THEME_CLASSNAME,
   LIGHT_THEME_CLASSNAME,
   getStoredTheme,
-  getDefaultTheme,
+  isDarkSystemTheme,
 } from '~/core/theming';
 
-import { Tooltip, TooltipContent, TooltipTrigger } from '~/core/ui/Tooltip';
 import IconButton from '~/core/ui/IconButton';
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '~/core/ui/Select';
+
 const DarkModeToggle = () => {
-  const defaultTheme = useMemo(() => {
-    return getStoredTheme() ?? getDefaultTheme();
-  }, []);
-
-  const [currentTheme, setCurrentTheme] = useState<string | null>(defaultTheme);
-
-  const toggleMode = useCallback(() => {
-    setCurrentTheme((currentTheme) => {
-      if (currentTheme === LIGHT_THEME_CLASSNAME) {
-        return DARK_THEME_CLASSNAME;
-      }
-
-      return LIGHT_THEME_CLASSNAME;
-    });
-  }, []);
-
+  const defaultTheme = useMemo(getStoredTheme, []);
+  const [currentTheme, setCurrentTheme] = useState<string>(defaultTheme);
   const isDarkTheme = currentTheme === DARK_THEME_CLASSNAME;
 
-  const TooltipText = isDarkTheme ? (
-    <Trans i18nKey={'common:switchToLightTheme'} />
-  ) : (
-    <Trans i18nKey={'common:switchToDarkTheme'} />
-  );
+  const Icon = useMemo(() => {
+    const shouldUseSystemDarkTheme = !currentTheme && isDarkSystemTheme();
 
-  const Icon = isDarkTheme ? (
-    <SunIcon className={'h-5'} />
-  ) : (
-    <MoonIcon className={'h-5'} />
-  );
+    if (isDarkTheme || shouldUseSystemDarkTheme) {
+      return <MoonIcon className={'h-5'} />;
+    }
+
+    return <SunIcon className={'h-5'} />;
+  }, [currentTheme, isDarkTheme]);
 
   useEffect(() => {
     setTheme(currentTheme);
   }, [currentTheme]);
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
+    <Select value={currentTheme} onValueChange={setCurrentTheme}>
+      <SelectTrigger asChild>
         <IconButton
-          className={'flex items-center bg-transparent p-1'}
-          onClick={toggleMode}
+          data-cy={'dark-mode-toggle'}
+          className={
+            '!rounded-full border-transparent' +
+            ' bg-transparent shadow hover:bg-transparent hover:shadow-md' +
+            ' dark:border-black-300'
+          }
         >
-          <Transition
-            appear
-            show
-            enter="transition-opacity duration-500"
-            enterFrom="opacity-60"
-            enterTo="opacity-100"
-          >
-            {Icon}
-          </Transition>
-        </IconButton>
-      </TooltipTrigger>
+          <span hidden>
+            <SelectValue />
+          </span>
 
-      <TooltipContent>{TooltipText}</TooltipContent>
-    </Tooltip>
+          {Icon}
+        </IconButton>
+      </SelectTrigger>
+
+      <SelectContent position={'popper'} sideOffset={5}>
+        <SelectItem
+          data-cy={'light-theme-button'}
+          value={LIGHT_THEME_CLASSNAME}
+        >
+          <span className={'flex items-center space-x-2.5'}>
+            <SunIcon className={'h-4'} />
+
+            <span>
+              <Trans i18nKey={'common:lightTheme'} />
+            </span>
+          </span>
+        </SelectItem>
+
+        <SelectItem data-cy={'dark-theme-button'} value={DARK_THEME_CLASSNAME}>
+          <span className={'flex items-center space-x-2.5'}>
+            <MoonIcon className={'h-4'} />
+
+            <span>
+              <Trans i18nKey={'common:darkTheme'} />
+            </span>
+          </span>
+        </SelectItem>
+
+        <SelectItem data-cy={'system-theme-button'} value={''}>
+          <span className={'flex items-center space-x-2.5'}>
+            <ComputerDesktopIcon className={'h-4'} />
+
+            <span>
+              <Trans i18nKey={'common:systemTheme'} />
+            </span>
+          </span>
+        </SelectItem>
+      </SelectContent>
+    </Select>
   );
 };
 

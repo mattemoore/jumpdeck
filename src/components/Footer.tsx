@@ -25,7 +25,7 @@ function Footer() {
               </div>
 
               <div>
-                <p className={'text-gray-500 dark:text-gray-400'}>
+                <p className={'text-sm text-gray-500 dark:text-gray-400'}>
                   Add a short tagline about your product
                 </p>
               </div>
@@ -117,7 +117,7 @@ function FooterSectionList(props: React.PropsWithChildren) {
 }
 
 function FooterLink(props: React.PropsWithChildren) {
-  return <li className={'text-sm xl:text-base'}>{props.children}</li>;
+  return <li className={'text-sm 2xl:text-base'}>{props.children}</li>;
 }
 
 export default Footer;
