@@ -17,6 +17,7 @@ type DivProps<TTag extends React.ElementType = 'div'> =
 type Props = React.PropsWithChildren<DefaultProps | DivProps>;
 
 const CLASSNAME = `rounded-full bg-transparent 
+  flex items-center justify-center
   ring-primary-400 transition-colors outline-none
   duration-300 hover:bg-gray-100 focus:ring h-10 w-10
   disabled:cursor-not-allowed disabled:opacity-50
