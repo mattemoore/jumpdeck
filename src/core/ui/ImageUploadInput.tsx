@@ -1,13 +1,12 @@
+import type { FormEvent, MouseEventHandler } from 'react';
+
 import React, {
-  FormEvent,
-  MouseEventHandler,
-  RefCallback,
+  forwardRef,
+  useCallback,
   useEffect,
   useRef,
   useState,
 } from 'react';
-
-import Image from 'next/image';
 
 import { CloudArrowUpIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
@@ -16,138 +15,153 @@ import If from '~/core/ui/If';
 import IconButton from '~/core/ui/IconButton';
 
 type Props = Omit<React.InputHTMLAttributes<unknown>, 'value'> & {
-  innerRef?: RefCallback<HTMLInputElement>;
   image?: string | null;
   onClear?: () => void;
 };
 
 const IMAGE_SIZE = 22;
 
-const ImageUploadInput: React.FCC<Props> = ({
-  children,
-  image,
-  onClear,
-  innerRef,
-  ...props
-}) => {
-  const propValue = image ?? null;
-  const [value, setValue] = useState<string | null>(propValue);
-  const [fileName, setFileName] = useState<string>('');
-  const ref = useRef<HTMLInputElement>();
+const ImageUploadInput = forwardRef<React.ElementRef<'input'>, Props>(
+  function ImageUploadInputComponent(
+    { children, image, onClear, onInput, ...props },
+    forwardedRef
+  ) {
+    const localRef = useRef<HTMLInputElement>();
 
-  const onInput = (e: FormEvent<HTMLInputElement>) => {
-    e.preventDefault();
+    const [state, setState] = useState({
+      image,
+      fileName: '',
+    });
 
-    const files = e.currentTarget.files;
+    const onInputChange = useCallback(
+      (e: FormEvent<HTMLInputElement>) => {
+        e.preventDefault();
 
-    if (files?.length) {
-      const file = files[0];
-      const data = URL.createObjectURL(file);
+        const files = e.currentTarget.files;
 
-      setValue(data);
-      setFileName(file.name);
-    }
+        if (files?.length) {
+          const file = files[0];
+          const data = URL.createObjectURL(file);
 
-    if (props.onInput) {
-      props.onInput(e);
-    }
-  };
+          setState({
+            image: data,
+            fileName: file.name,
+          });
+        }
 
-  const imageRemoved: MouseEventHandler = (e) => {
-    e.preventDefault();
+        if (onInput) {
+          onInput(e);
+        }
+      },
+      [onInput]
+    );
 
-    setValue('');
-    setFileName('');
+    const imageRemoved: MouseEventHandler = useCallback(
+      (e) => {
+        e.preventDefault();
 
-    if (ref.current) {
-      ref.current.value = '';
-    }
+        setState({
+          image: '',
+          fileName: '',
+        });
 
-    if (onClear) {
-      onClear();
-    }
-  };
+        if (localRef.current) {
+          localRef.current.value = '';
+        }
 
-  useEffect(() => {
-    setValue(propValue);
-  }, [propValue]);
+        if (onClear) {
+          onClear();
+        }
+      },
+      [onClear]
+    );
 
-  return (
-    <div className={'ImageUploadInput'}>
-      <input
-        {...props}
-        ref={(inputRef) => {
-          ref.current = inputRef ?? undefined;
+    const setRef = useCallback(
+      (input: HTMLInputElement) => {
+        localRef.current = input;
 
-          if (innerRef) {
-            innerRef(inputRef);
-          }
-        }}
-        className={'hidden'}
-        type={'file'}
-        onInput={onInput}
-        accept="image/*"
-      />
+        if (typeof forwardedRef === 'function') {
+          forwardedRef(localRef.current);
+        }
+      },
+      [forwardedRef]
+    );
 
-      <div className={'flex items-center space-x-4'}>
-        <div className={'flex'}>
-          <If condition={!value}>
-            <CloudArrowUpIcon
-              className={'h-5 text-gray-500 dark:text-black-100'}
-            />
-          </If>
+    useEffect(() => {
+      setState((state) => ({ ...state, image }));
+    }, [image]);
 
-          <If condition={value}>
-            <Image
-              style={{
-                width: IMAGE_SIZE,
-                height: IMAGE_SIZE,
-              }}
-              className={'object-contain'}
-              width={IMAGE_SIZE}
-              height={IMAGE_SIZE}
-              src={value as string}
-              alt={props.alt ?? ''}
-            />
-          </If>
-        </div>
+    return (
+      <div className={'ImageUploadInput'}>
+        <input
+          {...props}
+          ref={setRef}
+          className={'hidden'}
+          type={'file'}
+          onInput={onInputChange}
+          accept="image/*"
+        />
 
-        <If condition={!value}>
-          <div className={'flex flex-auto'}>
-            <Label as={'span'} className={'cursor-pointer text-xs'}>
-              {children}
-            </Label>
-          </div>
-        </If>
+        <div className={'flex items-center space-x-4'}>
+          <div className={'flex'}>
+            <If condition={!state.image}>
+              <CloudArrowUpIcon
+                className={'h-5 text-gray-500 dark:text-black-100'}
+              />
+            </If>
 
-        <If condition={value as string}>
-          <div className={'flex flex-auto'}>
-            <If
-              condition={fileName}
-              fallback={
-                <Label
-                  as={'span'}
-                  className={'cursor-pointer truncate text-xs'}
-                >
-                  {children}
-                </Label>
-              }
-            >
-              <Label as="span" className={'ellipsify text-xs'}>
-                {fileName}
-              </Label>
+            <If condition={state.image}>
+              <img
+                loading={'lazy'}
+                style={{
+                  width: IMAGE_SIZE,
+                  height: IMAGE_SIZE,
+                }}
+                className={'object-contain'}
+                width={IMAGE_SIZE}
+                height={IMAGE_SIZE}
+                src={state.image as string}
+                alt={props.alt ?? ''}
+              />
             </If>
           </div>
-        </If>
 
-        <If condition={value}>
-          <IconButton onClick={imageRemoved}>
-            <XMarkIcon className="h-3 w-3" />
-          </IconButton>
-        </If>
+          <If condition={!state.image}>
+            <div className={'flex flex-auto'}>
+              <Label as={'span'} className={'cursor-pointer text-xs'}>
+                {children}
+              </Label>
+            </div>
+          </If>
+
+          <If condition={state.image as string}>
+            <div className={'flex flex-auto'}>
+              <If
+                condition={state.fileName}
+                fallback={
+                  <Label
+                    as={'span'}
+                    className={'cursor-pointer truncate text-xs'}
+                  >
+                    {children}
+                  </Label>
+                }
+              >
+                <Label as="span" className={'truncate text-xs'}>
+                  {state.fileName}
+                </Label>
+              </If>
+            </div>
+          </If>
+
+          <If condition={state.image}>
+            <IconButton className={'!h-5 !w-5'} onClick={imageRemoved}>
+              <XMarkIcon className="h-4" />
+            </IconButton>
+          </If>
+        </div>
       </div>
-    </div>
-  );
-};
-
+    );
+  }
+);
 export default ImageUploadInput;

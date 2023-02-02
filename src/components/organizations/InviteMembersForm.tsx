@@ -113,15 +113,8 @@ const InviteMembersForm = () => {
               <div className={'flex items-center space-x-0.5 md:space-x-2'}>
                 <div className={'w-7/12 md:w-8/12'}>
                   <TextField.Input
+                    {...emailControl}
                     data-cy={'invite-email-input'}
-                    name={emailControl.name}
-                    onChange={(event) => {
-                      void emailControl.onChange(event);
-                    }}
-                    onBlur={(event) => {
-                      void emailControl.onBlur(event);
-                    }}
-                    innerRef={emailControl.ref}
                     placeholder="member@email.com"
                     type="email"
                     required

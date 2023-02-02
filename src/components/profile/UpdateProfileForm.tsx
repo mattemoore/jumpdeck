@@ -54,7 +54,7 @@ function UpdateProfileForm({
   const currentDisplayName = user?.displayName ?? '';
   const currentPhoneNumber = user?.phoneNumber ?? '';
 
-  const { register, handleSubmit, reset } = useForm({
+  const { register, handleSubmit, reset, setValue } = useForm({
     defaultValues: {
       displayName: currentDisplayName,
       photoURL: '',
@@ -65,7 +65,8 @@ function UpdateProfileForm({
 
   const onAvatarCleared = useCallback(() => {
     setAvatarIsDirty(true);
-  }, []);
+    setValue('photoURL', '');
+  }, [setValue]);
 
   const onSubmit = async (displayName: string, photoFile: Maybe<File>) => {
     const photoName = photoFile?.name;
@@ -128,10 +129,7 @@ function UpdateProfileForm({
               <Trans i18nKey={'profile:displayNameLabel'} />
 
               <TextField.Input
-                innerRef={displayNameControl.ref}
-                onChange={displayNameControl.onChange}
-                onBlur={displayNameControl.onBlur}
-                name={displayNameControl.name}
+                {...displayNameControl}
                 data-cy={'profile-display-name'}
                 minLength={2}
                 placeholder={''}
@@ -144,13 +142,10 @@ function UpdateProfileForm({
               <Trans i18nKey={'profile:profilePictureLabel'} />
 
               <ImageUploadInput
+                {...photoURLControl}
                 multiple={false}
                 onClear={onAvatarCleared}
-                name={photoURLControl.name}
                 image={currentPhotoURL}
-                onChange={photoURLControl.onChange}
-                onBlur={photoURLControl.onBlur}
-                innerRef={photoURLControl.ref}
               >
                 <Trans i18nKey={'common:imageInputLabel'} />
               </ImageUploadInput>

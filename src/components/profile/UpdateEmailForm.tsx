@@ -165,11 +165,8 @@ const UpdateEmailForm: React.FC<{ user: User }> = ({ user }) => {
               <Trans i18nKey={'profile:newEmail'} />
 
               <TextField.Input
+                {...emailControl}
                 data-cy={'profile-new-email-input'}
-                name={emailControl.name}
-                onChange={emailControl.onChange}
-                onBlur={emailControl.onBlur}
-                innerRef={emailControl.ref}
                 required
                 type={'email'}
                 placeholder={''}
@@ -182,11 +179,9 @@ const UpdateEmailForm: React.FC<{ user: User }> = ({ user }) => {
               <Trans i18nKey={'profile:repeatEmail'} />
 
               <TextField.Input
+                {...repeatEmailControl}
                 data-cy={'profile-repeat-email-input'}
                 name={repeatEmailControl.name}
-                onChange={repeatEmailControl.onChange}
-                onBlur={repeatEmailControl.onBlur}
-                innerRef={repeatEmailControl.ref}
                 required
                 type={'email'}
               />
@@ -198,13 +193,10 @@ const UpdateEmailForm: React.FC<{ user: User }> = ({ user }) => {
               <Trans i18nKey={'profile:yourPassword'} />
 
               <TextField.Input
+                {...passwordControl}
                 data-cy={'profile-password-input'}
                 required
                 type={'password'}
-                name={passwordControl.name}
-                onChange={passwordControl.onChange}
-                onBlur={passwordControl.onBlur}
-                innerRef={passwordControl.ref}
                 placeholder={''}
               />
             </TextField.Label>

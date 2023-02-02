@@ -59,14 +59,11 @@ const EmailPasswordSignUpForm: React.FCC<{
             <Trans i18nKey={'common:emailAddress'} />
 
             <TextField.Input
+              {...emailControl}
               data-cy={'email-input'}
               required
               type="email"
               placeholder={'your@email.com'}
-              innerRef={emailControl.ref}
-              onBlur={emailControl.onBlur}
-              onChange={emailControl.onChange}
-              name={emailControl.name}
             />
 
             <TextField.Error error={errors.email?.message} />
@@ -78,14 +75,11 @@ const EmailPasswordSignUpForm: React.FCC<{
             <Trans i18nKey={'common:password'} />
 
             <TextField.Input
+              {...passwordControl}
               data-cy={'password-input'}
               required
               type="password"
               placeholder={''}
-              innerRef={passwordControl.ref}
-              onBlur={passwordControl.onBlur}
-              onChange={passwordControl.onChange}
-              name={passwordControl.name}
             />
 
             <TextField.Hint>
@@ -101,14 +95,11 @@ const EmailPasswordSignUpForm: React.FCC<{
             <Trans i18nKey={'auth:repeatPassword'} />
 
             <TextField.Input
+              {...repeatPasswordControl}
               data-cy={'repeat-password-input'}
               required
               type="password"
               placeholder={''}
-              innerRef={repeatPasswordControl.ref}
-              onBlur={repeatPasswordControl.onBlur}
-              onChange={repeatPasswordControl.onChange}
-              name={repeatPasswordControl.name}
             />
 
             <TextField.Hint>
