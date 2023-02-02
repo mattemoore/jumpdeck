@@ -53,13 +53,7 @@ export function setTheme(theme: string | null) {
 }
 
 export function loadSelectedTheme() {
-  const storedTheme = getStoredTheme();
-
-  if (!storedTheme) {
-    return;
-  }
-
-  setTheme(storedTheme);
+  setTheme(getStoredTheme());
 }
 
 function getHtml() {
