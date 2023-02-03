@@ -1,14 +1,6 @@
 import { themingPo } from '../support/theming.po';
 
 describe(`Theming`, () => {
-  describe('When using the default settings', () => {
-    it('should use the light theme', () => {
-      cy.visit('/');
-
-      themingPo.assertIsLightTheme();
-    });
-  });
-
   describe('When setting the dark theme', () => {
     it('should use the dark theme', () => {
       cy.visit('/');
@@ -18,8 +10,20 @@ describe(`Theming`, () => {
 
       // check it persists across reloads
       cy.reload();
-
       themingPo.assertIsDarkTheme();
+    });
+  });
+
+  describe('When setting the light theme', () => {
+    it('should use the light theme', () => {
+      cy.visit('/');
+
+      themingPo.toggleLightMode();
+      themingPo.assertIsNotDarkMode();
+
+      // check it persists across reloads
+      cy.reload();
+      themingPo.assertIsNotDarkMode();
     });
   });
 
@@ -28,6 +32,9 @@ describe(`Theming`, () => {
       cy.visit('/');
 
       themingPo.toggleSystemMode();
+      themingPo.assertIsCorrectSystemTheme();
+
+      cy.visit('/auth/sign-in');
       themingPo.assertIsCorrectSystemTheme();
     });
   });

@@ -3,9 +3,9 @@
 @layer components {
     .AppSidebar {
         @apply flex flex-row py-4 justify-center
-        relative dark:bg-black-700
+        relative dark:bg-black-500
         h-screen hidden lg:flex border-r
-        border-gray-100 dark:border-black-400;
+        border-gray-100 dark:border-black-300;
     }
 
     .AppSidebarItem {
@@ -33,7 +33,7 @@
     .AppSidebarItemNotActive {
         @apply dark:text-gray-300 dark:hover:text-white text-gray-600 ring-transparent
             active:bg-gray-200 dark:active:bg-black-300 dark:active:bg-black-300
-            hover:bg-gray-50 dark:hover:bg-black-400 dark:bg-black-600;
+            hover:bg-gray-50 dark:hover:bg-black-400 dark:bg-black-500;
     }
 
     .AppSidebarItemIcon {

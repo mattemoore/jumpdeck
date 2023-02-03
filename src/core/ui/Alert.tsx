@@ -108,7 +108,7 @@ function getClassNameBuilder() {
 }
 
 function getIconClassNameBuilder() {
-  return cva([`rounded-full h-6 dark:bg-black-500`], {
+  return cva([`rounded-full h-6`], {
     variants: {
       type: {
         success: `text-green-700`,

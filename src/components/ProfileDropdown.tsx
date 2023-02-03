@@ -8,6 +8,10 @@ import {
   ArrowLeftOnRectangleIcon,
   Squares2X2Icon,
   ChevronDownIcon,
+  PaintBrushIcon,
+  SunIcon,
+  ComputerDesktopIcon,
+  MoonIcon,
 } from '@heroicons/react/24/outline';
 
 import {
@@ -16,10 +20,20 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
 } from '~/core/ui/Dropdown';
 
 import ProfileAvatar from './ProfileAvatar';
 import configuration from '~/configuration';
+
+import {
+  setTheme,
+  DARK_THEME_CLASSNAME,
+  LIGHT_THEME_CLASSNAME,
+  SYSTEM_THEME_CLASSNAME,
+} from '~/core/theming';
 
 const ProfileDropdown: React.FCC<{
   user: Maybe<UserInfo>;
@@ -88,6 +102,10 @@ const ProfileDropdown: React.FCC<{
 
         <DropdownMenuSeparator />
 
+        <ThemeSelectorSubMenu />
+
+        <DropdownMenuSeparator />
+
         <DropdownMenuItem
           role={'button'}
           onClick={signOutRequested}
@@ -103,5 +121,66 @@ const ProfileDropdown: React.FCC<{
     </DropdownMenu>
   );
 };
+
+function ThemeSelectorSubMenu() {
+  const Wrapper: React.FCC = ({ children }) => (
+    <span className={'flex items-center space-x-2'}>{children}</span>
+  );
+
+  return (
+    <DropdownMenuSub>
+      <DropdownMenuSubTrigger>
+        <Wrapper>
+          <PaintBrushIcon className={'h-5'} />
+
+          <span>
+            <Trans i18nKey={'common:theme'} />
+          </span>
+        </Wrapper>
+      </DropdownMenuSubTrigger>
+
+      <DropdownMenuSubContent>
+        <DropdownMenuItem
+          className={'cursor-pointer'}
+          onClick={() => setTheme(LIGHT_THEME_CLASSNAME)}
+        >
+          <Wrapper>
+            <SunIcon className={'h-5'} />
+
+            <span>
+              <Trans i18nKey={'common:lightTheme'} />
+            </span>
+          </Wrapper>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem
+          className={'cursor-pointer'}
+          onClick={() => setTheme(DARK_THEME_CLASSNAME)}
+        >
+          <Wrapper>
+            <MoonIcon className={'h-5'} />
+
+            <span>
+              <Trans i18nKey={'common:darkTheme'} />
+            </span>
+          </Wrapper>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem
+          className={'cursor-pointer'}
+          onClick={() => setTheme(SYSTEM_THEME_CLASSNAME)}
+        >
+          <Wrapper>
+            <ComputerDesktopIcon className={'h-5'} />
+
+            <span>
+              <Trans i18nKey={'common:systemTheme'} />
+            </span>
+          </Wrapper>
+        </DropdownMenuItem>
+      </DropdownMenuSubContent>
+    </DropdownMenuSub>
+  );
+}
 
 export default ProfileDropdown;

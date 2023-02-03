@@ -1,6 +1,8 @@
 import Csrf from 'csrf';
 import { setCookie } from 'nookies';
-import type { ServerResponse } from 'http';
+import type { GetServerSidePropsContext } from 'next';
+
+const COOKIE_KEY = 'csrfSecret';
 
 /**
  * @name createCsrfCookie
@@ -9,12 +11,18 @@ import type { ServerResponse } from 'http';
  * HTTP request header.
  * @param ctx
  */
-async function createCsrfCookie<Ctx extends { res: ServerResponse }>(ctx: Ctx) {
+async function createCsrfCookie(ctx: GetServerSidePropsContext) {
   const csrf = new Csrf();
+  const existingSecret = ctx.req.cookies[COOKIE_KEY];
+
+  if (existingSecret) {
+    return csrf.create(existingSecret);
+  }
+
   const secret = await csrf.secret();
 
   // set a CSRF token secret, so we can validate it on POST requests
-  setCookie(ctx, 'csrfSecret', secret, {
+  setCookie(ctx, COOKIE_KEY, secret, {
     path: '/',
     httpOnly: true,
     secure: process.env.NODE_ENV === `production`,

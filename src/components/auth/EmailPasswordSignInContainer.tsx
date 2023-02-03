@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { Trans } from 'next-i18next';
 
 import {
   signInWithEmailAndPassword,
@@ -6,9 +7,12 @@ import {
   MultiFactorError,
   Auth,
   EmailAuthProvider,
+  sendEmailVerification,
+  User,
 } from 'firebase/auth';
 
-import { useAuth } from 'reactfire';
+import { CheckCircleIcon } from '@heroicons/react/24/outline';
+import { useAuth, useUser } from 'reactfire';
 
 import MultiFactorAuthChallengeModal from '~/components/auth/MultiFactorAuthChallengeModal';
 import { isMultiFactorError } from '~/core/firebase/utils/is-multi-factor-error';
@@ -21,6 +25,10 @@ import AuthErrorMessage from '~/components/auth/AuthErrorMessage';
 import EmailPasswordSignInForm from '~/components/auth/EmailPasswordSignInForm';
 
 import If from '~/core/ui/If';
+import Alert from '~/core/ui/Alert';
+import Button from '~/core/ui/Button';
+
+import configuration from '~/configuration';
 
 const EmailPasswordSignInContainer: React.FCC<{
   onSignIn: () => unknown;
@@ -32,6 +40,9 @@ const EmailPasswordSignInContainer: React.FCC<{
 
   const [multiFactorAuthError, setMultiFactorAuthError] =
     useState<Maybe<MultiFactorError>>();
+
+  const [showVerificationAlert, setShowVerificationAlert] =
+    useState<boolean>(false);
 
   const isLoading = Boolean(
     sessionState.loading || requestState.state.loading || sessionState.success
@@ -47,6 +58,16 @@ const EmailPasswordSignInContainer: React.FCC<{
 
       try {
         const credential = await getCredential(auth, params);
+        const isEmailVerified = credential.user.emailVerified;
+
+        const requiresEmailVerification =
+          configuration.auth.requireEmailVerification;
+
+        if (requiresEmailVerification && !isEmailVerified) {
+          setShowVerificationAlert(true);
+
+          return requestState.resetState();
+        }
 
         if (credential) {
           // using the ID token, we will make a request to initiate the session
@@ -74,6 +95,10 @@ const EmailPasswordSignInContainer: React.FCC<{
         <AuthErrorMessage
           error={getFirebaseErrorCode(requestState.state.error)}
         />
+      </If>
+
+      <If condition={showVerificationAlert}>
+        <VerifyEmailAlert />
       </If>
 
       <EmailPasswordSignInForm
@@ -126,3 +151,63 @@ async function getCredential(
 }
 
 export default EmailPasswordSignInContainer;
+
+function VerifyEmailAlert() {
+  const { data: user } = useUser();
+  const state = useRequestState();
+
+  const onSendEmail = useCallback(
+    async (user: User) => {
+      try {
+        state.setLoading(true);
+
+        await sendEmailVerification(user, {
+          url: window.location.href,
+        });
+
+        state.setData(null);
+      } catch (error) {
+        state.setError(error);
+      }
+    },
+    [state]
+  );
+
+  return (
+    <Alert type={'warn'}>
+      <Alert.Heading>
+        <Trans i18nKey={'auth:emailConfirmationAlertHeading'} />
+      </Alert.Heading>
+
+      <div className={'flex flex-col space-y-4'}>
+        <p>
+          <Trans i18nKey={'auth:emailConfirmationAlertBody'} />
+        </p>
+
+        <If condition={state.state.success}>
+          <p className={'flex items-center space-x-2 text-sm'}>
+            <CheckCircleIcon className={'h-4'} />
+
+            <span>
+              <Trans i18nKey={'auth:sendAgainEmailVerificationSuccess'} />
+            </span>
+          </p>
+        </If>
+
+        <If condition={user && !state.state.success}>
+          <div>
+            <Button
+              loading={state.state.loading}
+              className={'hover:color-yellow-900 border border-yellow-600'}
+              color={'custom'}
+              size={'small'}
+              onClick={() => user && onSendEmail(user)}
+            >
+              <Trans i18nKey={'auth:sendAgainEmailVerificationLabel'} />
+            </Button>
+          </div>
+        </If>
+      </div>
+    </Alert>
+  );
+}

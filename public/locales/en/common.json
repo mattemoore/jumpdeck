@@ -15,6 +15,7 @@
   "genericError": "Sorry, we hit an unexpected error",
   "genericErrorSubHeading": "We apologize for the inconvenience, but we hit an unexpected error. Please try again later.",
   "anonymousUser": "Anonymous",
+  "theme": "Theme",
   "lightTheme": "Light",
   "darkTheme": "Dark",
   "systemTheme": "System",

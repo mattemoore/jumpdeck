@@ -16,6 +16,7 @@ import {
   OrganizationInfoStep,
   OrganizationInfoStepData,
 } from '~/components/onboarding/OrganizationInfoStep';
+
 import OnboardingIllustration from '~/components/onboarding/OnboardingIllustration';
 
 interface Data {
@@ -106,6 +107,13 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     return redirectToSignIn();
   }
 
+  const isEmailVerified = user.emailVerified;
+  const requireEmailVerification = configuration.auth.requireEmailVerification;
+
+  if (requireEmailVerification && !isEmailVerified) {
+    return redirectToSignIn();
+  }
+
   const userData = await getUserData(user.uid);
 
   // if we cannot find the user's Firestore record
@@ -140,9 +148,16 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 }
 
 function redirectToSignIn() {
+  const paths = configuration.paths;
+
+  const destination = [
+    paths,
+    `?returnUrl=${paths.onboarding}&signOut=true`,
+  ].join('/');
+
   return {
     redirect: {
-      destination: configuration.paths.signIn,
+      destination,
       permanent: false,
     },
   };

@@ -45,7 +45,7 @@ const SelectContent = React.forwardRef<
       ref={ref}
       className={classNames(
         `animate-in fade-in-250 relative z-50 w-screen min-w-[8rem] overflow-hidden rounded-md border
-          border-gray-100 bg-white shadow-md dark:border-black-300 dark:bg-black-500 lg:w-auto`,
+          border-gray-100 bg-white shadow-md dark:border-black-300 dark:bg-black-300 lg:w-auto`,
         className
       )}
       {...props}
@@ -66,7 +66,7 @@ const SelectLabel = React.forwardRef<
   <SelectPrimitive.Label
     ref={ref}
     className={classNames(
-      'py-1.5 pr-2 pl-2 text-xs font-semibold text-gray-400 dark:text-gray-500',
+      'py-1.5 pr-2 pl-2 text-xs font-medium text-gray-400 dark:text-gray-400',
       className
     )}
     {...props}
@@ -76,10 +76,10 @@ const SelectLabel = React.forwardRef<
 SelectLabel.displayName = SelectPrimitive.Label.displayName;
 
 const SelectItemClassName = `
-  relative flex select-none items-center rounded-md hover:bg-primary-50 dark:hover:bg-black-300
+  relative flex select-none items-center rounded-md hover:bg-primary-50 dark:hover:bg-black-200
   py-1.5 pr-4 pl-8 text-sm font-medium outline-none focus:bg-primary-50 my-0.5
   data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [data-state="checked"]:bg-primary-50
-  [data-state="checked"]:dark:bg-black-300 dark:focus:bg-black-300 cursor-pointer data-[selected]:cursor-default
+  [data-state="checked"]:dark:bg-black-200 dark:focus:bg-black-200 cursor-pointer data-[selected]:cursor-default
   transition-colors`;
 
 const SelectItem = React.forwardRef<
@@ -125,7 +125,7 @@ const SelectSeparator = React.forwardRef<
   <SelectPrimitive.Separator
     ref={ref}
     className={classNames(
-      '-mx-1 my-1 h-px bg-gray-100 dark:bg-black-300',
+      '-mx-1 my-1 h-px bg-gray-100 dark:bg-black-200',
       className
     )}
     {...props}

@@ -2,17 +2,14 @@ import configuration from '~/configuration';
 import { parseCookies, setCookie } from 'nookies';
 
 const THEME_KEY = `theme`;
+
 const LIGHT_THEME_META_COLOR = configuration.site.themeColor;
 const DARK_THEME_META_COLOR = configuration.site.themeColorDark;
 
 export const DARK_THEME_CLASSNAME = `dark`;
 export const LIGHT_THEME_CLASSNAME = `light`;
-const SYSTEM_THEME_CLASSNAME = '';
+export const SYSTEM_THEME_CLASSNAME = 'system';
 
-/**
- * @name getStoredTheme
- * @description Get the stored theme from the cookies
- */
 export function getStoredTheme() {
   return parseCookies(null)['theme'];
 }
@@ -20,40 +17,33 @@ export function getStoredTheme() {
 export function setTheme(theme: string | null) {
   const root = getHtml();
 
-  if (theme === SYSTEM_THEME_CLASSNAME || theme === '') {
-    setCookie(null, THEME_KEY, '');
-    root.classList.remove(DARK_THEME_CLASSNAME);
-    root.classList.remove(LIGHT_THEME_CLASSNAME);
-  }
+  root.classList.remove(DARK_THEME_CLASSNAME);
+  root.classList.remove(LIGHT_THEME_CLASSNAME);
 
   switch (theme) {
     case SYSTEM_THEME_CLASSNAME:
+      setCookie(null, THEME_KEY, SYSTEM_THEME_CLASSNAME);
+
       if (isDarkSystemTheme()) {
         root.classList.add(DARK_THEME_CLASSNAME);
-      } else {
-        root.classList.remove(DARK_THEME_CLASSNAME);
       }
 
       return;
 
     case DARK_THEME_CLASSNAME:
       root.classList.add(DARK_THEME_CLASSNAME);
+
       setMetaTag(DARK_THEME_META_COLOR);
       setCookie(null, THEME_KEY, DARK_THEME_CLASSNAME);
 
       return;
 
     case LIGHT_THEME_CLASSNAME:
-      root.classList.remove(DARK_THEME_CLASSNAME);
       setMetaTag(LIGHT_THEME_META_COLOR);
       setCookie(null, THEME_KEY, LIGHT_THEME_CLASSNAME);
 
       return;
   }
-}
-
-export function loadSelectedTheme() {
-  setTheme(getStoredTheme());
 }
 
 function getHtml() {
@@ -64,12 +54,6 @@ function getThemeMetaTag() {
   return document.querySelector(`meta[name='theme-color']`);
 }
 
-/**
- * @name setMetaTag
- * @description Set the theme color meta tag when the theme changes. This is
- * useful for Safari and PWAs since it will change the color of the status bar
- * @param value
- */
 function setMetaTag(value: string) {
   const callback = () => {
     let tag = getThemeMetaTag();
@@ -93,4 +77,8 @@ function setMetaTag(value: string) {
 
 export function isDarkSystemTheme() {
   return window.matchMedia('(prefers-color-scheme: dark)');
+}
+
+export function loadSelectedTheme() {
+  setTheme(getStoredTheme());
 }

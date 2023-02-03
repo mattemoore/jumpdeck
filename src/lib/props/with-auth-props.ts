@@ -23,6 +23,10 @@ export async function withAuthProps(
   ctx: GetServerSidePropsContext,
   options = DEFAULT_OPTIONS
 ) {
+  if (ctx.query.signOut) {
+    return continueToLoginPage(ctx, options);
+  }
+
   try {
     await initializeFirebaseAdminApp();
 
@@ -39,18 +43,25 @@ export async function withAuthProps(
   } catch (e) {
     // if the user is NOT logged in, we redirect to the authentication page
     // as requested by the user
-    const { props } = await withTranslationProps({
-      ...options,
-      locale: ctx.locale ?? options.locale,
-    });
-
-    const csrfToken = await createCsrfToken(ctx);
-
-    return {
-      props: {
-        ...props,
-        csrfToken,
-      },
-    };
+    return continueToLoginPage(ctx, options);
   }
+}
+
+async function continueToLoginPage(
+  ctx: GetServerSidePropsContext,
+  options: typeof DEFAULT_OPTIONS
+) {
+  const { props } = await withTranslationProps({
+    ...options,
+    locale: ctx.locale ?? options.locale,
+  });
+
+  const csrfToken = await createCsrfToken(ctx);
+
+  return {
+    props: {
+      ...props,
+      csrfToken,
+    },
+  };
 }

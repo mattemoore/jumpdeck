@@ -257,7 +257,7 @@ function PlansSwitcher(
   return (
     <div className={'flex'}>
       {props.plans.map((plan, index) => {
-        const className = classNames('focus:ring-0', {
+        const className = classNames('focus:!ring-0 !outline-none', {
           'rounded-r-none': index === 0,
           'rounded-l-none': index === props.plans.length - 1,
         });

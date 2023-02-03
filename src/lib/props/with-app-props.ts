@@ -44,6 +44,16 @@ export async function withAppProps(
       return redirectToLogin(ctx.resolvedUrl, redirectPath);
     }
 
+    const isEmailVerified = metadata.emailVerified;
+    const requireEmailVerification =
+      configuration.auth.requireEmailVerification;
+
+    // when the user is not yet verified and we require email verification
+    // redirect them back to the login page
+    if (!isEmailVerified && requireEmailVerification) {
+      return redirectToLogin(ctx.resolvedUrl, redirectPath);
+    }
+
     const isOnboarded = Boolean(metadata?.customClaims?.onboarded);
 
     // when the user is not yet onboarded,

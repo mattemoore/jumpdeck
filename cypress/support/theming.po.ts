@@ -3,9 +3,8 @@ export namespace themingPo {
     cy.cyGet('dark-mode-toggle').click();
   }
 
-  export function assertIsLightTheme() {
+  export function assertIsNotDarkMode() {
     cy.get('html').should('not.have.class', 'dark');
-    cy.getCookie('theme').should('not.exist');
   }
 
   export function assertIsDarkTheme() {

@@ -37,7 +37,7 @@ const OrganizationMemberActionsDropdown: React.FCC<{
         </IconButton>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent>
+      <DropdownMenuContent collisionPadding={{ right: 50 }}>
         <DropdownMenuItem
           data-cy={'update-member-role-action'}
           className={'cursor-pointer'}

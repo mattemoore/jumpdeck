@@ -80,6 +80,7 @@ const InvitePage = (
 
   const onInviteAccepted = useCallback(async () => {
     const body = { code: invite.code };
+
     const promise = addMemberToOrganization(body).then(() =>
       redirectToHomePage()
     );
@@ -199,7 +200,10 @@ const InvitePage = (
         <If condition={configuration.auth.providers.emailPassword}>
           <If condition={mode === Mode.SignUp}>
             <div className={'flex w-full flex-col items-center space-y-4'}>
-              <EmailPasswordSignUpContainer onSignUp={onInviteAccepted} />
+              <EmailPasswordSignUpContainer
+                onSignUp={onInviteAccepted}
+                enforceEmailVerification={false}
+              />
 
               <Button
                 block

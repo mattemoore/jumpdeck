@@ -1,16 +1,19 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Trans } from 'next-i18next';
+import { Trans } from 'react-i18next';
 
-import MoonIcon from '@heroicons/react/24/outline/MoonIcon';
-import SunIcon from '@heroicons/react/24/outline/SunIcon';
-import { ComputerDesktopIcon } from '@heroicons/react/24/outline';
+import {
+  ComputerDesktopIcon,
+  SunIcon,
+  MoonIcon,
+} from '@heroicons/react/24/outline';
 
 import {
   setTheme,
-  DARK_THEME_CLASSNAME,
-  LIGHT_THEME_CLASSNAME,
   getStoredTheme,
   isDarkSystemTheme,
+  DARK_THEME_CLASSNAME,
+  LIGHT_THEME_CLASSNAME,
+  SYSTEM_THEME_CLASSNAME,
 } from '~/core/theming';
 
 import IconButton from '~/core/ui/IconButton';
@@ -27,16 +30,17 @@ const DarkModeToggle = () => {
   const defaultTheme = useMemo(getStoredTheme, []);
   const [currentTheme, setCurrentTheme] = useState<string>(defaultTheme);
   const isDarkTheme = currentTheme === DARK_THEME_CLASSNAME;
+  const isSystemTheme = currentTheme === SYSTEM_THEME_CLASSNAME;
 
   const Icon = useMemo(() => {
-    const shouldUseSystemDarkTheme = !currentTheme && isDarkSystemTheme();
+    const shouldUseSystemDarkTheme = isSystemTheme && isDarkSystemTheme();
 
     if (isDarkTheme || shouldUseSystemDarkTheme) {
       return <MoonIcon className={'h-5'} />;
     }
 
     return <SunIcon className={'h-5'} />;
-  }, [currentTheme, isDarkTheme]);
+  }, [isSystemTheme, isDarkTheme]);
 
   useEffect(() => {
     setTheme(currentTheme);
@@ -48,9 +52,8 @@ const DarkModeToggle = () => {
         <IconButton
           data-cy={'dark-mode-toggle'}
           className={
-            '!rounded-full border-transparent' +
-            ' bg-transparent shadow hover:bg-transparent hover:shadow-md' +
-            ' dark:border-black-300'
+            'flex items-center border-transparent bg-transparent shadow' +
+            ' hover:bg-transparent hover:shadow-md dark:border-black-300'
           }
         >
           <span hidden>
@@ -85,7 +88,10 @@ const DarkModeToggle = () => {
           </span>
         </SelectItem>
 
-        <SelectItem data-cy={'system-theme-button'} value={''}>
+        <SelectItem
+          data-cy={'system-theme-button'}
+          value={SYSTEM_THEME_CLASSNAME}
+        >
           <span className={'flex items-center space-x-2.5'}>
             <ComputerDesktopIcon className={'h-4'} />
 
