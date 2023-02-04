@@ -46,7 +46,10 @@ const MobileNavigationDropdown: React.FC<{
         {Object.values(links).map((link) => {
           return (
             <DropdownMenuItem key={link.path}>
-              <Link href={link.path}>
+              <Link
+                className={'flex h-full w-full items-center'}
+                href={link.path}
+              >
                 <Trans i18nKey={link.label} defaults={link.label} />
               </Link>
             </DropdownMenuItem>

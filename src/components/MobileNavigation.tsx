@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Trans } from 'next-i18next';
 import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon';
 
@@ -9,13 +10,15 @@ import {
 } from '~/core/ui/Dropdown';
 
 import NAVIGATION_CONFIG from '../navigation.config';
-import Link from 'next/link';
 
 const MobileNavigation: React.FC = () => {
   const Links = NAVIGATION_CONFIG.items.map((item) => {
     return (
       <DropdownMenuItem key={item.path}>
-        <Link href={item.path} className={'flex items-center space-x-4'}>
+        <Link
+          href={item.path}
+          className={'flex h-full w-full items-center space-x-4'}
+        >
           <item.Icon className={'h-6'} />
 
           <span>

@@ -44,8 +44,8 @@ const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={classNames(
-        `animate-in fade-in-250 relative z-50 w-screen min-w-[8rem] overflow-hidden rounded-md border
-          border-gray-100 bg-white shadow-md dark:border-black-300 dark:bg-black-300 lg:w-auto`,
+        `animate-in fade-in-250 relative z-50 w-screen min-w-[8rem] overflow-hidden border border-gray-100
+          bg-white shadow-md dark:border-black-300 dark:bg-black-300 lg:w-auto lg:rounded-md`,
         className
       )}
       {...props}
@@ -77,7 +77,7 @@ SelectLabel.displayName = SelectPrimitive.Label.displayName;
 
 const SelectItemClassName = `
   relative flex select-none items-center rounded-md hover:bg-primary-50 dark:hover:bg-black-200
-  py-1.5 pr-4 pl-8 text-sm font-medium outline-none focus:bg-primary-50 my-0.5
+  h-11 lg:h-8 pr-4 pl-8 text-sm font-medium outline-none focus:bg-primary-50 my-0.5
   data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [data-state="checked"]:bg-primary-50
   [data-state="checked"]:dark:bg-black-200 dark:focus:bg-black-200 cursor-pointer data-[selected]:cursor-default
   transition-colors`;

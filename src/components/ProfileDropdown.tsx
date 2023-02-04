@@ -79,7 +79,7 @@ const ProfileDropdown: React.FCC<{
         <DropdownMenuItem>
           <Link
             href={configuration.paths.appHome}
-            className={'flex w-full items-center space-x-2'}
+            className={'flex h-full w-full items-center space-x-2'}
           >
             <Squares2X2Icon className={'h-5'} />
             <span>
@@ -91,7 +91,7 @@ const ProfileDropdown: React.FCC<{
         <DropdownMenuItem>
           <Link
             href={'/settings/profile'}
-            className={'flex w-full items-center space-x-2'}
+            className={'flex h-full w-full items-center space-x-2'}
           >
             <Cog8ToothIcon className={'h-5'} />
             <span>
@@ -99,8 +99,6 @@ const ProfileDropdown: React.FCC<{
             </span>
           </Link>
         </DropdownMenuItem>
-
-        <DropdownMenuSeparator />
 
         <ThemeSelectorSubMenu />
 
@@ -128,58 +126,62 @@ function ThemeSelectorSubMenu() {
   );
 
   return (
-    <DropdownMenuSub>
-      <DropdownMenuSubTrigger>
-        <Wrapper>
-          <PaintBrushIcon className={'h-5'} />
+    <>
+      <DropdownMenuSeparator className={'hidden lg:flex'} />
 
-          <span>
-            <Trans i18nKey={'common:theme'} />
-          </span>
-        </Wrapper>
-      </DropdownMenuSubTrigger>
-
-      <DropdownMenuSubContent>
-        <DropdownMenuItem
-          className={'cursor-pointer'}
-          onClick={() => setTheme(LIGHT_THEME_CLASSNAME)}
-        >
+      <DropdownMenuSub>
+        <DropdownMenuSubTrigger className={'hidden lg:flex'}>
           <Wrapper>
-            <SunIcon className={'h-5'} />
+            <PaintBrushIcon className={'h-5'} />
 
             <span>
-              <Trans i18nKey={'common:lightTheme'} />
+              <Trans i18nKey={'common:theme'} />
             </span>
           </Wrapper>
-        </DropdownMenuItem>
+        </DropdownMenuSubTrigger>
 
-        <DropdownMenuItem
-          className={'cursor-pointer'}
-          onClick={() => setTheme(DARK_THEME_CLASSNAME)}
-        >
-          <Wrapper>
-            <MoonIcon className={'h-5'} />
+        <DropdownMenuSubContent>
+          <DropdownMenuItem
+            className={'cursor-pointer'}
+            onClick={() => setTheme(LIGHT_THEME_CLASSNAME)}
+          >
+            <Wrapper>
+              <SunIcon className={'h-5'} />
 
-            <span>
-              <Trans i18nKey={'common:darkTheme'} />
-            </span>
-          </Wrapper>
-        </DropdownMenuItem>
+              <span>
+                <Trans i18nKey={'common:lightTheme'} />
+              </span>
+            </Wrapper>
+          </DropdownMenuItem>
 
-        <DropdownMenuItem
-          className={'cursor-pointer'}
-          onClick={() => setTheme(SYSTEM_THEME_CLASSNAME)}
-        >
-          <Wrapper>
-            <ComputerDesktopIcon className={'h-5'} />
+          <DropdownMenuItem
+            className={'cursor-pointer'}
+            onClick={() => setTheme(DARK_THEME_CLASSNAME)}
+          >
+            <Wrapper>
+              <MoonIcon className={'h-5'} />
 
-            <span>
-              <Trans i18nKey={'common:systemTheme'} />
-            </span>
-          </Wrapper>
-        </DropdownMenuItem>
-      </DropdownMenuSubContent>
-    </DropdownMenuSub>
+              <span>
+                <Trans i18nKey={'common:darkTheme'} />
+              </span>
+            </Wrapper>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            className={'cursor-pointer'}
+            onClick={() => setTheme(SYSTEM_THEME_CLASSNAME)}
+          >
+            <Wrapper>
+              <ComputerDesktopIcon className={'h-5'} />
+
+              <span>
+                <Trans i18nKey={'common:systemTheme'} />
+              </span>
+            </Wrapper>
+          </DropdownMenuItem>
+        </DropdownMenuSubContent>
+      </DropdownMenuSub>
+    </>
   );
 }
 

@@ -76,7 +76,7 @@ function setMetaTag(value: string) {
 }
 
 export function isDarkSystemTheme() {
-  return window.matchMedia('(prefers-color-scheme: dark)');
+  return window.matchMedia('(prefers-color-scheme: dark)').matches;
 }
 
 export function loadSelectedTheme() {

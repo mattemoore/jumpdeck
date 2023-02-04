@@ -55,6 +55,11 @@
       "label": "Expired",
       "heading": "Your payment has expired",
       "description": "Your payment has expired. Please update your payment method."
+    },
+    "paused": {
+      "label": "Paused",
+      "heading": "Your subscription is paused",
+      "description": "Your subscription is paused. You can resume it at any time."
     }
   }
 }

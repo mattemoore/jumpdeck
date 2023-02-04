@@ -88,7 +88,7 @@
         @apply dark:border-black-200 dark:hover:border-black-100 w-full
         border-gray-200 border relative flex h-10
         text-gray-800 dark:text-gray-200 transition-all
-        text-sm items-center flex rounded-md font-medium
+        lg:text-sm items-center flex rounded-md font-medium
         bg-white hover:bg-gray-50 dark:bg-black-500 ring-primary-500
         focus-within:ring-2 focus-within:border-transparent
         focus-within:hover:border-transparent dark:focus-within:hover:border-transparent

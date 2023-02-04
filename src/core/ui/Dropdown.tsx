@@ -75,7 +75,7 @@ const DropdownMenuContent = React.forwardRef<
       className={classNames(
         'animate-in data-[side=bottom]:slide-in-from-top-2 w-screen lg:w-auto' +
           ' data-[side=top]:slide-in-from-bottom-2 z-50 min-w-[8rem]' +
-          ' overflow-hidden rounded-md border border-gray-50 bg-white p-1' +
+          ' overflow-hidden border border-gray-50 bg-white p-1 lg:rounded-md' +
           ' shadow-md dark:border-black-300 dark:bg-black-300' +
           ' dark:text-gray-300',
         className
@@ -97,8 +97,9 @@ const DropdownMenuItem = React.forwardRef<
   <DropdownMenuPrimitive.Item
     ref={ref}
     className={classNames(
-      'relative flex w-full select-none items-center rounded-md py-3 px-2 lg:py-1.5' +
-        ' text-sm font-medium outline-none focus:outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+      'relative flex h-11 w-full select-none items-center rounded-md lg:h-8' +
+        ' px-2 text-sm font-medium outline-none focus:outline-none' +
+        ' data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
       {
         'pl-8': inset,
         [`transition-colors duration-300 focus:bg-primary-50 active:bg-primary-100 dark:focus:bg-black-200 dark:active:bg-black-100`]:
