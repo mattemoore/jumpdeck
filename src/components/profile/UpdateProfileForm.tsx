@@ -267,7 +267,9 @@ async function uploadUserProfilePhoto(
   const bytes = await photoFile.arrayBuffer();
   const fileRef = ref(storage, url);
 
-  await uploadBytes(fileRef, bytes);
+  await uploadBytes(fileRef, bytes, {
+    contentType: photoFile.type,
+  });
 
   return await getDownloadURL(fileRef);
 }
