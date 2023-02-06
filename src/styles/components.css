@@ -7,11 +7,6 @@
         @apply outline-primary-200 outline-2 active:outline-none;
     }
 
-    /* NavigationContainer.tsx */
-    .NavigationContainer {
-        @apply border-b dark:border-black-400 dark:border-black-400 border-gray-50;
-    }
-
     /* NavigationMenu.tsx */
     .NavigationMenu {
         @apply flex-1 space-x-1 lg:space-x-2.5 dark:text-gray-300
@@ -28,10 +23,6 @@
         @apply leading-loose
         transition-colors dark:text-gray-300
         text-gray-600 flex items-center text-sm;
-    }
-
-    .NavigationItemActive a {
-        @apply text-primary-500 font-medium;
     }
 
     .NavigationItem a {
@@ -59,7 +50,7 @@
     }
 
     .BorderedNavigationMenu .NavigationItemActive {
-        @apply border-primary-500 text-primary-600 dark:text-white bg-transparent rounded-none;
+        @apply border-primary-500 text-current font-semibold dark:text-white bg-transparent rounded-none;
     }
 
     .BorderedNavigationMenu .NavigationItemNotActive a {
@@ -79,82 +70,11 @@
         @apply cursor-not-allowed text-gray-300 dark:text-gray-600;
     }
 
-    /* TextField.tsx */
-    .TextField {
-        @apply flex flex-col space-y-1;
-    }
-
-    .TextFieldInputContainer {
-        @apply dark:border-black-200 dark:hover:border-black-100 w-full
-        border-gray-200 border relative flex h-10
-        text-gray-800 dark:text-gray-200 transition-all
-        lg:text-sm items-center flex rounded-md font-medium
-        bg-white hover:bg-gray-50 dark:bg-black-500 ring-primary-500
-        focus-within:ring-2 focus-within:border-transparent
-        focus-within:hover:border-transparent dark:focus-within:hover:border-transparent
-        shadow-sm dark:focus:bg-black-400 hover:border-gray-300;
-    }
-
-    .TextFieldInputContainerDisabled {
-        @apply bg-gray-100 hover:bg-gray-100 dark:bg-black-400 cursor-not-allowed;
-    }
-
-    .TextFieldInputContainer input {
-        @apply bg-transparent outline-none flex-auto px-2.5 h-10 rounded-md;
-    }
-
-    .TextFieldInputContainer input:-webkit-autofill,
-    .TextFieldInputContainer input:-webkit-autofill:hover,
-    .TextFieldInputContainer input:-webkit-autofill:active,
-    .TextFieldInputContainer input:-webkit-autofill:focus {
-        @apply shadow-[inset_0_0_0_1000] shadow-white;
-    }
-
-    .TextFieldInputContainer textarea {
-        @apply bg-transparent outline-none py-2 px-2
-        min-h-[60px] flex-auto resize-none;
-    }
-
-    .TextFieldInputContainer.small {
-        @apply h-8;
-    }
-
-    .TextFieldInput[type='file'] {
-        @apply w-full text-sm dark:text-white
-        file:mr-4 file:py-2 file:px-4 items-center flex
-        file:rounded-full file:border-0 file:cursor-pointer
-        file:hover:bg-primary-600 file:active:bg-primary-700
-        file:text-sm file:text-white file:font-semibold cursor-pointer
-        file:bg-primary-500 bg-transparent shadow-none
-        border-transparent justify-center h-10 py-2;
-    }
-
-    .TextFieldHint {
-        @apply text-xs font-normal text-gray-500
-        dark:text-gray-400 leading-tight block pl-1;
-    }
-
-    /* Label.tsx */
-    .Label {
-        @apply text-gray-500 text-sm font-medium w-full dark:text-gray-400;
-    }
-
-    .Label > * {
-        margin-top: 0.3rem;
-    }
-
-    .Label.no-margin > * {
-        margin-top: 0;
-    }
-
-    /* ImageUploadInput.tsx */
-    .ImageUploadInput {
-        @apply TextFieldInput cursor-pointer relative
-        border-dashed bg-white dark:bg-black-500
-        hover:bg-gray-50 dark:hover:border-black-300
-        transition-colors duration-300 border
-        border-gray-200 dark:border-black-200
-        p-2.5 rounded-lg dark:hover:border-black-100;
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:active,
+    input:-webkit-autofill:focus {
+        @apply shadow-[inset_0_0_0_1000] shadow-white border-none;
     }
 
     .TabsList {
@@ -198,14 +118,6 @@
     .DocumentationSidebarItemNotSelected {
         @apply hover:border-l-primary-400 dark:hover:text-white
         dark:border-l-black-400 font-medium border-l-gray-50;
-    }
-
-    .AuthProviderButton {
-        @apply border border-gray-200 dark:border-black-300
-        hover:bg-gray-100 active:bg-gray-200 hover:border-gray-300
-        dark:hover:border-black-100 dark:bg-black-400 ring-primary-500
-        dark:hover:bg-black-400/80 dark:active:bg-black-400
-        transition-all relative text-gray-600 dark:text-gray-200;
     }
 
     .Toggle {

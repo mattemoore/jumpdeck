@@ -160,7 +160,9 @@ function FontFamily() {
     <style jsx global>
       {`
         body {
-          --font-family-sans: ${fontFamilySans.style.fontFamily};
+          --font-family-sans: '-apple-system', 'BlinkMacSystemFont',
+            ${fontFamilySans.style.fontFamily}, 'Segoe UI', 'Roboto', 'Ubuntu',
+            'sans-serif';
         }
       `}
     </style>

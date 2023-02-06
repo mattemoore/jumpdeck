@@ -92,7 +92,11 @@ const ImageUploadInput = forwardRef<React.ElementRef<'input'>, Props>(
     }, [image]);
 
     return (
-      <div className={'ImageUploadInput'}>
+      <div
+        className={`
+        relative cursor-pointer rounded-lg border border-dashed border-gray-200 bg-white p-2.5 transition-colors
+        duration-300 hover:bg-gray-50 dark:border-black-200 dark:bg-black-500 dark:hover:border-black-300 dark:hover:border-black-100`}
+      >
         <input
           {...props}
           ref={setRef}

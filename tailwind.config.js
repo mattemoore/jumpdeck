@@ -6,14 +6,7 @@ module.exports = {
   theme: {
     fontFamily: {
       serif: ['serif'],
-      sans: [
-        'var(--font-family-sans)',
-        'system-ui',
-        'BlinkMacSystemFont',
-        'Segoe UI',
-        'Roboto',
-        'Ubuntu',
-      ],
+      sans: ['var(--font-family-sans)'],
       monospace: [`SF Mono`, `ui-monospace`, `Monaco`, 'Monospace'],
     },
     extend: {

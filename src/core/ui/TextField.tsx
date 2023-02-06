@@ -7,7 +7,14 @@ import If from '~/core/ui/If';
 type Props = React.InputHTMLAttributes<unknown>;
 
 const Hint: React.FC<React.PropsWithChildren> = ({ children }) => {
-  return <span className={`TextFieldHint`}>{children}</span>;
+  return (
+    <span
+      className={`block pl-1 text-xs
+        font-normal leading-tight text-gray-500 dark:text-gray-400`}
+    >
+      {children}
+    </span>
+  );
 };
 
 const Input = forwardRef<React.ElementRef<'input'>, Props>(
@@ -17,9 +24,20 @@ const Input = forwardRef<React.ElementRef<'input'>, Props>(
   ) {
     return (
       <div
-        className={classNames(`TextFieldInputContainer`, className, {
-          [`TextFieldInputContainerDisabled`]: props.disabled,
-        })}
+        className={classNames(
+          `relative flex h-10 w-full items-center rounded-md border
+        border-gray-200 bg-white font-medium
+        text-gray-800 shadow-sm ring-primary-500 transition-all focus-within:border-transparent
+        focus-within:ring-2 hover:border-gray-300 hover:bg-gray-50 focus-within:hover:border-transparent
+        dark:border-black-200 dark:bg-black-500
+        dark:text-gray-200 dark:hover:border-black-100
+        dark:focus-within:hover:border-transparent dark:focus:bg-black-400 lg:text-sm`,
+          className,
+          {
+            [`cursor-not-allowed bg-gray-100 hover:bg-gray-100 dark:bg-black-400`]:
+              props.disabled,
+          }
+        )}
       >
         <If condition={children}>
           <span className={'flex pl-2.5'}>{children}</span>
@@ -27,7 +45,10 @@ const Input = forwardRef<React.ElementRef<'input'>, Props>(
 
         <input
           {...props}
-          className={`TextFieldInput flex-1 ${className ?? ''}`}
+          className={classNames(
+            `h-10 flex-1 rounded-md bg-transparent px-2.5 outline-none`,
+            className
+          )}
           ref={ref}
         />
       </div>
@@ -47,7 +68,11 @@ type TextFieldComponent = React.FC<
 };
 
 const TextField: TextFieldComponent = ({ children, className }) => {
-  return <div className={`TextField ${className ?? ''}`}>{children}</div>;
+  return (
+    <div className={classNames(`flex flex-col space-y-1`, className)}>
+      {children}
+    </div>
+  );
 };
 
 const ErrorMessage: React.FC<
