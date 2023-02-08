@@ -74,7 +74,7 @@
     input:-webkit-autofill:hover,
     input:-webkit-autofill:active,
     input:-webkit-autofill:focus {
-        @apply shadow-[inset_0_0_0_1000] shadow-white border-none;
+        @apply border-none m-[-1px] shadow-sm;
     }
 
     .TabsList {
