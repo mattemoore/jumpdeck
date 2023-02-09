@@ -28,7 +28,12 @@ const NotFoundPage = () => {
             <div className={'flex space-x-8 divide-x divide-gray-100'}>
               <div>
                 <Heading type={1}>
-                  <span className={'text-primary-500'}>404</span>
+                  <span
+                    data-cy={'catch-route-status-code'}
+                    className={'text-primary-500'}
+                  >
+                    404
+                  </span>
                 </Heading>
               </div>
 

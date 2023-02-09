@@ -167,7 +167,10 @@ function saveOrganizationInCookies(
   ctx: GetServerSidePropsContext,
   organizationId: string
 ) {
-  setCookie(ctx, ORGANIZATION_ID_COOKIE_NAME, organizationId, { path: '/' });
+  setCookie(ctx, ORGANIZATION_ID_COOKIE_NAME, organizationId, {
+    path: '/',
+    httpOnly: true,
+  });
 }
 
 /**

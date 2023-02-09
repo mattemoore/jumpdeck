@@ -74,8 +74,12 @@ export function useCreateOrganization() {
             },
           },
         });
+
+        return organizationDoc.id;
       } catch (e) {
         setError((e as FirebaseError).message);
+
+        throw e;
       }
     },
     [setData, setError, setLoading, userId]

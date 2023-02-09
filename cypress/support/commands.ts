@@ -34,7 +34,7 @@ Cypress.Commands.add('cyGet', (name: string) => {
 Cypress.Commands.add(
   'signIn',
   (redirectPath = '/', credentials = authPo.getDefaultUserCredentials()) => {
-    cy.session([redirectPath, credentials.email], () => {
+    cy.session([redirectPath, credentials.email, Math.random()], () => {
       cy.log(
         `Signing in programmatically and redirecting to ${redirectPath} ...`
       );

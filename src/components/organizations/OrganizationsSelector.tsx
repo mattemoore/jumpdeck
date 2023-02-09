@@ -1,13 +1,13 @@
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
-import { setCookie } from 'nookies';
 import { Trans } from 'next-i18next';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 
 import { Organization } from '~/lib/organizations/types/organization';
 import { useFetchUserOrganizations } from '~/lib/organizations/hooks/use-fetch-user-organizations';
-import { OrganizationContext } from '~/lib/contexts/organization';
+import { useCurrentOrganization } from '~/lib/organizations/hooks/use-current-organization';
 
 import If from '~/core/ui/If';
 import CreateOrganizationModal from './CreateOrganizationModal';
@@ -29,54 +29,21 @@ import ClientOnly from '~/core/ui/ClientOnly';
 const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
   const [isOrganizationModalOpen, setIsOrganizationModalOpen] = useState(false);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
-  const { organization, setOrganization } = useContext(OrganizationContext);
-  const organizationsRef = useRef<Array<WithId<Organization>>>([]);
 
-  const onOrganizationsLoaded = useCallback(
-    (organizations: Array<WithId<Organization>>) => {
-      organizationsRef.current = organizations;
-    },
-    []
-  );
+  const router = useRouter();
+  const organization = useCurrentOrganization();
 
-  const onChange = useCallback(
-    (organization: WithId<Organization>) => {
-      // update the global Organization context
-      // with the selected organization
-      setOrganization(organization);
-
-      // we save the selected organization in
-      // a cookie so that we can return to it when
-      // the user refreshes or navigates elsewhere
-      saveOrganizationIdInCookie(organization.id);
-    },
-    [setOrganization]
-  );
-
-  const organizationSelected = useCallback(
-    (organizationId: string) => {
-      if (organizationId === organization?.id) {
-        return;
-      }
-
-      const selectedOrganization = organizationsRef.current.find(
-        ({ id }) => id === organizationId
-      );
-
-      if (selectedOrganization) {
-        onChange(selectedOrganization);
-      }
-    },
-    [onChange, organization?.id]
-  );
+  const value = getDeepLinkPath(organization?.id as string, router.asPath);
 
   return (
     <>
       <Select
         open={isSelectOpen}
         onOpenChange={setIsSelectOpen}
-        onValueChange={organizationSelected}
-        value={organization?.id}
+        value={value}
+        onValueChange={(path) => {
+          return router.push(path);
+        }}
       >
         <SelectTrigger data-cy={'organization-selector'}>
           <span
@@ -98,7 +65,6 @@ const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
 
             <ClientOnly>
               <OrganizationsOptions
-                onLoad={onOrganizationsLoaded}
                 organization={organization}
                 userId={userId}
               />
@@ -134,7 +100,9 @@ const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
       <CreateOrganizationModal
         setIsOpen={setIsOrganizationModalOpen}
         isOpen={isOrganizationModalOpen}
-        onCreate={onChange}
+        onCreate={(organizationId) => {
+          return router.push(getDeepLinkPath(organizationId, router.asPath));
+        }}
       />
     </>
   );
@@ -142,25 +110,20 @@ const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
 
 function OrganizationsOptions({
   userId,
-  onLoad,
   organization,
 }: React.PropsWithChildren<{
   userId: string;
   organization: Maybe<WithId<Organization>>;
-  onLoad: (organizations: Array<WithId<Organization>>) => void;
 }>) {
+  const router = useRouter();
   const { data, status } = useFetchUserOrganizations(userId);
   const isLoading = status === 'loading';
 
-  useEffect(() => {
-    if (data) {
-      onLoad(data);
-    }
-  }, [data, onLoad]);
-
   if (isLoading && organization) {
+    const path = getDeepLinkPath(organization?.id as string, router.asPath);
+
     return (
-      <SelectItem value={organization.id} key={organization.id}>
+      <SelectItem value={path} key={organization.id}>
         <OrganizationItem organization={organization} />
       </SelectItem>
     );
@@ -170,11 +133,15 @@ function OrganizationsOptions({
 
   return (
     <>
-      {organizations.map((organization) => (
-        <SelectItem value={organization.id} key={organization.id}>
-          <OrganizationItem organization={organization} />
-        </SelectItem>
-      ))}
+      {organizations.map((item) => {
+        const path = getDeepLinkPath(item.id, router.asPath);
+
+        return (
+          <SelectItem value={path} key={item.id}>
+            <OrganizationItem organization={item} />
+          </SelectItem>
+        );
+      })}
     </>
   );
 }
@@ -218,11 +185,8 @@ function OrganizationItem({
   );
 }
 
-function saveOrganizationIdInCookie(organizationId: string) {
-  const cookieName = `organizationId`;
-  const path = '/';
-
-  setCookie(undefined, cookieName, organizationId, { path });
+function getDeepLinkPath(organizationId: string, path: string) {
+  return ['', organizationId, path.slice(1, path.length)].join('/');
 }
 
 export default OrganizationsSelector;

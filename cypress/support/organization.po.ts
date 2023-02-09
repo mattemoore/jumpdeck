@@ -23,7 +23,6 @@ const organizationPageObject = {
   $getInviteMembersForm: () => $get('invite-members-form'),
   $getInvitationEmailInput: (index = 0) => $get(`invite-email-input`).eq(index),
   $getAppendNewInviteButton: () => $get(`append-new-invite-button`),
-  $getRemoveInviteButton: () => $get(`remove-invite-button`),
   $getInvitationsSubmitButton: () => $get(`send-invites-button`),
   $getDeleteInviteButton: () => $get(`delete-invite-button`),
   $getConfirmDeleteInviteButton: () => $get(`confirm-delete-invite-button`),
@@ -37,13 +36,24 @@ const organizationPageObject = {
   getDefaultOrganizationId() {
     return DEFAULT_ORGANIZATION_ID;
   },
+  createOrganization(organizationName: string) {
+    organizationPageObject.$currentOrganization().wait(100).click();
+    organizationPageObject.$createOrganizationButton().click();
+
+    organizationPageObject
+      .$createOrganizationNameInput()
+      .type(organizationName);
+
+    organizationPageObject.$confirmCreateOrganizationButton().click();
+  },
   useDefaultOrganization: () => {
     cy.setCookie('organizationId', DEFAULT_ORGANIZATION_ID);
   },
   switchToOrganization(name: string) {
-    this.$currentOrganization().click();
+    this.$currentOrganization().wait(100).click();
 
     cy.contains('[data-cy="organization-selector-item"]', name).click();
+    organizationPageObject.assertCurrentOrganization(name);
 
     return this;
   },
@@ -103,6 +113,9 @@ const organizationPageObject = {
     });
 
     this.$transferOwnershipAction().click({ force: true });
+  },
+  assertCurrentOrganization(name: string) {
+    this.$currentOrganization().should('contain', name);
   },
 };
 

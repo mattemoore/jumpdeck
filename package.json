@@ -1,6 +1,6 @@
 {
   "name": "next-firebase-saas-kit",
-  "version": "0.9.9",
+  "version": "0.10.0",
   "description": "",
   "private": true,
   "sideEffects": false,
@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.10",
-    "@heroicons/react": "^2.0.14",
+    "@heroicons/react": "^2.0.15",
     "@mdx-js/mdx": "^2.2.1",
     "@next/font": "^13.1.6",
     "@radix-ui/react-avatar": "^1.0.1",
@@ -56,7 +56,7 @@
     "feed": "^4.2.2",
     "firebase": "^9.17.1",
     "firebase-admin": "^11.5.0",
-    "heroicons": "2.0.14",
+    "heroicons": "2.0.15",
     "minisearch": "^6.0.1",
     "mjml-react": "^2.0.8",
     "next": "^13.1.6",
@@ -74,8 +74,8 @@
     "reactfire": "^4.2.2",
     "stripe": "^11.9.1",
     "swr": "^2.0.3",
-    "tailwindcss": "^3.2.4",
-    "zod": "^3.20.3"
+    "tailwindcss": "^3.2.6",
+    "zod": "^3.20.5"
   },
   "devDependencies": {
     "@cypress/webpack-preprocessor": "^5.16.3",

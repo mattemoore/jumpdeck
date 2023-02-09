@@ -7,12 +7,11 @@ import TextField from '~/core/ui/TextField';
 import Button from '~/core/ui/Button';
 
 import { useCreateOrganization } from '~/lib/organizations/hooks/use-create-organization';
-import { Organization } from '~/lib/organizations/types/organization';
 
 const CreateOrganizationModal: React.FC<{
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => unknown;
-  onCreate: (organization: WithId<Organization>) => void;
+  onCreate: (organizationId: string) => void;
 }> = ({ isOpen, setIsOpen, onCreate }) => {
   const [createOrganization, createOrganizationState] = useCreateOrganization();
   const { loading, data: newOrganization } = createOrganizationState;
@@ -42,22 +41,20 @@ const CreateOrganizationModal: React.FC<{
         return onError();
       }
 
-      await toast.promise(createOrganization(name), {
+      const organizationId = await toast.promise(createOrganization(name), {
         success: t(`organization:createOrganizationSuccess`),
         error: t(`organization:createOrganizationError`),
         loading: t(`organization:createOrganizationLoading`),
       });
 
       setIsOpen(false);
+
+      if (organizationId) {
+        onCreate(organizationId);
+      }
     },
     [createOrganization, onError, setIsOpen, t]
   );
-
-  useEffect(() => {
-    if (newOrganization) {
-      onCreate(newOrganization);
-    }
-  }, [newOrganization, onCreate]);
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen} heading={Heading}>
