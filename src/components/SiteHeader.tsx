@@ -41,13 +41,15 @@ const SiteHeader: React.FCC<{
           </div>
 
           <div className={'flex flex-1 items-center justify-end space-x-4'}>
-            <div className={'flex items-center'}>
-              <DarkModeToggle />
-            </div>
+            <If condition={configuration.enableThemeSwitcher}>
+              <div className={'flex items-center'}>
+                <DarkModeToggle />
+              </div>
+            </If>
 
             <Transition
-              appear={true}
-              show={true}
+              appear
+              show
               enter="transition-opacity duration-500"
               enterFrom="opacity-50"
               enterTo="opacity-100"

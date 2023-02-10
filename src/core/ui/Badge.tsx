@@ -2,7 +2,7 @@ import { cva } from 'cva';
 import classNames from 'classnames';
 
 type Color = `normal` | 'success' | 'warn' | 'error' | 'info' | 'custom';
-type Size = `normal` | `small`;
+type Size = `normal` | `small` | 'custom';
 
 const classNameBuilder = getClassNameBuilder();
 

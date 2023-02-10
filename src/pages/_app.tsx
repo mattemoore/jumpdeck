@@ -151,7 +151,7 @@ function UiStateProvider(
  * Load selected theme
  * Do not add it as an effect to _app.tsx, the flashing is very visible
  */
-if (isBrowser()) {
+if (isBrowser() && configuration.enableThemeSwitcher) {
   loadSelectedTheme();
 }
 
