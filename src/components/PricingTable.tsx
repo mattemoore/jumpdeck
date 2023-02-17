@@ -184,7 +184,7 @@ function PricingItem(
 
       <If condition={props.selectable}>
         <If
-          condition={props.CheckoutButton}
+          condition={props.plan.stripePriceId && props.CheckoutButton}
           fallback={
             <DefaultCheckoutButton
               recommended={recommended}
