@@ -1,5 +1,6 @@
 import { defineConfig } from 'cypress';
 import { loadEnvConfig } from '@next/env';
+import configuration from '~/configuration';
 
 // load environment variables from .env
 loadEnvConfig('.');
@@ -32,8 +33,19 @@ export default defineConfig({
 
 function getExcludeSpecPattern() {
   const enableStripeTests = process.env.ENABLE_STRIPE_TESTING === 'true';
+  const enableThemeTests = configuration.enableThemeSwitcher;
 
-  return enableStripeTests ? [] : ['**/stripe/*'];
+  const excludePatterns = [];
+
+  if (!enableStripeTests) {
+    excludePatterns.push('**/stripe/*');
+  }
+
+  if (!enableThemeTests) {
+    excludePatterns.push('**/theme.cy.ts');
+  }
+
+  return excludePatterns;
 }
 
 function getEnv() {

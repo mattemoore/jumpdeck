@@ -1,17 +1,14 @@
-import {
-  render,
-  Mjml,
-  MjmlHead,
-  MjmlTitle,
-  MjmlPreview,
-  MjmlBody,
-  MjmlSection,
-  MjmlColumn,
-  MjmlText,
-} from 'mjml-react';
+import { render } from '@react-email/render';
+import { Html } from '@react-email/html';
+import { Head } from '@react-email/head';
+import { Preview } from '@react-email/preview';
+import { Body } from '@react-email/body';
+import { Section } from '@react-email/section';
 
 import EmailNavbar from '~/components/emails/EmailNavbar';
 import CallToActionButton from '~/components/emails/CallToActionButton';
+import { Column } from '@react-email/column';
+import { Text } from '@react-email/text';
 
 interface Props {
   organizationName: string;
@@ -26,46 +23,43 @@ export default function renderInviteEmail(props: Props) {
   const title = `You have been invited to join ${props.organizationName}`;
 
   return render(
-    <Mjml>
-      <MjmlHead>
-        <MjmlTitle>{title}</MjmlTitle>
-        <MjmlPreview>{title}</MjmlPreview>
-      </MjmlHead>
-
-      <MjmlBody width={500}>
+    <Html>
+      <Head>
+        <title>{title}</title>
+      </Head>
+      <Preview>{title}</Preview>
+      <Body style={{ width: '500px', margin: '0 auto', font: 'helvetica' }}>
         <EmailNavbar />
+        <Section style={{ width: '100%' }}>
+          <Column>
+            <Text>Hi,</Text>
 
-        <MjmlSection fullWidth>
-          <MjmlColumn>
-            <MjmlText>Hi,</MjmlText>
-
-            <MjmlText>
+            <Text>
               {props.inviter} with {props.organizationName} has invited you to
               use {props.productName} to collaborate with them.
-            </MjmlText>
+            </Text>
 
-            <MjmlText>
+            <Text>
               Use the button below to set up your account and get started:
-            </MjmlText>
-          </MjmlColumn>
-        </MjmlSection>
+            </Text>
+          </Column>
+        </Section>
 
-        <MjmlSection>
-          <MjmlColumn>
+        <Section>
+          <Column align="center">
             <CallToActionButton href={props.link}>
               Join {props.organizationName}
             </CallToActionButton>
-          </MjmlColumn>
-        </MjmlSection>
+          </Column>
+        </Section>
 
-        <MjmlSection>
-          <MjmlColumn>
-            <MjmlText>Welcome aboard,</MjmlText>
-            <MjmlText>The {props.productName} Team</MjmlText>
-          </MjmlColumn>
-        </MjmlSection>
-      </MjmlBody>
-    </Mjml>,
-    { validationLevel: 'soft' }
+        <Section>
+          <Column>
+            <Text>Welcome aboard,</Text>
+            <Text>The {props.productName} Team</Text>
+          </Column>
+        </Section>
+      </Body>
+    </Html>
   );
 }

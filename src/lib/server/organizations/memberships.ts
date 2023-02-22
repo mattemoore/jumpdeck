@@ -99,7 +99,7 @@ export async function updateMemberRole(params: {
   });
 
   const user = await getUserRefById(targetUserId);
-  const memberPath = getMemberPath(targetUserId);
+  const memberPath = getMemberPath(targetUserId) as 'members.id';
 
   await doc.ref.update({
     [memberPath]: {

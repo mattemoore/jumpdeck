@@ -175,7 +175,7 @@ function sendInviteEmail(props: {
   const subject = 'You have been invited to join an organization!';
   const link = getInvitePageFullUrl(inviteCode);
 
-  const { html, errors } = renderInviteEmail({
+  const html = renderInviteEmail({
     productName,
     link,
     organizationName,
@@ -183,16 +183,6 @@ function sendInviteEmail(props: {
     invitedUserEmail,
     inviter,
   });
-
-  if (errors.length) {
-    throw new Error(
-      `Found errors while rendering invitation email: ${JSON.stringify(
-        errors,
-        null,
-        2
-      )}`
-    );
-  }
 
   return sendEmail({
     to: invitedUserEmail,

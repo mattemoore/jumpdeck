@@ -1,4 +1,4 @@
-import { MjmlButton } from 'mjml-react';
+import { Button } from '@react-email/button';
 
 // update this with your brand's primary color
 const PRIMARY_COLOR = `#3b82f6`;
@@ -9,14 +9,17 @@ function CallToActionButton(
   }>
 ) {
   return (
-    <MjmlButton
-      padding="12px"
-      backgroundColor={PRIMARY_COLOR}
-      borderRadius={'8px'}
+    <Button
+      style={{
+        backgroundColor: PRIMARY_COLOR,
+        padding: '8px 12px',
+        borderRadius: 8,
+        color: 'white',
+      }}
       href={props.href}
     >
       {props.children}
-    </MjmlButton>
+    </Button>
   );
 }
 
