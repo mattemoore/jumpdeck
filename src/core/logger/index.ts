@@ -25,7 +25,7 @@ function getPino() {
     browser: {},
     level: 'debug',
     base: {
-      env: process.env.NODE_ENV,
+      env: configuration.environment,
       revision: process.env.VERCEL_GITHUB_COMMIT_SHA,
     },
   });
