@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Head from 'next/head';
 import type { GetStaticPropsContext } from 'next';
 
 import {
@@ -23,10 +24,15 @@ import Button from '~/core/ui/Button';
 import Heading from '~/core/ui/Heading';
 import Hero from '~/core/ui/Hero';
 import Divider from '~/core/ui/Divider';
+import configuration from '~/configuration';
 
 const Index = () => {
   return (
     <Layout>
+      <Head>
+        <title key={'title'}>{configuration.site.name}</title>
+      </Head>
+
       <SiteHeader />
 
       <Container>

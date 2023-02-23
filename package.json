@@ -1,6 +1,6 @@
 {
   "name": "next-firebase-saas-kit",
-  "version": "0.10.4",
+  "version": "0.10.5",
   "description": "",
   "private": true,
   "sideEffects": false,
@@ -72,7 +72,7 @@
     "next-i18next": "^13.1.5",
     "nodemailer": "^6.9.1",
     "nookies": "^2.5.2",
-    "pino": "^8.10.0",
+    "pino": "^8.11.0",
     "raw-body": "^2.5.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
