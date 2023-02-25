@@ -3,7 +3,7 @@ import '../styles/index.css';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
-import { Inter as SansFont } from '@next/font/google';
+import { Inter as SansFont } from 'next/font/google';
 
 import type { User as AuthUser } from 'firebase/auth';
 import { appWithTranslation, SSRConfig } from 'next-i18next';
