@@ -15,7 +15,7 @@ export function useCreateSession() {
   const endpoint = '/api/session/sign-in';
   const fetcher = useApiRequest<void, Body>();
 
-  return useSWRMutation(endpoint, (path, { arg }) => {
+  return useSWRMutation(endpoint, (path, { arg }: { arg: Body }) => {
     return fetcher({
       path,
       body: arg,

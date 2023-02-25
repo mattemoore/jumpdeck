@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import { Transition } from '@headlessui/react';
 import { Trans } from 'next-i18next';
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
+import { Close as DialogPrimitiveClose } from '@radix-ui/react-dialog';
 
 import IconButton from '~/core/ui/IconButton';
 import If from '~/core/ui/If';
@@ -52,22 +53,24 @@ const Modal: React.FC<
               <div className={'flex flex-col space-y-4'}>
                 <div className="flex items-center">
                   <DialogTitle className="flex w-full text-xl font-semibold text-current">
-                    {heading}
+                    <span className={'max-w-[90%] truncate'}>{heading}</span>
                   </DialogTitle>
-
-                  <If condition={useCloseButton}>
-                    <div className={'justify-end'}>
-                      <IconButton
-                        label={'Close Modal'}
-                        onClick={() => setIsOpen(false)}
-                      >
-                        <XMarkIcon className={'h-6'} />
-                      </IconButton>
-                    </div>
-                  </If>
                 </div>
 
                 <div className="relative">{children}</div>
+
+                <If condition={useCloseButton}>
+                  <DialogPrimitiveClose asChild>
+                    <IconButton
+                      className={'absolute top-0 right-4 flex items-center'}
+                      label={'Close Modal'}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <XMarkIcon className={'h-6'} />
+                      <span className="sr-only">Close</span>
+                    </IconButton>
+                  </DialogPrimitiveClose>
+                </If>
               </div>
             </div>
           </div>

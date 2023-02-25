@@ -16,12 +16,15 @@ function useAddMemberToOrganization(id: string) {
   const endpoint = `/api/organizations/${id}/members`;
   const fetcher = useApiRequest<void, AddMemberToOrganizationProps>();
 
-  return useSWRMutation(endpoint, (path, { arg: body }) => {
-    return fetcher({
-      path,
-      body,
-    });
-  });
+  return useSWRMutation(
+    endpoint,
+    (path, { arg: body }: { arg: AddMemberToOrganizationProps }) => {
+      return fetcher({
+        path,
+        body,
+      });
+    }
+  );
 }
 
 export default useAddMemberToOrganization;

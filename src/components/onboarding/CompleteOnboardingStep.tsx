@@ -49,10 +49,13 @@ export const CompleteOnboardingStep: React.FCC<{
 function useCompleteOnboardingRequest() {
   const fetcher = useApiRequest<void, CompleteOnboardingStepData>();
 
-  return useSWRMutation('/api/onboarding', (path, { arg: body }) => {
-    return fetcher({
-      path,
-      body,
-    });
-  });
+  return useSWRMutation(
+    '/api/onboarding',
+    (path, { arg: body }: { arg: CompleteOnboardingStepData }) => {
+      return fetcher({
+        path,
+        body,
+      });
+    }
+  );
 }

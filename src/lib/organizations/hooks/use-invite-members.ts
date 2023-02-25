@@ -11,7 +11,7 @@ export function useInviteMembers(organizationId: string) {
   const endpoint = `/api/organizations/${organizationId}/invite`;
   const fetcher = useApiRequest<void, Invite[]>();
 
-  return useSWRMutation(endpoint, (path, { arg: body }) => {
+  return useSWRMutation(endpoint, (path, { arg: body }: { arg: Invite[] }) => {
     return fetcher({
       path,
       body,
