@@ -5,7 +5,7 @@ import {
   DevicePhoneMobileIcon,
 } from '@heroicons/react/24/outline';
 
-const DEFAULT_IMAGE_SIZE = 28;
+const DEFAULT_IMAGE_SIZE = 22;
 
 const AuthProviderLogo: React.FC<{
   firebaseProviderId: string;

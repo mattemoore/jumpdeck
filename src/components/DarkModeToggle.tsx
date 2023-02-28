@@ -36,10 +36,10 @@ const DarkModeToggle = () => {
     const shouldUseSystemDarkTheme = isSystemTheme && isDarkSystemTheme();
 
     if (isDarkTheme || shouldUseSystemDarkTheme) {
-      return <MoonIcon className={'h-5'} />;
+      return <MoonIcon className={'h-4'} />;
     }
 
-    return <SunIcon className={'h-5'} />;
+    return <SunIcon className={'h-4'} />;
   }, [isSystemTheme, isDarkTheme]);
 
   useEffect(() => {
@@ -52,9 +52,8 @@ const DarkModeToggle = () => {
         <IconButton
           data-cy={'dark-mode-toggle'}
           className={
-            'flex items-center !rounded-full border-transparent' +
-            ' bg-transparent shadow hover:bg-transparent hover:shadow-md' +
-            ' dark:border-black-300'
+            'flex items-center !rounded-full border-transparent shadow-sm transition-shadow' +
+            ' !bg-transparent hover:shadow-md'
           }
         >
           <span hidden>

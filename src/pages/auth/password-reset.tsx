@@ -93,7 +93,6 @@ export const PasswordReset: React.FCC = () => {
               </If>
 
               <Button
-                size={'large'}
                 loading={state.loading}
                 type="submit"
                 block

@@ -92,10 +92,12 @@ const ImageUploadInput = forwardRef<React.ElementRef<'input'>, Props>(
     }, [image]);
 
     return (
-      <div
+      <label
+        id={'image-upload-input'}
+        tabIndex={0}
         className={`
-        relative cursor-pointer rounded-lg border border-dashed border-gray-200 bg-white p-2.5 transition-colors
-        duration-300 hover:bg-gray-50 dark:border-black-200 dark:bg-black-500 dark:hover:border-black-300 dark:hover:border-black-100`}
+        relative flex h-10 cursor-pointer rounded-md border border-dashed border-gray-200 bg-white py-2 px-3 outline-none ring-offset-1 transition-all hover:bg-gray-50 focus:ring-2
+        focus:ring-primary-200 dark:border-black-200 dark:bg-black-400 dark:hover:border-black-100 dark:focus:ring-primary-500/70 dark:focus:ring-offset-black-400`}
       >
         <input
           {...props}
@@ -104,6 +106,7 @@ const ImageUploadInput = forwardRef<React.ElementRef<'input'>, Props>(
           type={'file'}
           onInput={onInputChange}
           accept="image/*"
+          aria-labelledby={'image-upload-input'}
         />
 
         <div className={'flex items-center space-x-4'}>
@@ -164,7 +167,7 @@ const ImageUploadInput = forwardRef<React.ElementRef<'input'>, Props>(
             </IconButton>
           </If>
         </div>
-      </div>
+      </label>
     );
   }
 );

@@ -30,6 +30,18 @@ const DATA = [
     question: `Where can I find my invoices?`,
     answer: `You can find your invoices in your account settings.`,
   },
+  {
+    question: `What payment methods do you accept?`,
+    answer: `We accept all major credit cards and PayPal.`,
+  },
+  {
+    question: `Can I upgrade or downgrade my plan?`,
+    answer: `Yes, you can upgrade or downgrade your plan at any time. You can do this from your account settings.`,
+  },
+  {
+    question: `Do you offer discounts for non-profits?`,
+    answer: `Yes, we offer a 50% discount for non-profits. Please contact us to learn more.`,
+  },
 ];
 
 const Faq = () => {
@@ -108,8 +120,8 @@ function FaqItem({
           <span
             onClick={toggle}
             className={
-              'text-lg font-semibold text-gray-700 hover:text-current' +
-              ' cursor-pointer hover:underline dark:text-gray-300' +
+              'text-base font-semibold text-gray-700 hover:text-current' +
+              ' cursor-pointer dark:text-gray-300' +
               ' dark:hover:text-white'
             }
           >
@@ -130,7 +142,7 @@ function FaqItem({
 
       <div
         className={classNames(
-          'flex flex-col space-y-2 py-1 text-gray-500 dark:text-gray-400',
+          'flex flex-col space-y-2 py-1 text-sm text-gray-500 dark:text-gray-400',
           {
             hidden: !expanded,
           }

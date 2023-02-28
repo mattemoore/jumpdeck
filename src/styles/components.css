@@ -26,15 +26,15 @@
     }
 
     .NavigationItem a {
-        @apply py-1 px-1 lg:px-2 xl:px-2.5 xl:py-1.5 flex flex-col lg:flex-row items-center justify-center lg:justify-start rounded-md font-medium w-full transition-colors;
+        @apply p-1 lg:px-2.5 flex flex-col lg:flex-row items-center justify-center lg:justify-start rounded-md font-medium w-full transition-colors outline-primary-200 dark:outline-primary-500/70;
     }
 
     .PillNavigationMenu .NavigationItemActive a {
-        @apply bg-gray-100 dark:text-white text-current dark:bg-black-300 rounded-md;
+        @apply bg-gray-50 text-gray-600 text-current dark:bg-black-300 dark:text-white;
     }
 
     .PillNavigationMenu .NavigationItemNotActive a {
-        @apply hover:bg-gray-50 dark:hover:bg-black-400 active:bg-gray-100 dark:active:bg-black-300;
+        @apply hover:bg-gray-50 active:bg-gray-100 text-gray-500 dark:text-gray-300 dark:hover:bg-black-400 dark:active:bg-black-300;
     }
 
     .SecondaryNavigationMenu .NavigationItemActive a {

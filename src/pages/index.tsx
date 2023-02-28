@@ -1,9 +1,7 @@
 import Image from 'next/image';
-import Head from 'next/head';
 import type { GetStaticPropsContext } from 'next';
 
 import {
-  ArrowRightIcon,
   UserGroupIcon,
   FireIcon,
   UserIcon,
@@ -11,6 +9,7 @@ import {
   CubeIcon,
   PaintBrushIcon,
   DocumentIcon,
+  ChevronRightIcon,
 } from '@heroicons/react/24/outline';
 
 import { withTranslationProps } from '~/lib/props/with-translation-props';
@@ -24,71 +23,92 @@ import Button from '~/core/ui/Button';
 import Heading from '~/core/ui/Heading';
 import Hero from '~/core/ui/Hero';
 import Divider from '~/core/ui/Divider';
+import SlideUpTransition from '~/core/ui/SlideUpTransition';
 
 const Index = () => {
   return (
     <Layout>
-
       <SiteHeader />
 
       <Container>
-        <div
-          className={
-            'my-12 flex flex-col items-center md:flex-row lg:my-36' +
-            ' mx-auto flex-1 justify-center'
-          }
-        >
+        <SlideUpTransition>
           <div
-            className={'flex w-full flex-1 flex-col items-center space-y-12'}
+            className={
+              'my-12 flex flex-col items-center md:flex-row lg:my-24' +
+              ' mx-auto flex-1 justify-center'
+            }
           >
-            <HeroTitle>
-              <span>Tell your visitors why</span>
-              <span className={'text-primary-500'}>your SaaS is awesome</span>
-            </HeroTitle>
-
             <div
-              className={
-                'text-center text-gray-700 dark:text-gray-400' +
-                ' flex w-10/12 flex-col space-y-1 md:w-full'
-              }
+              className={'flex w-full flex-1 flex-col items-center space-y-10'}
             >
-              <SubHeading>
-                Here you can write a short description of your SaaS
-              </SubHeading>
+              <Button variant={'flat'} size={'small'} round>
+                <span className={'flex items-center space-x-2 font-normal'}>
+                  <span>Explore our leading solution</span>
 
-              <SubHeading>
-                This subheading is usually laid out on multiple lines
-              </SubHeading>
-
-              <SubHeading>Just like this.</SubHeading>
-            </div>
-
-            <div className={'flex flex-col items-center space-y-2.5'}>
-              <Button
-                className={'GradientButton rounded-full p-1'}
-                size={'large'}
-                href={'/auth/sign-up'}
-              >
-                <span className={'flex items-center space-x-2 text-xl'}>
-                  <span>Get Started for free</span>
-                  <ArrowRightIcon className={'h-6'} />
+                  <ChevronRightIcon className={'h-3'} />
                 </span>
               </Button>
 
-              <span className={'text-xs'}>No credit-card required</span>
+              <HeroTitle>
+                <span>Tell your visitors why</span>
+
+                <span
+                  className={
+                    'bg-gradient-to-br bg-clip-text text-transparent' +
+                    ' from-primary-500 to-primary-400' +
+                    ' to-primary-400 leading-[1.2]'
+                  }
+                >
+                  your SaaS is awesome
+                </span>
+              </HeroTitle>
+
+              <div
+                className={
+                  'text-center text-gray-500 dark:text-gray-400' +
+                  ' flex max-w-lg flex-col space-y-1 font-heading md:w-full'
+                }
+              >
+                <span>Here you can write a short description of your SaaS</span>
+
+                <span>
+                  This subheading is usually laid out on multiple lines
+                </span>
+
+                <span>Impress your customers, straight to the point.</span>
+              </div>
+
+              <div className={'flex items-center space-x-4'}>
+                <Button round href={'/auth/sign-up'}>
+                  <span className={'flex items-center space-x-2'}>
+                    <span>Get Started</span>
+                    <ChevronRightIcon className={'h-3'} />
+                  </span>
+                </Button>
+
+                <Button round color={'secondary'} href={'/pricing'}>
+                  <span className={'flex items-center space-x-2'}>
+                    <span>View Pricing</span>
+                  </span>
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className={'flex justify-center py-12'}>
-          <Image
-            className={'rounded-2xl'}
-            width={2894}
-            height={1950}
-            src={`/assets/images/dashboard-dark.webp`}
-            alt={`App Image`}
-          />
-        </div>
+          <div className={'flex justify-center py-12'}>
+            <Image
+              priority
+              className={
+                'hero-image-shadow rounded-2xl' +
+                ' shadow-primary-500/40 dark:shadow-primary-500/30'
+              }
+              width={2688}
+              height={1824}
+              src={`/assets/images/dashboard-dark.webp`}
+              alt={`App Image`}
+            />
+          </div>
+        </SlideUpTransition>
       </Container>
 
       <Divider />
@@ -210,13 +230,13 @@ const Index = () => {
             }
           >
             <div className={'flex flex-col justify-between space-y-2'}>
-              <Heading type={2}>
+              <Heading type={3}>
                 <p className={'text-gray-800 dark:text-white'}>
                   The application you were waiting for.
                 </p>
               </Heading>
 
-              <Heading type={2}>
+              <Heading type={4}>
                 <p className={'text-primary-500'}>Sign up for free, today.</p>
               </Heading>
             </div>
@@ -228,7 +248,7 @@ const Index = () => {
                   size={'large'}
                   href={'/auth/sign-up'}
                 >
-                  Get Started for free
+                  Get Started
                 </Button>
               </div>
 
@@ -261,9 +281,8 @@ function HeroTitle({ children }: React.PropsWithChildren) {
   return (
     <h1
       className={
-        'text-center text-4xl text-black-500 dark:text-white' +
-        ' flex flex-col space-y-2 font-extrabold md:text-6xl' +
-        ' xl:text-7xl 2xl:text-[5rem]'
+        'text-center text-4xl text-black-500 dark:text-white md:text-5xl' +
+        ' flex flex-col space-y-1 font-heading font-medium xl:text-7xl'
       }
     >
       {children}
@@ -275,7 +294,7 @@ function FeatureIcon(props: React.PropsWithChildren) {
   return (
     <div className={'flex justify-center'}>
       <div
-        className={'rounded-xl bg-primary-500/10 p-4 dark:bg-primary-500/20'}
+        className={'rounded-xl bg-primary-500/10 p-4 dark:bg-primary-500/10'}
       >
         {props.children}
       </div>

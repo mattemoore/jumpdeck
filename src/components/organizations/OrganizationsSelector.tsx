@@ -45,7 +45,10 @@ const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
           return router.push(path);
         }}
       >
-        <SelectTrigger data-cy={'organization-selector'}>
+        <SelectTrigger
+          data-cy={'organization-selector'}
+          className={'!bg-transparent'}
+        >
           <span
             className={'max-w-[5rem] text-sm lg:max-w-[12rem] lg:text-base'}
           >
@@ -57,7 +60,7 @@ const OrganizationsSelector: React.FCC<{ userId: string }> = ({ userId }) => {
           </span>
         </SelectTrigger>
 
-        <SelectContent position={'popper'} collisionPadding={{ top: 100 }}>
+        <SelectContent position={'popper'}>
           <SelectGroup>
             <SelectLabel>Your Organizations</SelectLabel>
 

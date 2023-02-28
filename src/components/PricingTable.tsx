@@ -7,6 +7,7 @@ import CheckCircleIcon from '@heroicons/react/24/outline/CheckCircleIcon';
 import Heading from '~/core/ui/Heading';
 import Button from '~/core/ui/Button';
 import If from '~/core/ui/If';
+import SlideUpTransition from '~/core/ui/SlideUpTransition';
 
 import configuration from '~/configuration';
 
@@ -53,38 +54,40 @@ function PricingTable(
   const [planVariant, setPlanVariant] = useState<string>(STRIPE_PLANS[0]);
 
   return (
-    <div className={'flex flex-col space-y-12'}>
-      <div className={'flex justify-center'}>
-        <PlansSwitcher
-          plans={STRIPE_PLANS}
-          plan={planVariant}
-          setPlan={setPlanVariant}
-        />
-      </div>
+    <SlideUpTransition>
+      <div className={'flex flex-col space-y-12'}>
+        <div className={'flex justify-center'}>
+          <PlansSwitcher
+            plans={STRIPE_PLANS}
+            plan={planVariant}
+            setPlan={setPlanVariant}
+          />
+        </div>
 
-      <div
-        className={
-          'flex flex-col items-start space-y-6 lg:space-y-0' +
-          ' justify-center lg:flex-row lg:space-x-4 xl:space-x-6'
-        }
-      >
-        {STRIPE_PRODUCTS.map((product) => {
-          const plan =
-            product.plans.find((item) => item.name === planVariant) ??
-            product.plans[0];
+        <div
+          className={
+            'flex flex-col items-start space-y-6 lg:space-y-0' +
+            ' justify-center lg:flex-row lg:space-x-4 xl:space-x-6'
+          }
+        >
+          {STRIPE_PRODUCTS.map((product) => {
+            const plan =
+              product.plans.find((item) => item.name === planVariant) ??
+              product.plans[0];
 
-          return (
-            <PricingItem
-              selectable
-              key={plan.stripePriceId ?? plan.name}
-              plan={plan}
-              product={product}
-              CheckoutButton={props.CheckoutButton}
-            />
-          );
-        })}
+            return (
+              <PricingItem
+                selectable
+                key={plan.stripePriceId ?? plan.name}
+                plan={plan}
+                product={product}
+                CheckoutButton={props.CheckoutButton}
+              />
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </SlideUpTransition>
   );
 }
 

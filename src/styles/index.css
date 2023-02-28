@@ -12,6 +12,10 @@ body {
     @apply bg-white text-gray-800 dark:bg-black-500 dark:text-gray-300 font-sans antialiased;
 }
 
+.hero-image-shadow {
+    box-shadow: 0 0 800px 0 var(--tw-shadow-color);
+}
+
 /*
 We hide the emulator warning at the bottom of the page.
 Please remove the following class if you want to display it

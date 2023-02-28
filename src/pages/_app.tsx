@@ -3,7 +3,7 @@ import '../styles/index.css';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
-import { Inter as SansFont } from 'next/font/google';
+import { Inter as SansFont, Manrope as HeadingFont } from 'next/font/google';
 
 import type { User as AuthUser } from 'firebase/auth';
 import { appWithTranslation, SSRConfig } from 'next-i18next';
@@ -41,6 +41,14 @@ const fontFamilySans = SansFont({
   fallback: ['system-ui', 'Helvetica Neue', 'Helvetica', 'Arial'],
   preload: true,
   weight: ['300', '400', '500', '600', '700', '800'],
+});
+
+const fontFamilyHeading = HeadingFont({
+  subsets: ['latin'],
+  variable: '--font-family-heading',
+  fallback: ['--font-family-sans'],
+  preload: true,
+  weight: ['400'],
 });
 
 interface UIState {
@@ -159,10 +167,12 @@ function FontFamily() {
   return (
     <style jsx global>
       {`
-        body {
+        html {
           --font-family-sans: '-apple-system', 'BlinkMacSystemFont',
             ${fontFamilySans.style.fontFamily}, 'Segoe UI', 'Roboto', 'Ubuntu',
             'sans-serif';
+
+          --font-family-heading: ${fontFamilyHeading.style.fontFamily};
         }
       `}
     </style>

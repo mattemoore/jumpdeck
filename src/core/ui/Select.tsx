@@ -14,12 +14,12 @@ const SelectTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={classNames(
-      `flex w-full items-center justify-between space-x-2.5 rounded-md
-        border bg-transparent py-1.5 px-2.5 transition-colors duration-300
-        placeholder:text-gray-400 hover:bg-gray-50 focus:outline-none
-        focus:ring-2 focus:ring-primary-500
-        disabled:cursor-not-allowed disabled:opacity-50 dark:border-black-300 dark:hover:bg-black-300
-        dark:focus:ring-primary-500 dark:focus:ring-offset-primary-600`,
+      `flex h-10 w-full items-center justify-between space-x-2.5
+        rounded-md border bg-transparent py-1.5 px-2.5 ring-offset-1 transition-all
+        duration-300 placeholder:text-gray-400 hover:bg-gray-50
+        focus:outline-none focus:ring-2 focus:ring-primary-200 disabled:cursor-not-allowed
+        disabled:opacity-50 dark:border-black-200 dark:bg-black-400
+        dark:ring-primary-500/70 dark:hover:border-black-100 dark:hover:bg-black-300 dark:focus:ring-offset-black-400`,
       className
     )}
     {...props}
@@ -39,15 +39,16 @@ SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
 const SelectContent = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
->(({ className, children, ...props }, ref) => (
+>(({ className, children, sideOffset = 4, ...props }, ref) => (
   <SelectPrimitive.Portal>
     <SelectPrimitive.Content
       ref={ref}
       className={classNames(
-        `animate-in fade-in-250 relative z-50 w-auto min-w-[8rem] overflow-hidden
-          border border-gray-100 bg-white shadow-md dark:border-black-300 dark:bg-black-300 lg:rounded-md`,
+        `animate-in fade-in-250 relative z-50 w-auto min-w-[8rem] overflow-hidden border border-transparent
+          border-t-gray-50 bg-white shadow-xl dark:border-black-200 dark:bg-black-300 dark:shadow-[0_0_40px_0] dark:shadow-primary-600/10 lg:rounded-md`,
         className
       )}
+      sideOffset={sideOffset}
       {...props}
     >
       <SelectPrimitive.Viewport className={'flex flex-col space-y-0.5 p-1'}>
@@ -79,7 +80,7 @@ const SelectItemClassName = `
   relative flex select-none items-center rounded-md hover:bg-primary-50 dark:hover:bg-black-200
   h-11 lg:h-8 pr-4 pl-8 text-sm font-medium outline-none focus:bg-primary-50 my-0.5
   data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [data-state="checked"]:bg-primary-50
-  [data-state="checked"]:dark:bg-black-200 dark:focus:bg-black-200 cursor-pointer data-[selected]:cursor-default
+  [data-state="checked"]:dark:bg-black-100 dark:focus:bg-black-200 cursor-pointer data-[selected]:cursor-default
   transition-colors`;
 
 const SelectItem = React.forwardRef<
