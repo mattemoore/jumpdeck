@@ -136,7 +136,6 @@ const PhoneNumberCredentialForm: React.FC<{
             </If>
 
             <Button
-              size={'large'}
               id={RECAPTCHA_ACTION_BUTTON_ID}
               block
               type={'submit'}
@@ -177,11 +176,7 @@ const PhoneNumberCredentialForm: React.FC<{
               )}
             </If>
 
-            <Button
-              size={'large'}
-              block
-              loading={verifyVerificationCodeState.state.loading}
-            >
+            <Button block loading={verifyVerificationCodeState.state.loading}>
               <Trans i18nKey={'profile:verifyActivationCodeSubmitLabel'} />
             </Button>
           </div>

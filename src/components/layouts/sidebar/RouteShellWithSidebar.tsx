@@ -18,9 +18,11 @@ const RouteShellWithSidebar: React.FCC<{
 
       <div className={'relative mx-auto h-screen w-full overflow-y-auto'}>
         <AppHeaderNoMenu>
-          <Heading type={5}>
-            <span className={'font-medium dark:text-white'}>{title}</span>
-          </Heading>
+          <div className={'w-full'}>
+            <Heading type={5}>
+              <span className={'font-medium dark:text-white'}>{title}</span>
+            </Heading>
+          </div>
         </AppHeaderNoMenu>
 
         <div className={'p-3'}>{children}</div>
