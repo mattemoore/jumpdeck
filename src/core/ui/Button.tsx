@@ -52,7 +52,7 @@ const Button: React.FCC<Props> = forwardRef<React.ElementRef<'button'>, Props>(
         className={className}
         disabled={loading || props.disabled}
       >
-        <InnerButtonContainerElement href={href}>
+        <InnerButtonContainerElement href={href} disabled={props.disabled}>
           <span
             className={classNames(
               `flex w-full flex-1 items-center justify-center`,
@@ -82,8 +82,12 @@ function Animation() {
 function InnerButtonContainerElement({
   children,
   href,
-}: React.PropsWithChildren<{ href: Maybe<string> }>) {
-  if (href) {
+  disabled,
+}: React.PropsWithChildren<{
+  href: Maybe<string>;
+  disabled?: boolean;
+}>) {
+  if (href && !disabled) {
     return (
       <Link className={`flex w-full items-center`} href={href}>
         {children}

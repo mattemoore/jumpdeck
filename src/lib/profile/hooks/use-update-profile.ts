@@ -24,7 +24,7 @@ export function useUpdateProfile() {
         } catch (e) {
           setError(`Could not update Profile`);
 
-          return Promise.reject(e);
+          throw e;
         }
       }
     },

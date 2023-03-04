@@ -31,7 +31,8 @@ service cloud.firestore {
     }
 
     function fieldsNotInUpdateAction(fields) {
-      return (fieldsNotInCreateAction(fields) && !(resource.data.keys().hasAll(fields)));
+      return !request.resource.data.diff(resource.data).affectedKeys().hasAny
+      (fields);
     }
 
     function getUserRole(organization, userId) {
