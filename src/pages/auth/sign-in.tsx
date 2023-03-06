@@ -2,7 +2,7 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useAuth } from 'reactfire';
 import { useRouter } from 'next/router';
 import { Trans, useTranslation } from 'next-i18next';
@@ -24,21 +24,15 @@ const signUpPath = configuration.paths.signUp;
 const appHome = configuration.paths.appHome;
 
 const FORCE_SIGN_OUT_QUERY_PARAM = 'signOut';
+const NEEDS_EMAIL_VERIFICATION_QUERY_PARAM = 'needsEmailVerification';
 
 export const SignIn: React.FCC = () => {
   const router = useRouter();
   const auth = useAuth();
   const { t } = useTranslation();
 
-  const shouldForceSignOut = useMemo(() => {
-    if (!isBrowser()) {
-      return false;
-    }
-
-    const params = getClientQueryParams();
-
-    return params.has(FORCE_SIGN_OUT_QUERY_PARAM);
-  }, []);
+  const shouldForceSignOut = useShouldSignOut();
+  const shouldVerifyEmail = useShouldVerifyEmail();
 
   const onSignIn = useCallback(async () => {
     const path = getRedirectPathWithoutSearchParam(appHome);
@@ -72,7 +66,10 @@ export const SignIn: React.FCC = () => {
           <Trans i18nKey={'auth:orContinueWithEmail'} />
         </span>
 
-        <EmailPasswordSignInContainer onSignIn={onSignIn} />
+        <EmailPasswordSignInContainer
+          shouldVerifyEmail={shouldVerifyEmail}
+          onSignIn={onSignIn}
+        />
       </If>
 
       <If condition={configuration.auth.providers.phoneNumber}>
@@ -105,4 +102,22 @@ export default SignIn;
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   return await withAuthProps(ctx);
+}
+
+function useShouldSignOut() {
+  return useQueryParam(FORCE_SIGN_OUT_QUERY_PARAM) === 'true';
+}
+
+function useShouldVerifyEmail() {
+  return useQueryParam(NEEDS_EMAIL_VERIFICATION_QUERY_PARAM) === 'true';
+}
+
+function useQueryParam(param: string) {
+  if (!isBrowser()) {
+    return null;
+  }
+
+  const params = getClientQueryParams();
+
+  return params.get(param);
 }

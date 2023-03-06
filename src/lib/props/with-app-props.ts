@@ -41,7 +41,11 @@ export async function withAppProps(
     // if for any reason we're not able to fetch the user's data, we redirect
     // back to the login page
     if (!metadata) {
-      return redirectToLogin(ctx.resolvedUrl, redirectPath);
+      return redirectToLogin({
+        returnUrl: ctx.resolvedUrl,
+        redirectPath,
+        signOut: true,
+      });
     }
 
     const isEmailVerified = metadata.emailVerified;
@@ -51,7 +55,12 @@ export async function withAppProps(
     // when the user is not yet verified and we require email verification
     // redirect them back to the login page
     if (!isEmailVerified && requireEmailVerification) {
-      return redirectToLogin(ctx.resolvedUrl, redirectPath);
+      return redirectToLogin({
+        returnUrl: ctx.resolvedUrl,
+        redirectPath,
+        needsEmailVerification: true,
+        signOut: true,
+      });
     }
 
     const isOnboarded = Boolean(metadata?.customClaims?.onboarded);
@@ -133,21 +142,41 @@ export async function withAppProps(
 
     // if the user is signed out, we save the requested URL
     // so, we can redirect them to where they originally navigated to
-    return redirectToLogin(ctx.resolvedUrl, redirectPath);
+    return redirectToLogin({
+      returnUrl: ctx.resolvedUrl,
+      redirectPath,
+      signOut: true,
+    });
   }
 }
 
 /**
  * @name redirectToLogin
- * @param returnUrl
- * @param redirectPath
  */
-function redirectToLogin(returnUrl: string, redirectPath: string) {
+function redirectToLogin({
+  returnUrl,
+  redirectPath,
+  needsEmailVerification,
+  signOut,
+}: {
+  returnUrl: string;
+  redirectPath: string;
+  needsEmailVerification?: boolean;
+  signOut: boolean;
+}) {
+  const cleanReturnUrl = getPathFromReturnUrl(returnUrl);
+
+  const queryParams = new URLSearchParams({
+    returnUrl: cleanReturnUrl ?? '/',
+    needsEmailVerification: needsEmailVerification ? 'true' : 'false',
+    signOut: signOut ? 'true' : 'false',
+  });
+
   // we build the sign in URL
   // appending the "returnUrl" query parameter so that we can redirect the user
   // straight to where they were headed and the "signOut" parameter
   // to force the client to sign the user out from the client SDK
-  const destination = `${redirectPath}?returnUrl=${returnUrl}&signOut=true`;
+  const destination = `${redirectPath}?${queryParams}`;
 
   return {
     redirect: {
@@ -219,4 +248,12 @@ function getUiProps(ctx: GetServerSidePropsContext) {
     sidebarState,
     theme,
   };
+}
+
+function getPathFromReturnUrl(returnUrl: string) {
+  try {
+    return new URL(returnUrl).pathname;
+  } catch (e) {
+    return returnUrl.split('?')[0];
+  }
 }
