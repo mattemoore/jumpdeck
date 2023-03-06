@@ -24,11 +24,16 @@ export function useUpdateOrganization() {
       try {
         const ref = doc(firestore, ORGANIZATIONS_COLLECTION, organization.id);
 
-        await updateDoc(ref, organization);
+        await updateDoc(ref, {
+          name: organization.name,
+          logoURL: organization.logoURL,
+        });
 
         setData(organization);
       } catch (e) {
         setError((e as FirebaseError).message);
+
+        throw e;
       }
     },
     [firestore, setData, setError, setLoading]
