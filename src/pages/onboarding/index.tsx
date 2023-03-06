@@ -151,7 +151,7 @@ function redirectToSignIn() {
   const paths = configuration.paths;
 
   const destination = [
-    paths,
+    paths.signIn,
     `?returnUrl=${paths.onboarding}&signOut=true`,
   ].join('/');
 

@@ -37,6 +37,10 @@ const EmailPasswordSignUpContainer: React.FCC<{
 
   const createSession = useCallback(
     async (user: User) => {
+      // using the ID token, we will make a request to initiate the session
+      // to make SSR possible via session cookie
+      await sessionRequest(user);
+
       // if the user is required to verify their email, we display a message
       // in case it's an invite, we don't send the verification email
       if (requireEmailVerification && enforceEmailVerification) {
@@ -44,10 +48,6 @@ const EmailPasswordSignUpContainer: React.FCC<{
 
         setShowVerifyEmailAlert(true);
       } else {
-        // using the ID token, we will make a request to initiate the session
-        // to make SSR possible via session cookie
-        await sessionRequest(user);
-
         redirecting.current = true;
 
         // we notify the parent component that
