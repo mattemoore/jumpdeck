@@ -19,10 +19,7 @@ const Hint: React.FC<React.PropsWithChildren> = ({ children }) => {
 };
 
 const Input = forwardRef<React.ElementRef<'input'>, Props>(
-  function TextFieldInputComponent(
-    { className, children, defaultValue, ...props },
-    ref
-  ) {
+  function TextFieldInputComponent({ className, children, ...props }, ref) {
     return (
       <div
         className={classNames(

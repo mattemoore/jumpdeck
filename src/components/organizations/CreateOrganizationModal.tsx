@@ -1,4 +1,4 @@
-import { FormEvent, useCallback, useEffect, useMemo } from 'react';
+import { FormEvent, useCallback, useMemo } from 'react';
 import toast from 'react-hot-toast';
 import { Trans, useTranslation } from 'next-i18next';
 
@@ -14,7 +14,7 @@ const CreateOrganizationModal: React.FC<{
   onCreate: (organizationId: string) => void;
 }> = ({ isOpen, setIsOpen, onCreate }) => {
   const [createOrganization, createOrganizationState] = useCreateOrganization();
-  const { loading, data: newOrganization } = createOrganizationState;
+  const { loading } = createOrganizationState;
   const { t } = useTranslation();
 
   const Heading = useMemo(
@@ -53,7 +53,7 @@ const CreateOrganizationModal: React.FC<{
         onCreate(organizationId);
       }
     },
-    [createOrganization, onError, setIsOpen, t]
+    [createOrganization, onCreate, onError, setIsOpen, t]
   );
 
   return (

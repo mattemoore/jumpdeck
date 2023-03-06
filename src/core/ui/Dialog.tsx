@@ -22,7 +22,7 @@ DialogPortal.displayName = DialogPrimitive.Portal.displayName;
 const DialogOverlay = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
->(({ className, children, ...props }, ref) => (
+>(({ className, ...props }, ref) => (
   <DialogPrimitive.Overlay
     className={classNames(
       'animate-in fade-in fixed inset-0 z-50 transition-opacity',
