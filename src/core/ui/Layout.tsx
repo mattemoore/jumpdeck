@@ -1,5 +1,7 @@
 import Head from 'next/head';
 import configuration from '~/configuration';
+import { useContext } from 'react';
+import { ThemeContext } from '~/core/contexts/theme';
 
 const Layout: React.FCC = ({ children }) => {
   const siteUrl = configuration.site.siteUrl;
@@ -60,7 +62,7 @@ const Layout: React.FCC = ({ children }) => {
           content="/favicon/browserconfig.xml"
         />
 
-        <meta name="theme-color" content={configuration.site.themeColor} />
+        <MetaColor />
 
         <meta
           name="description"
@@ -103,3 +105,14 @@ const Layout: React.FCC = ({ children }) => {
 };
 
 export default Layout;
+
+function MetaColor() {
+  const { theme } = useContext(ThemeContext);
+
+  const color =
+    theme === 'dark'
+      ? configuration.site.themeColorDark
+      : configuration.site.themeColor;
+
+  return <meta name="theme-color" content={color} />;
+}
