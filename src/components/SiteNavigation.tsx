@@ -32,6 +32,10 @@ const links = {
     label: 'FAQ',
     path: '/faq',
   },
+  Signitto: {
+    label: 'Signitto',
+    path: '/signitto',
+  },
 };
 
 const SiteNavigation = () => {
@@ -48,6 +52,7 @@ const SiteNavigation = () => {
           <NavigationMenuItem link={links.Docs} />
           <NavigationMenuItem link={links.Pricing} />
           <NavigationMenuItem link={links.FAQ} />
+          <NavigationMenuItem link={links.Signitto} />
         </NavigationMenu>
       </div>
 
