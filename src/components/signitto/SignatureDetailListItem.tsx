@@ -1,7 +1,7 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import {
-  ListBulletIcon,
+  Bars3Icon,
   UserCircleIcon,
   TableCellsIcon,
   PhoneIcon,
@@ -12,6 +12,7 @@ import {
 } from '@heroicons/react/24/outline';
 import * as Label from '@radix-ui/react-label';
 import GridList from '../GridList';
+import TextField from '~/core/ui/TextField';
 
 interface SignatureDetailProps {
   label: string;
@@ -32,29 +33,29 @@ function SignatureDetailListItem(props: SignatureDetailProps): JSX.Element {
             ref={draggableProvided.innerRef}
             {...draggableProvided.draggableProps}
           >
-            <Label.Root className="pl-8 text-sm" htmlFor={props.id}>
-              {props.label}
-            </Label.Root>
-            <div className="flex flex-row">
-              <div
-                className="mr-1 pt-1.5"
-                {...draggableProvided.dragHandleProps}
-              >
-                <ListBulletIcon className="opacity-80" />
-              </div>
-              <div className="relative rounded-sm border border-gray-300/70">
-                <input
-                  type="text"
-                  id={props.id}
-                  spellCheck="false"
-                  className="h-8 w-full border-0 pl-8"
-                  value={props.value}
-                  onChange={(e) => {
-                    props.onChange(props.id, e.currentTarget.value);
-                  }}
-                />
-                {getIcon(props.id)}
-              </div>
+            <div className="">
+              <TextField>
+                <TextField.Label htmlFor={props.id}>
+                  {props.label}
+                </TextField.Label>
+                <div className="flex flex-row">
+                  <div
+                    className="mr-1 pt-2"
+                    {...draggableProvided.dragHandleProps}
+                  >
+                    <Bars3Icon className="h-5" />
+                  </div>
+                  <TextField.Input
+                    type="text"
+                    id={props.id}
+                    spellCheck="false"
+                    value={props.value}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      props.onChange(props.id, e.currentTarget.value);
+                    }}
+                  />
+                </div>
+              </TextField>
             </div>
           </div>
         </>
@@ -66,36 +67,36 @@ function SignatureDetailListItem(props: SignatureDetailProps): JSX.Element {
 function getIcon(inputId: string): JSX.Element {
   switch (inputId) {
     case 'name': {
-      return (
-        <UserCircleIcon className="absolute left-1 top-1.5 pb-1 opacity-90" />
-      );
+      return <UserCircleIcon className="left-1 top-1.5 h-6 pb-1 opacity-90" />;
     }
     case 'title': {
       return (
-        <BriefcaseIcon className="absolute left-1 top-1.5 pb-1 opacity-90" />
+        <BriefcaseIcon className="absolute top-1.5 left-1 h-6 pb-1 opacity-90" />
       );
     }
     case 'company': {
       return (
-        <BuildingOfficeIcon className="absolute left-1 top-1.5 pb-1 opacity-90" />
+        <BuildingOfficeIcon className="absolute left-1 top-1.5 h-6 pb-1 opacity-90" />
       );
     }
     case 'phone': {
-      return <PhoneIcon className="absolute left-1 top-1.5 pb-1 opacity-90" />;
+      return (
+        <PhoneIcon className="absolute left-1 top-1.5 h-6 pb-1 opacity-90" />
+      );
     }
     case 'website': {
       return (
-        <GlobeAltIcon className="absolute left-1 top-1.5 pb-1 opacity-90" />
+        <GlobeAltIcon className="absolute left-1 top-1.5 h-6 pb-1 opacity-90" />
       );
     }
     case 'email': {
       return (
-        <EnvelopeIcon className="absolute left-1 top-1.5 pb-1 opacity-90" />
+        <EnvelopeIcon className="absolute left-1 top-1.5 h-6 pb-1 opacity-90" />
       );
     }
     default: {
       return (
-        <TableCellsIcon className="absolute left-1 top-1.5 pb-1 opacity-90" />
+        <TableCellsIcon className="absolute left-1 top-1.5 h-6 pb-1 opacity-90" />
       );
     }
   }

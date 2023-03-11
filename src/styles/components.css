@@ -237,5 +237,9 @@
     .Table td {
         @apply py-2.5 text-sm;
     }
+
+    .PillHeader {
+        @apply rounded-full border px-4 py-2 shadow-lg
+    }
 }
 /* Stop purging. */

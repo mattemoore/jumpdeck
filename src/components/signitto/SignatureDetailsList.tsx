@@ -8,6 +8,8 @@ import { useRecoilState } from 'recoil';
 import { signatureDetailsState } from '~/core/signitto/state/SignatureDetailsState';
 import Divider from '~/core/ui/Divider';
 import { HandRaisedIcon } from '@heroicons/react/24/outline';
+import Button from '~/core/ui/Button';
+import Container from '~/core/ui/Container';
 
 function SignatureDetailsList(): JSX.Element {
   const [signatureDetails, setSignatureDetails] = useRecoilState(
@@ -63,50 +65,54 @@ function SignatureDetailsList(): JSX.Element {
 
   return (
     <>
-      <div id="signatureDetailsList" className="flex flex-col px-4">
-        <div className="flow-root py-2 font-medium text-gray-700">
-          <div className="float-left pt-0.5 text-lg">Signature Details</div>
-          <div className="float-right">
-            <button className="border-gray/10 h-8 rounded-md border px-2 text-sm font-normal hover:scale-110 hover:bg-slate-100">
-              <HandRaisedIcon className="float-left pr-1" /> I need help!
-            </button>
+      <Container>
+        <div id="signatureDetailsList" className="mt-4 flex flex-col px-4">
+          <div className="flow-root py-2 font-medium text-gray-700">
+            <div className="float-left pt-0.5 text-lg">Signature Details</div>
+            <div className="float-right">
+              <Button color="secondary">
+                <HandRaisedIcon className="float-left h-5 pr-2" /> I need help!
+              </Button>
+            </div>
+          </div>
+          <Divider />
+          <div id="detailsListContainer" className="py-2">
+            <div id="avatarContainer" className="flex flex-row">
+              <SignatureLogoDetail />
+            </div>
+            <div id="detailsContainer" className="mt-4">
+              <DragDropContext onDragEnd={onDragEnd}>
+                <StrictModeDroppable droppableId="list">
+                  {(droppableProvided) => (
+                    <>
+                      <div
+                        ref={droppableProvided.innerRef}
+                        {...droppableProvided.droppableProps}
+                      >
+                        {signatureDetails.map(
+                          (detail: SignatureDetailModel, index: number) => {
+                            return (
+                              <SignatureDetailsListItem
+                                id={detail.id}
+                                index={index}
+                                label={detail.label}
+                                value={detail.value}
+                                key={detail.id}
+                                onChange={setDetailValue}
+                              />
+                            );
+                          }
+                        )}
+                      </div>
+                      {droppableProvided.placeholder}
+                    </>
+                  )}
+                </StrictModeDroppable>
+              </DragDropContext>
+            </div>
           </div>
         </div>
-        <Divider />
-        <div id="detailsListContainer" className="py-2">
-          <div id="avatarContainer" className="flex flex-row">
-            <SignatureLogoDetail />
-          </div>
-          <DragDropContext onDragEnd={onDragEnd}>
-            <StrictModeDroppable droppableId="list">
-              {(droppableProvided) => (
-                <>
-                  <div
-                    ref={droppableProvided.innerRef}
-                    {...droppableProvided.droppableProps}
-                  >
-                    {signatureDetails.map(
-                      (detail: SignatureDetailModel, index: number) => {
-                        return (
-                          <SignatureDetailsListItem
-                            id={detail.id}
-                            index={index}
-                            label={detail.label}
-                            value={detail.value}
-                            key={detail.id}
-                            onChange={setDetailValue}
-                          />
-                        );
-                      }
-                    )}
-                  </div>
-                  {droppableProvided.placeholder}
-                </>
-              )}
-            </StrictModeDroppable>
-          </DragDropContext>
-        </div>
-      </div>
+      </Container>
     </>
   );
 }

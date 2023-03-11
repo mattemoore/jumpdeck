@@ -10,6 +10,10 @@ firebase-debug.*.log*
 # Firebase cache
 .firebase/
 
+.env.development
+.env.production
+
+
 # Firebase config
 
 # Uncomment this if you'd like others to create their own Firebase project.

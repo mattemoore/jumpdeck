@@ -23,43 +23,38 @@ import SignatureSettingsFooter from '~/components/signitto/SignatureSettingsFoot
 
 function Signitto(): JSX.Element {
   return (
-    <RecoilRoot>
-      <>
-        <div
-          id="appWrapper"
-          className="flex flex-col bg-neutral-100 font-normal text-gray-800/80"
-        >
-          <div
-            id="signatureSettingsMenu"
-            className="flex h-14 flex-row justify-center bg-white/90 p-2"
-          >
-            <SignatureSettingsMenuBar />
-          </div>
-          <div
-            id="signatureDetailsAndPreviewWrapper"
-            className="border-gray/10 flex flex-col border-t border-b lg:flex-row"
-          >
-            <div
-              id="signatureCreationOptions"
-              className="border-gray/10 m-8 flex flex-col rounded-sm border bg-white/90 p-2 lg:w-1/4"
-            >
-              <SignatureDetailsList />
+    <Layout>
+      <Head>
+        <title key="title">{`Blog - ${configuration.site.siteName}`}</title>
+      </Head>
+
+      <SiteHeader />
+      <RecoilRoot>
+        <>
+          <div id="appWrapper" className="flex flex-col">
+            <div id="signatureSettingsMenu" className="h-14">
+              <SignatureSettingsMenuBar />
             </div>
             <div
-              id="signaturePreview"
-              className="border-gray/10 m-8 flex flex-col items-center rounded-sm border bg-white/90 p-2 lg:w-3/4"
+              id="signatureDetailsAndPreviewWrapper"
+              className="flex flex-col lg:flex-row"
             >
-              <SignaturePreview />
+              <div id="signatureCreationOptions" className="lg:w-1/4">
+                <SignatureDetailsList />
+              </div>
+              <div id="signaturePreview" className="lg:w-3/4">
+                <SignaturePreview />
+              </div>
+            </div>
+            <div id="footer">
+              <div className="p-2">
+                <SignatureSettingsFooter />
+              </div>
             </div>
           </div>
-          <div id="footer">
-            <div className="flex h-14 flex-col bg-white/90 p-2">
-              <SignatureSettingsFooter />
-            </div>
-          </div>
-        </div>
-      </>
-    </RecoilRoot>
+        </>
+      </RecoilRoot>
+    </Layout>
   );
 }
 export default Signitto;

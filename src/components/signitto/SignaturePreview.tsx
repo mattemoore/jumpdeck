@@ -1,14 +1,15 @@
 import React from 'react';
 import Signature from './Signature';
 import { EyeIcon } from '@heroicons/react/24/outline';
+import Button from '~/core/ui/Button';
 
 function SignaturePreview(): JSX.Element {
   return (
     <>
       <div className="flex h-3/4 w-3/4 flex-col">
         <div className="flex flex-row justify-center space-x-4 p-4">
-          <div className="rounded-full border px-4 py-2 shadow-lg">
-            <EyeIcon className=" float-left mr-2" />
+          <div className="PillHeader">
+            <EyeIcon className="float-left mr-2 h-5" />
             Preview
           </div>
         </div>
@@ -40,9 +41,7 @@ function SignaturePreview(): JSX.Element {
           </div>
         </div>
         <div className="flex flex-row justify-center">
-          <button className="border-gray/10 rounded-md border bg-blue-700/90 px-4 py-2 font-semibold text-white hover:scale-110 hover:bg-slate-400 ">
-            Create Signature
-          </button>
+          <Button>Create Signature</Button>
         </div>
       </div>
     </>

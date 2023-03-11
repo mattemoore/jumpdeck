@@ -4,6 +4,7 @@ import { useRecoilState } from 'recoil';
 import { signatureImageState } from '~/core/signitto/state/SignatureImageState';
 import { type SignatureImageModel } from '~/core/signitto/types/SingatureImageModel';
 import { PlusIcon } from '@heroicons/react/24/outline';
+import Button from '~/core/ui/Button';
 
 function SignatureLogo(): JSX.Element {
   const [images, setImages] = useRecoilState(signatureImageState);
@@ -27,33 +28,40 @@ function SignatureLogo(): JSX.Element {
   }
   return (
     <>
-      <Avatar.Root className="inline-flex h-20 w-20 items-center justify-center rounded-full bg-gray-400/80">
-        <Avatar.Image
-          className="h-full w-full rounded-full object-cover"
-          src={images[0].url}
-          alt="{"
-        />
-        <Avatar.Fallback
-          className="text-black flex h-full w-full items-center justify-center rounded-full bg-gray-400/80"
-          delayMs={600}
-        >
-          {images[0].label}
-        </Avatar.Fallback>
-      </Avatar.Root>
-      <div id="avatarButtonContainer" className="flow-root h-24 pl-4 pt-4">
-        <button
-          onClick={onClickLogo}
-          className="border-gray/10 h-8 rounded-md border px-2 text-sm font-normal hover:scale-110 hover:bg-slate-100"
-        >
-          <PlusIcon className="float-left pr-1" /> Logo / Photo
-        </button>
-        <button
+      <div
+        id="avatarButtonContainer"
+        className="flex flex-row items-start space-x-3"
+      >
+        {/* Using radix Avatar instead of Makerkit Avatar as Makerkit Avatar is hard to resize */}
+        <Avatar.Root className="inline-flex h-20 w-20 items-center justify-center rounded-full bg-gray-400/80">
+          <Avatar.Image
+            className="h-full w-full rounded-full object-cover"
+            src={images[0].url}
+            alt="{"
+          />
+          <Avatar.Fallback
+            className="text-black flex h-full w-full items-center justify-center rounded-full bg-gray-400/80"
+            delayMs={600}
+          >
+            {images[0].label}
+          </Avatar.Fallback>
+        </Avatar.Root>
+
+        <div className="mt-4 flex flex-col">
+          <Button size={'small'} onClick={onClickLogo}>
+            <PlusIcon className="float-left h-5 pr-2" /> Photo
+          </Button>
+          <div className="pt-1 text-xs">PNG or JPG (max. 800x400px)</div>
+        </div>
+        <Button
+          size={'small'}
+          variant={'outline'}
+          color={'secondary'}
           onClick={onClickRemove}
-          className="float-right pl-4 pt-1.5 text-sm font-normal text-red-700 hover:font-semibold"
+          className="mt-4 pt-0.5 text-red-700"
         >
           Remove
-        </button>
-        <div className="pt-1 text-xs">PNG or JPG (max. 800x400px)</div>
+        </Button>
       </div>
     </>
   );

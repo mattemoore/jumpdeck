@@ -22,8 +22,5 @@
     "ui": {
       "enabled": true
     }
-  },
-  "remoteconfig": {
-    "template": " remote-config"
   }
 }

@@ -52,15 +52,15 @@ function Signature(): JSX.Element {
                 {index === 3 && <Divider />}
 
                 <div key={detail.id}>
-                  <div className="flex flex-row">
+                  <div className="flex flex-row items-center">
                     {detail.type === SignatureDetailType.Phone && (
-                      <PhoneIcon className="mr-2" />
+                      <PhoneIcon className="mr-2 h-3" />
                     )}
                     {detail.type === SignatureDetailType.Email && (
-                      <EnvelopeIcon className="mr-2" />
+                      <EnvelopeIcon className="mr-2 h-3" />
                     )}
                     {detail.type === SignatureDetailType.URL && (
-                      <LinkIcon className="mr-2" />
+                      <LinkIcon className="mr-2 h-3" />
                     )}
                     <div
                       className={classNames({
