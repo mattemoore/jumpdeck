@@ -8,7 +8,9 @@
   ],
   "parserOptions": {
     "tsconfigRootDir": "./",
-    "project": ["./tsconfig.json"]
+    "project": [
+      "./tsconfig.json"
+    ]
   },
   "rules": {
     "import/no-restricted-paths": [
