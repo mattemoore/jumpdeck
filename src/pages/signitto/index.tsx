@@ -1,19 +1,9 @@
 import Head from 'next/head';
 import { GetStaticPropsContext } from 'next';
-
-import configuration from '~/configuration';
-import PostsList from '~/components/blog/PostsList';
-import SiteHeader from '~/components/SiteHeader';
 import { withTranslationProps } from '~/lib/props/with-translation-props';
-
-import Post from '~/core/blog/types/post';
 
 import { getAllPosts } from '~/core/blog/api';
 import Layout from '~/core/ui/Layout';
-import Hero from '~/core/ui/Hero';
-import Container from '~/core/ui/Container';
-import Footer from '~/components/Footer';
-import SubHeading from '~/core/ui/SubHeading';
 
 import { RecoilRoot } from 'recoil';
 import SignatureSettingsMenuBar from '~/components/signitto/SignatureSettingsMenuBar';
@@ -25,19 +15,18 @@ function Signitto(): JSX.Element {
   return (
     <Layout>
       <Head>
-        <title key="title">{`Blog - ${configuration.site.siteName}`}</title>
+        <title key="title">{`Signitto - Easy email signature management`}</title>
       </Head>
 
-      <SiteHeader />
       <RecoilRoot>
         <>
           <div id="appWrapper" className="flex flex-col">
-            <div id="signatureSettingsMenu" className="h-14">
+            <div id="signatureSettingsMenu">
               <SignatureSettingsMenuBar />
             </div>
             <div
               id="signatureDetailsAndPreviewWrapper"
-              className="flex flex-col lg:flex-row"
+              className="mb-5 flex flex-col lg:flex-row"
             >
               <div id="signatureCreationOptions" className="lg:w-1/4">
                 <SignatureDetailsList />
@@ -46,10 +35,8 @@ function Signitto(): JSX.Element {
                 <SignaturePreview />
               </div>
             </div>
-            <div id="footer">
-              <div className="p-2">
-                <SignatureSettingsFooter />
-              </div>
+            <div id="signittoFooter">
+              <SignatureSettingsFooter />
             </div>
           </div>
         </>

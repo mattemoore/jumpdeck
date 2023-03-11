@@ -48,7 +48,7 @@ function SignatureLogo(): JSX.Element {
         </Avatar.Root>
 
         <div className="mt-4 flex flex-col">
-          <Button size={'small'} onClick={onClickLogo}>
+          <Button size="small" onClick={onClickLogo}>
             <PlusIcon className="float-left h-5 pr-2" /> Photo
           </Button>
           <div className="pt-1 text-xs">PNG or JPG (max. 800x400px)</div>

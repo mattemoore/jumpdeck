@@ -10,8 +10,6 @@ import {
   GlobeAltIcon,
   EnvelopeIcon,
 } from '@heroicons/react/24/outline';
-import * as Label from '@radix-ui/react-label';
-import GridList from '../GridList';
 import TextField from '~/core/ui/TextField';
 
 interface SignatureDetailProps {

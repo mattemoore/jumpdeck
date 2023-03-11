@@ -7,9 +7,8 @@ import { StrictModeDroppable } from './StrictModeDroppable';
 import { useRecoilState } from 'recoil';
 import { signatureDetailsState } from '~/core/signitto/state/SignatureDetailsState';
 import Divider from '~/core/ui/Divider';
-import { HandRaisedIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, HandRaisedIcon } from '@heroicons/react/24/outline';
 import Button from '~/core/ui/Button';
-import Container from '~/core/ui/Container';
 
 function SignatureDetailsList(): JSX.Element {
   const [signatureDetails, setSignatureDetails] = useRecoilState(
@@ -65,54 +64,60 @@ function SignatureDetailsList(): JSX.Element {
 
   return (
     <>
-      <Container>
-        <div id="signatureDetailsList" className="mt-4 flex flex-col px-4">
-          <div className="flow-root py-2 font-medium text-gray-700">
-            <div className="float-left pt-0.5 text-lg">Signature Details</div>
-            <div className="float-right">
-              <Button color="secondary">
-                <HandRaisedIcon className="float-left h-5 pr-2" /> I need help!
-              </Button>
-            </div>
-          </div>
-          <Divider />
-          <div id="detailsListContainer" className="py-2">
-            <div id="avatarContainer" className="flex flex-row">
-              <SignatureLogoDetail />
-            </div>
-            <div id="detailsContainer" className="mt-4">
-              <DragDropContext onDragEnd={onDragEnd}>
-                <StrictModeDroppable droppableId="list">
-                  {(droppableProvided) => (
-                    <>
-                      <div
-                        ref={droppableProvided.innerRef}
-                        {...droppableProvided.droppableProps}
-                      >
-                        {signatureDetails.map(
-                          (detail: SignatureDetailModel, index: number) => {
-                            return (
-                              <SignatureDetailsListItem
-                                id={detail.id}
-                                index={index}
-                                label={detail.label}
-                                value={detail.value}
-                                key={detail.id}
-                                onChange={setDetailValue}
-                              />
-                            );
-                          }
-                        )}
-                      </div>
-                      {droppableProvided.placeholder}
-                    </>
-                  )}
-                </StrictModeDroppable>
-              </DragDropContext>
-            </div>
+      <div
+        id="signatureDetailsList"
+        className="mt-5 flex flex-col rounded-md bg-primary-50 p-5 dark:bg-primary-500"
+      >
+        <div className="flow-root py-2 font-medium text-gray-700">
+          <div className="float-left pt-0.5 text-lg">Signature Details</div>
+          <div className="float-right">
+            <Button size="small" color="primary">
+              <HandRaisedIcon className="float-left h-5 pr-2" /> I need help!
+            </Button>
           </div>
         </div>
-      </Container>
+        <Divider />
+        <div id="detailsListContainer" className="py-4">
+          <div id="avatarContainer" className="flex flex-row">
+            <SignatureLogoDetail />
+          </div>
+          <div id="detailsContainer" className="mt-8">
+            <DragDropContext onDragEnd={onDragEnd}>
+              <StrictModeDroppable droppableId="list">
+                {(droppableProvided) => (
+                  <>
+                    <div
+                      ref={droppableProvided.innerRef}
+                      {...droppableProvided.droppableProps}
+                    >
+                      {signatureDetails.map(
+                        (detail: SignatureDetailModel, index: number) => {
+                          return (
+                            <SignatureDetailsListItem
+                              id={detail.id}
+                              index={index}
+                              label={detail.label}
+                              value={detail.value}
+                              key={detail.id}
+                              onChange={setDetailValue}
+                            />
+                          );
+                        }
+                      )}
+                    </div>
+                    {droppableProvided.placeholder}
+                  </>
+                )}
+              </StrictModeDroppable>
+            </DragDropContext>
+          </div>
+          <div className="flex flex-row items-center space-x-1 pt-4 text-xs">
+            <div>*Drag</div>
+            <Bars3Icon className="float-left h-5" />
+            <div>handles to change field order*</div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

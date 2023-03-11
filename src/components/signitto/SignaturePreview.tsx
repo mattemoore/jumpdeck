@@ -6,7 +6,7 @@ import Button from '~/core/ui/Button';
 function SignaturePreview(): JSX.Element {
   return (
     <>
-      <div className="flex h-3/4 w-3/4 flex-col">
+      <div className="m-10 flex h-3/4 w-3/4 flex-col">
         <div className="flex flex-row justify-center space-x-4 p-4">
           <div className="PillHeader">
             <EyeIcon className="float-left mr-2 h-5" />
