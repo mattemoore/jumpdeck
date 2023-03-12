@@ -4,7 +4,7 @@
 
 1. Refactor signitto feature to use architecture explained here: <https://makerkit.dev/docs/next-fire/building-features>
 
-MakerKit is a SaaS starter project built with Next.js, Firebase and Tailwind 
+MakerKit is a SaaS starter project built with Next.js, Firebase and Tailwind
 CSS.
 
 ## Quick Start
@@ -13,7 +13,6 @@ CSS.
 
 - Node.js
 - Git
-
 Please ensure you installed these before proceeding.
 
 ### Cloning the Repository
