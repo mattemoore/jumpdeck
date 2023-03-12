@@ -5,7 +5,7 @@ const configuration = {
   site: {
     name: 'JumpDeck - Simple and Affordable Business Tools',
     description:
-      'Jumpdeck provides simple and affordable business tools - email singature generation, bulk social networks posts.',
+      'Jumpdeck provides simple and affordable business tools. Signitto - Email singature generation.  PostPilot - Bulk social networks posts.',
     themeColor: '#ffffff',
     themeColorDark: '#0a0a0a',
     siteUrl: process.env.NEXT_PUBLIC_SITE_URL as string,
