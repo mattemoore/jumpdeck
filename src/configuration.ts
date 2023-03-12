@@ -3,12 +3,13 @@ import { GoogleAuthProvider } from 'firebase/auth';
 
 const configuration = {
   site: {
-    name: 'Awesomely - Your SaaS Title',
-    description: 'Your SaaS Description',
+    name: 'JumpDeck - Simple and Affordable Business Tools',
+    description:
+      'Jumpdeck provides simple and affordable business tools - email singature generation, bulk social networks posts.',
     themeColor: '#ffffff',
     themeColorDark: '#0a0a0a',
     siteUrl: process.env.NEXT_PUBLIC_SITE_URL as string,
-    siteName: 'Awesomely',
+    siteName: 'JumpDeck',
     twitterHandle: '',
     githubHandle: '',
     language: 'en',
