@@ -1,9 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Signature from './Signature';
 import { EyeIcon } from '@heroicons/react/24/outline';
 import Button from '~/core/ui/Button';
+import Modal from '~/core/ui/Modal';
+import * as clipboard from 'clipboard-polyfill';
 
 function SignaturePreview(): JSX.Element {
+  var showModal: boolean = false;
+  const [isOpen, setIsOpen] = useState(false);
+
+  // TODO: `document.execCommand` is deprecated
+  function copySignatureToClipboard() {
+    const signatureElem: HTMLElement | null =
+      document.getElementById('signature');
+    if (signatureElem != null) {
+      const item = new clipboard.ClipboardItem({
+        'text/html': new Blob([signatureElem.outerHTML], { type: 'text/html' }),
+        'text/plain': new Blob([signatureElem.outerHTML], {
+          type: 'text/plain',
+        }),
+      });
+      clipboard.write([item]);
+      setIsOpen(true);
+    }
+  }
+
   return (
     <>
       <div className="m-10 flex h-3/4 w-3/4 flex-col">
@@ -37,14 +58,36 @@ function SignaturePreview(): JSX.Element {
               <li className="h-2 w-full rounded-md bg-gray-200 dark:bg-gray-700" />
               <li className="h-2 w-full rounded-md bg-gray-200 dark:bg-gray-700" />
             </ul>
-            <Signature></Signature>
+            <div className="my-5">
+              <Signature></Signature>
+            </div>
           </div>
         </div>
         <div className="flex flex-row justify-center">
-          <Button>Create Signature</Button>
+          <Button onClick={copySignatureToClipboard}>Create Signature</Button>
+          <Modal
+            heading="Signature generated"
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+          >
+            <div className={'flex flex-col space-y-4'}>
+              <p>
+                You signature has been copied to the clipboard. You may now
+                paste your signature into your email provider&apos;s signature
+                setting.
+              </p>
+
+              <div className={'flex justify-end space-x-2'}>
+                <Button variant={'flat'} onClick={() => setIsOpen(false)}>
+                  Continue
+                </Button>
+              </div>
+            </div>
+          </Modal>
         </div>
       </div>
     </>
   );
 }
+
 export default SignaturePreview;
