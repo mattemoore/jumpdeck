@@ -15,8 +15,8 @@ function SignaturePreview(): JSX.Element {
       document.getElementById('signature');
     if (signatureElem != null) {
       const item = new clipboard.ClipboardItem({
-        'text/html': new Blob([signatureElem.outerHTML], { type: 'text/html' }),
-        'text/plain': new Blob([signatureElem.outerHTML], {
+        'text/html': new Blob([signatureElem.innerHTML], { type: 'text/html' }),
+        'text/plain': new Blob([signatureElem.innerHTML], {
           type: 'text/plain',
         }),
       });
