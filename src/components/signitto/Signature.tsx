@@ -89,7 +89,7 @@ function Signature(): JSX.Element {
                                       }}
                                     >
                                       <img
-                                        src="/assets/images/phone.png"
+                                        src="https://imagedelivery.net/rmC1Lkc3owkOx8cqAX6dQg/ac23b412-fa37-40db-39d6-4ec74fb24100/public"
                                         alt="Phone icon"
                                       />
                                     </div>
@@ -105,7 +105,7 @@ function Signature(): JSX.Element {
                                       }}
                                     >
                                       <img
-                                        src="/assets/images/envelope.png"
+                                        src="https://imagedelivery.net/rmC1Lkc3owkOx8cqAX6dQg/c8c29f7a-2b88-49b9-2aab-916e7f9c6900/public"
                                         alt="Envelope icon"
                                       />
                                     </div>
@@ -120,7 +120,7 @@ function Signature(): JSX.Element {
                                       }}
                                     >
                                       <img
-                                        src="/assets/images/link.png"
+                                        src="https://imagedelivery.net/rmC1Lkc3owkOx8cqAX6dQg/a0446913-67ed-43b5-1c49-83b711883900/public"
                                         alt="Link icon"
                                       />
                                     </div>
