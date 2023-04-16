@@ -1,5 +1,8 @@
 # Saas Platform for JumpDeck 
+## Why?
+
 1. React >> Next.js >> MakerKit Learning
+2. Put signitto https://github.com/mattemoore/signitto into a SaaS platform using MakerKit 
 
 
 # MakerKit - SaaS Starter for Next.js and Firebase
