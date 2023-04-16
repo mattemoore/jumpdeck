@@ -1,3 +1,7 @@
+# Signitto Email Signature Generator
+1. React >> Next.js >> MakerKit Learning
+
+
 # MakerKit - SaaS Starter for Next.js and Firebase
 
 ## TODO
